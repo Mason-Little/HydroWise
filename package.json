@@ -1,0 +1,17 @@
+{
+  "name": "hydrowise",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "bun --filter web dev",
+    "build": "bun --filter web build",
+    "preview": "bun --filter web preview",
+    "lint": "biome lint .",
+    "format": "biome format . --write"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.13"
+  }
+}

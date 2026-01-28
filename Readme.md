@@ -4,7 +4,7 @@
 
 - **FrameWork**: React(Vite) + Ts
 - **Auth**: AuthJS
-- **Styling**: shadcn/ui
+- **Styling**: BaseUI + TailwindCSS
 - **Linting/Formatting**: Biome
 
 ### Backend:
@@ -96,7 +96,7 @@ Mac M4
 ```
 your-app/
 ├─ apps/
-│  ├─ app/                         # ONE React app (Vite) used by Web + Desktop
+│  ├─ web/                         # ONE React app (Vite) used by Web + Desktop
 │  │  ├─ src/
 │  │  ├─ index.html
 │  │  ├─ vite.config.ts
