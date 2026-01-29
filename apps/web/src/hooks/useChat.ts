@@ -1,56 +1,43 @@
-import type { Message } from "@hydrowise/entities";
-import type { MLCEngine } from "@mlc-ai/web-llm";
+import {
+  createWebLLMEngine,
+  sendChatCompletion,
+  type WebLLMEngine,
+} from "@hydrowise/llm-client";
+import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
 import { useEffect, useState } from "react";
-import { createWebLLMEngine } from "@/utils/inference";
-
-const initialMessages: Message[] = [
-  {
-    order: 0,
-    role: "assistant",
-    content: "Hello! How can I help you today?",
-  },
-];
+import { useMessageStore } from "@/store/messageStore";
 
 export const useChat = () => {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [engine, setEngine] = useState<MLCEngine | null>(null);
+  const { messages, addMessage, setMessages } = useMessageStore();
+  const [engine, setEngine] = useState<WebLLMEngine | null>(null);
 
   useEffect(() => {
-    createWebLLMEngine().then((engine) => setEngine(engine));
+    createWebLLMEngine().then((nextEngine: WebLLMEngine) =>
+      setEngine(nextEngine),
+    );
   }, []);
 
-  const sendMessage = async (message: string) => {
-    const userMessage: Message = {
-      order: messages.length,
+  const submitMessage = async (message: string) => {
+    const userMessage: ChatCompletionMessageParam = {
       role: "user",
       content: message,
     };
-    const newMessages = [...messages, userMessage];
-
-    setMessages(newMessages);
+    const nextMessages = [...messages, userMessage];
+    setMessages(nextMessages);
 
     if (!engine) return;
 
-    const response = await engine.chat.completions.create({
-      stream: false,
-      messages: newMessages,
-      model: "Llama-3.2-1B-Instruct-q4f16_1-MLC",
-      max_tokens: 128,
-      temperature: 0.6,
-    });
+    console.log("Sending message", nextMessages);
 
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        order: prevMessages.length,
-        role: "assistant",
-        content: response.choices[0].message.content || "",
-      },
-    ]);
+    const response = await sendChatCompletion(engine, nextMessages);
+    addMessage({
+      role: "assistant",
+      content: response,
+    });
   };
 
   return {
+    submitMessage,
     messages,
-    sendMessage,
   };
 };

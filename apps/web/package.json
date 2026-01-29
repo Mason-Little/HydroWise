@@ -11,10 +11,11 @@
   "dependencies": {
     "@headlessui/react": "^2.2.9",
     "@hydrowise/entities": "workspace:*",
-    "@mlc-ai/web-llm": "^0.2.79",
+    "@hydrowise/llm-client": "workspace:*",
     "lucide-react": "^0.563.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "zustand": "^5.0.10"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",
