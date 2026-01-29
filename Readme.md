@@ -1,27 +1,49 @@
 # Stack:
 
-### Frontend:
+### Frontend
 
-- **FrameWork**: React(Vite) + Ts
-- **Auth**: AuthJS
+- **Framework**: React (Vite) + TypeScript
+- **Auth**: AuthJS (web) + cached session/token (desktop/offline)
 - **Styling**: BaseUI + TailwindCSS
-- **Linting/Formatting**: Biome
+- **Linting / Formatting**: Biome
 
-### Backend:
+---
 
-- **Lang**: Node.js
-- **Api**: Fastify
+### Backend
 
-### Database:
+- **Runtime**: Node.js
+- **API**: Fastify
+  - Single codebase
+  - Runs in **web mode** or **desktop mode**
 
-- **DataBase**: PostgreSQL
-  - **Extentions**: pgVector
-- **Framework**: Prisma
+---
 
-### Inference:
+### Database (source of truth)
 
-- **Web**: Wllama
-- **Local**: llama.cpp(sideloaded)
+- **Web**: PostgreSQL
+- **Desktop**: SQLite (local file)
+- **ORM**: Prisma
+  - Only relational / app data
+  - **No embeddings stored here**
+
+---
+
+### Vector Store (derived data)
+
+- **Embeddings (web + desktop)**: **ChromaDB**
+  - Desktop: local embedded / local service
+  - Web: hosted Chroma service
+- Stores:
+  - `chunkId`
+  - `embedding`
+  - minimal metadata (userId, docId, type)
+
+---
+
+### Inference
+
+- **Web**: WebLLM (in-browser)
+- **Desktop**: llama.cpp (local runner / sidecar)
 
 # Features:
 
@@ -94,50 +116,69 @@ Mac M4
 # Tree
 
 ```
-your-app/
+HydroWise/
 ├─ apps/
-│  ├─ web/                         # ONE React app (Vite) used by Web + Desktop
+│  ├─ web/                         # React (Vite) UI (Web + Desktop WebView)
 │  │  ├─ src/
+│  │  │  ├─ main.tsx
+│  │  │  ├─ App.tsx
+│  │  │  └─ env.ts                 # frontend env + mode switches
 │  │  ├─ index.html
 │  │  ├─ vite.config.ts
 │  │  └─ package.json
 │  │
-│  └─ desktop/                     # Tauri wrapper (loads apps/app build)
+│  └─ desktop/                     # Tauri wrapper
 │     ├─ src-tauri/
 │     │  ├─ src/
-│     │  │  ├─ main.rs             # spawns local-api, postgres, llama
-│     │  │  └─ processes.rs        # child-process lifecycle + ports
+│     │  │  ├─ main.rs             # spawns local API + llama.cpp + chroma
+│     │  │  └─ sidecar.rs          # process lifecycle + ports
 │     │  ├─ tauri.conf.json
 │     │  └─ Cargo.toml
 │     └─ package.json
 │
 ├─ services/
-│  ├─ web-api/                     # Fastify API for web (storage + pgvector)
-│  │  ├─ src/
-│  │  └─ package.json
-│  │
-│  └─ local-api/                   # Fastify API for desktop (local DB + RAG)
+│  └─ api/                         # ONE Fastify API (web + desktop)
 │     ├─ src/
+│     │  ├─ server.ts              # Fastify bootstrap
+│     │  ├─ config.ts              # MODE=web|desktop
+│     │  ├─ routes/                # HTTP routes
+│     │  ├─ db/
+│     │  │  └─ prisma.ts           # SQLite vs Postgres client
+│     │  ├─ vector/
+│     │  │  ├─ index.ts            # VectorStore interface
+│     │  │  └─ chroma.ts           # Chroma adapter (local / cloud)
+│     │  └─ llm/
+│     │     └─ llamacpp.ts         # server-side inference (desktop only)
 │     └─ package.json
 │
 ├─ packages/
-│  ├─ db/                          # Prisma schema + migrations shared (cloud + local)
+│  ├─ db/
 │  │  ├─ prisma/
-│  │  │  └─ schema.prisma
+│  │  │  ├─ schema.prisma          # core relational models only
+│  │  │  └─ migrations/
 │  │  └─ package.json
 │  │
-│  └─ core/                        # shared RAG utilities (chunking, prompts, types)
+│  ├─ core/                        # chunking, RAG helpers, prompts
+│  │  ├─ src/
+│  │  └─ package.json
+│  │
+│  ├─ contracts/                   # shared zod + TS API contracts
+│  │  ├─ src/
+│  │  └─ package.json
+│  │
+│  └─ llm-client/                  # browser-only LLM client
 │     ├─ src/
+│     │  ├─ index.ts               # createLLMClient()
+│     │  ├─ webllm.ts              # WebLLM implementation
+│     │  └─ types.ts
 │     └─ package.json
 │
 ├─ tools/
-│  ├─ dev.sh                       # runs app + cloud-api/local-api as needed
-│  ├─ bundle-bins.sh               # (desktop) copy llama/postgres bins into resources
-│  └─ README.md
+│  └─ dev.sh                       # run web or desktop stack
 │
 ├─ .github/
 │  └─ workflows/
-│     └─ desktop-release.yml       # builds DMG/ZIP via Tauri on macOS runner
+│     └─ desktop-release.yml       # Tauri DMG / ZIP build
 │
 ├─ package.json                    # workspace root
 └─ bun.lockb

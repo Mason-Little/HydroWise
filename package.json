@@ -2,16 +2,21 @@
   "name": "hydrowise",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "dev": "bun --filter web dev",
-    "build": "bun --filter web build",
+    "build": "bun --workspaces run build",
+    "build:packages": "bun --filter @hydrowise/* run build",
+    "build:apps": "bun --filter web run build",
     "preview": "bun --filter web preview",
     "lint": "biome lint .",
-    "format": "biome format . --write"
+    "format": "biome format . --write",
+    "check": "biome check . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.13"
+    "@biomejs/biome": "^2.3.13",
+    "typescript": "~5.9.3"
   }
 }

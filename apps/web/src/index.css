@@ -21,6 +21,13 @@
   --destructive-foreground: 0 0% 98%;
   --ring: 240 5% 64.9%;
   --radius: 0.75rem;
+  --glass-surface: 0 0% 100% / 0.72;
+  --glass-border: 0 0% 100% / 0.45;
+  --glass-highlight: 0 0% 100% / 0.6;
+  --glass-shadow: 220 30% 20% / 0.12;
+  --glass-shadow-strong: 220 30% 20% / 0.22;
+  --ui-gray: 220 7% 86%;
+  --ui-gray-strong: 220 7% 78%;
   --sidebar-background: 0 0% 98%;
   --sidebar-foreground: 240 5.3% 26.1%;
   --sidebar-primary: 240 5.9% 10%;
@@ -78,6 +85,13 @@ body {
   margin: 0;
   min-height: 100vh;
   background-color: hsl(var(--background));
+  background-image:
+    radial-gradient(circle at top left, hsl(0 0% 100% / 0.55), transparent 55%),
+    radial-gradient(
+      circle at bottom right,
+      hsl(210 20% 96% / 0.7),
+      transparent 45%
+    );
   color: hsl(var(--foreground));
 }
 
