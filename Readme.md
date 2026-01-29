@@ -71,6 +71,19 @@ all of these features should allow for "@"ing courses/documents/terms???
 - light mode
 - system preference
 
+---
+
+## Design System
+
+**"Focused Study"** - A precision study tool with a refined, focused aesthetic.
+
+- **Font**: JetBrains Mono - signals precision and focus, unique but not intimidating
+- **Visual style**: Soft glassmorphism - frosted glass surfaces, subtle depth, feels native to Apple ecosystem
+- **Brand color**: Teal/cyan accent - ties to water/HydroWise branding
+- **Target**: University and high school students (ages 17-23), all disciplines
+- **Vibe**: Feels like a native Mac app, approachable for art history majors and CS students alike
+
+
 # Business Logic:
 
 - Open Source

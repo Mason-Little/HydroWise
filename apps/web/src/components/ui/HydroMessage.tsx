@@ -5,8 +5,10 @@ type Props = {
 };
 
 export const HydroMessage = ({ message }: Props) => {
+  const isUser = message.role === "user";
+
   return (
-    <div className="rounded-2xl border border-white/40 bg-white/70 px-5 py-4 text-sm text-slate-700 shadow-[0_12px_28px_hsl(var(--glass-shadow))]">
+    <div className={`message ${isUser ? "message-user" : "message-glass"}`}>
       {message.content}
     </div>
   );

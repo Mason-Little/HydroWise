@@ -10,7 +10,7 @@ export const HydroInput = ({ onInput, onSend }: Props) => {
     <Input
       type="text"
       placeholder="Ask me anything..."
-      className="w-full bg-transparent px-2 py-1 text-[0.95rem] text-slate-800 placeholder:text-slate-500 focus:outline-none"
+      className="input"
       onChange={(e) => onInput(e.target.value)}
       onKeyDown={(e) => {
         if (e.key === "Enter") {
