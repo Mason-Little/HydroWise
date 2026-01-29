@@ -5,14 +5,12 @@ import { HydroInput } from "@/components/ui/HydroInput";
 type Props = {
   onSend: (message: string) => void;
   disabled?: boolean;
-  isLoading?: boolean;
   loadingProgress?: number;
 };
 
 export const HydroInputContainer = ({
   onSend,
   disabled = false,
-  isLoading = false,
   loadingProgress = 0,
 }: Props) => {
   const [message, setMessage] = useState("");
@@ -20,7 +18,7 @@ export const HydroInputContainer = ({
   return (
     <div className="input-shell">
       <HydroInput onInput={setMessage} onSend={onSend} disabled={disabled} />
-      {isLoading ? (
+      {loadingProgress < 100 ? (
         <div className="btn btn-primary pointer-events-none">
           Loading {loadingProgress}%
         </div>

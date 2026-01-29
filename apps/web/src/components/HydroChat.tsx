@@ -5,11 +5,11 @@ import { useWebLLMEngine } from "@/hooks/useWebLLMEngine";
 
 export const HydroChat = () => {
   const { messages, submitMessage } = useChat();
-  const { engine, isLoading, loadProgress } = useWebLLMEngine();
+  const { engineReady, loadProgress } = useWebLLMEngine();
 
   const handleSend = async (message: string) => {
-    if (!engine) return;
-    await submitMessage(engine, message);
+    if (!engineReady) return;
+    await submitMessage(message);
   };
 
   return (
@@ -22,8 +22,7 @@ export const HydroChat = () => {
         </div>
         <HydroInputContainer
           onSend={handleSend}
-          disabled={isLoading || !engine}
-          isLoading={isLoading}
+          disabled={!engineReady}
           loadingProgress={loadProgress}
         />
       </div>

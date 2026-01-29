@@ -1,10 +1,11 @@
-import { sendChatCompletion, type WebLLMEngine } from "@hydrowise/llm-client";
+import { sendChatCompletion } from "@hydrowise/llm-client";
 import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
 import { useMessageStore } from "@/store/messageStore";
 
 export const useChat = () => {
   const { messages, addMessage, setMessages } = useMessageStore();
-  const submitMessage = async (engine: WebLLMEngine, message: string) => {
+
+  const submitMessage = async (message: string) => {
     const userMessage: ChatCompletionMessageParam = {
       role: "user",
       content: message,
@@ -14,7 +15,7 @@ export const useChat = () => {
 
     console.log("Sending message", nextMessages);
 
-    const response = await sendChatCompletion(engine, nextMessages);
+    const response = await sendChatCompletion(nextMessages);
     addMessage({
       role: "assistant",
       content: response,

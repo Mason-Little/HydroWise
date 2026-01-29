@@ -17,5 +17,8 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     }
+  },
+  "devDependencies": {
+    "vite": "^7.2.4"
   }
 }

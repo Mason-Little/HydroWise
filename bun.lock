@@ -39,8 +39,10 @@
       "name": "@hydrowise/llm-client",
       "version": "0.0.0",
       "dependencies": {
-        "@hydrowise/entities": "*",
         "@mlc-ai/web-llm": "^0.2.79",
+      },
+      "devDependencies": {
+        "vite": "^7.2.4",
       },
     },
   },
