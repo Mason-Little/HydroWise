@@ -1,9 +1,16 @@
 import { HydroInputContainer } from "@/components/ui/HydroInputContainer";
 import { HydroMessage } from "@/components/ui/HydroMessage";
 import { useChat } from "@/hooks/useChat";
+import { useWebLLMEngine } from "@/hooks/useWebLLMEngine";
 
 export const HydroChat = () => {
   const { messages, submitMessage } = useChat();
+  const { engine, isLoading, loadProgress } = useWebLLMEngine();
+
+  const handleSend = async (message: string) => {
+    if (!engine) return;
+    await submitMessage(engine, message);
+  };
 
   return (
     <div className="fixed bottom-6 left-0 right-0 z-20 flex justify-center px-6 pb-6">
@@ -13,7 +20,12 @@ export const HydroChat = () => {
             <HydroMessage key={`${message.role}-${index}`} message={message} />
           ))}
         </div>
-        <HydroInputContainer onSend={submitMessage} />
+        <HydroInputContainer
+          onSend={handleSend}
+          disabled={isLoading || !engine}
+          isLoading={isLoading}
+          loadingProgress={loadProgress}
+        />
       </div>
     </div>
   );
