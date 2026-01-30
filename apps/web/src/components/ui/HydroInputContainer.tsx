@@ -1,3 +1,4 @@
+import { LinearProgress, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { HydroButton } from "@/components/ui/HydroButton";
 import { HydroInput } from "@/components/ui/HydroInput";
@@ -15,16 +16,34 @@ export const HydroInputContainer = ({
 }: Props) => {
   const [message, setMessage] = useState("");
 
+  const handleSend = (content: string) => {
+    setMessage("");
+    onSend(content);
+  };
+
   return (
-    <div className="input-shell">
-      <HydroInput onInput={setMessage} onSend={onSend} disabled={disabled} />
-      {loadingProgress < 100 ? (
-        <div className="btn btn-primary pointer-events-none">
-          Loading {loadingProgress}%
-        </div>
-      ) : (
-        <HydroButton onClick={() => onSend(message)} disabled={disabled} />
+    <Stack spacing={1.5}>
+      {loadingProgress < 100 && (
+        <Stack direction="row" spacing={2} alignItems="center">
+          <LinearProgress variant="determinate" value={loadingProgress} />
+          <Typography variant="caption" color="text.secondary">
+            Loading model {loadingProgress}%
+          </Typography>
+        </Stack>
       )}
-    </div>
+
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5}>
+        <HydroInput
+          value={message}
+          onInput={setMessage}
+          onSend={handleSend}
+          disabled={disabled}
+        />
+        <HydroButton
+          onClick={() => handleSend(message)}
+          disabled={disabled || !message}
+        />
+      </Stack>
+    </Stack>
   );
 };

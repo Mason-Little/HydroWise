@@ -1,3 +1,5 @@
+import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
+import { Box, Chip, Paper, Stack } from "@mui/material";
 import { HydroInputContainer } from "@/components/ui/HydroInputContainer";
 import { HydroMessage } from "@/components/ui/HydroMessage";
 import { useChat } from "@/hooks/useChat";
@@ -7,25 +9,36 @@ export const HydroChat = () => {
   const { history, submitMessage } = useChat();
   const { engineReady, loadProgress } = useWebLLMEngine();
 
-  const handleSend = async (message: string) => {
+  const handleSend = async (content: string) => {
     if (!engineReady) return;
-    await submitMessage(message);
+    await submitMessage(content);
   };
 
   return (
-    <div className="fixed bottom-6 left-0 right-0 z-20 flex justify-center px-6 pb-6">
-      <div className="glass-panel flex w-full max-w-3xl flex-col gap-6 px-8 py-7">
-        <div className="scroll-styled flex max-h-[50vh] flex-col gap-4 overflow-y-auto pr-2">
-          {history.map((message, index) => (
-            <HydroMessage key={`${message.role}-${index}`} message={message} />
+    <Box>
+      <Paper elevation={1}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+          <Chip
+            label={engineReady ? "Ready" : "Warming up"}
+            color={engineReady ? "secondary" : "default"}
+            variant={engineReady ? "filled" : "outlined"}
+            size="small"
+          />
+        </Stack>
+
+        <Stack spacing={2}>
+          {history.map((entry: ChatCompletionMessageParam, index: number) => (
+            <HydroMessage key={`${entry.role}-${index}`} message={entry} />
           ))}
-        </div>
-        <HydroInputContainer
-          onSend={handleSend}
-          disabled={!engineReady}
-          loadingProgress={loadProgress}
-        />
-      </div>
-    </div>
+        </Stack>
+        <Box>
+          <HydroInputContainer
+            onSend={handleSend}
+            disabled={!engineReady}
+            loadingProgress={loadProgress}
+          />
+        </Box>
+      </Paper>
+    </Box>
   );
 };

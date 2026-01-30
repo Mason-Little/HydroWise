@@ -1,26 +1,38 @@
-import { Input } from "@headlessui/react";
+import { TextField } from "@mui/material";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 type Props = {
+  value: string;
   onInput: (message: string) => void;
   onSend: (message: string) => void;
   disabled?: boolean;
 };
 
-export const HydroInput = ({ onInput, onSend, disabled = false }: Props) => {
+export const HydroInput = ({
+  value,
+  onInput,
+  onSend,
+  disabled = false,
+}: Props) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onInput(event.target.value);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== "Enter" || event.shiftKey) return;
+    event.preventDefault();
+    onSend(value);
+  };
+
   return (
-    <Input
-      type="text"
-      placeholder="Ask me anything..."
-      className="input"
+    <TextField
+      fullWidth
+      placeholder="Ask anything about your notes, courses, or docs"
+      value={value}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
       disabled={disabled}
-      onChange={(e) => onInput(e.target.value)}
-      onKeyDown={(e) => {
-        if (disabled) return;
-        if (e.key === "Enter") {
-          onSend(e.currentTarget.value);
-          e.currentTarget.value = "";
-        }
-      }}
+      size="small"
     />
   );
 };

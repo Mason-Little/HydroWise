@@ -1,4 +1,5 @@
 import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
+import { Paper, Typography } from "@mui/material";
 
 type Props = {
   message: ChatCompletionMessageParam;
@@ -13,13 +14,11 @@ const getMessageContent = (message: ChatCompletionMessageParam) => {
 };
 
 export const HydroMessage = ({ message }: Props) => {
-  const isUser = message.role === "user";
-
   const content = getMessageContent(message);
 
   return (
-    <div className={`message ${isUser ? "message-user" : "message-glass"}`}>
-      {content}
-    </div>
+    <Paper elevation={1}>
+      <Typography variant="body2">{content}</Typography>
+    </Paper>
   );
 };
