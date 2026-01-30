@@ -1,21 +1,22 @@
 import { Button } from "@mui/material";
-import { Send } from "lucide-react";
 
 type Props = {
   onClick: () => void;
   disabled?: boolean;
   label?: string;
+  icon?: React.ReactNode;
 };
 
 export const HydroButton = ({
   onClick,
   disabled = false,
-  label = "Send",
+  label,
+  icon,
 }: Props) => {
   return (
     <Button
       variant="contained"
-      endIcon={<Send size={16} />}
+      startIcon={icon}
       disabled={disabled}
       onClick={onClick}
     >

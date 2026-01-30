@@ -15,9 +15,31 @@ export const HydroChat = () => {
   };
 
   return (
-    <Box>
-      <Paper elevation={1}>
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+    <Box
+      sx={{
+        maxWidth: 840,
+        mx: "auto",
+        px: { xs: 2, sm: 3 },
+        py: { xs: 2, sm: 3 },
+      }}
+    >
+      <Paper
+        elevation={0}
+        sx={{
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+          bgcolor: "background.paper",
+          p: { xs: 2, sm: 3 },
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.06)",
+        }}
+      >
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.5}
+          alignItems="center"
+          sx={{ mb: 2 }}
+        >
           <Chip
             label={engineReady ? "Ready" : "Warming up"}
             color={engineReady ? "secondary" : "default"}
@@ -26,12 +48,20 @@ export const HydroChat = () => {
           />
         </Stack>
 
-        <Stack spacing={2}>
+        <Stack
+          spacing={1.5}
+          sx={{
+            overflowY: "auto",
+            minHeight: 240,
+            maxHeight: { xs: 360, sm: 420 },
+            pr: 0.5,
+          }}
+        >
           {history.map((entry: ChatCompletionMessageParam, index: number) => (
             <HydroMessage key={`${entry.role}-${index}`} message={entry} />
           ))}
         </Stack>
-        <Box>
+        <Box sx={{ mt: 2 }}>
           <HydroInputContainer
             onSend={handleSend}
             disabled={!engineReady}
