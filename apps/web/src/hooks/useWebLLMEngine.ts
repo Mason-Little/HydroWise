@@ -13,9 +13,10 @@ export const useWebLLMEngine = (): WebLLMEngineState => {
   const [engineReady, setEngineReady] = useState(false);
 
   useEffect(() => {
-    initLLMClient(setLoadProgress);
-    setIsLoading(false);
-    setEngineReady(true);
+    initLLMClient(setLoadProgress).then(() => {
+      setIsLoading(false);
+      setEngineReady(true);
+    });
   }, []);
 
   return {

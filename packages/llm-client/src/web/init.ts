@@ -8,13 +8,14 @@ const engineState: EngineState = {
   engine: null,
 };
 
+const DEFAULT_MODEL = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
+
 export const initWebLLMEngine = (
-  model: string,
   onProgress?: (progress: number) => void,
 ): Promise<MLCEngine> => {
   if (engineState.engine) return Promise.resolve(engineState.engine);
 
-  const enginePromise = CreateMLCEngine(model, {
+  const enginePromise = CreateMLCEngine(DEFAULT_MODEL, {
     initProgressCallback: (report) => {
       if (!onProgress || report.progress === undefined) return;
       onProgress(Math.round(report.progress * 100));

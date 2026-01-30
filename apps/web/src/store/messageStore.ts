@@ -2,21 +2,16 @@ import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
 import { create } from "zustand";
 
 interface MessageStore {
-  messages: ChatCompletionMessageParam[];
+  history: ChatCompletionMessageParam[];
   addMessage: (message: ChatCompletionMessageParam) => void;
-  setMessages: (messages: ChatCompletionMessageParam[]) => void;
-  clearMessages: () => void;
+  setHistory: (history: ChatCompletionMessageParam[]) => void;
+  clearHistory: () => void;
 }
 
 export const useMessageStore = create<MessageStore>((set) => ({
-  messages: [
-    {
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-    },
-  ],
+  history: [],
   addMessage: (message: ChatCompletionMessageParam) =>
-    set((state) => ({ messages: [...state.messages, message] })),
-  setMessages: (messages: ChatCompletionMessageParam[]) => set({ messages }),
-  clearMessages: () => set({ messages: [] }),
+    set((state) => ({ history: [...state.history, message] })),
+  setHistory: (history: ChatCompletionMessageParam[]) => set({ history }),
+  clearHistory: () => set({ history: [] }),
 }));

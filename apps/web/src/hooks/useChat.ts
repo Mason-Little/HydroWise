@@ -3,19 +3,18 @@ import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
 import { useMessageStore } from "@/store/messageStore";
 
 export const useChat = () => {
-  const { messages, addMessage, setMessages } = useMessageStore();
+  const { history, addMessage } = useMessageStore();
 
-  const submitMessage = async (message: string) => {
+  const submitMessage = async (prompt: string) => {
     const userMessage: ChatCompletionMessageParam = {
       role: "user",
-      content: message,
+      content: prompt,
     };
-    const nextMessages = [...messages, userMessage];
-    setMessages(nextMessages);
 
-    console.log("Sending message", nextMessages);
+    addMessage(userMessage);
 
-    const response = await sendChatCompletion(nextMessages);
+    const response = await sendChatCompletion(history, userMessage);
+
     addMessage({
       role: "assistant",
       content: response,
@@ -24,6 +23,6 @@ export const useChat = () => {
 
   return {
     submitMessage,
-    messages,
+    history,
   };
 };

@@ -1,34 +1,28 @@
 import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
+import { sendDesktopChatCompletion } from "./desktop/completion";
+import { initDesktopLLMClient } from "./desktop/init";
 import { sendChatCompletion as sendWebChatCompletion } from "./web/completion";
 import { initWebLLMEngine } from "./web/init";
 
-declare global {
-  interface ImportMeta {
-    env?: {
-      VITE_RUNTIME?: string;
-    };
-  }
-}
-
-const runtime = import.meta.env.VITE_RUNTIME ?? "web";
-const DEFAULT_MODEL = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
-
-const assertWebRuntime = () => {
-  if (runtime !== "web") {
-    throw new Error("Unsupported runtime");
-  }
-};
+const runtime = import.meta.env.VITE_RUNTIME;
 
 export const initLLMClient = async (
   onProgress?: (progress: number) => void,
 ): Promise<void> => {
-  assertWebRuntime();
-  await initWebLLMEngine(DEFAULT_MODEL, onProgress);
+  if (runtime === "web") {
+    await initWebLLMEngine(onProgress);
+  } else {
+    await initDesktopLLMClient();
+  }
 };
 
 export const sendChatCompletion = async (
-  messages: ChatCompletionMessageParam[],
+  history: ChatCompletionMessageParam[],
+  prompt: ChatCompletionMessageParam,
 ): Promise<string> => {
-  assertWebRuntime();
-  return sendWebChatCompletion(messages);
+  if (runtime === "web") {
+    return sendWebChatCompletion([...history, prompt]);
+  } else {
+    return sendDesktopChatCompletion([...history, prompt]);
+  }
 };
