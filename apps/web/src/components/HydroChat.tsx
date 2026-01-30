@@ -22,21 +22,29 @@ export const HydroChat = () => {
   return (
     <Box
       sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
         maxWidth: 840,
         mx: "auto",
         px: { xs: 2, sm: 3 },
         py: { xs: 2, sm: 3 },
+        minWidth: 0,
       }}
     >
       <Paper
         elevation={0}
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
           borderRadius: 3,
           border: "1px solid",
           borderColor: "divider",
           bgcolor: "background.paper",
           p: { xs: 2, sm: 3 },
           boxShadow: "0 10px 30px rgba(0, 0, 0, 0.06)",
+          minHeight: 0,
         }}
       >
         <Stack
@@ -56,9 +64,9 @@ export const HydroChat = () => {
         <Stack
           spacing={1.5}
           sx={{
+            flex: 1,
             overflowY: "auto",
-            minHeight: 240,
-            maxHeight: { xs: 360, sm: 420 },
+            minHeight: 0,
             pr: 0.5,
           }}
         >

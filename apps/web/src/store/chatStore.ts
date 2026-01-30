@@ -2,11 +2,12 @@ import type { Chat } from "@hydrowise/entities";
 import { create } from "zustand";
 
 interface ChatStore {
-  chat: Chat[];
+  chats: Chat[];
   activeChatId: string | null;
   createChat: (name?: string) => Chat;
   setActiveChatId: (id: string) => void;
   addMessageId: (chatId: string, messageId: string) => void;
+  deleteChat: (chatId: string) => void;
 }
 
 const createChatEntity = (name?: string): Chat => ({
@@ -16,21 +17,26 @@ const createChatEntity = (name?: string): Chat => ({
 });
 
 export const useChatStore = create<ChatStore>((set) => ({
-  chat: [],
+  chats: [],
   activeChatId: null,
   createChat: (name) => {
     const chat = createChatEntity(name);
-    set((state) => ({ chat: [...state.chat, chat], activeChatId: chat.id }));
+    set((state) => ({ chats: [...state.chats, chat], activeChatId: chat.id }));
     return chat;
   },
   setActiveChatId: (id) => set({ activeChatId: id }),
   addMessageId: (chatId, messageId) => {
     set((state) => ({
-      chat: state.chat.map((chat) =>
+      chats: state.chats.map((chat) =>
         chat.id === chatId && !chat.messageIds.includes(messageId)
           ? { ...chat, messageIds: [...chat.messageIds, messageId] }
           : chat,
       ),
+    }));
+  },
+  deleteChat: (chatId) => {
+    set((state) => ({
+      chats: state.chats.filter((chat) => chat.id !== chatId),
     }));
   },
 }));
