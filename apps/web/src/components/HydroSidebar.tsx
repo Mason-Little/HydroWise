@@ -20,11 +20,11 @@ export const HydroSidebar = () => {
           <Box key={chat.id}>
             <button type="button" onClick={() => setActiveChatId(chat.id)}>
               {chat.name}
-              <Button
-                startIcon={<Trash />}
-                onClick={() => deleteChat(chat.id)}
-              ></Button>
             </button>
+            <Button
+              startIcon={<Trash />}
+              onClick={() => deleteChat(chat.id)}
+            ></Button>
           </Box>
         ))}
       </Stack>
