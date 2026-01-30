@@ -1,28 +1,28 @@
 import { sendChatCompletion } from "@hydrowise/llm-client";
-import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
-import { useMessageStore } from "@/store/messageStore";
+import { useEffect } from "react";
+import { useChatStore } from "@/store/chatStore";
+import { useHistoryStore } from "@/store/historyStore";
 
 export const useChat = () => {
-  const { history, addMessage } = useMessageStore();
+  const { activeChatId, createChat } = useChatStore();
+  const { addHistory, getHistory } = useHistoryStore();
+
+  useEffect(() => {
+    if (!activeChatId) {
+      createChat();
+    }
+  }, [activeChatId, createChat]);
 
   const submitMessage = async (prompt: string) => {
-    const userMessage: ChatCompletionMessageParam = {
-      role: "user",
-      content: prompt,
-    };
-
-    addMessage(userMessage);
-
+    const chatId = activeChatId ?? createChat().id;
+    const history = getHistory(chatId);
+    const userMessage = addHistory(prompt, "user", chatId);
     const response = await sendChatCompletion(history, userMessage);
 
-    addMessage({
-      role: "assistant",
-      content: response,
-    });
+    addHistory(response, "assistant", chatId);
   };
 
   return {
     submitMessage,
-    history,
   };
 };

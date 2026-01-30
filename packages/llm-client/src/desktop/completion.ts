@@ -1,7 +1,7 @@
-import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
+import type { Message } from "@hydrowise/entities";
 
 export const sendDesktopChatCompletion = async (
-  messages: ChatCompletionMessageParam[],
+  messages: Message[],
 ): Promise<string> => {
   const response = await fetch(
     `${import.meta.env.VITE_DESKTOP_ENDPOINT}/chat/completions`,

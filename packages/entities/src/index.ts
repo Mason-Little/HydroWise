@@ -1,5 +1,2 @@
-export type Message = {
-  order: number;
-  role: "assistant" | "user";
-  content: string;
-};
+export * from "./Chat";
+export * from "./Message";

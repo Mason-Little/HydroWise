@@ -1,13 +1,18 @@
-import type { ChatCompletionMessageParam } from "@mlc-ai/web-llm";
+import type { Message } from "@hydrowise/entities";
 import { Box, Chip, Paper, Stack } from "@mui/material";
 import { HydroInputContainer } from "@/components/ui/HydroInputContainer";
 import { HydroMessage } from "@/components/ui/HydroMessage";
 import { useChat } from "@/hooks/useChat";
 import { useWebLLMEngine } from "@/hooks/useInitEngine";
+import { useChatStore } from "@/store/chatStore";
+import { useHistoryStore } from "@/store/historyStore";
 
 export const HydroChat = () => {
-  const { history, submitMessage } = useChat();
+  const { getHistory } = useHistoryStore();
+  const { submitMessage } = useChat();
+  const { activeChatId } = useChatStore();
   const { engineReady, loadProgress } = useWebLLMEngine();
+  const history = activeChatId ? getHistory(activeChatId) : [];
 
   const handleSend = async (content: string) => {
     if (!engineReady) return;
@@ -57,7 +62,7 @@ export const HydroChat = () => {
             pr: 0.5,
           }}
         >
-          {history.map((entry: ChatCompletionMessageParam, index: number) => (
+          {history.map((entry: Message, index: number) => (
             <HydroMessage key={`${entry.role}-${index}`} message={entry} />
           ))}
         </Stack>
