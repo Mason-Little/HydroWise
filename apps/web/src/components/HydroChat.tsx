@@ -1,7 +1,7 @@
 import { HydroInputContainer } from "@/components/ui/HydroInputContainer";
 import { HydroMessage } from "@/components/ui/HydroMessage";
 import { useChat } from "@/hooks/useChat";
-import { useWebLLMEngine } from "@/hooks/useWebLLMEngine";
+import { useWebLLMEngine } from "@/hooks/useInitEngine";
 
 export const HydroChat = () => {
   const { history, submitMessage } = useChat();

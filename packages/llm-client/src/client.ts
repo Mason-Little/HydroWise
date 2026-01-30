@@ -12,7 +12,7 @@ export const initLLMClient = async (
   if (runtime === "web") {
     await initWebLLMEngine(onProgress);
   } else {
-    await initDesktopLLMClient();
+    await initDesktopLLMClient(onProgress);
   }
 };
 
