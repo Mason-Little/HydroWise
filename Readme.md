@@ -4,7 +4,7 @@
 
 - **Framework**: React (Vite) + TypeScript
 - **Auth**: AuthJS (web) + cached session/token (desktop/offline)
-- **Styling**: BaseUI + TailwindCSS
+- **Styling**: MUI
 - **Linting / Formatting**: Biome
 
 ---
@@ -112,70 +112,61 @@ Mac M4
 ```
 HydroWise/
 ├─ apps/
-│  ├─ web/                         # React (Vite) UI (Web + Desktop WebView)
+│  ├─ web/                              # React (Vite) UI (web + desktop webview)
 │  │  ├─ src/
-│  │  │  ├─ main.tsx
-│  │  │  ├─ App.tsx
-│  │  │  └─ env.ts                 # frontend env + mode switches
+│  │  │  ├─ components/                 # chat UI, sidebar, inputs, modals
+│  │  │  ├─ pages/                      # chat, courses, docs, notes, quizzes, analytics
+│  │  │  ├─ hooks/                      # LLM init, chat orchestration
+│  │  │  ├─ store/                      # Zustand stores (chat/history/etc)
+│  │  │  ├─ theme.ts                    # MUI theme
+│  │  │  └─ main.tsx
 │  │  ├─ index.html
 │  │  ├─ vite.config.ts
 │  │  └─ package.json
 │  │
-│  └─ desktop/                     # Tauri wrapper
+│  └─ desktop/                          # Tauri wrapper
 │     ├─ src-tauri/
-│     │  ├─ src/
-│     │  │  ├─ main.rs             # spawns local API + llama.cpp + chroma
-│     │  │  └─ sidecar.rs          # process lifecycle + ports
+│     │  ├─ src/                        # sidecar spawn, lifecycle, ports
 │     │  ├─ tauri.conf.json
 │     │  └─ Cargo.toml
 │     └─ package.json
 │
 ├─ services/
-│  └─ api/                         # ONE Fastify API (web + desktop)
+│  └─ api/                              # Fastify API (web + local desktop)
 │     ├─ src/
-│     │  ├─ server.ts              # Fastify bootstrap
-│     │  ├─ config.ts              # MODE=web|desktop
-│     │  ├─ routes/                # HTTP routes
-│     │  ├─ db/
-│     │  │  └─ prisma.ts           # SQLite vs Postgres client
-│     │  ├─ vector/
-│     │  │  ├─ index.ts            # VectorStore interface
-│     │  │  └─ chroma.ts           # Chroma adapter (local / cloud)
-│     │  └─ llm/
-│     │     └─ llamacpp.ts         # server-side inference (desktop only)
+│     │  ├─ routes/                     # auth, chat, docs, courses, notes, quizzes
+│     │  ├─ db/                         # Prisma client wrapper (PG/SQLite)
+│     │  ├─ vector/                     # Chroma adapter (local/cloud)
+│     │  ├─ llm/                        # llama.cpp integration (desktop)
+│     │  ├─ config.ts                   # MODE=web|desktop
+│     │  └─ server.ts
 │     └─ package.json
 │
 ├─ packages/
-│  ├─ db/
-│  │  ├─ prisma/
-│  │  │  ├─ schema.prisma          # core relational models only
-│  │  │  └─ migrations/
+│  ├─ db/                               # Prisma schema + migrations
+│  │  ├─ prisma/                        # schema.prisma + migrations
 │  │  └─ package.json
-│  │
-│  ├─ core/                        # chunking, RAG helpers, prompts
+│  ├─ core/                             # parsing, chunking, RAG helpers
 │  │  ├─ src/
 │  │  └─ package.json
-│  │
-│  ├─ contracts/                   # shared zod + TS API contracts
+│  ├─ contracts/                        # shared Zod + TS API schemas
 │  │  ├─ src/
 │  │  └─ package.json
-│  │
-│  └─ llm-client/                  # browser-only LLM client
+│  ├─ entities/                         # shared entities (Chat, Message, etc)
+│  │  ├─ src/
+│  │  └─ package.json
+│  └─ llm-client/                       # WebLLM + desktop client wrapper
 │     ├─ src/
-│     │  ├─ index.ts               # createLLMClient()
-│     │  ├─ webllm.ts              # WebLLM implementation
-│     │  └─ types.ts
+│     │  ├─ web/                        # WebLLM init/completions
+│     │  ├─ desktop/                    # desktop endpoint client
+│     │  └─ client.ts
 │     └─ package.json
 │
-├─ tools/
-│  └─ dev.sh                       # run web or desktop stack
-│
 ├─ .github/
-│  └─ workflows/
-│     └─ desktop-release.yml       # Tauri DMG / ZIP build
-│
-├─ package.json                    # workspace root
-└─ bun.lockb
+│  └─ workflows/                        # desktop release workflow
+├─ package.json                         # workspace root (bun)
+├─ biome.json                           # lint/format config
+└─ ROADMAP.md
 ```
 
 # Types:
