@@ -1,4 +1,4 @@
-# Stack:
+# Stack
 
 ### Frontend
 
@@ -45,23 +45,23 @@
 
 all of these features should allow for "@"ing courses/documents/terms???
 
-- Standard Chat Bot with memory
-- flash card generation
-- course work quiz generation
-- create notes assistant
+- Standard chat with memory
+- Flashcard generation
+- Coursework quiz generation
+- Notes assistant
 
 ### Gamification
 
 - track the amount of wattage the computer is using and convert it to L/consumed
 - compare to real world water usage ie. showers, baths, etc.
 
-### Performance Running
+### Performance Controls
 
 - Allow users to dial how much performance of there computer they want to use (CPU/GPU)
 - Find wattage Draw for the given thing they are doing. maybe a cool analytics page
 
 
-# Business Logic:
+# Business Logic
 
 - Open Source
 - Point users to download the desktop app for more performance + full privacy

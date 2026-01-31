@@ -1,9 +1,12 @@
 {
-  "name": "db",
-  "module": "src/index.ts",
-  "type": "module",
+  "name": "@hydrowise/database",
+  "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "drizzle:push": "drizzle-kit push",
@@ -24,8 +27,10 @@
     "pg": "^8.18.0"
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./web": "./src/web.ts",
-    "./desktop": "./src/desktop.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   }
 }
