@@ -21,22 +21,18 @@
 ### Database (source of truth)
 
 - **Web**: PostgreSQL
-- **Desktop**: SQLite (local file)
-- **ORM**: Prisma
-  - Only relational / app data
-  - **No embeddings stored here**
+- **Desktop**: PGlite (embedded Postgres, local file)
+- **ORM**: Drizzle
+  - Relational + app data
+  - Embeddings stored via pgvector
 
 ---
 
 ### Vector Store (derived data)
 
-- **Embeddings (web + desktop)**: **ChromaDB**
-  - Desktop: local embedded / local service
-  - Web: hosted Chroma service
-- Stores:
-  - `chunkId`
-  - `embedding`
-  - minimal metadata (userId, docId, type)
+- **Embeddings (web + desktop)**: **pgvector** (Postgres extension)
+  - Desktop: PGlite + pgvector extension
+  - Web: Postgres + pgvector extension
 
 ---
 
@@ -135,16 +131,16 @@ HydroWise/
 │  └─ api/                              # Fastify API (web + local desktop)
 │     ├─ src/
 │     │  ├─ routes/                     # auth, chat, docs, courses, notes, quizzes
-│     │  ├─ db/                         # Prisma client wrapper (PG/SQLite)
-│     │  ├─ vector/                     # Chroma adapter (local/cloud)
+│     │  ├─ db/                         # Drizzle client wrapper (PG/PGlite)
 │     │  ├─ llm/                        # llama.cpp integration (desktop)
 │     │  ├─ config.ts                   # MODE=web|desktop
 │     │  └─ server.ts
 │     └─ package.json
 │
 ├─ packages/
-│  ├─ db/                               # Prisma schema + migrations
-│  │  ├─ prisma/                        # schema.prisma + migrations
+│  ├─ db/                               # Drizzle schema + clients
+│  │  ├─ src/
+│  │  ├─ drizzle.config.ts
 │  │  └─ package.json
 │  ├─ core/                             # parsing, chunking, RAG helpers
 │  │  ├─ src/
@@ -169,33 +165,22 @@ HydroWise/
 └─ ROADMAP.md
 ```
 
-# Types:
+# Database Schema (Drizzle)
 
-**UserTable**:
+**users**:
+- id (primary key)
+- email (unique)
+- created_at
 
-- user_id (primary key)
-- user_name
-- user_email
-- user_createdAt
+**chats**:
+- id (primary key)
+- user_id (foreign key -> users, indexed)
+- name
+- created_at
 
-**Courses**:
-
-- Course_id
-- Course_name
-- Document_IDs
-
-**DocumentTable**:
-
-- user_id (foreign key)
-- Document_id (primary key)
-- Document_name
-- Document_type
-- Document_createdAt
-
-**RagTable**:
-
-- Document_id (foreign key)
-- Document_rag_id (primary_Key)
-- Document_rag_embedding
-- Document_rag_content
-- Document_rag_createdAt
+**messages**:
+- id (primary key)
+- chat_id (indexed)
+- role (enum: user | assistant)
+- content
+- created_at
