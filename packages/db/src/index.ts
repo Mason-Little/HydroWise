@@ -1,3 +1,7 @@
+import type { NodePgDatabase } from "drizzle-orm/node-postgres";
+import type { PgliteDatabase } from "drizzle-orm/pglite";
+import type * as schema from "./schema";
+
 export {
   and,
   asc,
@@ -22,3 +26,6 @@ export {
 export { createDesktopClient } from "./desktop";
 export * from "./schema";
 export { createWebClient } from "./web";
+export type WebDbClient = NodePgDatabase<typeof schema>;
+export type LocalDbClient = PgliteDatabase<typeof schema>;
+export type DbClient = WebDbClient | LocalDbClient;

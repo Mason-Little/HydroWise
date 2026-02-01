@@ -11,13 +11,13 @@
 - [DOC-7: Document upload modal UI](https://linear.app/hydrowise/issue/DOC-7/document-upload-modal-ui)
 - [DOC-8: Setup packages/db with Drizzle](https://linear.app/hydrowise/issue/DOC-8/setup-packagesdb-with-drizzle)
 - [DOC-9: Fix packages/db exports](https://linear.app/hydrowise/issue/DOC-9/fix-packagesdb-exports)
+- [DOC-12: Setup services/api with Fastify](https://linear.app/hydrowise/issue/DOC-12/setup-servicesapi-with-fastify)
+- [DOC-14: Create Drizzle client wrapper](https://linear.app/hydrowise/issue/DOC-14/create-drizzle-client-wrapper)
+- [DOC-15: Add chat API routes](https://linear.app/hydrowise/issue/DOC-15/add-chat-api-routes)
 
 ## Next Up
 
-- [DOC-12: Setup services/api with Fastify](https://linear.app/hydrowise/issue/DOC-12/setup-servicesapi-with-fastify)
 - [DOC-13: Add MODE config for web/desktop](https://linear.app/hydrowise/issue/DOC-13/add-mode-config-for-webdesktop)
-- [DOC-14: Create Drizzle client wrapper](https://linear.app/hydrowise/issue/DOC-14/create-drizzle-client-wrapper)
-- [DOC-15: Add chat API routes](https://linear.app/hydrowise/issue/DOC-15/add-chat-api-routes)
 - [DOC-16: Connect frontend stores to API](https://linear.app/hydrowise/issue/DOC-16/connect-frontend-stores-to-api)
 - [DOC-51: Add streaming chat responses](https://linear.app/hydrowise/issue/DOC-51/add-streaming-chat-responses)
 - [DOC-17: Setup packages/core scaffold](https://linear.app/hydrowise/issue/DOC-17/setup-packagescore-scaffold)
