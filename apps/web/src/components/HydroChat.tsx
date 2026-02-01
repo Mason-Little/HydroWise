@@ -1,13 +1,20 @@
 import type { Message } from "@hydrowise/entities";
 import { Box, Chip, Paper, Stack } from "@mui/material";
+import { useMemo } from "react";
 import { HydroInputContainer } from "@/components/ui/HydroInputContainer";
 import { HydroMessage } from "@/components/ui/HydroMessage";
 import { useChat } from "@/hooks/useChat";
 import { useWebLLMEngine } from "@/hooks/useInitEngine";
 
 export const HydroChat = () => {
-  const { messages, submitMessage } = useChat();
+  const { messages, submitMessage, isStreaming, streamingContent } = useChat();
   const { engineReady, loadProgress } = useWebLLMEngine();
+
+  const displayMessages = useMemo(() => {
+    const baseMessages = messages ?? [];
+    if (!isStreaming || streamingContent === null) return baseMessages;
+    return [...baseMessages, { role: "assistant", content: streamingContent }];
+  }, [messages, isStreaming, streamingContent]);
 
   const handleSend = async (content: string) => {
     if (!engineReady) return;
@@ -65,7 +72,7 @@ export const HydroChat = () => {
             pr: 0.5,
           }}
         >
-          {messages?.map((entry: Message, index: number) => (
+          {displayMessages.map((entry: Message, index: number) => (
             <HydroMessage key={`${entry.role}-${index}`} message={entry} />
           ))}
         </Stack>

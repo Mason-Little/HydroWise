@@ -11,7 +11,15 @@ import { useChatStore } from "@/store/chatStore";
 
 export const useChat = () => {
   const queryClient = useQueryClient();
-  const { activeChatId, setActiveChatId } = useChatStore();
+  const {
+    activeChatId,
+    setActiveChatId,
+    streamingContent,
+    isStreaming,
+    setStreamingContent,
+    appendStreamingChunk,
+    clearStreaming,
+  } = useChatStore();
 
   const {
     data: chats,
@@ -99,16 +107,23 @@ export const useChat = () => {
       content: prompt,
     });
 
-    const response = await sendChatCompletion(history, {
-      role: "user",
-      content: prompt,
-    });
+    setStreamingContent("");
+    try {
+      const response = await sendChatCompletion(
+        [...history, { role: "user", content: prompt }],
+        (chunk) => appendStreamingChunk(chunk),
+      );
 
-    await appendMessageMutation.mutateAsync({
-      chatId,
-      role: "assistant",
-      content: response,
-    });
+      clearStreaming();
+      await appendMessageMutation.mutateAsync({
+        chatId,
+        role: "assistant",
+        content: response,
+      });
+    } catch (error) {
+      clearStreaming();
+      throw error;
+    }
   };
 
   return {
@@ -119,6 +134,8 @@ export const useChat = () => {
     messages,
     messagesLoading,
     messagesError,
+    streamingContent,
+    isStreaming,
     deleteChatMutation,
     createChatMutation,
     appendMessageMutation,

@@ -1,37 +1,37 @@
-import { CreateMLCEngine, type MLCEngine } from "@mlc-ai/web-llm";
+import { webLLM } from "@browser-ai/web-llm";
+import { LLM_CONFIG } from "../config";
 
-type EngineState = {
-  engine: MLCEngine | null;
+type ModelInstance = ReturnType<typeof webLLM> | null;
+
+const modelState: { model: ModelInstance } = {
+  model: null,
 };
 
-const engineState: EngineState = {
-  engine: null,
-};
-
-const DEFAULT_MODEL = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
-
-export const initWebLLMEngine = (
+export const initWebLLMEngine = async (
   onProgress?: (progress: number) => void,
-): Promise<MLCEngine> => {
-  if (engineState.engine) return Promise.resolve(engineState.engine);
+): Promise<void> => {
+  if (modelState.model) return;
 
-  const enginePromise = CreateMLCEngine(DEFAULT_MODEL, {
+  const model = webLLM(LLM_CONFIG.model, {
     initProgressCallback: (report) => {
       if (!onProgress || report.progress === undefined) return;
       onProgress(Math.round(report.progress * 100));
     },
-  }).then((engine) => {
-    engineState.engine = engine;
-    return engine;
   });
 
-  return enginePromise;
+  // Pre-initialize the model by creating a session with progress
+  await model.createSessionWithProgress((report) => {
+    if (!onProgress || report.progress === undefined) return;
+    onProgress(Math.round(report.progress * 100));
+  });
+
+  modelState.model = model;
 };
 
-export const getWebLLMEngine = (): MLCEngine => {
-  if (!engineState.engine) {
-    throw new Error("LLM engine not initialized");
+export const getWebLLMModel = (): ModelInstance => {
+  if (!modelState.model) {
+    throw new Error("LLM model not initialized");
   }
 
-  return engineState.engine;
+  return modelState.model;
 };

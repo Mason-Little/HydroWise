@@ -12,7 +12,7 @@
 ### Backend
 
 - **Runtime**: Node.js
-- **API**: Fastify
+- **API**: Hono
   - Single codebase
   - Runs in **web mode** or **desktop mode**
 
@@ -38,8 +38,8 @@
 
 ### Inference
 
-- **Web**: WebLLM (in-browser)
-- **Desktop**: llama.cpp (local runner / sidecar)
+- **Web**: WebLLM (in-browser via @browser-ai/web-llm, Vercel AI SDK)
+- **Desktop**: llama.cpp (local runner / sidecar via @ai-sdk/openai)
 
 # Features:
 
@@ -69,7 +69,7 @@ all of these features should allow for "@"ing courses/documents/terms???
 
 # Models to use
 
-## Web (wllama)
+## Web (WebLLM)
 
 LLM
 
@@ -128,7 +128,7 @@ HydroWise/
 │     └─ package.json
 │
 ├─ services/
-│  └─ api/                              # Fastify API (web + local desktop)
+│  └─ api/                              # Hono API (web + local desktop)
 │     ├─ src/
 │     │  ├─ routes/                     # auth, chat, docs, courses, notes, quizzes
 │     │  ├─ db/                         # Drizzle client wrapper (PG/PGlite)
@@ -151,10 +151,10 @@ HydroWise/
 │  ├─ entities/                         # shared entities (Chat, Message, etc)
 │  │  ├─ src/
 │  │  └─ package.json
-│  └─ llm-client/                       # WebLLM + desktop client wrapper
+│  └─ llm-client/                       # AI SDK integration (WebLLM + OpenAI-compatible)
 │     ├─ src/
-│     │  ├─ web/                        # WebLLM init/completions
-│     │  ├─ desktop/                    # desktop endpoint client
+│     │  ├─ web/                        # @browser-ai/web-llm provider
+│     │  ├─ desktop/                    # @ai-sdk/openai (llama-server endpoint)
 │     │  └─ client.ts
 │     └─ package.json
 │

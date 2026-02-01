@@ -1,22 +1,28 @@
+import { createOpenAI } from "@ai-sdk/openai";
 import type { Message } from "@hydrowise/entities";
+import { streamText } from "ai";
 
-export const sendDesktopChatCompletion = async (
+const getOpenAIClient = () =>
+  createOpenAI({
+    baseURL: import.meta.env.VITE_DESKTOP_ENDPOINT,
+    apiKey: "null",
+  });
+
+export const sendChatCompletion = async (
   messages: Message[],
+  onChunk: (chunk: string) => void,
 ): Promise<string> => {
-  const response = await fetch(
-    `${import.meta.env.VITE_DESKTOP_ENDPOINT}/chat/completions`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "Llama-3.2-1B-Instruct-q4f16_1-MLC",
-        messages,
-      }),
-    },
-  );
+  const openai = getOpenAIClient();
+  const result = streamText({
+    model: openai.chat("any"),
+    messages,
+  });
 
-  const data = await response.json();
-  return data.choices[0].message.content;
+  const chunks: string[] = [];
+  for await (const text of result.textStream) {
+    chunks.push(text);
+    onChunk(text);
+  }
+
+  return chunks.join("");
 };

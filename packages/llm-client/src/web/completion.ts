@@ -1,21 +1,24 @@
+import { webLLM } from "@browser-ai/web-llm";
 import type { Message } from "@hydrowise/entities";
-import { getWebLLMEngine } from "./init";
+import { streamText } from "ai";
+import { LLM_CONFIG } from "../config";
 
-const DEFAULT_MODEL = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
-const DEFAULT_TEMPERATURE = 0.6;
-const DEFAULT_MAX_TOKENS = 128;
-
-export const sendWebChatCompletion = async (
+export const sendChatCompletion = async (
   messages: Message[],
+  onChunk: (chunk: string) => void,
 ): Promise<string> => {
-  const engine = getWebLLMEngine();
-  const completion = await engine.chat.completions.create({
-    stream: false,
+  const result = streamText({
+    model: webLLM(LLM_CONFIG.model),
     messages,
-    model: DEFAULT_MODEL,
-    temperature: DEFAULT_TEMPERATURE,
-    max_tokens: DEFAULT_MAX_TOKENS,
+    temperature: LLM_CONFIG.temperature,
+    maxOutputTokens: LLM_CONFIG.maxTokens,
   });
 
-  return completion.choices[0]?.message?.content ?? "";
+  const chunks: string[] = [];
+  for await (const text of result.textStream) {
+    chunks.push(text);
+    onChunk(text);
+  }
+
+  return chunks.join("");
 };
