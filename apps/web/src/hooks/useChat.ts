@@ -1,28 +1,126 @@
 import { sendChatCompletion } from "@hydrowise/llm-client";
-import { useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  appendMessage,
+  createChat,
+  deleteChat,
+  getChats,
+  getMessages,
+} from "@/api/chat";
 import { useChatStore } from "@/store/chatStore";
-import { useHistoryStore } from "@/store/historyStore";
 
 export const useChat = () => {
-  const { activeChatId, createChat } = useChatStore();
-  const { addHistory, getHistory } = useHistoryStore();
+  const queryClient = useQueryClient();
+  const { activeChatId, setActiveChatId } = useChatStore();
 
-  useEffect(() => {
-    if (!activeChatId) {
-      createChat();
-    }
-  }, [activeChatId, createChat]);
+  const {
+    data: chats,
+    isLoading: chatsLoading,
+    error: chatsError,
+  } = useQuery({
+    queryKey: ["chats"],
+    queryFn: () => getChats(),
+  });
+
+  const createChatMutation = useMutation({
+    mutationFn: async () => createChat(),
+    onSuccess: (chat) => {
+      if (chat?.id) {
+        setActiveChatId(chat.id);
+      }
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+    },
+  });
+
+  const deleteChatMutation = useMutation({
+    mutationFn: (chatId: string) => deleteChat(chatId),
+    onSuccess: (_deletedChat, chatId) => {
+      if (activeChatId === chatId) {
+        setActiveChatId(null);
+      }
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+    },
+  });
+
+  const {
+    data: messages,
+    isLoading: messagesLoading,
+    error: messagesError,
+  } = useQuery({
+    queryKey: ["messages", activeChatId],
+    queryFn: () => getMessages(activeChatId ?? ""),
+    enabled: !!activeChatId,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const appendMessageMutation = useMutation({
+    mutationFn: ({
+      chatId,
+      role,
+      content,
+    }: {
+      chatId: string;
+      role: "user" | "assistant";
+      content: string;
+    }) => appendMessage(chatId, role, content),
+    onMutate: async ({ chatId, role, content }) => {
+      const queryKey = ["messages", chatId] as const;
+      await queryClient.cancelQueries({ queryKey });
+      const previous = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData(queryKey, (old: typeof messages | undefined) => [
+        ...(old ?? []),
+        { role, content },
+      ]);
+      return { previous, queryKey };
+    },
+    onError: (_error, _variables, context) => {
+      if (context?.previous && context.queryKey) {
+        queryClient.setQueryData(context.queryKey, context.previous);
+      }
+    },
+    onSuccess: (_message, { chatId }) => {
+      queryClient.invalidateQueries({ queryKey: ["messages", chatId] });
+    },
+  });
 
   const submitMessage = async (prompt: string) => {
-    const chatId = activeChatId ?? createChat().id;
-    const history = getHistory(chatId);
-    const userMessage = addHistory(prompt, "user", chatId);
-    const response = await sendChatCompletion(history, userMessage);
+    const chatId =
+      activeChatId ?? (await createChatMutation.mutateAsync()).id ?? null;
+    if (!activeChatId && chatId) {
+      setActiveChatId(chatId);
+    }
+    if (!chatId) return;
 
-    addHistory(response, "assistant", chatId);
+    const history = messages ?? [];
+
+    await appendMessageMutation.mutateAsync({
+      chatId,
+      role: "user",
+      content: prompt,
+    });
+
+    const response = await sendChatCompletion(history, {
+      role: "user",
+      content: prompt,
+    });
+
+    await appendMessageMutation.mutateAsync({
+      chatId,
+      role: "assistant",
+      content: response,
+    });
   };
 
   return {
     submitMessage,
+    chats: chats ?? [],
+    chatsLoading,
+    chatsError,
+    messages,
+    messagesLoading,
+    messagesError,
+    deleteChatMutation,
+    createChatMutation,
+    appendMessageMutation,
   };
 };

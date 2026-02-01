@@ -4,15 +4,10 @@ import { HydroInputContainer } from "@/components/ui/HydroInputContainer";
 import { HydroMessage } from "@/components/ui/HydroMessage";
 import { useChat } from "@/hooks/useChat";
 import { useWebLLMEngine } from "@/hooks/useInitEngine";
-import { useChatStore } from "@/store/chatStore";
-import { useHistoryStore } from "@/store/historyStore";
 
 export const HydroChat = () => {
-  const { getHistory } = useHistoryStore();
-  const { submitMessage } = useChat();
-  const { activeChatId } = useChatStore();
+  const { messages, submitMessage } = useChat();
   const { engineReady, loadProgress } = useWebLLMEngine();
-  const history = activeChatId ? getHistory(activeChatId) : [];
 
   const handleSend = async (content: string) => {
     if (!engineReady) return;
@@ -70,7 +65,7 @@ export const HydroChat = () => {
             pr: 0.5,
           }}
         >
-          {history.map((entry: Message, index: number) => (
+          {messages?.map((entry: Message, index: number) => (
             <HydroMessage key={`${entry.role}-${index}`} message={entry} />
           ))}
         </Stack>

@@ -35,7 +35,7 @@ export const createChatRoutes = (db: DbClient) => {
       .select()
       .from(chats)
       .where(eq(chats.userId, user.userId));
-    return c.json({ ok: true, result });
+    return c.json(result);
   });
 
   // POST /chat - create a chat
@@ -44,7 +44,7 @@ export const createChatRoutes = (db: DbClient) => {
     if (!user.ok) return c.json(user, 400);
     const chat = createChatEntity(user.userId);
     await db.insert(chats).values(chat);
-    return c.json({ ok: true, result: chat });
+    return c.json(chat);
   });
 
   // GET /chat/:chatId - get single chat
@@ -56,7 +56,7 @@ export const createChatRoutes = (db: DbClient) => {
       .select()
       .from(chats)
       .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
-    return c.json({ ok: true, result: result[0] ?? null });
+    return c.json(result[0] ?? null);
   });
 
   // GET /chat/:chatId/messages - get chat messages
@@ -75,7 +75,7 @@ export const createChatRoutes = (db: DbClient) => {
       .select()
       .from(messages)
       .where(eq(messages.chatId, chatId));
-    return c.json({ ok: true, result });
+    return c.json(result);
   });
 
   // DELETE /chat/:chatId - delete a chat
@@ -83,14 +83,19 @@ export const createChatRoutes = (db: DbClient) => {
     const user = requireUserId(c);
     if (!user.ok) return c.json(user, 400);
     const chatId = c.req.param("chatId");
+    const chat = await db
+      .select({ id: chats.id })
+      .from(chats)
+      .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
+    if (!chat[0]) {
+      return c.json({ ok: false, error: "chat not found" }, 404);
+    }
+    await db.delete(messages).where(eq(messages.chatId, chatId));
     const result = await db
       .delete(chats)
       .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)))
       .returning();
-    if (!result[0]) {
-      return c.json({ ok: false, error: "chat not found" }, 404);
-    }
-    return c.json({ ok: true, result: result[0] });
+    return c.json(result[0]);
   });
 
   // POST /chat/:chatId/messages - append message
@@ -120,7 +125,8 @@ export const createChatRoutes = (db: DbClient) => {
       role,
       content,
     };
-    return c.json({ ok: true, result: message });
+    await db.insert(messages).values(message);
+    return c.json(message);
   });
 
   return app;
