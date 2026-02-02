@@ -2,6 +2,7 @@ import { Box, Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { CloudUploadIcon } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useDocument } from "@/hooks/useDocument";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -23,6 +24,7 @@ export const UploadDocumentModel = ({
   onClose: () => void;
 }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const { uploadDocument } = useDocument();
 
   const dropzoneStyles = useMemo(
     () => ({
@@ -40,7 +42,7 @@ export const UploadDocumentModel = ({
 
   const handleFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
-    console.log(files);
+    uploadDocument(files[0]);
   };
 
   return (

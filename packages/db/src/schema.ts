@@ -1,4 +1,12 @@
-import { index, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  vector,
+} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -31,4 +39,37 @@ export const messages = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (table) => [index("messages_chat_id_idx").on(table.chatId)],
+);
+
+export const documents = pgTable(
+  "documents",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    name: text("name").notNull(),
+    mimeType: text("mime_type").notNull(),
+    fileSize: integer("file_size").notNull(),
+    pageCount: integer("page_count"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [index("documents_user_id_idx").on(table.userId)],
+);
+
+export const documentEmbeddings = pgTable(
+  "document_embeddings",
+  {
+    id: text("id").primaryKey(),
+    documentId: text("document_id")
+      .notNull()
+      .references(() => documents.id),
+    content: text("content").notNull(),
+    embedding: vector("embedding", { dimensions: 768 }).notNull(),
+    chunkIndex: integer("chunk_index").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("document_embeddings_document_id_idx").on(table.documentId),
+  ],
 );

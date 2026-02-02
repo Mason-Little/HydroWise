@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev": "bun --filter web dev",
-    "build": "bun --workspaces run build",
+    "build": "bun --workspaces --if-present run build",
     "build:packages": "bun --filter @hydrowise/* run build",
     "build:apps": "bun --filter web run build",
     "preview": "bun --filter web preview",

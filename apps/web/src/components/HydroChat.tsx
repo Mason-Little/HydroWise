@@ -10,10 +10,13 @@ export const HydroChat = () => {
   const { messages, submitMessage, isStreaming, streamingContent } = useChat();
   const { engineReady, loadProgress } = useWebLLMEngine();
 
-  const displayMessages = useMemo(() => {
+  const displayMessages = useMemo((): Message[] => {
     const baseMessages = messages ?? [];
     if (!isStreaming || streamingContent === null) return baseMessages;
-    return [...baseMessages, { role: "assistant", content: streamingContent }];
+    return [
+      ...baseMessages,
+      { role: "assistant" as const, content: streamingContent },
+    ];
   }, [messages, isStreaming, streamingContent]);
 
   const handleSend = async (content: string) => {

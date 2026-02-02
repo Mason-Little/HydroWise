@@ -4,7 +4,7 @@ import { streamText } from "ai";
 
 const getOpenAIClient = () =>
   createOpenAI({
-    baseURL: import.meta.env.VITE_DESKTOP_ENDPOINT,
+    baseURL: import.meta.env.VITE_DESKTOP_GEN_ENDPOINT,
     apiKey: "null",
   });
 
