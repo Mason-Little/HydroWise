@@ -7,6 +7,15 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@hydrowise/core": fileURLToPath(
+        new URL("../../packages/core/src/index.ts", import.meta.url),
+      ),
+      "@hydrowise/entities": fileURLToPath(
+        new URL("../../packages/entities/src/index.ts", import.meta.url),
+      ),
+      "@hydrowise/llm-client": fileURLToPath(
+        new URL("../../packages/llm-client/src/index.ts", import.meta.url),
+      ),
     },
   },
 });

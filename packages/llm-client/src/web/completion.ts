@@ -9,7 +9,10 @@ export const sendChatCompletion = async (
 ): Promise<string> => {
   const result = streamText({
     model: webLLM(LLM_CONFIG.model),
-    messages,
+    messages: messages.map((m) => ({
+      role: m.role,
+      content: m.content,
+    })),
     temperature: LLM_CONFIG.temperature,
     maxOutputTokens: LLM_CONFIG.maxTokens,
   });

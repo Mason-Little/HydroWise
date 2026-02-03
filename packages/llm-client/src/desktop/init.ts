@@ -1,9 +1,13 @@
 export const initDesktopLLMClient = async (
   onProgress?: (progress: number) => void,
 ) => {
-  const response = await fetch(
-    `${import.meta.env.VITE_DESKTOP_GEN_ENDPOINT}/health`,
-  );
+  const endpoint = import.meta.env.VITE_DESKTOP_GEN_ENDPOINT;
+
+  if (!endpoint) {
+    throw new Error("VITE_DESKTOP_GEN_ENDPOINT is not defined");
+  }
+
+  const response = await fetch(`${endpoint}/health`);
   const health = await response.json();
   if (health.status === "ok") {
     onProgress?.(100);

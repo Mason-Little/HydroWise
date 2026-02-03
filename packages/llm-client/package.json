@@ -7,7 +7,14 @@
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "clean": "rm -rf dist",
+    "lint": "biome lint .",
+    "format": "biome format . --write",
+    "check": "biome check .",
+    "llm": "../../tools/llama-b7876/llama-server -m ../../tools/models/qwen2.5-7b-instruct-q4_k_m.gguf --port 8080 --ctx-size 4096 -ngl 99 --parallel 2",
+    "embeddings": "../../tools/llama-b7876/llama-server -m ../../tools/models/nomic-embed-text-v1.5.Q4_0.gguf --port 8081 --embeddings --pooling mean -ngl 99",
+    "dev:desktop": "bun run llm & bun run embeddings & wait"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.24",

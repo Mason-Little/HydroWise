@@ -15,7 +15,10 @@ export const sendChatCompletion = async (
   const openai = getOpenAIClient();
   const result = streamText({
     model: openai.chat("any"),
-    messages,
+    messages: messages.map((m) => ({
+      role: m.role,
+      content: m.content,
+    })),
   });
 
   const chunks: string[] = [];

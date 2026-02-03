@@ -6,6 +6,10 @@
     "verbatimModuleSyntax": true,
     "strict": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "paths": {
+      "@hydrowise/entities": ["../../packages/entities/src/index.ts"],
+      "@hydrowise/database": ["../../packages/db/src/index.ts"]
+    }
   }
 }

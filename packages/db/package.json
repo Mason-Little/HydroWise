@@ -7,6 +7,10 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "lint": "biome lint .",
+    "format": "biome format . --write",
+    "check": "biome check .",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "drizzle:push": "drizzle-kit push",

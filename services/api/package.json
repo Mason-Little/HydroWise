@@ -1,7 +1,13 @@
 {
-  "name": "api",
+  "name": "@hydrowise/api",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "dev:web": "bun run --hot src/index.ts",
+    "dev:desktop": "RUNTIME_MODE=desktop bun run --hot src/index.ts",
+    "clean": "rm -rf dist",
+    "lint": "biome lint .",
+    "format": "biome format . --write",
+    "check": "biome check ."
   },
   "dependencies": {
     "@hydrowise/entities": "workspace:*",
