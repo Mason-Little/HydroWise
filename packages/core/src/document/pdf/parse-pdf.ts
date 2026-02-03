@@ -13,8 +13,10 @@ export const parsePdf = async (file: File) => {
   const pageCount =
     typeof parsed.numpages === "number" ? parsed.numpages : null;
 
+  const text = (parsed.text ?? "").replace(/\f/g, "\n\n---\n\n");
+
   return {
-    text: parsed.text ?? "",
+    text,
     pageCount,
   };
 };

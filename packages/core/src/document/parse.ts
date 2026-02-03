@@ -1,7 +1,9 @@
 import type { DocumentMeta } from "@hydrowise/entities";
 import { chunkText } from "../utils/chunk";
+import { parseDocx } from "./docx/parse-docx";
 import { generateEmbeddings } from "./embeddings";
 import { parsePdf } from "./pdf/parse-pdf";
+import { parsePptx } from "./pptx/parse-pptx";
 
 type ParsedDocument = {
   text: string;
@@ -12,6 +14,10 @@ type Parser = (file: File) => Promise<ParsedDocument>;
 
 const parsersByMimeType: Record<string, Parser> = {
   "application/pdf": parsePdf,
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+    parseDocx,
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+    parsePptx,
 };
 
 export const parseDocumentMeta = async (
