@@ -7,7 +7,9 @@ const getOpenAIClient = () =>
     apiKey: "null",
   });
 
-export const getEmbeddings = async (values: string[]): Promise<number[][]> => {
+export const sendDesktopEmbeddings = async (
+  values: string[],
+): Promise<number[][]> => {
   const openai = getOpenAIClient();
   const result = await embedMany({
     model: openai.embedding("any"),

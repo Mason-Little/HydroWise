@@ -1,20 +1,24 @@
-import { webLLM } from "@browser-ai/web-llm";
+import { createOpenAI } from "@ai-sdk/openai";
 import type { Message } from "@hydrowise/entities";
 import { streamText } from "ai";
-import { LLM_CONFIG } from "../config";
 
-export const sendChatCompletion = async (
+const getOpenAIClient = () =>
+  createOpenAI({
+    baseURL: import.meta.env.VITE_DESKTOP_GEN_ENDPOINT,
+    apiKey: "null",
+  });
+
+export const sendDesktopChatCompletion = async (
   messages: Message[],
   onChunk: (chunk: string) => void,
 ): Promise<string> => {
+  const openai = getOpenAIClient();
   const result = streamText({
-    model: webLLM(LLM_CONFIG.model),
+    model: openai.chat("any"),
     messages: messages.map((m) => ({
       role: m.role,
       content: m.content,
     })),
-    temperature: LLM_CONFIG.temperature,
-    maxOutputTokens: LLM_CONFIG.maxTokens,
   });
 
   const chunks: string[] = [];

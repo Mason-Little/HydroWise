@@ -1,20 +1,13 @@
-import { createOpenAI } from "@ai-sdk/openai";
 import type { Message } from "@hydrowise/entities";
 import { streamText } from "ai";
+import { getWebLLMEngine } from "../init/chat";
 
-const getOpenAIClient = () =>
-  createOpenAI({
-    baseURL: import.meta.env.VITE_DESKTOP_GEN_ENDPOINT,
-    apiKey: "null",
-  });
-
-export const sendChatCompletion = async (
+export const sendWebChatCompletion = async (
   messages: Message[],
   onChunk: (chunk: string) => void,
 ): Promise<string> => {
-  const openai = getOpenAIClient();
   const result = streamText({
-    model: openai.chat("any"),
+    model: getWebLLMEngine(),
     messages: messages.map((m) => ({
       role: m.role,
       content: m.content,

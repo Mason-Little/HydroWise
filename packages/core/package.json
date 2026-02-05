@@ -24,6 +24,7 @@
     "@hydrowise/llm-client": "workspace:*",
     "@jvmr/pptx-to-html": "^1.0.0",
     "@truto/turndown-plugin-gfm": "^1.0.2",
+    "heic-to": "^1.4.2",
     "langchain": "^0.3.33",
     "mammoth": "^1.11.0",
     "pdf-parse": "^2.4.5",

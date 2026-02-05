@@ -12,14 +12,18 @@
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check .",
+
     "llm": "../../tools/llama-b7876/llama-server -m ../../tools/models/qwen2.5-7b-instruct-q4_k_m.gguf --port 8080 --ctx-size 4096 -ngl 99 --parallel 2",
     "embeddings": "../../tools/llama-b7876/llama-server -m ../../tools/models/nomic-embed-text-v1.5.Q4_0.gguf --port 8081 --embeddings --pooling mean -ngl 99",
-    "dev:desktop": "bun run llm & bun run embeddings & wait"
+    "ocr": "../../tools/llama-b7876/llama-server -m ../../tools/models/LightOnOCR-2-1B-Q4_K_M.gguf --mmproj ../../tools/models/LightOnOCR-2-1B-mmproj-f16.gguf --port 8082 --ctx-size 4096 -ngl 99",
+    "dev:desktop": "bun run llm & bun run embeddings & bun run ocr & wait",
+    "dev:desktop:all": "bun run llm & bun run embeddings & bun run ocr & wait"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.24",
     "@browser-ai/transformers-js": "^2.0.2",
     "@browser-ai/web-llm": "^2.0.3",
+    "@huggingface/transformers": "^3.8.1",
     "@mlc-ai/web-llm": "^0.2.79",
     "ai": "^6.0.66"
   },

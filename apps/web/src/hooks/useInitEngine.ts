@@ -1,4 +1,4 @@
-import { initLLMClient } from "@hydrowise/llm-client";
+import { initAllEngines } from "@hydrowise/llm-client";
 import { useEffect, useState } from "react";
 
 type WebLLMEngineState = {
@@ -13,10 +13,22 @@ export const useWebLLMEngine = (): WebLLMEngineState => {
   const [engineReady, setEngineReady] = useState(false);
 
   useEffect(() => {
-    initLLMClient(setLoadProgress).then(() => {
-      setIsLoading(false);
-      setEngineReady(true);
-    });
+    let isActive = true;
+
+    getOrInitEngine(setLoadProgress)
+      .then(() => {
+        if (!isActive) return;
+        setIsLoading(false);
+        setEngineReady(true);
+      })
+      .catch(() => {
+        if (!isActive) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   return {
@@ -24,4 +36,14 @@ export const useWebLLMEngine = (): WebLLMEngineState => {
     loadProgress,
     engineReady,
   };
+};
+
+let engineInitPromise: Promise<void> | null = null;
+
+const getOrInitEngine = (onProgress?: (progress: number) => void) => {
+  if (!engineInitPromise) {
+    engineInitPromise = initAllEngines(onProgress).then(() => undefined);
+  }
+
+  return engineInitPromise;
 };

@@ -49,6 +49,8 @@ all of these features should allow for "@"ing courses/documents/terms???
 - Flashcard generation
 - Coursework quiz generation
 - Notes assistant
+- Auto Analysis "Topic" of input data
+  - detect could be on test topics based on size/focus on a topic within a document
 
 ### Gamification
 

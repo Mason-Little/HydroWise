@@ -14,7 +14,5 @@ export const parseDocx = async (file: File) => {
 
   const markdown = turndown.turndown(value ?? "");
 
-  console.log(markdown);
-
   return { text: markdown, pageCount: null };
 };
