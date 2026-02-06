@@ -1,5 +1,3 @@
-// services/api/src/chat/index.ts
-
 import type { DbClient } from "@hydrowise/database";
 import { and, chats, eq, messages } from "@hydrowise/database";
 import { Hono } from "hono";
@@ -75,7 +73,7 @@ export const createChatRoutes = (db: DbClient) => {
       .select()
       .from(messages)
       .where(eq(messages.chatId, chatId));
-    return c.json(result);
+    return c.json({ data: result });
   });
 
   // DELETE /chat/:chatId - delete a chat
@@ -95,7 +93,7 @@ export const createChatRoutes = (db: DbClient) => {
       .delete(chats)
       .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)))
       .returning();
-    return c.json(result[0]);
+    return c.json({ data: result[0] });
   });
 
   // POST /chat/:chatId/messages - append message
