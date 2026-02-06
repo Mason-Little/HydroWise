@@ -4,7 +4,7 @@
 
 - **Framework**: React (Vite) + TypeScript
 - **Auth**: AuthJS (web) + cached session/token (desktop/offline)
-- **Styling**: MUI
+- **Styling**: Tailwind CSS + shadcn/ui
 - **Linting / Formatting**: Biome
 
 ---
@@ -51,6 +51,14 @@ all of these features should allow for "@"ing courses/documents/terms???
 - Notes assistant
 - Auto Analysis "Topic" of input data
   - detect could be on test topics based on size/focus on a topic within a document
+
+## UI Strategy (Keep It Minimal)
+
+- Keep only the `apps/web/src/components/ui` files that are currently imported by feature code.
+- Add packages only when a feature needs them (example: `bun add vaul`).
+- Add shadcn components only when needed (example: `bunx shadcn@latest add dialog select`).
+- If you remove a component now, you can regenerate it later with the same shadcn `add` command.
+- After adding new UI pieces, run `bun --filter @hydrowise/web run check` and `bun --filter @hydrowise/web run build`.
 
 ### Gamification
 

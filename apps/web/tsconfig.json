@@ -1,4 +1,14 @@
 {
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@src/*": ["./src/*"],
+      "@hydrowise/core": ["../../packages/core/src/index.ts"],
+      "@hydrowise/entities": ["../../packages/entities/src/index.ts"],
+      "@hydrowise/llm-client": ["../../packages/llm-client/src/index.ts"]
+    }
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
