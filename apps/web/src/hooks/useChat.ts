@@ -7,6 +7,7 @@ import {
   getChats,
   getMessages,
 } from "@/api/chat";
+import { getRagApi } from "@/api/rag";
 import { useChatStore } from "@/store/chatStore";
 
 export const useChat = () => {
@@ -108,9 +109,18 @@ export const useChat = () => {
     });
 
     setStreamingContent("");
+
+    const ragContext = await getRagApi(prompt);
+
     try {
       const response = await sendChatCompletion(
-        [...history, { role: "user", content: prompt }],
+        [
+          ...history,
+          {
+            role: "user",
+            content: `Context: ${ragContext} \n\n Prompt: ${prompt}`,
+          },
+        ],
         (chunk) => appendStreamingChunk(chunk),
       );
 

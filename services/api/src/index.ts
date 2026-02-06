@@ -1,9 +1,10 @@
 import { createWebClient, type DbClient } from "@hydrowise/database";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { createChatRoutes } from "./chat";
 import { getConfig } from "./config";
-import { createDocumentRoutes } from "./document";
+import { createChatRoutes } from "./routes/chat";
+import { createDocumentRoutes } from "./routes/document";
+import { createRagRoutes } from "./routes/rag";
 
 const app = new Hono();
 
@@ -32,5 +33,6 @@ app.get("/", (c) => {
 
 app.route("/chat", createChatRoutes(db));
 app.route("/document", createDocumentRoutes(db));
+app.route("/rag", createRagRoutes(db));
 
 export default app;
