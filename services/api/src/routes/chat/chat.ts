@@ -35,7 +35,7 @@ export const createChatRoutes = (db: DbClient) => {
       .select()
       .from(chats)
       .where(eq(chats.userId, user.userId));
-    return c.json(result);
+    return c.json({ data: result });
   });
 
   // POST /chat - create a chat
@@ -44,7 +44,7 @@ export const createChatRoutes = (db: DbClient) => {
     if (!user.ok) return c.json(user, 400);
     const chat = createChatEntity(user.userId);
     await db.insert(chats).values(chat);
-    return c.json(chat);
+    return c.json({ data: chat });
   });
 
   // GET /chat/:chatId - get single chat
@@ -56,7 +56,7 @@ export const createChatRoutes = (db: DbClient) => {
       .select()
       .from(chats)
       .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
-    return c.json(result[0] ?? null);
+    return c.json({ data: result[0] ?? null });
   });
 
   // GET /chat/:chatId/messages - get chat messages
@@ -69,7 +69,7 @@ export const createChatRoutes = (db: DbClient) => {
       .from(chats)
       .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
     if (!chat[0]) {
-      return c.json({ ok: false, error: "chat not found" }, 404);
+      return c.json({ error: "chat not found" }, 404);
     }
     const result = await db
       .select()
@@ -88,7 +88,7 @@ export const createChatRoutes = (db: DbClient) => {
       .from(chats)
       .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
     if (!chat[0]) {
-      return c.json({ ok: false, error: "chat not found" }, 404);
+      return c.json({ error: "chat not found" }, 404);
     }
     await db.delete(messages).where(eq(messages.chatId, chatId));
     const result = await db
@@ -108,7 +108,7 @@ export const createChatRoutes = (db: DbClient) => {
       .from(chats)
       .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
     if (!chat[0]) {
-      return c.json({ ok: false, error: "chat not found" }, 404);
+      return c.json({ error: "chat not found" }, 404);
     }
     const payload = await c.req.json();
     const role = payload?.role;
@@ -117,7 +117,7 @@ export const createChatRoutes = (db: DbClient) => {
       (role !== "user" && role !== "assistant") ||
       typeof content !== "string"
     ) {
-      return c.json({ ok: false, error: "role and content are required" }, 400);
+      return c.json({ error: "role and content are required" }, 400);
     }
     const message = {
       id: crypto.randomUUID(),
@@ -126,7 +126,7 @@ export const createChatRoutes = (db: DbClient) => {
       content,
     };
     await db.insert(messages).values(message);
-    return c.json(message);
+    return c.json({ data: message });
   });
 
   return app;

@@ -44,7 +44,7 @@ export const createDocumentRoutes = (db: DbClient) => {
   app.post("/", async (c) => {
     const userId = getUserId(c);
     if (!userId) {
-      return c.json({ ok: false, error: "userId is required" }, 400);
+      return c.json({ error: "userId is required" }, 400);
     }
 
     // Parse and validate request body using Zod
@@ -54,7 +54,6 @@ export const createDocumentRoutes = (db: DbClient) => {
     if (!parseResult.success) {
       return c.json(
         {
-          ok: false,
           error: "Invalid request body",
           details: parseResult.error.flatten(),
         },
@@ -90,8 +89,7 @@ export const createDocumentRoutes = (db: DbClient) => {
     }
 
     return c.json({
-      ok: true,
-      document: {
+      data: {
         id: document.id,
         name: document.name,
         mimeType: document.mimeType,

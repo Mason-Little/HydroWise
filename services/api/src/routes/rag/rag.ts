@@ -19,12 +19,12 @@ export const createRagRoutes = (db: DbClient) => {
   app.post("/retrieve-context", async (c) => {
     const userId = getUserId(c);
     if (!userId) {
-      return c.json({ ok: false, error: "userId is required" }, 400);
+      return c.json({ error: "userId is required" }, 400);
     }
     const body = await c.req.json();
     const userEmbedding = body.embedding;
     if (!userEmbedding) {
-      return c.json({ ok: false, error: "embedding is required" }, 400);
+      return c.json({ error: "embedding is required" }, 400);
     }
 
     const similarity = sql<number>`1 - (${cosineDistance(
@@ -43,7 +43,7 @@ export const createRagRoutes = (db: DbClient) => {
       .orderBy(desc(similarity))
       .limit(5);
 
-    return c.json({ ok: true, data: results });
+    return c.json({ data: results });
   });
 
   return app;
