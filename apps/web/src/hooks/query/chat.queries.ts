@@ -17,7 +17,7 @@ export const useChat = () => {
   });
 
   const { mutateAsync: createChat } = useMutation({
-    mutationFn: () => chatAPI.createChat(),
+    mutationFn: (chatId: string) => chatAPI.createChat(chatId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["chat"] });
     },

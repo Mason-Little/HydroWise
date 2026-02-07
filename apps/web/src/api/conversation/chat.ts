@@ -9,8 +9,8 @@ export const chatAPI = {
   getChatMessages: (chatId: string) => {
     return client.get(`chat/${chatId}/messages`).json<APIResponse<Message[]>>();
   },
-  createChat: () => {
-    return client.post("chat").json<APIResponse<Chat>>();
+  createChat: (chatId: string) => {
+    return client.post(`chat/${chatId}`).json<APIResponse<Chat>>();
   },
   deleteChat: (chatId: string) => {
     return client.delete(`chat/${chatId}`).json<APIResponse<Chat>>();

@@ -14,13 +14,13 @@ export const useMessages = () => {
     error,
   } = useQuery({
     queryKey: messagesQueryKey,
-    queryFn: () => chatAPI.getChatMessages(selectedChatId || ""),
+    queryFn: () => chatAPI.getChatMessages(selectedChatId),
     enabled: Boolean(selectedChatId),
   });
 
   const { mutateAsync: sendMessage } = useMutation({
     mutationFn: (message: Message) =>
-      chatAPI.sendMessage(selectedChatId || "", message),
+      chatAPI.sendMessage(selectedChatId, message),
     ...makeOptimisticListMutation<Message, Message>({
       queryKey: messagesQueryKey,
       apply: (current, message) => [...current, message],

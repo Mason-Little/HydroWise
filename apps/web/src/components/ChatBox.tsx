@@ -11,25 +11,10 @@ import { useChatStore } from "@/store/chatStore";
 
 export const ChatBox = () => {
   const { selectedChatId } = useChatStore();
-  const { messages, isLoading, error } = useMessages();
+  const { messages } = useMessages();
   const { handleSendMessage, isStreaming } = useConversation();
   const [streamingContent, setStreamingContent] = useState("");
 
-  if (isLoading) {
-    return (
-      <div className="text-muted-foreground m-auto text-sm">
-        Loading conversation...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-destructive m-auto text-sm">
-        Error: {error.message}
-      </div>
-    );
-  }
   const onChunk = (chunk: string) => {
     setStreamingContent((previous) => previous + chunk);
   };
@@ -37,13 +22,7 @@ export const ChatBox = () => {
   const displayedMessages: Message[] = [
     ...messages,
     ...(streamingContent
-      ? [
-          convertTextToMessage(
-            streamingContent,
-            selectedChatId || "",
-            "assistant",
-          ),
-        ]
+      ? [convertTextToMessage(streamingContent, selectedChatId, "assistant")]
       : []),
   ];
 
@@ -60,7 +39,7 @@ export const ChatBox = () => {
     <Card className="mx-auto flex h-[calc(100svh-1.5rem)] w-full max-w-4xl border-border/70 bg-card/90 py-0 shadow-sm backdrop-blur-sm md:h-[calc(100svh-2.5rem)]">
       <CardHeader className="border-b border-border/60 py-4">
         <CardTitle className="text-sm font-semibold tracking-tight">
-          {selectedChatId ? "HydroWise Chat" : "Pick or create a chat"}
+          HydroWise Chat
         </CardTitle>
       </CardHeader>
       <MessageArea messages={displayedMessages} />

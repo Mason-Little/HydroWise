@@ -3,7 +3,9 @@ import { useContextRetrieval } from "@/hooks/query/context.queries";
 import { useMessages } from "@/hooks/query/message.queries";
 import { contextToInjection } from "@/lib/prompt/convertContext";
 import { convertTextToMessage } from "@/lib/prompt/text-to-message";
+import { useChatExists } from "@/lib/query/chat-exists";
 import { useChatStore } from "@/store/chatStore";
+import { useChat } from "../query/chat.queries";
 
 export const useConversation = () => {
   const { selectedChatId } = useChatStore();
@@ -11,16 +13,18 @@ export const useConversation = () => {
   const { contextRetrieval } = useContextRetrieval();
   const { embedText, generateResponse, isStreaming } = useModel();
   const { sendMessage } = useMessages();
+  const { createChat } = useChat();
+  const chatExists = useChatExists();
 
   const handleSendMessage = async (
     prompt: string,
     onmessage: (chunk: string) => void,
   ) => {
-    const promptMessage = convertTextToMessage(
-      prompt,
-      selectedChatId || "",
-      "user",
-    );
+    if (!chatExists) {
+      await createChat(selectedChatId);
+    }
+
+    const promptMessage = convertTextToMessage(prompt, selectedChatId, "user");
 
     sendMessage(promptMessage);
 
@@ -35,9 +39,7 @@ export const useConversation = () => {
       onmessage,
     );
 
-    sendMessage(
-      convertTextToMessage(generated, selectedChatId || "", "assistant"),
-    );
+    sendMessage(convertTextToMessage(generated, selectedChatId, "assistant"));
   };
 
   return { handleSendMessage, isStreaming };

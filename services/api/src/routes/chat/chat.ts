@@ -2,8 +2,8 @@ import type { DbClient } from "@hydrowise/database";
 import { and, chats, eq, messages } from "@hydrowise/database";
 import { Hono } from "hono";
 
-const createChatEntity = (userId: string, name?: string) => ({
-  id: crypto.randomUUID(),
+const createChatEntity = (userId: string, chatId: string, name?: string) => ({
+  id: chatId,
   userId,
   name: name ?? "New Chat",
 });
@@ -37,10 +37,11 @@ export const createChatRoutes = (db: DbClient) => {
   });
 
   // POST /chat - create a chat
-  app.post("/", async (c) => {
+  app.post("/:chatId", async (c) => {
     const user = requireUserId(c);
     if (!user.ok) return c.json(user, 400);
-    const chat = createChatEntity(user.userId);
+    const chatId = c.req.param("chatId");
+    const chat = createChatEntity(user.userId, chatId);
     await db.insert(chats).values(chat);
     return c.json({ data: chat });
   });
