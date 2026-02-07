@@ -1,6 +1,6 @@
 import type { QueryKey, UseMutationOptions } from "@tanstack/react-query";
 import type { APIResponse } from "@/api/client";
-import { queryClient } from "@/lib/query-client";
+import { queryClient } from "@/lib/query/query-client";
 
 type OptimisticListContext<TItem> = {
   previous?: APIResponse<TItem[]>;

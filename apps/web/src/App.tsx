@@ -7,7 +7,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { queryClient } from "@/lib/query-client";
+import { queryClient } from "@/lib/query/query-client";
 // import { useLLMStore } from "@/store/llmStore";
 
 export function App() {

@@ -1,8 +1,8 @@
 import type { Chat } from "@hydrowise/entities";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { chatAPI } from "@/api/conversation/chat";
-import { queryClient } from "@/lib/query-client";
-import { makeOptimisticListMutation } from "@/lib/query-optimistic";
+import { queryClient } from "@/lib/query/query-client";
+import { makeOptimisticListMutation } from "@/lib/query/query-optimistic";
 
 const chatQueryKey = ["chat"] as const;
 

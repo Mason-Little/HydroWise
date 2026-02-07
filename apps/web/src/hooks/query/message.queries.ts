@@ -1,7 +1,7 @@
 import type { Message } from "@hydrowise/entities";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { chatAPI } from "@/api/conversation/chat";
-import { makeOptimisticListMutation } from "@/lib/query-optimistic";
+import { makeOptimisticListMutation } from "@/lib/query/query-optimistic";
 import { useChatStore } from "@/store/chatStore";
 
 export const useMessages = () => {
