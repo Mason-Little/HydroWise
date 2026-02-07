@@ -1,17 +1,21 @@
 import type { Message } from "@hydrowise/entities";
 import { streamText } from "ai";
+import { chatPrompt } from "../../config";
+import { buildPromptAwareMessages } from "../helpers/messages";
 import { getWebLLMEngine } from "../init/chat";
 
 export const sendWebChatCompletion = async (
-  messages: Message[],
+  history: Message[],
+  query: Message,
+  contextInjection: string,
   onChunk: (chunk: string) => void,
 ): Promise<string> => {
   const result = streamText({
     model: getWebLLMEngine(),
-    messages: messages.map((m) => ({
-      role: m.role,
-      content: m.content,
-    })),
+    messages: buildPromptAwareMessages(chatPrompt(contextInjection), [
+      ...history,
+      query,
+    ]),
   });
 
   const chunks: string[] = [];

@@ -18,7 +18,7 @@ export const chatAPI = {
   sendMessage: (chatId: string, message: Message) => {
     return client
       .post(`chat/${chatId}/messages`, {
-        json: { message },
+        json: message,
       })
       .json<APIResponse<Message>>();
   },

@@ -28,13 +28,15 @@ const getRuntimeMode = () => {
 };
 
 export const sendChatCompletion = (
-  messages: Message[],
+  history: Message[],
+  query: Message,
+  contextInjection: string,
   onChunk: (chunk: string) => void,
 ) => {
   const mode = getRuntimeMode();
   return mode === "web"
-    ? sendWebChatCompletion(messages, onChunk)
-    : sendDesktopChatCompletion(messages, onChunk);
+    ? sendWebChatCompletion(history, query, contextInjection, onChunk)
+    : sendDesktopChatCompletion(history, query, contextInjection, onChunk);
 };
 
 export const sendEmbeddings = async (values: string[]) => {
@@ -42,6 +44,11 @@ export const sendEmbeddings = async (values: string[]) => {
   return mode === "web"
     ? await sendWebEmbeddings(values)
     : await sendDesktopEmbeddings(values);
+};
+
+export const sendEmbedding = async (text: string) => {
+  const embeddings = await sendEmbeddings([text]);
+  return embeddings[0];
 };
 
 export const processImage = async (image: File) => {

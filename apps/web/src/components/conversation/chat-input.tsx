@@ -5,12 +5,13 @@ import { Textarea } from "@/components/ui/textarea";
 
 type ChatInputProps = {
   onSend: (message: string) => void;
+  disabled?: boolean;
 };
 
-export const ChatInput = ({ onSend }: ChatInputProps) => {
+export const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   const [value, setValue] = useState("");
   const trimmedValue = value.trim();
-  const isDisabled = trimmedValue.length === 0;
+  const isDisabled = trimmedValue.length === 0 || disabled;
 
   const handleSend = () => {
     if (isDisabled) {

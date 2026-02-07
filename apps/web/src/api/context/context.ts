@@ -1,3 +1,4 @@
+import type { Context } from "@hydrowise/entities";
 import { type APIResponse, client } from "@/api/client";
 
 export const modelAPI = {
@@ -6,13 +7,6 @@ export const modelAPI = {
       .post("rag/retrieve-context", {
         json: { embedding },
       })
-      .json<
-        APIResponse<
-          {
-            content: string;
-            similarity: number;
-          }[]
-        >
-      >();
+      .json<APIResponse<Context[]>>();
   },
 };

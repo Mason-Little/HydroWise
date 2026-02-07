@@ -1,4 +1,5 @@
 import type { Message } from "@hydrowise/entities";
+import { Streamdown } from "streamdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 type MessageAreaProps = {
@@ -18,7 +19,7 @@ export const MessageArea = ({ messages }: MessageAreaProps) => {
                 : "bg-muted text-foreground"
             }`}
           >
-            {message.content}
+            <Streamdown>{message.content}</Streamdown>
           </div>
         ))}
         {messages.length === 0 ? (

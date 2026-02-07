@@ -1,16 +1,19 @@
+import type { Message } from "@hydrowise/entities";
+import { useState } from "react";
 import { ChatInput } from "@/components/conversation/chat-input";
 import { MessageArea } from "@/components/conversation/message-area";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useMessages } from "@/hooks/conversation/message.queries";
+import { useConversation } from "@/hooks/conversation/useConversation";
+import { convertTextToMessage } from "@/lib/prompt/text-to-message";
 import { useChatStore } from "@/store/chatStore";
 
 export const ChatBox = () => {
   const { selectedChatId } = useChatStore();
-
-  const { messages, isLoading, error, sendMessage } = useMessages(
-    selectedChatId || "",
-  );
+  const { messages, isLoading, error } = useMessages();
+  const { handleSendMessage, isStreaming } = useConversation();
+  const [streamingContent, setStreamingContent] = useState("");
 
   if (isLoading) {
     return (
@@ -27,6 +30,31 @@ export const ChatBox = () => {
       </div>
     );
   }
+  const onChunk = (chunk: string) => {
+    setStreamingContent((previous) => previous + chunk);
+  };
+
+  const displayedMessages: Message[] = [
+    ...messages,
+    ...(streamingContent
+      ? [
+          convertTextToMessage(
+            streamingContent,
+            selectedChatId || "",
+            "assistant",
+          ),
+        ]
+      : []),
+  ];
+
+  const handleSend = async (message: string) => {
+    setStreamingContent("");
+    try {
+      await handleSendMessage(message, onChunk);
+    } finally {
+      setStreamingContent("");
+    }
+  };
 
   return (
     <Card className="mx-auto flex h-[calc(100svh-1.5rem)] w-full max-w-4xl border-border/70 bg-card/90 py-0 shadow-sm backdrop-blur-sm md:h-[calc(100svh-2.5rem)]">
@@ -35,9 +63,9 @@ export const ChatBox = () => {
           {selectedChatId ? "HydroWise Chat" : "Pick or create a chat"}
         </CardTitle>
       </CardHeader>
-      <MessageArea messages={messages} />
+      <MessageArea messages={displayedMessages} />
       <Separator />
-      <ChatInput onSend={(message) => sendMessage(message)} />
+      <ChatInput disabled={isStreaming} onSend={handleSend} />
     </Card>
   );
 };

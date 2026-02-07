@@ -1,5 +1,6 @@
 import { generateText } from "ai";
 import { ocrCorrectionPrompt } from "../../config/ocr-correction-prompt";
+import { buildPromptAwareMessages } from "../helpers/messages";
 import { getWebLLMEngine } from "../init/chat";
 
 export const postprocessWebOcrText = async (
@@ -8,16 +9,9 @@ export const postprocessWebOcrText = async (
   const result = await generateText({
     model: getWebLLMEngine(),
     temperature: 0,
-    messages: [
-      {
-        role: "system",
-        content: ocrCorrectionPrompt,
-      },
-      {
-        role: "user",
-        content: ocrText,
-      },
-    ],
+    messages: buildPromptAwareMessages(ocrCorrectionPrompt, [
+      { role: "user", content: ocrText },
+    ]),
   });
 
   return result.text;

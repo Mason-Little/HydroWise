@@ -1,6 +1,7 @@
 import { createOpenAI } from "@ai-sdk/openai";
 import type { Message } from "@hydrowise/entities";
 import { streamText } from "ai";
+import { chatPrompt } from "../../config";
 
 const getOpenAIClient = () =>
   createOpenAI({
@@ -9,13 +10,16 @@ const getOpenAIClient = () =>
   });
 
 export const sendDesktopChatCompletion = async (
-  messages: Message[],
+  history: Message[],
+  query: Message,
+  contextInjection: string,
   onChunk: (chunk: string) => void,
 ): Promise<string> => {
   const openai = getOpenAIClient();
   const result = streamText({
+    system: chatPrompt(contextInjection),
     model: openai.chat("any"),
-    messages: messages.map((m) => ({
+    messages: [...history, query].map((m) => ({
       role: m.role,
       content: m.content,
     })),

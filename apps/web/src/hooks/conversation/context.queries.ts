@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { modelAPI } from "@/api/context/context";
 
-export const useModel = () => {
+export const useContextRetrieval = () => {
   const {
-    data: context,
+    mutateAsync: contextRetrieval,
     isPending,
     error,
   } = useMutation({
@@ -11,6 +11,5 @@ export const useModel = () => {
     mutationFn: (embedding: number[]) =>
       modelAPI.getContextRetrieval(embedding),
   });
-
-  return { context, isPending, error };
+  return { contextRetrieval, isPending, error };
 };
