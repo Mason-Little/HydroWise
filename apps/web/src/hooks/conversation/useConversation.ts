@@ -1,6 +1,6 @@
-import { useContextRetrieval } from "@/hooks/conversation/context.queries";
-import { useMessages } from "@/hooks/conversation/message.queries";
 import { useModel } from "@/hooks/llm/useModel";
+import { useContextRetrieval } from "@/hooks/query/context.queries";
+import { useMessages } from "@/hooks/query/message.queries";
 import { contextToInjection } from "@/lib/prompt/convertContext";
 import { convertTextToMessage } from "@/lib/prompt/text-to-message";
 import { useChatStore } from "@/store/chatStore";

@@ -1,4 +1,4 @@
-import { useChat } from "@/hooks/conversation/chat.queries";
+import { useChat } from "@/hooks/query/chat.queries";
 import { useChatStore } from "@/store/chatStore";
 import { ChatHistoryButton } from "./sidebar/chat-history-button";
 

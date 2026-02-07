@@ -4,8 +4,8 @@ import { ChatInput } from "@/components/conversation/chat-input";
 import { MessageArea } from "@/components/conversation/message-area";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useMessages } from "@/hooks/conversation/message.queries";
 import { useConversation } from "@/hooks/conversation/useConversation";
+import { useMessages } from "@/hooks/query/message.queries";
 import { convertTextToMessage } from "@/lib/prompt/text-to-message";
 import { useChatStore } from "@/store/chatStore";
 
