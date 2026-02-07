@@ -9,7 +9,7 @@ export const useDocument = () => {
   } = useMutation({
     mutationKey: ["context-retrieval"],
     mutationFn: (embedding: number[]) =>
-      modelAPI.getContextRetrieval(embedding),
+      modelAPI.getContextRetrieval({ embedding }),
   });
   return { contextRetrieval, isPending, error };
 };

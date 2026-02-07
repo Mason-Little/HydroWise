@@ -33,8 +33,7 @@ export const CreatedDocumentSchema = z.object({
 export type CreatedDocument = z.infer<typeof CreatedDocumentSchema>;
 
 export const CreateDocumentResponseSchema = z.object({
-  ok: z.literal(true),
-  document: CreatedDocumentSchema,
+  data: CreatedDocumentSchema,
 });
 
 export type CreateDocumentResponse = z.infer<

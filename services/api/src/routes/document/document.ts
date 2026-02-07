@@ -95,7 +95,7 @@ export const createDocumentRoutes = (db: DbClient) => {
         mimeType: document.mimeType,
         fileSize: document.fileSize,
         pageCount: document.pageCount,
-        createdAt: document.createdAt,
+        createdAt: document.createdAt.toISOString(),
         embeddingCount: payload.embeddings.length,
       },
     });

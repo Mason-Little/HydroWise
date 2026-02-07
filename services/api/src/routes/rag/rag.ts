@@ -7,6 +7,7 @@ import {
   eq,
   sql,
 } from "@hydrowise/database";
+import { RetrieveContextRequestSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
 
 const app = new Hono();
@@ -22,10 +23,11 @@ export const createRagRoutes = (db: DbClient) => {
       return c.json({ error: "userId is required" }, 400);
     }
     const body = await c.req.json();
-    const userEmbedding = body.embedding;
-    if (!userEmbedding) {
+    const parseResult = RetrieveContextRequestSchema.safeParse(body);
+    if (!parseResult.success) {
       return c.json({ error: "embedding is required" }, 400);
     }
+    const userEmbedding = parseResult.data.embedding;
 
     const similarity = sql<number>`1 - (${cosineDistance(
       documentEmbeddings.embedding,

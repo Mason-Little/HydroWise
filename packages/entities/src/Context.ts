@@ -1,8 +1,16 @@
 import { z } from "zod";
 
-const ContextSchema = z.object({
+export const ContextSchema = z.object({
   content: z.string(),
   similarity: z.number(),
 });
 
 export type Context = z.infer<typeof ContextSchema>;
+
+export const RetrieveContextRequestSchema = z.object({
+  embedding: z.array(z.number()),
+});
+
+export type RetrieveContextRequest = z.infer<
+  typeof RetrieveContextRequestSchema
+>;

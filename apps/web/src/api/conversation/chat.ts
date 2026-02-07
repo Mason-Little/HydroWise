@@ -1,4 +1,4 @@
-import type { Chat, Message } from "@hydrowise/entities";
+import type { Chat, Message, MessageCreateInput } from "@hydrowise/entities";
 import type { APIResponse } from "@/api/client";
 import { client } from "@/api/client";
 
@@ -15,7 +15,7 @@ export const chatAPI = {
   deleteChat: (chatId: string) => {
     return client.delete(`chat/${chatId}`).json<APIResponse<Chat>>();
   },
-  sendMessage: (chatId: string, message: Message) => {
+  sendMessage: (chatId: string, message: MessageCreateInput) => {
     return client
       .post(`chat/${chatId}/messages`, {
         json: message,

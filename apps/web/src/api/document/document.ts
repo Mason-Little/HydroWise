@@ -1,5 +1,8 @@
-import type { CreateDocumentRequest } from "@hydrowise/entities";
-import { type APIResponse, client } from "@/api/client";
+import type {
+  CreateDocumentRequest,
+  CreateDocumentResponse,
+} from "@hydrowise/entities";
+import { client } from "@/api/client";
 
 export const documentAPI = {
   uploadDocument: (document: CreateDocumentRequest) => {
@@ -7,6 +10,6 @@ export const documentAPI = {
       .post("document", {
         json: document,
       })
-      .json<APIResponse<void>>();
+      .json<CreateDocumentResponse>();
   },
 };

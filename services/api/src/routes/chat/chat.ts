@@ -1,5 +1,6 @@
 import type { DbClient } from "@hydrowise/database";
 import { and, chats, eq, messages } from "@hydrowise/database";
+import { MessageCreateInputSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
 
 const createChatEntity = (userId: string, chatId: string, name?: string) => ({
@@ -110,19 +111,17 @@ export const createChatRoutes = (db: DbClient) => {
       return c.json({ error: "chat not found" }, 404);
     }
     const payload = await c.req.json();
-    const role = payload?.role;
-    const content = payload?.content;
-    if (
-      (role !== "user" && role !== "assistant") ||
-      typeof content !== "string"
-    ) {
+    const parseResult = MessageCreateInputSchema.safeParse(payload);
+    if (!parseResult.success) {
       return c.json({ error: "role and content are required" }, 400);
     }
+    const messagePayload = parseResult.data;
+
     const message = {
       id: crypto.randomUUID(),
       chatId,
-      role,
-      content,
+      role: messagePayload.role,
+      content: messagePayload.content,
     };
     await db.insert(messages).values(message);
     return c.json({ data: message });

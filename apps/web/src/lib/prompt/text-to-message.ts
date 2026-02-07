@@ -1,9 +1,9 @@
-import type { Message } from "@hydrowise/entities";
+import type { Message, MessageRole } from "@hydrowise/entities";
 
 export const convertTextToMessage = (
   text: string,
   chatId: string,
-  role: "user" | "assistant",
+  role: MessageRole,
 ): Message => {
   return {
     role,
