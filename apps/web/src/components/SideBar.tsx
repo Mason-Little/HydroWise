@@ -33,7 +33,10 @@ export const SideBar = () => {
           </div>
           <SidebarTrigger className="hidden md:inline-flex" />
         </div>
-        <Button className="w-full" onClick={() => createChat()}>
+        <Button
+          className="w-full"
+          onClick={() => createChat(crypto.randomUUID())}
+        >
           New Chat
         </Button>
       </SidebarHeader>

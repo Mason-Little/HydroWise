@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { modelAPI } from "@/api/context/context";
 
-export const useContextRetrieval = () => {
+export const useDocument = () => {
   const {
     mutateAsync: contextRetrieval,
     isPending,

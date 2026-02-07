@@ -1,3 +1,4 @@
+import { parseDocumentMeta } from "@hydrowise/core";
 import { FileUpIcon } from "lucide-react";
 import { useCallback, useId, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -9,6 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useDocument } from "@/hooks/query/document.queries";
 import { cn } from "@/lib/utils";
 
 type UploadFileProps = {
@@ -18,6 +21,8 @@ type UploadFileProps = {
 
 export function UploadFile({ open, onOpenChange }: UploadFileProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState<string>("");
+  const { uploadDocument } = useDocument();
   const inputId = useId();
 
   const handleDrop = useCallback((acceptedFiles: File[]) => {
@@ -36,14 +41,18 @@ export function UploadFile({ open, onOpenChange }: UploadFileProps) {
   const handleDialogOpenChange = (nextOpen: boolean) => {
     if (!nextOpen) {
       setSelectedFile(null);
+      setFileName("");
     }
 
     onOpenChange(nextOpen);
   };
 
-  const handleUpload = () => {
-    console.log("Uploading file...", selectedFile);
-
+  const handleUpload = async () => {
+    if (!selectedFile) {
+      return;
+    }
+    const meta = await parseDocumentMeta(selectedFile);
+    await uploadDocument({ ...meta, name: fileName });
     handleDialogOpenChange(false);
   };
 
@@ -56,6 +65,11 @@ export function UploadFile({ open, onOpenChange }: UploadFileProps) {
             Upload a file to the conversation.
           </DialogDescription>
         </DialogHeader>
+        <Input
+          placeholder="Custom File Name (Optional)"
+          value={fileName}
+          onChange={(e) => setFileName(e.target.value)}
+        />
         <div className="flex flex-col gap-4">
           <div
             {...getRootProps({

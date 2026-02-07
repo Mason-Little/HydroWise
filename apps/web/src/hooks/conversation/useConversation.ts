@@ -1,5 +1,5 @@
 import { useModel } from "@/hooks/llm/useModel";
-import { useContextRetrieval } from "@/hooks/query/context.queries";
+import { useDocument } from "@/hooks/query/embedding.queries";
 import { useMessages } from "@/hooks/query/message.queries";
 import { contextToInjection } from "@/lib/prompt/convertContext";
 import { convertTextToMessage } from "@/lib/prompt/text-to-message";
@@ -10,7 +10,7 @@ import { useChat } from "../query/chat.queries";
 export const useConversation = () => {
   const { selectedChatId } = useChatStore();
   const { messages } = useMessages();
-  const { contextRetrieval } = useContextRetrieval();
+  const { contextRetrieval } = useDocument();
   const { embedText, generateResponse, isStreaming } = useModel();
   const { sendMessage } = useMessages();
   const { createChat } = useChat();
