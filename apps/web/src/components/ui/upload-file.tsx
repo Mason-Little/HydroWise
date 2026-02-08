@@ -1,5 +1,5 @@
 import { parseDocumentMeta } from "@hydrowise/core";
-import { FileUpIcon } from "lucide-react";
+import { CircleQuestionMarkIcon, FileUpIcon } from "lucide-react";
 import { useCallback, useId, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useDocument } from "@/hooks/query/document.queries";
 import { cn } from "@/lib/utils";
 
@@ -52,7 +57,7 @@ export function UploadFile({ open, onOpenChange }: UploadFileProps) {
       return;
     }
     const meta = await parseDocumentMeta(selectedFile);
-    await uploadDocument({ ...meta, name: fileName });
+    await uploadDocument({ ...meta, name: fileName || meta.name });
     handleDialogOpenChange(false);
   };
 
@@ -61,8 +66,22 @@ export function UploadFile({ open, onOpenChange }: UploadFileProps) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Upload File</DialogTitle>
-          <DialogDescription>
-            Upload a file to the conversation.
+          <DialogDescription className="flex items-center gap-2">
+            <span>Upload a file to your knowledge base.</span>
+            <Tooltip>
+              <TooltipTrigger
+                className="text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex size-5 items-center justify-center rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                aria-label="What is the knowledge base?"
+              >
+                <CircleQuestionMarkIcon className="size-4" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-72 text-sm">
+                <p>
+                  Files added here are reusable across chats, so you only need
+                  to upload them once.
+                </p>
+              </TooltipContent>
+            </Tooltip>
           </DialogDescription>
         </DialogHeader>
         <Input

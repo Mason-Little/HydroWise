@@ -12,13 +12,17 @@ type OptimisticListParams<TItem, TVariables> = {
   invalidateKey?: QueryKey;
 };
 
-export const makeOptimisticListMutation = <TItem, TVariables>({
+export const makeOptimisticListMutation = <
+  TItem,
+  TVariables,
+  TMutationData = unknown,
+>({
   queryKey,
   apply,
   invalidateKey = queryKey,
 }: OptimisticListParams<TItem, TVariables>): Pick<
   UseMutationOptions<
-    APIResponse<TItem>,
+    TMutationData,
     Error,
     TVariables,
     OptimisticListContext<TItem>

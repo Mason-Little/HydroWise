@@ -32,6 +32,12 @@ export const CreatedDocumentSchema = z.object({
 
 export type CreatedDocument = z.infer<typeof CreatedDocumentSchema>;
 
+export const GetDocumentsResponseSchema = z.object({
+  data: z.array(CreatedDocumentSchema),
+});
+
+export type GetDocumentsResponse = z.infer<typeof GetDocumentsResponseSchema>;
+
 export const CreateDocumentResponseSchema = z.object({
   data: CreatedDocumentSchema,
 });

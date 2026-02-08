@@ -17,7 +17,11 @@ import { ChatHistoryButton } from "./ui/chat-history-button";
 import { ChatFeatureButton } from "./ui/feature-button";
 import { ModelStatus } from "./ui/model-status";
 
-export const SideBar = () => {
+type SidebarProps = {
+  setFeature: (feature: "chat" | "documents") => void;
+};
+
+export const SideBar = ({ setFeature }: SidebarProps) => {
   const { chats, createChat, deleteChat } = useChat();
   const { setSelectedChatId } = useChatStore();
 
@@ -47,12 +51,12 @@ export const SideBar = () => {
           <ChatFeatureButton
             feature="Chat"
             icon={<MessageCircleIcon className="size-4" />}
-            onClick={() => {}}
+            onClick={() => setFeature("chat")}
           />
           <ChatFeatureButton
             feature="Documents"
             icon={<FileQuestionIcon className="size-4" />}
-            onClick={() => {}}
+            onClick={() => setFeature("documents")}
           />
         </SidebarGroupContent>
       </SidebarGroup>

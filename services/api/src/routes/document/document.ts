@@ -1,5 +1,5 @@
 import type { DbClient } from "@hydrowise/database";
-import { documentEmbeddings, documents } from "@hydrowise/database";
+import { documentEmbeddings, documents, eq } from "@hydrowise/database";
 import { CreateDocumentRequestSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
 
@@ -39,6 +39,20 @@ const createDocumentEmbeddingEntity = (
 
 export const createDocumentRoutes = (db: DbClient) => {
   const app = new Hono();
+
+  // GET /document - get all documents
+  app.get("/", async (c) => {
+    const userId = getUserId(c);
+    if (!userId) {
+      return c.json({ error: "userId is required" }, 400);
+    }
+
+    const userDocuments = await db.query.documents.findMany({
+      where: eq(documents.userId, userId),
+    });
+
+    return c.json({ data: userDocuments });
+  });
 
   // POST /document - create a document
   app.post("/", async (c) => {
@@ -99,6 +113,22 @@ export const createDocumentRoutes = (db: DbClient) => {
         embeddingCount: payload.embeddings.length,
       },
     });
+  });
+
+  app.delete("/:id", async (c) => {
+    const userId = getUserId(c);
+    if (!userId) {
+      return c.json({ error: "userId is required" }, 400);
+    }
+
+    const { id } = c.req.param();
+
+    await db
+      .delete(documentEmbeddings)
+      .where(eq(documentEmbeddings.documentId, id));
+    await db.delete(documents).where(eq(documents.id, id));
+
+    return c.json({ data: {} });
   });
 
   return app;
