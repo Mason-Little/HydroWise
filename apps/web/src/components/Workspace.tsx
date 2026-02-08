@@ -1,15 +1,15 @@
 import { ChatBox } from "@/components/Features/Chat/ChatBox";
-import { DocumentBox } from "@/components/Features/Documents/DocumentBox";
+import { ContextBox } from "@/components/Features/Context/ContextBox";
 
 type WorkspaceProps = {
-  feature: "chat" | "documents";
+  feature: "chat" | "context";
 };
 
 export const Workspace = ({ feature }: WorkspaceProps) => {
   switch (feature) {
     case "chat":
       return <ChatBox />;
-    case "documents":
-      return <DocumentBox />;
+    case "context":
+      return <ContextBox />;
   }
 };

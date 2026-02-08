@@ -18,7 +18,7 @@ import { ChatFeatureButton } from "./ui/feature-button";
 import { ModelStatus } from "./ui/model-status";
 
 type SidebarProps = {
-  setFeature: (feature: "chat" | "documents") => void;
+  setFeature: (feature: "chat" | "context") => void;
 };
 
 export const SideBar = ({ setFeature }: SidebarProps) => {
@@ -54,9 +54,9 @@ export const SideBar = ({ setFeature }: SidebarProps) => {
             onClick={() => setFeature("chat")}
           />
           <ChatFeatureButton
-            feature="Documents"
+            feature="Context"
             icon={<FileQuestionIcon className="size-4" />}
-            onClick={() => setFeature("documents")}
+            onClick={() => setFeature("context")}
           />
         </SidebarGroupContent>
       </SidebarGroup>
