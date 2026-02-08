@@ -1,6 +1,6 @@
 import { ArrowUpIcon, PaperclipIcon } from "lucide-react";
 import { type KeyboardEvent, type SyntheticEvent, useState } from "react";
-import { UploadFile } from "@/components/conversation/upload-file";
+import { UploadFile } from "@/components/Features/Chat/ui/upload-file";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 

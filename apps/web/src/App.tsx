@@ -1,12 +1,12 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 // import { useEffect } from "react";
-import { ChatBox } from "@/components/ChatBox";
-import { SideBar } from "@/components/SideBar";
+import { SideBar } from "@/components/Sidebar/SideBar";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { Workspace } from "@/components/Workspace";
 import { queryClient } from "@/lib/query/query-client";
 // import { useLLMStore } from "@/store/llmStore";
 
@@ -25,7 +25,7 @@ export function App() {
             <div className="text-sm font-medium tracking-tight">HydroWise</div>
           </header>
           <div className="flex h-full flex-1 p-3 md:p-5">
-            <ChatBox />
+            <Workspace />
           </div>
         </SidebarInset>
       </SidebarProvider>

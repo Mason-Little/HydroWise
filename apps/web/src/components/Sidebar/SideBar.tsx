@@ -1,8 +1,7 @@
+import { FileQuestionIcon, MessageCircleIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useChat } from "@/hooks/query/chat.queries";
 import { useChatStore } from "@/store/chatStore";
-import { ChatHistoryButton } from "./sidebar/chat-history-button";
-
-import { Button } from "./ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +12,9 @@ import {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-} from "./ui/sidebar";
+} from "../ui/sidebar";
+import { ChatFeatureButton } from "./ui/chat-feature-button";
+import { ChatHistoryButton } from "./ui/chat-history-button";
 
 export const SideBar = () => {
   const { chats, createChat, deleteChat } = useChat();
@@ -33,14 +34,29 @@ export const SideBar = () => {
           </div>
           <SidebarTrigger className="hidden md:inline-flex" />
         </div>
-        <Button
-          className="w-full"
-          onClick={() => createChat(crypto.randomUUID())}
-        >
-          New Chat
-        </Button>
       </SidebarHeader>
+      <SidebarGroup>
+        <SidebarGroupContent>
+          <ChatFeatureButton
+            feature="Chat"
+            icon={<MessageCircleIcon className="size-4" />}
+            onClick={() => {}}
+          />
+          <ChatFeatureButton
+            feature="Documents"
+            icon={<FileQuestionIcon className="size-4" />}
+            onClick={() => {}}
+          />
+        </SidebarGroupContent>
+      </SidebarGroup>
       <SidebarSeparator />
+      <Button
+        className="w-full mt-2"
+        onClick={() => createChat(crypto.randomUUID())}
+      >
+        New Chat
+      </Button>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Recent chats</SidebarGroupLabel>
