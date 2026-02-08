@@ -93,8 +93,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@ai-sdk/openai": "^3.0.24",
-        "@browser-ai/transformers-js": "^2.0.2",
-        "@browser-ai/web-llm": "^2.0.3",
+        "@browser-ai/transformers-js": "^2.1.0",
         "@huggingface/transformers": "^3.8.1",
         "@mlc-ai/web-llm": "^0.2.79",
         "ai": "^6.0.66",
@@ -211,9 +210,7 @@
 
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.3.14", "", { "os": "win32", "cpu": "x64" }, "sha512-oizCjdyQ3WJEswpb3Chdngeat56rIdSYK12JI3iI11Mt5T5EXcZ7WLuowzEaFPNJ3zmOQFliMN8QY1Pi+qsfdQ=="],
 
-    "@browser-ai/transformers-js": ["@browser-ai/transformers-js@2.0.3", "", { "peerDependencies": { "@huggingface/transformers": "^3.7.0", "ai": "^6.0.0" } }, "sha512-so8R58YwOfo9K4OkjHDnTRG4RJoyUC5Pw6rHxr/Rnb7aIT5pTOC51iqJjXg3bvUfBcM+XCmk50PAAB7UPOC2Xg=="],
-
-    "@browser-ai/web-llm": ["@browser-ai/web-llm@2.0.4", "", { "peerDependencies": { "@mlc-ai/web-llm": "^0.2.79", "ai": "^6.0.0" } }, "sha512-07oV9vr2EcjUOvxkgaQ+grUyQizTR/Zb8ih1v4imn2A16kMoLEyfPLM320rVf9gVh6DpS9frbTDQk30PtmQOhA=="],
+    "@browser-ai/transformers-js": ["@browser-ai/transformers-js@2.1.0", "", { "peerDependencies": { "@huggingface/transformers": "^3.7.0", "ai": "^6.0.0" } }, "sha512-oh7HtqiYADTVbD79qR1mTGseXa9puWd4oM3AR+mHH1xRF4NINHDLiZM6Q7ERhDbPNAx6CMFIgeY94cVmg17LYQ=="],
 
     "@cfworker/json-schema": ["@cfworker/json-schema@4.1.1", "", {}, "sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og=="],
 

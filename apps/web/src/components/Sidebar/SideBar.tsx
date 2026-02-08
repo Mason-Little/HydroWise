@@ -13,8 +13,9 @@ import {
   SidebarSeparator,
   SidebarTrigger,
 } from "../ui/sidebar";
-import { ChatFeatureButton } from "./ui/chat-feature-button";
 import { ChatHistoryButton } from "./ui/chat-history-button";
+import { ChatFeatureButton } from "./ui/feature-button";
+import { ModelStatus } from "./ui/model-status";
 
 export const SideBar = () => {
   const { chats, createChat, deleteChat } = useChat();
@@ -35,6 +36,12 @@ export const SideBar = () => {
           <SidebarTrigger className="hidden md:inline-flex" />
         </div>
       </SidebarHeader>
+      <SidebarGroup className="pt-1 pb-0">
+        <SidebarGroupContent className="px-2">
+          <ModelStatus />
+        </SidebarGroupContent>
+      </SidebarGroup>
+      <SidebarSeparator />
       <SidebarGroup>
         <SidebarGroupContent>
           <ChatFeatureButton
@@ -51,7 +58,7 @@ export const SideBar = () => {
       </SidebarGroup>
       <SidebarSeparator />
       <Button
-        className="w-full mt-2"
+        className="mt-2 mx-2 w-auto rounded-xl"
         onClick={() => createChat(crypto.randomUUID())}
       >
         New Chat

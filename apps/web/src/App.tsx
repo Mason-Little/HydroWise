@@ -1,5 +1,4 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-// import { useEffect } from "react";
 import { SideBar } from "@/components/Sidebar/SideBar";
 import {
   SidebarInset,
@@ -8,13 +7,8 @@ import {
 } from "@/components/ui/sidebar";
 import { Workspace } from "@/components/Workspace";
 import { queryClient } from "@/lib/query/query-client";
-// import { useLLMStore } from "@/store/llmStore";
 
 export function App() {
-  // const { warmUp } = useLLMStore();
-  // useEffect(() => {
-  //   warmUp();
-  // }, [warmUp]);
   return (
     <QueryClientProvider client={queryClient}>
       <SidebarProvider>

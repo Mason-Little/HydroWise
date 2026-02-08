@@ -21,7 +21,7 @@ export const initWebLLMEngine = async (
     return;
   }
   if (availability === "downloadable") {
-    await model.createSessionWithProgress(({ progress }) => {
+    await model.createSessionWithProgress((progress) => {
       if (!onProgress || progress === undefined) return;
       onProgress(Math.round(progress * 100));
     });
