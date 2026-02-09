@@ -1,6 +1,7 @@
 import {
   index,
   integer,
+  jsonb,
   pgEnum,
   pgTable,
   text,
@@ -8,9 +9,31 @@ import {
   vector,
 } from "drizzle-orm/pg-core";
 
+type CourseChapter = {
+  id: string;
+  title: string;
+  order: number;
+};
+
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
   email: text("email").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const courseStatus = pgEnum("course_status", ["active", "inactive"]);
+
+export const courses = pgTable("courses", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  name: text("name").notNull(),
+  number: text("number").notNull(),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  status: courseStatus("status").notNull(),
+  chapters: jsonb("chapters").$type<CourseChapter[]>().notNull().default([]),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -48,13 +71,24 @@ export const documents = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => users.id),
+    courseId: text("course_id").references(() => courses.id),
+    chapterId: text("chapter_id"),
     name: text("name").notNull(),
     mimeType: text("mime_type").notNull(),
     fileSize: integer("file_size").notNull(),
     pageCount: integer("page_count"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
-  (table) => [index("documents_user_id_idx").on(table.userId)],
+  (table) => [
+    index("documents_user_id_idx").on(table.userId),
+    index("documents_course_id_idx").on(table.courseId),
+    index("documents_user_course_idx").on(table.userId, table.courseId),
+    index("documents_user_course_chapter_idx").on(
+      table.userId,
+      table.courseId,
+      table.chapterId,
+    ),
+  ],
 );
 
 export const documentEmbeddings = pgTable(

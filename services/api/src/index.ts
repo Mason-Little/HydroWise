@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getConfig } from "./config";
 import { createChatRoutes } from "./routes/chat";
+import { createCourseRoutes } from "./routes/course";
 import { createDocumentRoutes } from "./routes/document";
 import { createRagRoutes } from "./routes/rag";
 
@@ -34,5 +35,6 @@ app.get("/", (c) => {
 app.route("/chat", createChatRoutes(db));
 app.route("/document", createDocumentRoutes(db));
 app.route("/rag", createRagRoutes(db));
+app.route("/course", createCourseRoutes(db));
 
 export default app;

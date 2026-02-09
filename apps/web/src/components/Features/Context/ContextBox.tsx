@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CreateCourseDialog } from "@/components/Features/Context/ui/create-course-dialog";
 import { Button } from "@/components/ui/button";
 import { UploadFile } from "@/components/ui/upload-file";
 import { useDocument } from "@/hooks/query/document.queries";
@@ -6,6 +7,7 @@ import { ContextCard } from "./ui/document-card";
 
 export const ContextBox = () => {
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [courseOpen, setCourseOpen] = useState(false);
   const { documents: contextItems, deleteDocument } = useDocument();
   const hasContextItems = (contextItems?.length ?? 0) > 0;
 
@@ -20,6 +22,7 @@ export const ContextBox = () => {
             </p>
           </div>
           <Button onClick={() => setUploadOpen(true)}>Upload Context</Button>
+          <Button onClick={() => setCourseOpen(true)}>Create Course</Button>
         </div>
 
         {hasContextItems ? (
@@ -46,6 +49,7 @@ export const ContextBox = () => {
         )}
       </div>
       <UploadFile open={uploadOpen} onOpenChange={setUploadOpen} />
+      <CreateCourseDialog open={courseOpen} onOpenChange={setCourseOpen} />
     </div>
   );
 };
