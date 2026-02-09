@@ -1,5 +1,8 @@
-import type { Context, RetrieveContextRequest } from "@hydrowise/entities";
-import { type APIResponse, client } from "@/api/client";
+import type {
+  RetrieveContextRequest,
+  RetrieveContextResponse,
+} from "@hydrowise/entities";
+import { client } from "@/api/client";
 
 export const modelAPI = {
   getContextRetrieval: (payload: RetrieveContextRequest) => {
@@ -7,6 +10,6 @@ export const modelAPI = {
       .post("rag/retrieve-context", {
         json: payload,
       })
-      .json<APIResponse<Context[]>>();
+      .json<RetrieveContextResponse>();
   },
 };

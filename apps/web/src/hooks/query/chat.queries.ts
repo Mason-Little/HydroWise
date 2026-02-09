@@ -29,7 +29,7 @@ export const useChat = () => {
     },
   });
 
-  const chatList: Chat[] = chats?.data ?? [];
+  const chatList: Chat[] = chats ?? [];
 
   return { chats: chatList, isLoading, error, createChat, deleteChat };
 };

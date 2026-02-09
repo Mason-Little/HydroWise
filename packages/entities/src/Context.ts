@@ -14,3 +14,9 @@ export const RetrieveContextRequestSchema = z.object({
 export type RetrieveContextRequest = z.infer<
   typeof RetrieveContextRequestSchema
 >;
+
+export const RetrieveContextResponseSchema = z.array(ContextSchema);
+
+export type RetrieveContextResponse = z.infer<
+  typeof RetrieveContextResponseSchema
+>;

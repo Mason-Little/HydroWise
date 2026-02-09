@@ -16,14 +16,10 @@ export const ChatSchema = z.object({
 export type Chat = z.infer<typeof ChatSchema>;
 export type ChatCreateInput = z.infer<typeof ChatCreateInputSchema>;
 
-export const GetChatsResponseSchema = z.object({
-  data: z.array(ChatSchema),
-});
+export const GetChatsResponseSchema = z.array(ChatSchema);
 
 export type GetChatsResponse = z.infer<typeof GetChatsResponseSchema>;
 
-export const CreateChatResponseSchema = z.object({
-  data: ChatSchema,
-});
+export const CreateChatResponseSchema = ChatSchema;
 
 export type CreateChatResponse = z.infer<typeof CreateChatResponseSchema>;

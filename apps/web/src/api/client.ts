@@ -9,10 +9,6 @@ if (!API_URL) {
   throw new Error("VITE_SERVER_BASE_URL is not defined");
 }
 
-type APIResponse<T> = {
-  data: T;
-};
-
 const getHeaders = () => {
   return {
     userId: USER_ID,
@@ -30,5 +26,3 @@ export const client = ky.create({
     ],
   },
 });
-
-export type { APIResponse };

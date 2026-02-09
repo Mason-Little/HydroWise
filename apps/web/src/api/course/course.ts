@@ -1,15 +1,15 @@
 import type {
-  Course,
   CourseCreateInput,
   CreateCourseResponse,
+  GetCourseResponse,
   GetCoursesResponse,
+  NoContentResponse,
 } from "@hydrowise/entities";
-import type { APIResponse } from "@/api/client";
 import { client } from "@/api/client";
 
 export const courseAPI = {
   getCourse: (id: string) => {
-    return client.get(`course/${id}`).json<APIResponse<Course>>();
+    return client.get(`course/${id}`).json<GetCourseResponse>();
   },
 
   getCourses: () => {
@@ -23,6 +23,8 @@ export const courseAPI = {
   },
 
   deleteCourse: (id: string) => {
-    return client.delete(`course/${id}`).json<APIResponse<Course>>();
+    return client
+      .delete(`course/${id}`)
+      .then((): NoContentResponse => undefined);
   },
 };

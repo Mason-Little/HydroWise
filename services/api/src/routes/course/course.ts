@@ -5,20 +5,8 @@ import {
   CourseCreateInputSchema,
 } from "@hydrowise/entities";
 import { Hono } from "hono";
-
-const getUserId = (c: {
-  req: { header: (name: string) => string | undefined };
-}) => c.req.header("userId");
-
-const requireUserId = (c: {
-  req: { header: (name: string) => string | undefined };
-}) => {
-  const userId = getUserId(c);
-  if (!userId) {
-    return { ok: false, error: "userId is required" } as const;
-  }
-  return { ok: true, userId } as const;
-};
+import { getUserId } from "../../shared/auth";
+import { errorResponse } from "../../shared/http";
 
 const createCourseDBInput = (course: CourseCreateInput, userId: string) => {
   return {
@@ -44,59 +32,62 @@ export const createCourseRoutes = (db: DbClient) => {
   const app = new Hono();
 
   app.get("/", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) {
-      return c.json({ error: user.error }, 400);
-    }
+    const userId = getUserId();
 
     const result = await db
       .select()
       .from(courses)
-      .where(eq(courses.userId, user.userId));
+      .where(eq(courses.userId, userId));
 
-    return c.json({ data: result });
+    return c.json(result);
   });
 
-  // create course
-  app.post("/", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) {
-      return c.json({ error: user.error }, 400);
+  app.get("/:id", async (c) => {
+    const userId = getUserId();
+    const courseId = c.req.param("id");
+    const result = await db
+      .select()
+      .from(courses)
+      .where(and(eq(courses.id, courseId), eq(courses.userId, userId)));
+
+    if (!result[0]) {
+      return c.json(errorResponse("course not found"), 404);
     }
 
-    const body = await c.req.json();
+    return c.json(result[0]);
+  });
+
+  app.post("/", async (c) => {
+    const userId = getUserId();
+    const body = await c.req.json().catch(() => null);
     const parseResult = CourseCreateInputSchema.safeParse(body);
     if (!parseResult.success) {
-      console.log(parseResult.error);
-      return c.json({ error: "invalid input" }, 400);
+      return c.json(errorResponse("invalid input"), 400);
     }
 
-    const course = createCourseDBInput(parseResult.data, user.userId);
+    const course = createCourseDBInput(parseResult.data, userId);
 
     await db.insert(courses).values(course);
 
-    return c.json({
-      data: { ...course, createdAt: course.createdAt.toISOString() },
-    });
+    return c.json(
+      { ...course, createdAt: course.createdAt.toISOString() },
+      201,
+    );
   });
 
   app.delete("/:id", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) {
-      return c.json({ error: user.error }, 400);
-    }
-
+    const userId = getUserId();
     const courseId = c.req.param("id");
     const deleted = await db
       .delete(courses)
-      .where(and(eq(courses.id, courseId), eq(courses.userId, user.userId)))
+      .where(and(eq(courses.id, courseId), eq(courses.userId, userId)))
       .returning();
 
     if (!deleted[0]) {
-      return c.json({ error: "course not found" }, 404);
+      return c.json(errorResponse("course not found"), 404);
     }
 
-    return c.json({ data: deleted[0] });
+    return c.body(null, 204);
   });
 
   return app;

@@ -4,8 +4,8 @@ import type {
   GetChatsResponse,
   GetMessagesResponse,
   MessageCreateInput,
+  NoContentResponse,
 } from "@hydrowise/entities";
-import type { APIResponse } from "@/api/client";
 import { client } from "@/api/client";
 
 export const chatAPI = {
@@ -19,7 +19,9 @@ export const chatAPI = {
     return client.post("chat").json<CreateChatResponse>();
   },
   deleteChat: (chatId: string) => {
-    return client.delete(`chat/${chatId}`).json<APIResponse<{ id: string }>>();
+    return client
+      .delete(`chat/${chatId}`)
+      .then((): NoContentResponse => undefined);
   },
   sendMessage: (chatId: string, message: MessageCreateInput) => {
     return client

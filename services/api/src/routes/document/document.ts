@@ -2,10 +2,8 @@ import type { DbClient } from "@hydrowise/database";
 import { and, documentEmbeddings, documents, eq } from "@hydrowise/database";
 import { CreateDocumentRequestSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
-
-const getUserId = (c: {
-  req: { header: (name: string) => string | undefined };
-}) => c.req.header("userId");
+import { getUserId } from "../../shared/auth";
+import { errorResponse } from "../../shared/http";
 
 const createDocumentEntity = (
   userId: string,
@@ -40,44 +38,27 @@ const createDocumentEmbeddingEntity = (
 export const createDocumentRoutes = (db: DbClient) => {
   const app = new Hono();
 
-  // GET /document - get all documents
   app.get("/", async (c) => {
-    const userId = getUserId(c);
-    if (!userId) {
-      return c.json({ error: "userId is required" }, 400);
-    }
+    const userId = getUserId();
 
     const userDocuments = await db.query.documents.findMany({
       where: eq(documents.userId, userId),
     });
 
-    return c.json({ data: userDocuments });
+    return c.json(userDocuments);
   });
 
-  // POST /document - create a document
   app.post("/", async (c) => {
-    const userId = getUserId(c);
-    if (!userId) {
-      return c.json({ error: "userId is required" }, 400);
-    }
-
-    // Parse and validate request body using Zod
-    const body = await c.req.json();
+    const userId = getUserId();
+    const body = await c.req.json().catch(() => null);
     const parseResult = CreateDocumentRequestSchema.safeParse(body);
 
     if (!parseResult.success) {
-      return c.json(
-        {
-          error: "Invalid request body",
-          details: parseResult.error.flatten(),
-        },
-        400,
-      );
+      return c.json(errorResponse("invalid input"), 400);
     }
 
     const payload = parseResult.data;
 
-    // Create the document record
     const document = createDocumentEntity(
       userId,
       payload.name,
@@ -88,7 +69,6 @@ export const createDocumentRoutes = (db: DbClient) => {
 
     await db.insert(documents).values(document);
 
-    // Create embedding records (if any)
     if (payload.embeddings.length > 0) {
       const embeddingRecords = payload.embeddings.map((chunk, index) =>
         createDocumentEmbeddingEntity(
@@ -102,8 +82,8 @@ export const createDocumentRoutes = (db: DbClient) => {
       await db.insert(documentEmbeddings).values(embeddingRecords);
     }
 
-    return c.json({
-      data: {
+    return c.json(
+      {
         id: document.id,
         name: document.name,
         mimeType: document.mimeType,
@@ -112,14 +92,12 @@ export const createDocumentRoutes = (db: DbClient) => {
         createdAt: document.createdAt.toISOString(),
         embeddingCount: payload.embeddings.length,
       },
-    });
+      201,
+    );
   });
 
   app.delete("/:id", async (c) => {
-    const userId = getUserId(c);
-    if (!userId) {
-      return c.json({ error: "userId is required" }, 400);
-    }
+    const userId = getUserId();
 
     const { id } = c.req.param();
 
@@ -129,7 +107,7 @@ export const createDocumentRoutes = (db: DbClient) => {
       .where(and(eq(documents.id, id), eq(documents.userId, userId)));
 
     if (!existing[0]) {
-      return c.json({ error: "document not found" }, 404);
+      return c.json(errorResponse("document not found"), 404);
     }
 
     await db
@@ -139,7 +117,7 @@ export const createDocumentRoutes = (db: DbClient) => {
       .delete(documents)
       .where(and(eq(documents.id, id), eq(documents.userId, userId)));
 
-    return c.json({ data: {} });
+    return c.body(null, 204);
   });
 
   return app;

@@ -31,14 +31,14 @@ export const CourseSchema = z.object({
 export type Course = z.infer<typeof CourseSchema>;
 export type CourseCreateInput = z.infer<typeof CourseCreateInputSchema>;
 
-export const GetCoursesResponseSchema = z.object({
-  data: z.array(CourseSchema),
-});
+export const GetCoursesResponseSchema = z.array(CourseSchema);
 
 export type GetCoursesResponse = z.infer<typeof GetCoursesResponseSchema>;
 
-export const CreateCourseResponseSchema = z.object({
-  data: CourseSchema,
-});
+export const GetCourseResponseSchema = CourseSchema;
+
+export type GetCourseResponse = z.infer<typeof GetCourseResponseSchema>;
+
+export const CreateCourseResponseSchema = CourseSchema;
 
 export type CreateCourseResponse = z.infer<typeof CreateCourseResponseSchema>;

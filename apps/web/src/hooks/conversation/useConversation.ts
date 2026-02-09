@@ -20,7 +20,7 @@ export const useConversation = () => {
     }
 
     const createdChat = await createChat();
-    const chatId = createdChat.data.id;
+    const chatId = createdChat.id;
     setSelectedChatId(chatId);
     return chatId;
   };
@@ -37,7 +37,7 @@ export const useConversation = () => {
 
     const promptEmbedding = await embedText(prompt);
     const retrievedContext = await contextRetrieval(promptEmbedding);
-    const contextInjection = contextToInjection(retrievedContext.data);
+    const contextInjection = contextToInjection(retrievedContext);
 
     const generated = await generateResponse(
       messages,

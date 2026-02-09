@@ -18,6 +18,6 @@ export const useCourses = () => {
 
   return {
     createCourse,
-    courses: courses?.data ?? [],
+    courses: courses ?? [],
   };
 };

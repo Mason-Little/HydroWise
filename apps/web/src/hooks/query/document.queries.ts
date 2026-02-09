@@ -25,5 +25,5 @@ export const useDocument = () => {
     },
   });
 
-  return { documents: documents?.data, uploadDocument, deleteDocument };
+  return { documents, uploadDocument, deleteDocument };
 };

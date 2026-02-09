@@ -43,7 +43,7 @@ export const useMessages = () => {
   };
 
   return {
-    messages: messages?.data ?? [],
+    messages: messages ?? [],
     isLoading,
     error,
     sendMessage: sendChatMessage,

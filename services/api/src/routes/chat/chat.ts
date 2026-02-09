@@ -5,6 +5,8 @@ import {
   MessageCreateInputSchema,
 } from "@hydrowise/entities";
 import { Hono } from "hono";
+import { getUserId } from "../../shared/auth";
+import { errorResponse } from "../../shared/http";
 
 const createChatEntity = (userId: string, name?: string) => ({
   id: crypto.randomUUID(),
@@ -13,119 +15,94 @@ const createChatEntity = (userId: string, name?: string) => ({
   createdAt: new Date(),
 });
 
-const getUserId = (c: {
-  req: { header: (name: string) => string | undefined };
-}) => c.req.header("userId");
-
-const requireUserId = (c: {
-  req: { header: (name: string) => string | undefined };
-}) => {
-  const userId = getUserId(c);
-  if (!userId) {
-    return { ok: false, error: "userId is required" } as const;
-  }
-  return { ok: true, userId } as const;
-};
-
 export const createChatRoutes = (db: DbClient) => {
   const app = new Hono();
 
-  // GET /chat - list all chats
   app.get("/", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) return c.json(user, 400);
+    const userId = getUserId();
     const result = await db
       .select()
       .from(chats)
-      .where(eq(chats.userId, user.userId));
-    return c.json({ data: result });
+      .where(eq(chats.userId, userId));
+    return c.json(result);
   });
 
-  // POST /chat - create a chat
   app.post("/", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) return c.json(user, 400);
-
-    const payload = await c.req.json().catch(() => ({}));
+    const userId = getUserId();
+    const payload = await c.req.json().catch(() => null);
     const parseResult = ChatCreateInputSchema.safeParse(payload);
     if (!parseResult.success) {
-      return c.json({ error: "invalid input" }, 400);
+      return c.json(errorResponse("invalid input"), 400);
     }
 
-    const chat = createChatEntity(user.userId, parseResult.data.name);
+    const chat = createChatEntity(userId, parseResult.data.name);
     await db.insert(chats).values(chat);
-    return c.json({
-      data: { ...chat, createdAt: chat.createdAt.toISOString() },
-    });
+    return c.json({ ...chat, createdAt: chat.createdAt.toISOString() }, 201);
   });
 
-  // GET /chat/:chatId - get single chat
   app.get("/:chatId", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) return c.json(user, 400);
+    const userId = getUserId();
     const chatId = c.req.param("chatId");
     const result = await db
       .select()
       .from(chats)
-      .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
-    return c.json({ data: result[0] ?? null });
+      .where(and(eq(chats.id, chatId), eq(chats.userId, userId)));
+
+    if (!result[0]) {
+      return c.json(errorResponse("chat not found"), 404);
+    }
+
+    return c.json(result[0]);
   });
 
-  // GET /chat/:chatId/messages - get chat messages
   app.get("/:chatId/messages", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) return c.json(user, 400);
+    const userId = getUserId();
     const chatId = c.req.param("chatId");
     const chat = await db
       .select({ id: chats.id })
       .from(chats)
-      .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
+      .where(and(eq(chats.id, chatId), eq(chats.userId, userId)));
     if (!chat[0]) {
-      return c.json({ error: "chat not found" }, 404);
+      return c.json(errorResponse("chat not found"), 404);
     }
     const result = await db
       .select()
       .from(messages)
       .where(eq(messages.chatId, chatId));
-    return c.json({ data: result });
+    return c.json(result);
   });
 
-  // DELETE /chat/:chatId - delete a chat
   app.delete("/:chatId", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) return c.json(user, 400);
+    const userId = getUserId();
     const chatId = c.req.param("chatId");
     const chat = await db
       .select({ id: chats.id })
       .from(chats)
-      .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
+      .where(and(eq(chats.id, chatId), eq(chats.userId, userId)));
     if (!chat[0]) {
-      return c.json({ error: "chat not found" }, 404);
+      return c.json(errorResponse("chat not found"), 404);
     }
     await db.delete(messages).where(eq(messages.chatId, chatId));
-    const result = await db
+    await db
       .delete(chats)
-      .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)))
-      .returning();
-    return c.json({ data: result[0] });
+      .where(and(eq(chats.id, chatId), eq(chats.userId, userId)));
+    return c.body(null, 204);
   });
 
-  // POST /chat/:chatId/messages - append message
   app.post("/:chatId/messages", async (c) => {
-    const user = requireUserId(c);
-    if (!user.ok) return c.json(user, 400);
+    const userId = getUserId();
     const chatId = c.req.param("chatId");
     const chat = await db
       .select({ id: chats.id })
       .from(chats)
-      .where(and(eq(chats.id, chatId), eq(chats.userId, user.userId)));
+      .where(and(eq(chats.id, chatId), eq(chats.userId, userId)));
     if (!chat[0]) {
-      return c.json({ error: "chat not found" }, 404);
+      return c.json(errorResponse("chat not found"), 404);
     }
-    const payload = await c.req.json();
+    const payload = await c.req.json().catch(() => null);
     const parseResult = MessageCreateInputSchema.safeParse(payload);
     if (!parseResult.success) {
-      return c.json({ error: "role and content are required" }, 400);
+      return c.json(errorResponse("role and content are required"), 400);
     }
     const messagePayload = parseResult.data;
 
@@ -137,9 +114,10 @@ export const createChatRoutes = (db: DbClient) => {
       createdAt: new Date(),
     };
     await db.insert(messages).values(message);
-    return c.json({
-      data: { ...message, createdAt: message.createdAt.toISOString() },
-    });
+    return c.json(
+      { ...message, createdAt: message.createdAt.toISOString() },
+      201,
+    );
   });
 
   return app;

@@ -25,14 +25,10 @@ export const MessageSchema = z.object({
 
 export type Message = z.infer<typeof MessageSchema>;
 
-export const GetMessagesResponseSchema = z.object({
-  data: z.array(MessageSchema),
-});
+export const GetMessagesResponseSchema = z.array(MessageSchema);
 
 export type GetMessagesResponse = z.infer<typeof GetMessagesResponseSchema>;
 
-export const CreateMessageResponseSchema = z.object({
-  data: MessageSchema,
-});
+export const CreateMessageResponseSchema = MessageSchema;
 
 export type CreateMessageResponse = z.infer<typeof CreateMessageResponseSchema>;

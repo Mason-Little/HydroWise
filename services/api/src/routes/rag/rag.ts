@@ -9,23 +9,18 @@ import {
 } from "@hydrowise/database";
 import { RetrieveContextRequestSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
-
-const app = new Hono();
-
-const getUserId = (c: {
-  req: { header: (name: string) => string | undefined };
-}) => c.req.header("userId");
+import { getUserId } from "../../shared/auth";
+import { errorResponse } from "../../shared/http";
 
 export const createRagRoutes = (db: DbClient) => {
+  const app = new Hono();
+
   app.post("/retrieve-context", async (c) => {
-    const userId = getUserId(c);
-    if (!userId) {
-      return c.json({ error: "userId is required" }, 400);
-    }
-    const body = await c.req.json();
+    const userId = getUserId();
+    const body = await c.req.json().catch(() => null);
     const parseResult = RetrieveContextRequestSchema.safeParse(body);
     if (!parseResult.success) {
-      return c.json({ error: "embedding is required" }, 400);
+      return c.json(errorResponse("embedding is required"), 400);
     }
     const userEmbedding = parseResult.data.embedding;
 
@@ -45,7 +40,7 @@ export const createRagRoutes = (db: DbClient) => {
       .orderBy(desc(similarity))
       .limit(5);
 
-    return c.json({ data: results });
+    return c.json(results);
   });
 
   return app;
