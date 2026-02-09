@@ -1,10 +1,10 @@
-import type { Message } from "@hydrowise/entities";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import type { ConversationMessage } from "@hydrowise/entities";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { chatAPI } from "@/api/conversation/chat";
-import { makeOptimisticListMutation } from "@/lib/query/query-optimistic";
 import { useChatStore } from "@/store/chatStore";
 
 export const useMessages = () => {
+  const queryClient = useQueryClient();
   const { selectedChatId } = useChatStore();
   const messagesQueryKey = ["chat", selectedChatId, "messages"] as const;
 
@@ -14,18 +14,38 @@ export const useMessages = () => {
     error,
   } = useQuery({
     queryKey: messagesQueryKey,
-    queryFn: () => chatAPI.getChatMessages(selectedChatId),
+    queryFn: () => {
+      if (!selectedChatId) {
+        throw new Error("No active chat selected");
+      }
+      return chatAPI.getChatMessages(selectedChatId);
+    },
     enabled: Boolean(selectedChatId),
   });
 
   const { mutateAsync: sendMessage } = useMutation({
-    mutationFn: (message: Message) =>
-      chatAPI.sendMessage(selectedChatId, message),
-    ...makeOptimisticListMutation<Message, Message>({
-      queryKey: messagesQueryKey,
-      apply: (current, message) => [...current, message],
-    }),
+    mutationFn: ({
+      chatId,
+      message,
+    }: {
+      chatId: string;
+      message: ConversationMessage;
+    }) => chatAPI.sendMessage(chatId, message),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["chat", variables.chatId, "messages"],
+      });
+    },
   });
 
-  return { messages: messages?.data ?? [], isLoading, error, sendMessage };
+  const sendChatMessage = (chatId: string, message: ConversationMessage) => {
+    return sendMessage({ chatId, message });
+  };
+
+  return {
+    messages: messages?.data ?? [],
+    isLoading,
+    error,
+    sendMessage: sendChatMessage,
+  };
 };

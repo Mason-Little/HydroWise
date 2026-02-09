@@ -2,7 +2,6 @@ import type { Chat } from "@hydrowise/entities";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { chatAPI } from "@/api/conversation/chat";
 import { queryClient } from "@/lib/query/query-client";
-import { makeOptimisticListMutation } from "@/lib/query/query-optimistic";
 
 const chatQueryKey = ["chat"] as const;
 
@@ -17,7 +16,7 @@ export const useChat = () => {
   });
 
   const { mutateAsync: createChat } = useMutation({
-    mutationFn: (chatId: string) => chatAPI.createChat(chatId),
+    mutationFn: () => chatAPI.createChat(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["chat"] });
     },
@@ -25,11 +24,12 @@ export const useChat = () => {
 
   const { mutateAsync: deleteChat } = useMutation({
     mutationFn: (chatId: string) => chatAPI.deleteChat(chatId),
-    ...makeOptimisticListMutation<Chat, string>({
-      queryKey: chatQueryKey,
-      apply: (current, chatId) => current.filter((chat) => chat.id !== chatId),
-    }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["chat"] });
+    },
   });
 
-  return { chats: chats?.data ?? [], isLoading, error, createChat, deleteChat };
+  const chatList: Chat[] = chats?.data ?? [];
+
+  return { chats: chatList, isLoading, error, createChat, deleteChat };
 };

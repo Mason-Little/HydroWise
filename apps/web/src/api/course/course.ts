@@ -1,4 +1,9 @@
-import type { Course, CourseCreateInput } from "@hydrowise/entities";
+import type {
+  Course,
+  CourseCreateInput,
+  CreateCourseResponse,
+  GetCoursesResponse,
+} from "@hydrowise/entities";
 import type { APIResponse } from "@/api/client";
 import { client } from "@/api/client";
 
@@ -8,11 +13,13 @@ export const courseAPI = {
   },
 
   getCourses: () => {
-    return client.get(`course`).json<APIResponse<Course[]>>();
+    return client.get(`course`).json<GetCoursesResponse>();
   },
 
   createCourse: (payload: CourseCreateInput) => {
-    return client.post(`course`, { json: payload }).json<APIResponse<Course>>();
+    return client
+      .post(`course`, { json: payload })
+      .json<CreateCourseResponse>();
   },
 
   deleteCourse: (id: string) => {

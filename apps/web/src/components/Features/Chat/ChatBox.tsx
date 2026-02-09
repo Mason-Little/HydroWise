@@ -1,4 +1,4 @@
-import type { Message } from "@hydrowise/entities";
+import type { ConversationMessage } from "@hydrowise/entities";
 import { useState } from "react";
 import { ChatInput } from "@/components/Features/Chat/ui/chat-input";
 import { MessageArea } from "@/components/Features/Chat/ui/message-area";
@@ -7,10 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { useConversation } from "@/hooks/conversation/useConversation";
 import { useMessages } from "@/hooks/query/message.queries";
 import { convertTextToMessage } from "@/lib/prompt/text-to-message";
-import { useChatStore } from "@/store/chatStore";
 
 export const ChatBox = () => {
-  const { selectedChatId } = useChatStore();
   const { messages } = useMessages();
   const { handleSendMessage, isStreaming } = useConversation();
   const [streamingContent, setStreamingContent] = useState("");
@@ -19,10 +17,10 @@ export const ChatBox = () => {
     setStreamingContent((previous) => previous + chunk);
   };
 
-  const displayedMessages: Message[] = [
+  const displayedMessages: ConversationMessage[] = [
     ...messages,
     ...(streamingContent
-      ? [convertTextToMessage(streamingContent, selectedChatId, "assistant")]
+      ? [convertTextToMessage(streamingContent, "assistant")]
       : []),
   ];
 

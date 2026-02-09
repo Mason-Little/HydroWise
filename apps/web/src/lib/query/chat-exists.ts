@@ -7,6 +7,9 @@ export const useChatExists = () => {
   const { selectedChatId } = useChatStore();
 
   const chatExists = useMemo(() => {
+    if (!selectedChatId) {
+      return false;
+    }
     return chats.filter((chat) => chat.id === selectedChatId).length > 0;
   }, [chats, selectedChatId]);
 

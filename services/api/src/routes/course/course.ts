@@ -36,6 +36,7 @@ const createCourseDBInput = (course: CourseCreateInput, userId: string) => {
       };
     }),
     status: "active" as const,
+    createdAt: new Date(),
   };
 };
 
@@ -74,7 +75,9 @@ export const createCourseRoutes = (db: DbClient) => {
 
     await db.insert(courses).values(course);
 
-    return c.json({ data: course });
+    return c.json({
+      data: { ...course, createdAt: course.createdAt.toISOString() },
+    });
   });
 
   app.delete("/:id", async (c) => {

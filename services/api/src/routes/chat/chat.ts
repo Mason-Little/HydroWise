@@ -1,12 +1,16 @@
 import type { DbClient } from "@hydrowise/database";
 import { and, chats, eq, messages } from "@hydrowise/database";
-import { MessageCreateInputSchema } from "@hydrowise/entities";
+import {
+  ChatCreateInputSchema,
+  MessageCreateInputSchema,
+} from "@hydrowise/entities";
 import { Hono } from "hono";
 
-const createChatEntity = (userId: string, chatId: string, name?: string) => ({
-  id: chatId,
+const createChatEntity = (userId: string, name?: string) => ({
+  id: crypto.randomUUID(),
   userId,
   name: name ?? "New Chat",
+  createdAt: new Date(),
 });
 
 const getUserId = (c: {
@@ -38,13 +42,21 @@ export const createChatRoutes = (db: DbClient) => {
   });
 
   // POST /chat - create a chat
-  app.post("/:chatId", async (c) => {
+  app.post("/", async (c) => {
     const user = requireUserId(c);
     if (!user.ok) return c.json(user, 400);
-    const chatId = c.req.param("chatId");
-    const chat = createChatEntity(user.userId, chatId);
+
+    const payload = await c.req.json().catch(() => ({}));
+    const parseResult = ChatCreateInputSchema.safeParse(payload);
+    if (!parseResult.success) {
+      return c.json({ error: "invalid input" }, 400);
+    }
+
+    const chat = createChatEntity(user.userId, parseResult.data.name);
     await db.insert(chats).values(chat);
-    return c.json({ data: chat });
+    return c.json({
+      data: { ...chat, createdAt: chat.createdAt.toISOString() },
+    });
   });
 
   // GET /chat/:chatId - get single chat
@@ -122,9 +134,12 @@ export const createChatRoutes = (db: DbClient) => {
       chatId,
       role: messagePayload.role,
       content: messagePayload.content,
+      createdAt: new Date(),
     };
     await db.insert(messages).values(message);
-    return c.json({ data: message });
+    return c.json({
+      data: { ...message, createdAt: message.createdAt.toISOString() },
+    });
   });
 
   return app;

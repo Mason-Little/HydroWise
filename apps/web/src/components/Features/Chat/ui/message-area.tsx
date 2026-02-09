@@ -1,18 +1,18 @@
-import type { Message } from "@hydrowise/entities";
+import type { ConversationMessage } from "@hydrowise/entities";
 import { Streamdown } from "streamdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 type MessageAreaProps = {
-  messages: Message[];
+  messages: ConversationMessage[];
 };
 
 export const MessageArea = ({ messages }: MessageAreaProps) => {
   return (
     <ScrollArea className="min-h-0 flex-1">
       <div className="space-y-3 px-3 py-4 md:px-5">
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <div
-            key={message.id}
+            key={`${message.role}-${index}`}
             className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed md:max-w-[75%] ${
               message.role === "user"
                 ? "bg-primary text-primary-foreground ml-auto"

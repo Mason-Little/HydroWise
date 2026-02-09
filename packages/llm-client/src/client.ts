@@ -1,4 +1,4 @@
-import type { Message } from "@hydrowise/entities";
+import type { ConversationMessage } from "@hydrowise/entities";
 import { initDesktopLLMClient } from "./desktop/init/chat";
 import { initDesktopEmbeddings } from "./desktop/init/embedding";
 import { initDesktopVisionModel } from "./desktop/init/image";
@@ -28,8 +28,8 @@ const getRuntimeMode = () => {
 };
 
 export const sendChatCompletion = (
-  history: Message[],
-  query: Message,
+  history: ConversationMessage[],
+  query: ConversationMessage,
   contextInjection: string,
   onChunk: (chunk: string) => void,
 ) => {

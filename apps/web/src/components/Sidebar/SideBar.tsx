@@ -22,7 +22,7 @@ type SidebarProps = {
 };
 
 export const SideBar = ({ setFeature }: SidebarProps) => {
-  const { chats, createChat, deleteChat } = useChat();
+  const { chats, deleteChat } = useChat();
   const { setSelectedChatId } = useChatStore();
 
   return (
@@ -63,7 +63,7 @@ export const SideBar = ({ setFeature }: SidebarProps) => {
       <SidebarSeparator />
       <Button
         className="mt-2 mx-2 w-auto rounded-xl"
-        onClick={() => createChat(crypto.randomUUID())}
+        onClick={() => setSelectedChatId(null)}
       >
         New Chat
       </Button>

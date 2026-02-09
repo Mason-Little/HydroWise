@@ -4,20 +4,35 @@ export const MessageRoleSchema = z.enum(["user", "assistant"]);
 
 export type MessageRole = z.infer<typeof MessageRoleSchema>;
 
-export const MessageCreateInputSchema = z.object({
+export const ConversationMessageSchema = z.object({
   role: MessageRoleSchema,
   content: z.string(),
 });
 
-export type MessageCreateInput = z.infer<typeof MessageCreateInputSchema>;
+export type ConversationMessage = z.infer<typeof ConversationMessageSchema>;
+
+export const MessageCreateInputSchema = ConversationMessageSchema;
+
+export type MessageCreateInput = ConversationMessage;
 
 export const MessageSchema = z.object({
-  id: z.string().optional(),
-  chatId: z.string().optional(),
+  id: z.string().min(1),
+  chatId: z.string().min(1),
   role: MessageRoleSchema,
   content: z.string(),
-  createdAt: z.union([z.string(), z.date()]).optional(),
-  timestamp: z.date().optional(),
+  createdAt: z.union([z.string(), z.date()]),
 });
 
 export type Message = z.infer<typeof MessageSchema>;
+
+export const GetMessagesResponseSchema = z.object({
+  data: z.array(MessageSchema),
+});
+
+export type GetMessagesResponse = z.infer<typeof GetMessagesResponseSchema>;
+
+export const CreateMessageResponseSchema = z.object({
+  data: MessageSchema,
+});
+
+export type CreateMessageResponse = z.infer<typeof CreateMessageResponseSchema>;

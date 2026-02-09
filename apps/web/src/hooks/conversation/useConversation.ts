@@ -3,30 +3,37 @@ import { useDocument } from "@/hooks/query/embedding.queries";
 import { useMessages } from "@/hooks/query/message.queries";
 import { contextToInjection } from "@/lib/prompt/convertContext";
 import { convertTextToMessage } from "@/lib/prompt/text-to-message";
-import { useChatExists } from "@/lib/query/chat-exists";
 import { useChatStore } from "@/store/chatStore";
 import { useChat } from "../query/chat.queries";
 
 export const useConversation = () => {
-  const { selectedChatId } = useChatStore();
+  const { selectedChatId, setSelectedChatId } = useChatStore();
   const { messages } = useMessages();
   const { contextRetrieval } = useDocument();
   const { embedText, generateResponse, isStreaming } = useModel();
   const { sendMessage } = useMessages();
   const { createChat } = useChat();
-  const chatExists = useChatExists();
+
+  const ensureActiveChat = async () => {
+    if (selectedChatId) {
+      return selectedChatId;
+    }
+
+    const createdChat = await createChat();
+    const chatId = createdChat.data.id;
+    setSelectedChatId(chatId);
+    return chatId;
+  };
 
   const handleSendMessage = async (
     prompt: string,
     onmessage: (chunk: string) => void,
   ) => {
-    if (!chatExists) {
-      await createChat(selectedChatId);
-    }
+    const chatId = await ensureActiveChat();
 
-    const promptMessage = convertTextToMessage(prompt, selectedChatId, "user");
+    const promptMessage = convertTextToMessage(prompt, "user");
 
-    sendMessage(promptMessage);
+    await sendMessage(chatId, promptMessage);
 
     const promptEmbedding = await embedText(prompt);
     const retrievedContext = await contextRetrieval(promptEmbedding);
@@ -39,7 +46,7 @@ export const useConversation = () => {
       onmessage,
     );
 
-    sendMessage(convertTextToMessage(generated, selectedChatId, "assistant"));
+    await sendMessage(chatId, convertTextToMessage(generated, "assistant"));
   };
 
   return { handleSendMessage, isStreaming };

@@ -3,6 +3,7 @@ import type {
   CreateDocumentResponse,
   GetDocumentsResponse,
 } from "@hydrowise/entities";
+import type { APIResponse } from "@/api/client";
 import { client } from "@/api/client";
 
 export const documentAPI = {
@@ -19,6 +20,8 @@ export const documentAPI = {
   },
 
   deleteDocument: (id: string) => {
-    return client.delete(`document/${id}`).json<void>();
+    return client
+      .delete(`document/${id}`)
+      .json<APIResponse<Record<string, never>>>();
   },
 };

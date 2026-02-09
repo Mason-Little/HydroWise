@@ -1,4 +1,4 @@
-import type { Message } from "@hydrowise/entities";
+import type { ConversationMessage } from "@hydrowise/entities";
 import { sendChatCompletion, sendEmbedding } from "@hydrowise/llm-client";
 import { useState } from "react";
 
@@ -10,8 +10,8 @@ export const useModel = () => {
   };
 
   const generateResponse = async (
-    history: Message[],
-    query: Message,
+    history: ConversationMessage[],
+    query: ConversationMessage,
     contextInjection: string,
     onmessage: (chunk: string) => void,
   ) => {

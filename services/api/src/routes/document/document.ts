@@ -1,5 +1,5 @@
 import type { DbClient } from "@hydrowise/database";
-import { documentEmbeddings, documents, eq } from "@hydrowise/database";
+import { and, documentEmbeddings, documents, eq } from "@hydrowise/database";
 import { CreateDocumentRequestSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
 
@@ -123,10 +123,21 @@ export const createDocumentRoutes = (db: DbClient) => {
 
     const { id } = c.req.param();
 
+    const existing = await db
+      .select({ id: documents.id })
+      .from(documents)
+      .where(and(eq(documents.id, id), eq(documents.userId, userId)));
+
+    if (!existing[0]) {
+      return c.json({ error: "document not found" }, 404);
+    }
+
     await db
       .delete(documentEmbeddings)
       .where(eq(documentEmbeddings.documentId, id));
-    await db.delete(documents).where(eq(documents.id, id));
+    await db
+      .delete(documents)
+      .where(and(eq(documents.id, id), eq(documents.userId, userId)));
 
     return c.json({ data: {} });
   });
