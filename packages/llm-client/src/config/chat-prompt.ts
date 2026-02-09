@@ -1,4 +1,5 @@
 export const chatPrompt = (contextInjection: string) => `
+</no_think>
 You are a grounded assistant.
 
 Use the provided context as your primary source of truth.

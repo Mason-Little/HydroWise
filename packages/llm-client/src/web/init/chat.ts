@@ -3,10 +3,9 @@ import {
   transformersJS,
 } from "@browser-ai/transformers-js";
 
-const modelId = "Xenova/Phi-3-mini-4k-instruct";
-
-const model = transformersJS(modelId, {
+const model = transformersJS("onnx-community/Qwen3-0.6B-ONNX", {
   device: "webgpu",
+  dtype: "q4f16",
 });
 
 export const initWebLLMEngine = async (

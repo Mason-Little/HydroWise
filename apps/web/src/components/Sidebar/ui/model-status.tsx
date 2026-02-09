@@ -71,7 +71,7 @@ export const ModelStatus = () => {
         </div>
       </CollapsibleTrigger>
 
-      {/* TODO: add animations + fix jumpy progress from client */}
+      {/* TODO: add animations + fix jumpy progress from client note: we could probably just add a new loading bar if there is a new progress lower then the last one*/}
       <CollapsibleContent>
         <div className="space-y-2">
           {models.map(([model, status]) => (
