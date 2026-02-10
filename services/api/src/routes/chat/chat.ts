@@ -1,17 +1,14 @@
 import type { DbClient } from "@hydrowise/database";
 import { and, chats, eq, messages } from "@hydrowise/database";
-import {
-  ChatCreateInputSchema,
-  MessageCreateInputSchema,
-} from "@hydrowise/entities";
+import { MessageCreateInputSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
 import { getUserId } from "../../shared/auth";
 import { errorResponse } from "../../shared/http";
 
-const createChatEntity = (userId: string, name?: string) => ({
+const createChatEntity = (userId: string) => ({
   id: crypto.randomUUID(),
   userId,
-  name: name ?? "New Chat",
+  name: "New Chat",
   createdAt: new Date(),
 });
 
@@ -29,15 +26,9 @@ export const createChatRoutes = (db: DbClient) => {
 
   app.post("/", async (c) => {
     const userId = getUserId();
-    const payload = await c.req.json().catch(() => null);
-    const parseResult = ChatCreateInputSchema.safeParse(payload);
-    if (!parseResult.success) {
-      return c.json(errorResponse("invalid input"), 400);
-    }
-
-    const chat = createChatEntity(userId, parseResult.data.name);
+    const chat = createChatEntity(userId);
     await db.insert(chats).values(chat);
-    return c.json({ ...chat, createdAt: chat.createdAt.toISOString() }, 201);
+    return c.json(chat, 201);
   });
 
   app.get("/:chatId", async (c) => {
