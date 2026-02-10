@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { CreateCourseDialog } from "@/components/Features/Context/ui/create-course-dialog";
+import { CourseCard } from "@/components/Features/Context/ui/CourseCard";
+import { CreateCourseDialog } from "@/components/Features/Context/ui/CreateCourseDialog";
+import { DocumentCard } from "@/components/Features/Context/ui/DocumentCard";
 import { UploadFile } from "@/components/Features/Upload/UploadFile";
 import { Button } from "@/components/ui/button";
 import { useCourses } from "@/hooks/query/course.queries";
 import { useDocument } from "@/hooks/query/document.queries";
-import { CourseCard } from "./ui/course-card";
-import { DocumentCard } from "./ui/document-card";
 
 export const ContextBox = () => {
   const [uploadOpen, setUploadOpen] = useState(false);

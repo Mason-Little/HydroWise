@@ -1,7 +1,7 @@
 import type { ConversationMessage } from "@hydrowise/entities";
 import { useState } from "react";
-import { ChatInput } from "@/components/Features/Chat/ui/chat-input";
-import { MessageArea } from "@/components/Features/Chat/ui/message-area";
+import { ChatInput } from "@/components/Features/Chat/ui/ChatInput";
+import { MessageArea } from "@/components/Features/Chat/ui/MessageArea";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useConversation } from "@/hooks/conversation/useConversation";

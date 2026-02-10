@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/store/chatStore";
-import { Button } from "../../ui/button";
 
 type ChatHistoryButtonProps = {
   chatId: string;

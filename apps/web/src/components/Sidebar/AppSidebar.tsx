@@ -1,32 +1,35 @@
 import { FileQuestionIcon, MessageCircleIcon } from "lucide-react";
+import { ChatFeatureButton } from "@/components/Sidebar/ui/ChatFeatureButton";
+import { ChatHistoryButton } from "@/components/Sidebar/ui/ChatHistoryButton";
+import { ModelStatus } from "@/components/Sidebar/ui/ModelStatus";
 import { Button } from "@/components/ui/button";
 import { useChat } from "@/hooks/query/chat.queries";
 import { useChatStore } from "@/store/chatStore";
 import {
-  Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
+  Sidebar as SidebarLayout,
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
 } from "../ui/sidebar";
-import { ChatHistoryButton } from "./ui/chat-history-button";
-import { ChatFeatureButton } from "./ui/feature-button";
-import { ModelStatus } from "./ui/model-status";
 
 type SidebarProps = {
   setFeature: (feature: "chat" | "context") => void;
 };
 
-export const SideBar = ({ setFeature }: SidebarProps) => {
+export const AppSidebar = ({ setFeature }: SidebarProps) => {
   const { chats, deleteChat } = useChat();
   const { setSelectedChatId } = useChatStore();
 
   return (
-    <Sidebar variant="inset" className="border-r border-sidebar-border/60">
+    <SidebarLayout
+      variant="inset"
+      className="border-r border-sidebar-border/60"
+    >
       <SidebarHeader className="gap-3 p-3">
         <div className="flex items-center justify-between">
           <div>
@@ -85,6 +88,6 @@ export const SideBar = ({ setFeature }: SidebarProps) => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
-    </Sidebar>
+    </SidebarLayout>
   );
 };
