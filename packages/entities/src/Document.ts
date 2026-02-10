@@ -8,7 +8,6 @@ export const EmbeddingChunkSchema = z.object({
 export type EmbeddingChunk = z.infer<typeof EmbeddingChunkSchema>;
 
 export const DocumentMetaSchema = z.object({
-  name: z.string(),
   mimeType: z.string(),
   fileSize: z.number().int().positive(),
   pageCount: z.number().int().positive().nullable().optional(),
@@ -17,11 +16,17 @@ export const DocumentMetaSchema = z.object({
 
 export type DocumentMeta = z.infer<typeof DocumentMetaSchema>;
 
-export const CreateDocumentRequestSchema = DocumentMetaSchema;
+export const CreateDocumentRequestSchema = DocumentMetaSchema.extend({
+  name: z.string(),
+  courseId: z.string().nullable(),
+  chapterId: z.string().nullable(),
+});
 export type CreateDocumentRequest = z.infer<typeof CreateDocumentRequestSchema>;
 
 export const CreatedDocumentSchema = z.object({
   id: z.string(),
+  courseId: z.string().nullable(),
+  chapterId: z.string().nullable(),
   name: z.string(),
   mimeType: z.string(),
   fileSize: z.number().int().positive(),

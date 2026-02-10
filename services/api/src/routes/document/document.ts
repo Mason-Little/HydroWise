@@ -8,6 +8,8 @@ import { errorResponse } from "../../shared/http";
 const createDocumentEntity = (
   userId: string,
   name: string,
+  courseId: string | null,
+  chapterId: string | null,
   mimeType: string,
   fileSize: number,
   pageCount: number | null,
@@ -15,6 +17,8 @@ const createDocumentEntity = (
   id: crypto.randomUUID(),
   userId,
   name,
+  courseId,
+  chapterId,
   mimeType,
   fileSize,
   pageCount,
@@ -62,6 +66,8 @@ export const createDocumentRoutes = (db: DbClient) => {
     const document = createDocumentEntity(
       userId,
       payload.name,
+      payload.courseId,
+      payload.chapterId,
       payload.mimeType,
       payload.fileSize,
       payload.pageCount ?? null,
@@ -86,6 +92,8 @@ export const createDocumentRoutes = (db: DbClient) => {
       {
         id: document.id,
         name: document.name,
+        courseId: document.courseId,
+        chapterId: document.chapterId,
         mimeType: document.mimeType,
         fileSize: document.fileSize,
         pageCount: document.pageCount,
