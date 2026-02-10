@@ -1,8 +1,8 @@
 import { ArrowUpIcon, PaperclipIcon } from "lucide-react";
 import { type KeyboardEvent, type SyntheticEvent, useState } from "react";
+import { UploadFile } from "@/components/Features/Upload/UploadFile";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { UploadFile } from "@/components/ui/upload-file";
 
 type ChatInputProps = {
   onSend: (message: string) => void;

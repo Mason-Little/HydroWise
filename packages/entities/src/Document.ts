@@ -8,6 +8,7 @@ export const EmbeddingChunkSchema = z.object({
 export type EmbeddingChunk = z.infer<typeof EmbeddingChunkSchema>;
 
 export const DocumentMetaSchema = z.object({
+  name: z.string(),
   mimeType: z.string(),
   fileSize: z.number().int().positive(),
   pageCount: z.number().int().positive().nullable().optional(),

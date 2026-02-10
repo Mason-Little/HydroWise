@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CreateCourseDialog } from "@/components/Features/Context/ui/create-course-dialog";
+import { UploadFile } from "@/components/Features/Upload/UploadFile";
 import { Button } from "@/components/ui/button";
-import { UploadFile } from "@/components/ui/upload-file";
 import { useCourses } from "@/hooks/query/course.queries";
 import { useDocument } from "@/hooks/query/document.queries";
 import { CourseCard } from "./ui/course-card";
