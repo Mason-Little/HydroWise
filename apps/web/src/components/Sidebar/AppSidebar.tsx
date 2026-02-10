@@ -1,10 +1,8 @@
-import { FileQuestionIcon, MessageCircleIcon } from "lucide-react";
+import { BrainIcon, FileTextIcon, MessageCircleIcon } from "lucide-react";
 import { ChatFeatureButton } from "@/components/Sidebar/ui/ChatFeatureButton";
 import { ChatHistoryButton } from "@/components/Sidebar/ui/ChatHistoryButton";
 import { ModelStatus } from "@/components/Sidebar/ui/ModelStatus";
 import { Button } from "@/components/ui/button";
-import { useChat } from "@/hooks/query/chat.queries";
-import { useChatStore } from "@/store/chatStore";
 import {
   SidebarContent,
   SidebarGroup,
@@ -15,10 +13,12 @@ import {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-} from "../ui/sidebar";
+} from "@/components/ui/sidebar";
+import { useChat } from "@/hooks/query/chat.queries";
+import { useChatStore } from "@/store/chatStore";
 
 type SidebarProps = {
-  setFeature: (feature: "chat" | "context") => void;
+  setFeature: (feature: "chat" | "context" | "quiz") => void;
 };
 
 export const AppSidebar = ({ setFeature }: SidebarProps) => {
@@ -58,8 +58,13 @@ export const AppSidebar = ({ setFeature }: SidebarProps) => {
           />
           <ChatFeatureButton
             feature="Context"
-            icon={<FileQuestionIcon className="size-4" />}
+            icon={<BrainIcon className="size-4" />}
             onClick={() => setFeature("context")}
+          />
+          <ChatFeatureButton
+            feature="Quiz"
+            icon={<FileTextIcon className="size-4" />}
+            onClick={() => setFeature("quiz")}
           />
         </SidebarGroupContent>
       </SidebarGroup>

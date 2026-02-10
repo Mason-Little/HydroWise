@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 
 type ChatFeatureButtonProps = {
-  feature: "Chat" | "Context";
+  feature: "Chat" | "Context" | "Quiz";
   icon: React.ReactNode;
   onClick: () => void;
 };
