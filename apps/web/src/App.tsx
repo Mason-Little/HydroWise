@@ -11,7 +11,9 @@ import { Workspace } from "@/components/Workspace";
 import { queryClient } from "@/lib/query/query-client";
 
 export function App() {
-  const [feature, setFeature] = useState<"chat" | "context" | "quiz">("chat");
+  const [feature, setFeature] = useState<"chat" | "context" | "quiz">(
+    "context",
+  );
 
   return (
     <QueryClientProvider client={queryClient}>

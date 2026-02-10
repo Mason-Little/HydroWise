@@ -1,6 +1,15 @@
 import type { DbClient } from "@hydrowise/database";
-import { and, documentEmbeddings, documents, eq } from "@hydrowise/database";
-import { CreateDocumentRequestSchema } from "@hydrowise/entities";
+import {
+  and,
+  documentEmbeddings,
+  documents,
+  eq,
+  inArray,
+} from "@hydrowise/database";
+import {
+  CreateDocumentRequestSchema,
+  GetEmbeddingsChunksRequestSchema,
+} from "@hydrowise/entities";
 import { Hono } from "hono";
 import { getUserId } from "../../shared/auth";
 import { errorResponse } from "../../shared/http";
@@ -126,6 +135,45 @@ export const createDocumentRoutes = (db: DbClient) => {
       .where(and(eq(documents.id, id), eq(documents.userId, userId)));
 
     return c.body(null, 204);
+  });
+
+  app.post("/embeddings/by-document", async (c) => {
+    const userId = getUserId();
+    const body = await c.req.json().catch(() => null);
+    const parseResult = GetEmbeddingsChunksRequestSchema.safeParse(body);
+
+    if (!parseResult.success) {
+      return c.json(errorResponse("invalid input"), 400);
+    }
+
+    const payload = parseResult.data;
+
+    const userDocuments = await db
+      .select()
+      .from(documents)
+      .where(
+        and(
+          eq(documents.userId, userId),
+          inArray(documents.id, payload.documentIds),
+        ),
+      );
+
+    if (!userDocuments[0]) {
+      return c.json(errorResponse("Documents not found"), 404);
+    }
+
+    if (userDocuments.length !== payload.documentIds.length) {
+      return c.json(errorResponse("Documents not found"), 404);
+    }
+
+    const userDocumentIds = userDocuments.map((document) => document.id);
+
+    const embeddings = await db
+      .select()
+      .from(documentEmbeddings)
+      .where(inArray(documentEmbeddings.documentId, userDocumentIds));
+
+    return c.json(embeddings);
   });
 
   return app;

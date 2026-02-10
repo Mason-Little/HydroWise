@@ -25,5 +25,11 @@ export const useDocument = () => {
     },
   });
 
-  return { documents, uploadDocument, deleteDocument };
+  const { mutateAsync: getEmbeddingsChunks } = useMutation({
+    mutationKey: ["embeddings-chunks"],
+    mutationFn: (documentIds: string[]) =>
+      documentAPI.getEmbeddingsChunks(documentIds),
+  });
+
+  return { documents, uploadDocument, deleteDocument, getEmbeddingsChunks };
 };

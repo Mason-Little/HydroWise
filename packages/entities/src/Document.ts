@@ -36,6 +36,20 @@ export const CreatedDocumentSchema = z.object({
   embeddingCount: z.number().int().nonnegative(),
 });
 
+export const GetEmbeddingsChunksRequestSchema = z.object({
+  documentIds: z.array(z.string()),
+});
+
+export type GetEmbeddingsChunksRequest = z.infer<
+  typeof GetEmbeddingsChunksRequestSchema
+>;
+
+export const GetEmbeddingsChunksResponseSchema = z.array(EmbeddingChunkSchema);
+
+export type GetEmbeddingsChunksResponse = z.infer<
+  typeof GetEmbeddingsChunksResponseSchema
+>;
+
 export type CreatedDocument = z.infer<typeof CreatedDocumentSchema>;
 
 export const GetDocumentsResponseSchema = z.array(CreatedDocumentSchema);

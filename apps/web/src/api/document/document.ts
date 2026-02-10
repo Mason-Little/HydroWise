@@ -2,6 +2,7 @@ import type {
   CreateDocumentRequest,
   CreateDocumentResponse,
   GetDocumentsResponse,
+  GetEmbeddingsChunksResponse,
   NoContentResponse,
 } from "@hydrowise/entities";
 import { client } from "@/api/client";
@@ -23,5 +24,13 @@ export const documentAPI = {
     return client
       .delete(`document/${id}`)
       .then((): NoContentResponse => undefined);
+  },
+
+  getEmbeddingsChunks: (documentIds: string[]) => {
+    return client
+      .post("document/embeddings/by-document", {
+        json: { documentIds },
+      })
+      .json<GetEmbeddingsChunksResponse>();
   },
 };

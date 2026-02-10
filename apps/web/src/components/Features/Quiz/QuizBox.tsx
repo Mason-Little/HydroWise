@@ -1,5 +1,4 @@
 import { BoolQuestionCard } from "@/components/Features/Quiz/ui/BoolAnswer";
-import { FillQuestionCard } from "@/components/Features/Quiz/ui/FillAnswer";
 import { MultipleQuestionCard } from "@/components/Features/Quiz/ui/MultipleAnswer";
 import { ShortQuestionCard } from "@/components/Features/Quiz/ui/ShortAnswer";
 import { Card } from "@/components/ui/card";
@@ -13,8 +12,6 @@ export const QuizBox = () => {
           switch (question.type) {
             case "multipleChoice":
               return <MultipleQuestionCard key={index} question={question} />;
-            case "fillInTheBlank":
-              return <FillQuestionCard key={index} question={question} />;
             case "shortAnswer":
               return <ShortQuestionCard key={index} question={question} />;
             case "bool":

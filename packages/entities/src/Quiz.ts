@@ -19,20 +19,6 @@ export type MultipleChoiceQuestion = z.infer<
   typeof MultipleChoiceQuestionSchema
 >;
 
-export const FillInTheBlankQuestionSchema = z.object({
-  type: z.literal("fillInTheBlank"),
-  segments: z.array(
-    z.object({
-      type: z.enum(["answer", "question"]),
-      content: z.string(),
-    }),
-  ),
-});
-
-export type FillInTheBlankQuestion = z.infer<
-  typeof FillInTheBlankQuestionSchema
->;
-
 export const ShortAnswerQuestionSchema = z.object({
   type: z.literal("shortAnswer"),
   question: z.string(),
@@ -44,7 +30,6 @@ export type ShortAnswerQuestion = z.infer<typeof ShortAnswerQuestionSchema>;
 export const QuizQuestionSchema = z.discriminatedUnion("type", [
   BoolQuestionSchema,
   MultipleChoiceQuestionSchema,
-  FillInTheBlankQuestionSchema,
   ShortAnswerQuestionSchema,
 ]);
 

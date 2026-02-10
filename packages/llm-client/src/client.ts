@@ -6,6 +6,7 @@ import { sendDesktopChatCompletion } from "./desktop/run/chat";
 import { sendDesktopEmbeddings } from "./desktop/run/embeddings";
 import { processDesktopImage } from "./desktop/run/image";
 import { postprocessDesktopOcrText } from "./desktop/run/ocr";
+import { sendDesktopQuiz } from "./desktop/run/quiz";
 import { initWebLLMEngine } from "./web/init/chat";
 import { initWebEmbeddings } from "./web/init/embeddings";
 import { initWebVisionModel } from "./web/init/image";
@@ -61,6 +62,11 @@ export const postprocessOcrText = async (ocrText: string) => {
   return mode === "web"
     ? postprocessWebOcrText(ocrText)
     : postprocessDesktopOcrText(ocrText);
+};
+
+export const sendQuiz = async (messages: ConversationMessage) => {
+  const mode = getRuntimeMode();
+  return mode === "web" ? "not ready yet" : sendDesktopQuiz(messages);
 };
 
 export const initLLMClient = (onProgress?: (progress: number) => void) => {

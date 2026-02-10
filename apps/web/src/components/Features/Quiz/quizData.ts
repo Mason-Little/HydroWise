@@ -8,16 +8,6 @@ export const quizQuestions: QuizQuestion[] = [
     answer: 0,
   },
   {
-    type: "fillInTheBlank",
-    segments: [
-      { type: "question", content: "A leaking" },
-      { type: "answer", content: "toilet" },
-      { type: "question", content: "can waste over" },
-      { type: "answer", content: "200" },
-      { type: "question", content: "gallons per day." },
-    ],
-  },
-  {
     type: "shortAnswer",
     question: "Name one easy way to reduce indoor water use.",
     answer: "Fix leaks",
@@ -55,16 +45,6 @@ export const quizQuestions: QuizQuestion[] = [
     answer: 0,
   },
   {
-    type: "fillInTheBlank",
-    segments: [
-      { type: "question", content: "Collecting" },
-      { type: "answer", content: "rainwater" },
-      { type: "question", content: "is one way to reduce" },
-      { type: "answer", content: "outdoor" },
-      { type: "question", content: "tap usage." },
-    ],
-  },
-  {
     type: "multipleChoice",
     question: "Which habit is best for lawn watering?",
     options: [
@@ -95,16 +75,6 @@ export const quizQuestions: QuizQuestion[] = [
       "Paint consumption",
     ],
     answer: 0,
-  },
-  {
-    type: "fillInTheBlank",
-    segments: [
-      { type: "question", content: "Shorter" },
-      { type: "answer", content: "showers" },
-      { type: "question", content: "can lower both" },
-      { type: "answer", content: "water" },
-      { type: "question", content: "and energy use." },
-    ],
   },
   {
     type: "bool",
