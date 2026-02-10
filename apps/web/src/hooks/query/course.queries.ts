@@ -16,8 +16,16 @@ export const useCourses = () => {
     },
   });
 
+  const { mutateAsync: deleteCourse } = useMutation({
+    mutationFn: (courseId: string) => courseAPI.deleteCourse(courseId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["course"] });
+    },
+  });
+
   return {
     createCourse,
+    deleteCourse,
     courses: courses ?? [],
   };
 };

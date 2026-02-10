@@ -1,51 +1,36 @@
 import type { CreatedDocument } from "@hydrowise/entities";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const formatFileSize = (bytes: number) => {
-  if (bytes < 1024) {
-    return `${bytes} B`;
-  }
-
-  const kb = bytes / 1024;
-  if (kb < 1024) {
-    return `${kb.toFixed(1)} KB`;
-  }
-
-  return `${(kb / 1024).toFixed(1)} MB`;
-};
+import { useDocument } from "@/hooks/query/document.queries";
 
 interface DocumentCardProps {
   document: CreatedDocument;
-  onDelete: (id: string) => void;
-  onView: (id: string) => void;
 }
 
-export const DocumentCard = ({
-  document,
-  onDelete,
-  onView,
-}: DocumentCardProps) => {
+export const DocumentCard = ({ document }: DocumentCardProps) => {
+  const { deleteDocument } = useDocument();
+
+  const handleDelete = () => {
+    deleteDocument(document.id);
+  };
+
   return (
-    <Card className="border-border/70 bg-card/90">
-      <CardHeader className="pb-3">
-        <CardTitle className="line-clamp-1 text-sm font-semibold">
+    <Card className="aspect-square w-full max-w-36 gap-1.5 border-border/60 bg-card/80 py-2 shadow-none">
+      <CardHeader className="px-2.5 pb-0.5 pt-1.5">
+        <CardTitle className="line-clamp-2 text-xs font-medium leading-tight">
           {document.name}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-1 pb-0 text-xs text-muted-foreground">
+      <CardContent className="space-y-0.5 px-2.5 pb-0 text-[11px] text-muted-foreground">
         <p className="truncate">{document.mimeType}</p>
-        <p>{formatFileSize(document.fileSize)}</p>
       </CardContent>
-      <div className="mt-auto flex items-center justify-end gap-2 px-6 pb-6">
+      <div className="mt-auto flex items-center justify-end px-2.5 pb-1">
         {/* TODO: Add a view modal */}
-        <Button variant="outline" size="sm" onClick={() => onView(document.id)}>
-          View
-        </Button>
         <Button
           variant="destructive"
           size="sm"
-          onClick={() => onDelete(document.id)}
+          className="h-6 px-2 text-[11px]"
+          onClick={handleDelete}
         >
           Delete
         </Button>

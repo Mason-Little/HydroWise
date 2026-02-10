@@ -1,5 +1,5 @@
 import type { DbClient } from "@hydrowise/database";
-import { and, courses, eq } from "@hydrowise/database";
+import { and, courses, documents, eq } from "@hydrowise/database";
 import {
   type CourseCreateInput,
   CourseCreateInputSchema,
@@ -78,6 +78,10 @@ export const createCourseRoutes = (db: DbClient) => {
   app.delete("/:id", async (c) => {
     const userId = getUserId();
     const courseId = c.req.param("id");
+    await db
+      .update(documents)
+      .set({ courseId: null, chapterId: null })
+      .where(eq(documents.courseId, courseId));
     const deleted = await db
       .delete(courses)
       .where(and(eq(courses.id, courseId), eq(courses.userId, userId)))
