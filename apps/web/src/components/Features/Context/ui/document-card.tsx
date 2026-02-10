@@ -15,17 +15,17 @@ const formatFileSize = (bytes: number) => {
   return `${(kb / 1024).toFixed(1)} MB`;
 };
 
-interface ContextCardProps {
+interface DocumentCardProps {
   document: CreatedDocument;
   onDelete: (id: string) => void;
   onView: (id: string) => void;
 }
 
-export const ContextCard = ({
+export const DocumentCard = ({
   document,
   onDelete,
   onView,
-}: ContextCardProps) => {
+}: DocumentCardProps) => {
   return (
     <Card className="border-border/70 bg-card/90">
       <CardHeader className="pb-3">

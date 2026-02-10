@@ -36,7 +36,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useCourses } from "@/hooks/query/course.quires";
+import { useCourses } from "@/hooks/query/course.queries";
 
 interface CreateCourseDialogProps {
   open: boolean;
