@@ -6,3 +6,4 @@ export * from "./Course";
 export * from "./Document";
 export * from "./Message";
 export * from "./Quiz";
+export * from "./Topic";

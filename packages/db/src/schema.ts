@@ -49,6 +49,28 @@ export const chapters = pgTable(
   ],
 );
 
+export const topics = pgTable(
+  "topics",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    courseId: text("course_id")
+      .notNull()
+      .references(() => courses.id),
+    chapterId: text("chapter_id").references(() => chapters.id),
+    name: text("name").notNull(),
+    description: text("description").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("topics_user_id_idx").on(table.userId),
+    index("topics_user_course_idx").on(table.userId, table.courseId),
+    index("topics_user_chapter_idx").on(table.userId, table.chapterId),
+  ],
+);
+
 export const messageRole = pgEnum("message_role", ["user", "assistant"]);
 
 export const chats = pgTable(
@@ -110,6 +132,10 @@ export const documentEmbeddings = pgTable(
     documentId: text("document_id")
       .notNull()
       .references(() => documents.id),
+    topicId: text("topic_id")
+      .notNull()
+      .references(() => topics.id),
+    chunkIdea: text("chunk_idea").notNull(),
     content: text("content").notNull(),
     embedding: vector("embedding", { dimensions: 768 }).notNull(),
     chunkIndex: integer("chunk_index").notNull(),
@@ -117,5 +143,6 @@ export const documentEmbeddings = pgTable(
   },
   (table) => [
     index("document_embeddings_document_id_idx").on(table.documentId),
+    index("document_embeddings_topic_id_idx").on(table.topicId),
   ],
 );

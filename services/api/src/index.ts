@@ -7,6 +7,7 @@ import { createChatRoutes } from "./routes/chat";
 import { createCourseRoutes } from "./routes/course";
 import { createDocumentRoutes } from "./routes/document";
 import { createRagRoutes } from "./routes/rag";
+import { createTopicRoutes } from "./routes/topic";
 
 const app = new Hono();
 
@@ -38,5 +39,6 @@ app.route("/document", createDocumentRoutes(db));
 app.route("/rag", createRagRoutes(db));
 app.route("/course", createCourseRoutes(db));
 app.route("/chapter", createChapterRoutes(db));
+app.route("/topic", createTopicRoutes(db));
 
 export default app;
