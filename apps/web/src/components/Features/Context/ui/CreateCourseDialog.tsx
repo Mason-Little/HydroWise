@@ -36,6 +36,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useChapters } from "@/hooks/query/chapter.queries";
 import { useCourses } from "@/hooks/query/course.queries";
 
 interface CreateCourseDialogProps {
@@ -93,8 +94,9 @@ export const CreateCourseDialog = ({
   const [chapterInput, setChapterInput] = useState<string>("");
 
   const { createCourse } = useCourses();
+  const { createChapter } = useChapters();
 
-  const handleCreateCourse = () => {
+  const handleCreateCourse = async () => {
     const startDate = dateRange?.from;
     const endDate = dateRange?.to;
 
@@ -105,12 +107,26 @@ export const CreateCourseDialog = ({
     const course = {
       name: courseName,
       number: courseCode,
-      chapters,
       startDate,
       endDate,
     };
 
-    createCourse(course);
+    const chapterList = chapters.map((chapter, index) => {
+      return {
+        name: chapter,
+        order: index + 1,
+      };
+    });
+
+    const createdCourse = await createCourse(course);
+
+    for (const chapter of chapterList) {
+      await createChapter({
+        name: chapter.name,
+        courseId: createdCourse.id,
+      });
+    }
+
     handleCloseDialog();
   };
 

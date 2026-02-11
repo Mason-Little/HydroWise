@@ -1,4 +1,5 @@
 export * from "./Api";
+export * from "./Chapter";
 export * from "./Chat";
 export * from "./Context";
 export * from "./Course";

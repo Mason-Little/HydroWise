@@ -1,5 +1,5 @@
 import type { DbClient } from "@hydrowise/database";
-import { and, courses, documents, eq } from "@hydrowise/database";
+import { and, chapters, courses, documents, eq } from "@hydrowise/database";
 import {
   type CourseCreateInput,
   CourseCreateInputSchema,
@@ -16,13 +16,6 @@ const createCourseDBInput = (course: CourseCreateInput, userId: string) => {
     number: course.number,
     startDate: course.startDate,
     endDate: course.endDate,
-    chapters: course.chapters.map((chapter, index) => {
-      return {
-        id: crypto.randomUUID(),
-        title: chapter,
-        order: index + 1,
-      };
-    }),
     status: "active" as const,
     createdAt: new Date(),
   };
@@ -78,18 +71,25 @@ export const createCourseRoutes = (db: DbClient) => {
   app.delete("/:id", async (c) => {
     const userId = getUserId();
     const courseId = c.req.param("id");
+    const course = await db
+      .select()
+      .from(courses)
+      .where(and(eq(courses.id, courseId), eq(courses.userId, userId)));
+    if (!course[0]) {
+      return c.json(errorResponse("course not found"), 404);
+    }
+    // Unregister documents
     await db
       .update(documents)
       .set({ courseId: null, chapterId: null })
       .where(eq(documents.courseId, courseId));
-    const deleted = await db
+    // Delete chapters
+    await db.delete(chapters).where(eq(chapters.courseId, courseId));
+    // Delete course
+    await db
       .delete(courses)
       .where(and(eq(courses.id, courseId), eq(courses.userId, userId)))
       .returning();
-
-    if (!deleted[0]) {
-      return c.json(errorResponse("course not found"), 404);
-    }
 
     return c.body(null, 204);
   });

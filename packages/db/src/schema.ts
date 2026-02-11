@@ -1,19 +1,12 @@
 import {
   index,
   integer,
-  jsonb,
   pgEnum,
   pgTable,
   text,
   timestamp,
   vector,
 } from "drizzle-orm/pg-core";
-
-type CourseChapter = {
-  id: string;
-  title: string;
-  order: number;
-};
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -33,9 +26,28 @@ export const courses = pgTable("courses", {
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
   status: courseStatus("status").notNull(),
-  chapters: jsonb("chapters").$type<CourseChapter[]>().notNull().default([]),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const chapters = pgTable(
+  "chapters",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    courseId: text("course_id")
+      .notNull()
+      .references(() => courses.id),
+    name: text("name").notNull(),
+    order: integer("order").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("chapters_user_id_idx").on(table.userId),
+    index("chapters_user_course_idx").on(table.userId, table.courseId),
+  ],
+);
 
 export const messageRole = pgEnum("message_role", ["user", "assistant"]);
 

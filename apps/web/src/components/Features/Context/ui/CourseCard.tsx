@@ -7,6 +7,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { useChapters } from "@/hooks/query/chapter.queries";
 import { useCourses } from "@/hooks/query/course.queries";
 import { useDocument } from "@/hooks/query/document.queries";
 import { useQuiz } from "@/hooks/quiz/quiz";
@@ -20,9 +21,8 @@ interface CourseCardProps {
 export const CourseCard = ({ course, documents }: CourseCardProps) => {
   const { deleteCourse } = useCourses();
   const { getEmbeddingsChunks } = useDocument();
+  const { chapters } = useChapters(course.id);
   const { generateQuiz } = useQuiz();
-
-  const chapters = useMemo(() => course.chapters, [course]);
 
   const getDocsForChapter = (chapterId: string) => {
     return documents?.filter((document) => document.chapterId === chapterId);
@@ -92,7 +92,7 @@ export const CourseCard = ({ course, documents }: CourseCardProps) => {
                   >
                     <div className="flex items-center gap-2">
                       <CollapsibleTrigger className="flex w-full items-center justify-between px-2.5 py-2 text-left text-sm font-medium transition-colors hover:bg-accent/30">
-                        <span className="line-clamp-1">{chapter.title}</span>
+                        <span className="line-clamp-1">{chapter.name}</span>
                         <span className="text-muted-foreground text-xs"></span>
                       </CollapsibleTrigger>
                       <Button

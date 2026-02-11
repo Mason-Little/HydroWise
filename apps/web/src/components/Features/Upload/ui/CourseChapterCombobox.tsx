@@ -9,6 +9,7 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox";
 import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
+import { useChapters } from "@/hooks/query/chapter.queries";
 
 type CourseChapterComboboxProps = {
   courses: Course[];
@@ -43,13 +44,15 @@ export function CourseChapterCombobox({
     (course) => course.id === selectedCourseId,
   );
 
+  const { chapters } = useChapters(selectedCourse?.id);
+
   const chapterOptions = useMemo(
     () =>
-      (selectedCourse?.chapters ?? []).map((chapter) => ({
+      chapters.map((chapter) => ({
         id: chapter.id,
-        label: chapter.title,
+        label: chapter.name,
       })),
-    [selectedCourse],
+    [chapters],
   );
 
   const selectedChapterLabel =

@@ -19,6 +19,7 @@ export {
   l2Distance,
   lt,
   lte,
+  max,
   ne,
   or,
   sql,

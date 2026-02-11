@@ -2,6 +2,7 @@ import { createWebClient, type DbClient } from "@hydrowise/database";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getConfig } from "./config";
+import { createChapterRoutes } from "./routes/chapter";
 import { createChatRoutes } from "./routes/chat";
 import { createCourseRoutes } from "./routes/course";
 import { createDocumentRoutes } from "./routes/document";
@@ -36,5 +37,6 @@ app.route("/chat", createChatRoutes(db));
 app.route("/document", createDocumentRoutes(db));
 app.route("/rag", createRagRoutes(db));
 app.route("/course", createCourseRoutes(db));
+app.route("/chapter", createChapterRoutes(db));
 
 export default app;
