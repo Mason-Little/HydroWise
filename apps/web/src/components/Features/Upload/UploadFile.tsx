@@ -1,4 +1,3 @@
-import { parseDocumentMeta } from "@hydrowise/core";
 import { CircleQuestionMarkIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -16,8 +15,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useEmbedding } from "@/hooks/llm/useEmbedding";
 import { useCourses } from "@/hooks/query/course.queries";
 import { useDocument } from "@/hooks/query/document.queries";
+import { useEmbeddingQueries } from "@/hooks/query/embedding.queries";
 import { CourseChapterCombobox } from "./ui/CourseChapterCombobox";
 import { FileUploadDragger } from "./ui/FileUploadDragger";
 
@@ -37,6 +38,8 @@ export function UploadFile({ open, onOpenChange }: UploadFileProps) {
 
   const { uploadDocument } = useDocument();
   const { courses } = useCourses();
+  const { generateDocumentEmbeddings } = useEmbedding();
+  const { createEmbeddingChunk } = useEmbeddingQueries();
 
   const resetForm = () => {
     setSelectedFile(null);
@@ -62,19 +65,30 @@ export function UploadFile({ open, onOpenChange }: UploadFileProps) {
     setIsUploading(true);
 
     try {
-      const meta = await parseDocumentMeta(selectedFile);
-
-      if (fileName) {
-        meta.name = fileName;
-      }
-
-      await uploadDocument({
-        ...meta,
+      const document = await uploadDocument({
+        name: fileName || selectedFile.name,
+        size: selectedFile.size,
+        mimeType: selectedFile.type,
         courseId: selectedCourseId,
         chapterId: selectedChapterId,
       });
 
       handleDialogOpenChange(false);
+      const chunks = await generateDocumentEmbeddings(selectedFile);
+
+      await Promise.all(
+        chunks.map((chunk) => {
+          return createEmbeddingChunk({
+            documentId: document.id,
+            content: chunk.content,
+            embedding: chunk.embedding,
+            topicId: "1",
+            chunkIndex: chunk.chunkIndex,
+          });
+        }),
+      );
+
+      console.log("Document uploaded successfully");
     } finally {
       setIsUploading(false);
     }

@@ -18,8 +18,8 @@ export const chunkText = async (
   if (!trimmed) return [];
 
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: options.chunkSize ?? 1000,
-    chunkOverlap: options.chunkOverlap ?? 240,
+    chunkSize: options.chunkSize ?? 2000,
+    chunkOverlap: options.chunkOverlap ?? 400,
   });
 
   const docs = await splitter.createDocuments([trimmed]);

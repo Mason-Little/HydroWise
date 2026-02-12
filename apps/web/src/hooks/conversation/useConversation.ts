@@ -1,5 +1,6 @@
+import { useEmbedding } from "@/hooks/llm/useEmbedding";
 import { useModel } from "@/hooks/llm/useModel";
-import { useDocument } from "@/hooks/query/embedding.queries";
+import { useEmbeddingQueries } from "@/hooks/query/embedding.queries";
 import { useMessages } from "@/hooks/query/message.queries";
 import { contextToInjection } from "@/lib/prompt/convertContext";
 import { convertTextToMessage } from "@/lib/prompt/text-to-message";
@@ -9,8 +10,9 @@ import { useChat } from "../query/chat.queries";
 export const useConversation = () => {
   const { selectedChatId, setSelectedChatId } = useChatStore();
   const { messages } = useMessages();
-  const { contextRetrieval } = useDocument();
-  const { embedText, generateResponse, isStreaming } = useModel();
+  const { contextRetrieval } = useEmbeddingQueries();
+  const { generateEmbedding } = useEmbedding();
+  const { generateResponse, isStreaming } = useModel();
   const { sendMessage } = useMessages();
   const { createChat } = useChat();
 
@@ -35,7 +37,7 @@ export const useConversation = () => {
 
     await sendMessage(chatId, promptMessage);
 
-    const promptEmbedding = await embedText(prompt);
+    const promptEmbedding = await generateEmbedding(prompt);
     const retrievedContext = await contextRetrieval(promptEmbedding);
     const contextInjection = contextToInjection(retrievedContext);
 

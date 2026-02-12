@@ -1,4 +1,4 @@
-import type { DocumentMeta } from "@hydrowise/entities";
+import type { EmbeddingChunk } from "@hydrowise/entities";
 import { chunkText } from "../utils/chunk";
 import { parseDocx } from "./docx/parse-docx";
 import { generateEmbeddings } from "./embeddings";
@@ -55,16 +55,7 @@ const getParserForFile = (file: File): Parser | undefined => {
   return undefined;
 };
 
-export const parseDocumentMeta = async (
-  file: File,
-  options: {
-    onProgress?: (completed: number, total: number) => void;
-    chunkOptions?: {
-      chunkSize?: number;
-      chunkOverlap?: number;
-    };
-  } = {},
-): Promise<DocumentMeta> => {
+export const parseDocument = async (file: File): Promise<EmbeddingChunk[]> => {
   const parser = getParserForFile(file);
   if (!parser) {
     throw new Error(
@@ -73,14 +64,8 @@ export const parseDocumentMeta = async (
   }
 
   const parsedDocument = await parser(file);
-  const chunks = await chunkText(parsedDocument.text, options.chunkOptions);
-  const embeddings = await generateEmbeddings(chunks, options.onProgress);
+  const chunks = await chunkText(parsedDocument.text);
+  const embeddings = await generateEmbeddings(chunks);
 
-  return {
-    name: file.name,
-    mimeType: file.type,
-    fileSize: file.size,
-    pageCount: parsedDocument.pageCount ?? null,
-    embeddings,
-  };
+  return embeddings;
 };

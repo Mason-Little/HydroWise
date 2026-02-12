@@ -15,5 +15,6 @@ export const generateEmbeddings = async (
   return chunks.map((content, index) => ({
     content,
     embedding: embeddings[index] ?? [],
+    chunkIndex: index,
   }));
 };

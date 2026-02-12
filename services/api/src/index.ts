@@ -6,7 +6,7 @@ import { createChapterRoutes } from "./routes/chapter";
 import { createChatRoutes } from "./routes/chat";
 import { createCourseRoutes } from "./routes/course";
 import { createDocumentRoutes } from "./routes/document";
-import { createRagRoutes } from "./routes/rag";
+import { createEmbeddingRoutes } from "./routes/embedding";
 import { createTopicRoutes } from "./routes/topic";
 
 const app = new Hono();
@@ -25,7 +25,7 @@ app.use(
   "*",
   cors({
     origin: "*",
-    allowMethods: ["GET", "POST", "DELETE", "OPTIONS"],
+    allowMethods: ["GET", "POST", "DELETE", "OPTIONS", "PUT"],
     allowHeaders: ["Content-Type", "userId"],
   }),
 );
@@ -36,7 +36,7 @@ app.get("/", (c) => {
 
 app.route("/chat", createChatRoutes(db));
 app.route("/document", createDocumentRoutes(db));
-app.route("/rag", createRagRoutes(db));
+app.route("/embedding", createEmbeddingRoutes(db));
 app.route("/course", createCourseRoutes(db));
 app.route("/chapter", createChapterRoutes(db));
 app.route("/topic", createTopicRoutes(db));

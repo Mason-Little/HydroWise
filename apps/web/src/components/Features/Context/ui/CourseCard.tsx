@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/collapsible";
 import { useChapters } from "@/hooks/query/chapter.queries";
 import { useCourses } from "@/hooks/query/course.queries";
-import { useDocument } from "@/hooks/query/document.queries";
-import { useQuiz } from "@/hooks/quiz/quiz";
+// import { useDocument } from "@/hooks/query/document.queries";
+// import { useQuiz } from "@/hooks/quiz/quiz";
 import { DocumentCard } from "./DocumentCard";
 
 interface CourseCardProps {
@@ -20,9 +20,9 @@ interface CourseCardProps {
 
 export const CourseCard = ({ course, documents }: CourseCardProps) => {
   const { deleteCourse } = useCourses();
-  const { getEmbeddingsChunks } = useDocument();
+  // const { getEmbeddingsChunks } = useDocument();
   const { chapters } = useChapters(course.id);
-  const { generateQuiz } = useQuiz();
+  // const { generateQuiz } = useQuiz();
 
   const getDocsForChapter = (chapterId: string) => {
     return documents?.filter((document) => document.chapterId === chapterId);
@@ -39,15 +39,15 @@ export const CourseCard = ({ course, documents }: CourseCardProps) => {
 
     if (!documentIds?.length) return;
 
-    try {
-      const embeddingsChunks = await getEmbeddingsChunks(documentIds);
-      const quiz = await generateQuiz(
-        embeddingsChunks.map((chunk) => chunk.content),
-      );
-      console.log(quiz);
-    } catch (error) {
-      console.error("failed to generate quiz", error);
-    }
+    // try {
+    //   const embeddingsChunks = await getEmbeddingsChunks(documentIds);
+    //   const quiz = await generateQuiz(
+    //     embeddingsChunks.map((chunk) => chunk.content),
+    //   );
+    //   console.log(quiz);
+    // } catch (error) {
+    //   console.error("failed to generate quiz", error);
+    // }
   };
 
   return (

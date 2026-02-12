@@ -2,7 +2,6 @@ import type {
   CreateDocumentRequest,
   CreateDocumentResponse,
   GetDocumentsResponse,
-  GetEmbeddingsChunksResponse,
   NoContentResponse,
 } from "@hydrowise/entities";
 import { client } from "@/api/client";
@@ -26,11 +25,12 @@ export const documentAPI = {
       .then((): NoContentResponse => undefined);
   },
 
-  getEmbeddingsChunks: (documentIds: string[]) => {
+  updateDocumentStatus: (
+    id: string,
+    status: "pending" | "completed" | "failed",
+  ) => {
     return client
-      .post("document/embeddings/by-document", {
-        json: { documentIds },
-      })
-      .json<GetEmbeddingsChunksResponse>();
+      .put(`document/status/${id}/${status}`)
+      .then((): NoContentResponse => undefined);
   },
 };

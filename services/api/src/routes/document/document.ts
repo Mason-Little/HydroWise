@@ -1,15 +1,6 @@
 import type { DbClient } from "@hydrowise/database";
-import {
-  and,
-  documentEmbeddings,
-  documents,
-  eq,
-  inArray,
-} from "@hydrowise/database";
-import {
-  CreateDocumentRequestSchema,
-  GetEmbeddingsChunksRequestSchema,
-} from "@hydrowise/entities";
+import { and, documentEmbeddings, documents, eq } from "@hydrowise/database";
+import { CreateDocumentRequestSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
 import { getUserId } from "../../shared/auth";
 import { errorResponse } from "../../shared/http";
@@ -21,7 +12,6 @@ const createDocumentEntity = (
   chapterId: string | null,
   mimeType: string,
   fileSize: number,
-  pageCount: number | null,
 ) => ({
   id: crypto.randomUUID(),
   userId,
@@ -30,21 +20,7 @@ const createDocumentEntity = (
   chapterId,
   mimeType,
   fileSize,
-  pageCount,
-  createdAt: new Date(),
-});
-
-const createDocumentEmbeddingEntity = (
-  documentId: string,
-  content: string,
-  embedding: number[],
-  chunkIndex: number,
-) => ({
-  id: crypto.randomUUID(),
-  documentId,
-  content,
-  embedding,
-  chunkIndex,
+  embeddingStatus: "pending" as const,
   createdAt: new Date(),
 });
 
@@ -70,32 +46,18 @@ export const createDocumentRoutes = (db: DbClient) => {
       return c.json(errorResponse("invalid input"), 400);
     }
 
-    const payload = parseResult.data;
+    const { name, size, mimeType, courseId, chapterId } = parseResult.data;
 
     const document = createDocumentEntity(
       userId,
-      payload.name,
-      payload.courseId,
-      payload.chapterId,
-      payload.mimeType,
-      payload.fileSize,
-      payload.pageCount ?? null,
+      name,
+      courseId,
+      chapterId,
+      mimeType,
+      size,
     );
 
     await db.insert(documents).values(document);
-
-    if (payload.embeddings.length > 0) {
-      const embeddingRecords = payload.embeddings.map((chunk, index) =>
-        createDocumentEmbeddingEntity(
-          document.id,
-          chunk.content,
-          chunk.embedding,
-          index,
-        ),
-      );
-
-      await db.insert(documentEmbeddings).values(embeddingRecords);
-    }
 
     return c.json(
       {
@@ -105,14 +67,14 @@ export const createDocumentRoutes = (db: DbClient) => {
         chapterId: document.chapterId,
         mimeType: document.mimeType,
         fileSize: document.fileSize,
-        pageCount: document.pageCount,
+        embeddingStatus: document.embeddingStatus,
         createdAt: document.createdAt.toISOString(),
-        embeddingCount: payload.embeddings.length,
       },
       201,
     );
   });
 
+  // Delete document
   app.delete("/:id", async (c) => {
     const userId = getUserId();
 
@@ -137,43 +99,33 @@ export const createDocumentRoutes = (db: DbClient) => {
     return c.body(null, 204);
   });
 
-  app.post("/embeddings/by-document", async (c) => {
+  // Update document metadata
+  app.put("/status/:id/:status", async (c) => {
     const userId = getUserId();
-    const body = await c.req.json().catch(() => null);
-    const parseResult = GetEmbeddingsChunksRequestSchema.safeParse(body);
 
-    if (!parseResult.success) {
-      return c.json(errorResponse("invalid input"), 400);
+    const { id, status } = c.req.param();
+
+    if (!["pending", "completed", "failed"].includes(status)) {
+      return c.json(errorResponse("invalid status"), 400);
     }
 
-    const payload = parseResult.data;
-
-    const userDocuments = await db
-      .select()
+    const existing = await db
+      .select({ id: documents.id })
       .from(documents)
-      .where(
-        and(
-          eq(documents.userId, userId),
-          inArray(documents.id, payload.documentIds),
-        ),
-      );
+      .where(and(eq(documents.id, id), eq(documents.userId, userId)));
 
-    if (!userDocuments[0]) {
-      return c.json(errorResponse("Documents not found"), 404);
+    if (!existing[0]) {
+      return c.json(errorResponse("document not found"), 404);
     }
 
-    if (userDocuments.length !== payload.documentIds.length) {
-      return c.json(errorResponse("Documents not found"), 404);
-    }
+    await db
+      .update(documents)
+      .set({
+        embeddingStatus: status as "pending" | "completed" | "failed",
+      })
+      .where(eq(documents.id, id));
 
-    const userDocumentIds = userDocuments.map((document) => document.id);
-
-    const embeddings = await db
-      .select()
-      .from(documentEmbeddings)
-      .where(inArray(documentEmbeddings.documentId, userDocumentIds));
-
-    return c.json(embeddings);
+    return c.body(null, 204);
   });
 
   return app;

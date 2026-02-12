@@ -25,11 +25,18 @@ export const useDocument = () => {
     },
   });
 
-  const { mutateAsync: getEmbeddingsChunks } = useMutation({
-    mutationKey: ["embeddings-chunks"],
-    mutationFn: (documentIds: string[]) =>
-      documentAPI.getEmbeddingsChunks(documentIds),
+  const { mutateAsync: updateDocumentStatus } = useMutation({
+    mutationFn: ({
+      documentId,
+      status,
+    }: {
+      documentId: string;
+      status: "pending" | "completed" | "failed";
+    }) => documentAPI.updateDocumentStatus(documentId, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["documents"] });
+    },
   });
 
-  return { documents, uploadDocument, deleteDocument, getEmbeddingsChunks };
+  return { documents, uploadDocument, deleteDocument, updateDocumentStatus };
 };

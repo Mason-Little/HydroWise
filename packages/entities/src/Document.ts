@@ -1,24 +1,8 @@
 import { z } from "zod";
-
-export const EmbeddingChunkSchema = z.object({
-  content: z.string(),
-  embedding: z.array(z.number()),
-});
-
-export type EmbeddingChunk = z.infer<typeof EmbeddingChunkSchema>;
-
-export const DocumentMetaSchema = z.object({
+export const CreateDocumentRequestSchema = z.object({
   name: z.string(),
+  size: z.number().int().positive(),
   mimeType: z.string(),
-  fileSize: z.number().int().positive(),
-  pageCount: z.number().int().positive().nullable().optional(),
-  embeddings: z.array(EmbeddingChunkSchema),
-});
-
-export type DocumentMeta = z.infer<typeof DocumentMetaSchema>;
-
-export const CreateDocumentRequestSchema = DocumentMetaSchema.extend({
-  name: z.string(),
   courseId: z.string().nullable(),
   chapterId: z.string().nullable(),
 });
@@ -31,24 +15,9 @@ export const CreatedDocumentSchema = z.object({
   name: z.string(),
   mimeType: z.string(),
   fileSize: z.number().int().positive(),
-  pageCount: z.number().int().positive().nullable(),
+  embeddingStatus: z.enum(["pending", "completed", "failed"]),
   createdAt: z.string(),
-  embeddingCount: z.number().int().nonnegative(),
 });
-
-export const GetEmbeddingsChunksRequestSchema = z.object({
-  documentIds: z.array(z.string()),
-});
-
-export type GetEmbeddingsChunksRequest = z.infer<
-  typeof GetEmbeddingsChunksRequestSchema
->;
-
-export const GetEmbeddingsChunksResponseSchema = z.array(EmbeddingChunkSchema);
-
-export type GetEmbeddingsChunksResponse = z.infer<
-  typeof GetEmbeddingsChunksResponseSchema
->;
 
 export type CreatedDocument = z.infer<typeof CreatedDocumentSchema>;
 

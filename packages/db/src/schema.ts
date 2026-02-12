@@ -98,6 +98,12 @@ export const messages = pgTable(
   (table) => [index("messages_chat_id_idx").on(table.chatId)],
 );
 
+export const embeddingStatus = pgEnum("embedding_status", [
+  "pending",
+  "completed",
+  "failed",
+]);
+
 export const documents = pgTable(
   "documents",
   {
@@ -106,11 +112,11 @@ export const documents = pgTable(
       .notNull()
       .references(() => users.id),
     courseId: text("course_id").references(() => courses.id),
-    chapterId: text("chapter_id"),
+    chapterId: text("chapter_id").references(() => chapters.id),
     name: text("name").notNull(),
     mimeType: text("mime_type").notNull(),
     fileSize: integer("file_size").notNull(),
-    pageCount: integer("page_count"),
+    embeddingStatus: embeddingStatus("embedding_status").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (table) => [
