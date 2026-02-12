@@ -27,3 +27,9 @@ export const RetrieveTopicsRequestSchema = z.object({
 });
 
 export type RetrieveTopicsRequest = z.infer<typeof RetrieveTopicsRequestSchema>;
+
+export const RetrieveTopicsResponseSchema = z.array(TopicSchema);
+
+export type RetrieveTopicsResponse = z.infer<
+  typeof RetrieveTopicsResponseSchema
+>;

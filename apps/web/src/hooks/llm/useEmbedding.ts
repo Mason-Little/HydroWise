@@ -1,4 +1,3 @@
-import { parseDocument } from "@hydrowise/core";
 import { sendEmbedding } from "@hydrowise/llm-client";
 
 export const useEmbedding = () => {
@@ -6,9 +5,5 @@ export const useEmbedding = () => {
     return sendEmbedding(text);
   };
 
-  const generateDocumentEmbeddings = (file: File) => {
-    return parseDocument(file);
-  };
-
-  return { generateEmbedding, generateDocumentEmbeddings };
+  return { generateEmbedding };
 };

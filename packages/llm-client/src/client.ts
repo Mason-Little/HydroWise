@@ -1,12 +1,23 @@
-import type { ConversationMessage } from "@hydrowise/entities";
+import type {
+  Chapter,
+  ChunkIdeaResult,
+  ConversationMessage,
+  Course,
+  EmbeddingChunk,
+  Topic,
+  TopicAssessmentInputChunk,
+  TopicAssessmentResult,
+} from "@hydrowise/entities";
 import { initDesktopLLMClient } from "./desktop/init/chat";
 import { initDesktopEmbeddings } from "./desktop/init/embedding";
 import { initDesktopVisionModel } from "./desktop/init/image";
 import { sendDesktopChatCompletion } from "./desktop/run/chat";
+import { sendDesktopChunkIdea } from "./desktop/run/chunk-idea";
 import { sendDesktopEmbeddings } from "./desktop/run/embeddings";
 import { processDesktopImage } from "./desktop/run/image";
 import { postprocessDesktopOcrText } from "./desktop/run/ocr";
 import { sendDesktopQuiz } from "./desktop/run/quiz";
+import { sendDesktopTopicIdea } from "./desktop/run/topic-idea";
 import { initWebLLMEngine } from "./web/init/chat";
 import { initWebEmbeddings } from "./web/init/embeddings";
 import { initWebVisionModel } from "./web/init/image";
@@ -62,6 +73,41 @@ export const postprocessOcrText = async (ocrText: string) => {
   return mode === "web"
     ? postprocessWebOcrText(ocrText)
     : postprocessDesktopOcrText(ocrText);
+};
+
+export const sendChunkIdea = async (
+  chunk: EmbeddingChunk,
+  documentName: string,
+  course: Course | null,
+  chapter: Chapter | null,
+): Promise<ChunkIdeaResult> => {
+  const mode = getRuntimeMode();
+  if (mode === "web") {
+    throw new Error("sendChunkIdea is only implemented for desktop mode");
+  }
+
+  return sendDesktopChunkIdea(chunk, documentName, course, chapter);
+};
+
+export const sendTopicIdea = async (
+  chunks: TopicAssessmentInputChunk[],
+  course: Course | null,
+  chapter: Chapter | null,
+  documentName: string,
+  existingTopics: Pick<Topic, "name" | "description">[] = [],
+): Promise<TopicAssessmentResult> => {
+  const mode = getRuntimeMode();
+  if (mode === "web") {
+    throw new Error("sendTopicIdea is only implemented for desktop mode");
+  }
+
+  return sendDesktopTopicIdea(
+    chunks,
+    course,
+    chapter,
+    documentName,
+    existingTopics,
+  );
 };
 
 export const sendQuiz = async (messages: ConversationMessage) => {

@@ -20,13 +20,14 @@ const createEmbeddingEntity = (
   documentId: string,
   content: string,
   embedding: number[],
-  topicId: string,
+  topicId: string | null,
   chunkIndex: number,
+  chunkIdea: string,
 ) => ({
   id: crypto.randomUUID(),
   documentId,
   topicId,
-  chunkIdea: "TBD",
+  chunkIdea,
   content,
   embedding,
   chunkIndex,
@@ -43,7 +44,7 @@ export const createEmbeddingRoutes = (db: DbClient) => {
     if (!parseResult.success) {
       return c.json(errorResponse("embedding is required"), 400);
     }
-    const { documentId, content, embedding, topicId, chunkIndex } =
+    const { documentId, content, embedding, topicId, chunkIndex, chunkIdea } =
       parseResult.data;
 
     const document = await db.query.documents.findFirst({
@@ -58,8 +59,9 @@ export const createEmbeddingRoutes = (db: DbClient) => {
       documentId,
       content,
       embedding,
-      topicId ?? "1",
+      topicId,
       chunkIndex,
+      chunkIdea,
     );
 
     const results = await db.insert(documentEmbeddings).values(embeddingChunk);

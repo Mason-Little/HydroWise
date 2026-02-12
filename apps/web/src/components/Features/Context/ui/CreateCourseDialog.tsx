@@ -148,9 +148,13 @@ export const CreateCourseDialog = ({
     const nextChapter = chapterInput.trim();
     if (!nextChapter) return;
 
-    setChapters((prev) =>
-      prev.includes(nextChapter) ? prev : [...prev, nextChapter],
-    );
+    setChapters((prev) => {
+      const hasChapter = prev.some(
+        (chapter) => chapter.toLowerCase() === nextChapter.toLowerCase(),
+      );
+
+      return hasChapter ? prev : [...prev, nextChapter];
+    });
     setChapterInput("");
   };
 
@@ -191,7 +195,7 @@ export const CreateCourseDialog = ({
               <InputOTP
                 maxLength={3}
                 pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                onChange={setCourseCode}
+                onChange={(value) => setCourseCode(value.toUpperCase())}
               >
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />
@@ -214,8 +218,10 @@ export const CreateCourseDialog = ({
                   <ComboboxValue>
                     {(values) => (
                       <>
-                        {values.map((value: string) => (
-                          <ComboboxChip key={value}>{value}</ComboboxChip>
+                        {values.map((value: string, index: number) => (
+                          <ComboboxChip key={value}>
+                            {index + 1}. {value}
+                          </ComboboxChip>
                         ))}
                         <ComboboxChipsInput
                           value={chapterInput}

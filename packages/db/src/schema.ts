@@ -138,9 +138,7 @@ export const documentEmbeddings = pgTable(
     documentId: text("document_id")
       .notNull()
       .references(() => documents.id),
-    topicId: text("topic_id")
-      .notNull()
-      .references(() => topics.id),
+    topicId: text("topic_id").references(() => topics.id),
     chunkIdea: text("chunk_idea").notNull(),
     content: text("content").notNull(),
     embedding: vector("embedding", { dimensions: 768 }).notNull(),

@@ -1,3 +1,4 @@
+import type { Chapter, Course } from "@hydrowise/entities";
 import { CircleQuestionMarkIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,10 +16,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEmbedding } from "@/hooks/llm/useEmbedding";
 import { useCourses } from "@/hooks/query/course.queries";
-import { useDocument } from "@/hooks/query/document.queries";
-import { useEmbeddingQueries } from "@/hooks/query/embedding.queries";
+import { useDocumentUpload } from "@/hooks/upload/useDocumentUpload";
 import { CourseChapterCombobox } from "./ui/CourseChapterCombobox";
 import { FileUploadDragger } from "./ui/FileUploadDragger";
 
@@ -30,23 +29,17 @@ type UploadFileProps = {
 export function UploadFile({ open, onOpenChange }: UploadFileProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("");
-  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
-  const [selectedChapterId, setSelectedChapterId] = useState<string | null>(
-    null,
-  );
-  const [isUploading, setIsUploading] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
 
-  const { uploadDocument } = useDocument();
   const { courses } = useCourses();
-  const { generateDocumentEmbeddings } = useEmbedding();
-  const { createEmbeddingChunk } = useEmbeddingQueries();
+  const { uploadFileWithEmbeddings, isUploading } = useDocumentUpload();
 
   const resetForm = () => {
     setSelectedFile(null);
     setFileName("");
-    setSelectedCourseId(null);
-    setSelectedChapterId(null);
-    setIsUploading(false);
+    setSelectedCourse(null);
+    setSelectedChapter(null);
   };
 
   const handleDialogOpenChange = (nextOpen: boolean) => {
@@ -62,36 +55,13 @@ export function UploadFile({ open, onOpenChange }: UploadFileProps) {
       return;
     }
 
-    setIsUploading(true);
-
-    try {
-      const document = await uploadDocument({
-        name: fileName || selectedFile.name,
-        size: selectedFile.size,
-        mimeType: selectedFile.type,
-        courseId: selectedCourseId,
-        chapterId: selectedChapterId,
-      });
-
-      handleDialogOpenChange(false);
-      const chunks = await generateDocumentEmbeddings(selectedFile);
-
-      await Promise.all(
-        chunks.map((chunk) => {
-          return createEmbeddingChunk({
-            documentId: document.id,
-            content: chunk.content,
-            embedding: chunk.embedding,
-            topicId: "1",
-            chunkIndex: chunk.chunkIndex,
-          });
-        }),
-      );
-
-      console.log("Document uploaded successfully");
-    } finally {
-      setIsUploading(false);
-    }
+    await uploadFileWithEmbeddings({
+      file: selectedFile,
+      fileName,
+      course: selectedCourse,
+      chapter: selectedChapter,
+      onDocumentPersisted: () => handleDialogOpenChange(false),
+    });
   };
 
   return (
@@ -133,10 +103,10 @@ export function UploadFile({ open, onOpenChange }: UploadFileProps) {
 
           <CourseChapterCombobox
             courses={courses}
-            selectedCourseId={selectedCourseId}
-            selectedChapterId={selectedChapterId}
-            onCourseChange={setSelectedCourseId}
-            onChapterChange={setSelectedChapterId}
+            selectedCourse={selectedCourse}
+            selectedChapter={selectedChapter}
+            onCourseChange={setSelectedCourse}
+            onChapterChange={setSelectedChapter}
             disabled={isUploading}
           />
 

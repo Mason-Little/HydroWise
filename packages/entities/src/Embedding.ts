@@ -6,8 +6,8 @@ export const EmbeddingSchema = z.object({
   content: z.string(),
   embedding: z.array(z.number()),
   chunkIndex: z.number(),
+  chunkIdea: z.string(),
   createdAt: z.string(),
-  updatedAt: z.string(),
 });
 
 export const EmbeddingChunkSchema = z.object({
@@ -20,8 +20,9 @@ export const CreateEmbeddingRequestSchema = z.object({
   documentId: z.string(),
   content: z.string(),
   embedding: z.array(z.number()),
-  topicId: z.string(),
+  topicId: z.string().nullable(),
   chunkIndex: z.number(),
+  chunkIdea: z.string(),
 });
 
 export type Embedding = z.infer<typeof EmbeddingSchema>;

@@ -5,6 +5,7 @@ export * from "./Context";
 export * from "./Course";
 export * from "./Document";
 export * from "./Embedding";
+export * from "./Llm";
 export * from "./Message";
 export * from "./Quiz";
 export * from "./Topic";

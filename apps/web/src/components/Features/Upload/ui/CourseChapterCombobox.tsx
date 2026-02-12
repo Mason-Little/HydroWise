@@ -1,4 +1,4 @@
-import type { Course } from "@hydrowise/entities";
+import type { Chapter, Course } from "@hydrowise/entities";
 import { useMemo } from "react";
 import {
   Combobox,
@@ -13,17 +13,17 @@ import { useChapters } from "@/hooks/query/chapter.queries";
 
 type CourseChapterComboboxProps = {
   courses: Course[];
-  selectedCourseId: string | null;
-  selectedChapterId: string | null;
-  onCourseChange: (courseId: string | null) => void;
-  onChapterChange: (chapterId: string | null) => void;
+  selectedCourse: Course | null;
+  selectedChapter: Chapter | null;
+  onCourseChange: (course: Course | null) => void;
+  onChapterChange: (chapter: Chapter | null) => void;
   disabled?: boolean;
 };
 
 export function CourseChapterCombobox({
   courses,
-  selectedCourseId,
-  selectedChapterId,
+  selectedCourse,
+  selectedChapter,
   onCourseChange,
   onChapterChange,
   disabled = false,
@@ -38,11 +38,8 @@ export function CourseChapterCombobox({
   );
 
   const selectedCourseLabel =
-    courseOptions.find((option) => option.id === selectedCourseId)?.label ?? "";
-
-  const selectedCourse = courses.find(
-    (course) => course.id === selectedCourseId,
-  );
+    courseOptions.find((option) => option.id === selectedCourse?.id)?.label ??
+    "";
 
   const { chapters } = useChapters(selectedCourse?.id);
 
@@ -56,7 +53,7 @@ export function CourseChapterCombobox({
   );
 
   const selectedChapterLabel =
-    chapterOptions.find((option) => option.id === selectedChapterId)?.label ??
+    chapterOptions.find((option) => option.id === selectedChapter?.id)?.label ??
     "";
 
   const chapterDisabled =
@@ -76,7 +73,9 @@ export function CourseChapterCombobox({
                 (option) => option.label === nextValue,
               );
 
-              onCourseChange(nextCourse?.id ?? null);
+              onCourseChange(
+                courses.find((course) => course.id === nextCourse?.id) ?? null,
+              );
               onChapterChange(null);
             }}
             disabled={disabled}
@@ -108,7 +107,10 @@ export function CourseChapterCombobox({
                 (option) => option.label === nextValue,
               );
 
-              onChapterChange(nextChapter?.id ?? null);
+              onChapterChange(
+                chapters.find((chapter) => chapter.id === nextChapter?.id) ??
+                  null,
+              );
             }}
             disabled={chapterDisabled}
           >
