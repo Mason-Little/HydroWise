@@ -12,9 +12,8 @@
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check .",
-
     "llm": "../../tools/llama-b7876/llama-server -m ../../tools/models/qwen2.5-7b-instruct-q4_k_m.gguf --port 8080 --ctx-size 4096 -ngl 99 --parallel 2",
-    "embeddings": "../../tools/llama-b7876/llama-server -m ../../tools/models/nomic-embed-text-v1.5.Q4_0.gguf --port 8081 --embeddings --pooling mean -ngl 99",
+    "embeddings": "../../tools/llama-b7876/llama-server -m ../../tools/models/nomic-embed-text-v1.5.Q4_0.gguf --port 8081 --embeddings --pooling mean -ngl 99 --batch-size 2048 --ubatch-size 2048",
     "ocr": "../../tools/llama-b7876/llama-server -m ../../tools/models/LightOnOCR-2-1B-Q4_K_M.gguf --mmproj ../../tools/models/LightOnOCR-2-1B-mmproj-f16.gguf --port 8082 --ctx-size 4096 -ngl 99",
     "dev:desktop": "bun run llm & bun run embeddings & bun run ocr & wait",
     "dev:desktop:all": "bun run llm & bun run embeddings & bun run ocr & wait"
