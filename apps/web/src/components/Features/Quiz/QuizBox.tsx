@@ -16,12 +16,12 @@ export const QuizBox = () => {
         <CardTitle>Quiz</CardTitle>
         <div className="flex gap-2">
           <Button onClick={() => setCreateQuizOpen(true)}>Create Quiz</Button>
-          <Button>Quiz History</Button>
         </div>
       </CardHeader>
       <CreateQuizDialog
         open={createQuizOpen}
         onOpenChange={setCreateQuizOpen}
+        onQuizCreated={setCurrentQuiz}
       />
       <CardContent>
         {currentQuiz ? (

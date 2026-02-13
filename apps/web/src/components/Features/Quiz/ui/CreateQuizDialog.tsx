@@ -1,4 +1,4 @@
-import type { Chapter, Course } from "@hydrowise/entities";
+import type { Chapter, Course, QuizQuestion } from "@hydrowise/entities";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,11 +16,13 @@ import { CourseChapterCombobox } from "../../Upload/ui/CourseChapterCombobox";
 interface CreateQuizDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onQuizCreated: (quiz: QuizQuestion[]) => void;
 }
 
 export const CreateQuizDialog = ({
   open,
   onOpenChange,
+  onQuizCreated,
 }: CreateQuizDialogProps) => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [selectedChapters, setSelectedChapters] = useState<Chapter[]>([]);
@@ -38,7 +40,11 @@ export const CreateQuizDialog = ({
 
   const handleCreateQuiz = async () => {
     if (!selectedCourse) return;
-    await createQuiz(selectedCourse, selectedChapters);
+    const quiz = await createQuiz(selectedCourse, selectedChapters);
+    if (!quiz) return;
+    console.log("quiz output", quiz);
+    onQuizCreated(quiz);
+    handleDialogOpenChange(false);
   };
 
   return (

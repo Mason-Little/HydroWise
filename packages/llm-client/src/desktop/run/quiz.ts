@@ -8,7 +8,7 @@ Bool/Short Answer/Multiple Choice/Fill in the Blank
 */
 
 import { createOpenAI } from "@ai-sdk/openai";
-import type { ConversationMessage } from "@hydrowise/entities";
+import type { GenerateQuizInput, QuizQuestion } from "@hydrowise/entities";
 import { QuizQuestionSchema } from "@hydrowise/entities";
 import { generateText, Output } from "ai";
 import { quizPrompt } from "../../config";
@@ -20,16 +20,13 @@ const getOpenAIClient = () =>
   });
 
 export const sendDesktopQuiz = async (
-  messages: ConversationMessage,
-): Promise<string> => {
+  quizChunk: GenerateQuizInput,
+): Promise<QuizQuestion[]> => {
   const openai = getOpenAIClient();
   const result = await generateText({
     system: quizPrompt(),
     model: openai.chat("any"),
-    messages: [messages].map((m) => ({
-      role: m.role,
-      content: m.content,
-    })),
+    prompt: JSON.stringify(quizChunk),
     output: Output.array({
       name: "quiz",
       description: "Array of quiz questions",
@@ -38,7 +35,5 @@ export const sendDesktopQuiz = async (
   });
 
   const output = (result as { output?: unknown }).output;
-  const payload = output ? JSON.stringify(output) : result.text;
-
-  return payload;
+  return QuizQuestionSchema.array().parse(output);
 };

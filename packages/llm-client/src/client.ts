@@ -4,6 +4,7 @@ import type {
   ConversationMessage,
   Course,
   EmbeddingChunk,
+  GenerateQuizInput,
   QuizSkeleton,
   QuizSkeletonInput,
   Topic,
@@ -110,10 +111,10 @@ export const sendTopicIdea = async (
   );
 };
 
-export const sendQuiz = async (messages: ConversationMessage) => {
+export const sendQuiz = async (quizChunk: GenerateQuizInput) => {
   const mode = getRuntimeMode();
   assertWebRuntimeDisabled(mode, "sendQuiz");
-  return sendDesktopQuiz(messages);
+  return sendDesktopQuiz(quizChunk);
 };
 
 export const sendQuizSkeleton = async (

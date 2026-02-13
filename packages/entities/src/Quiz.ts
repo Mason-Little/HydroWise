@@ -98,3 +98,10 @@ export type GetQuizzesResponse = z.infer<typeof GetQuizzesResponseSchema>;
 export const CreateQuizResponseSchema = QuizSchema;
 
 export type CreateQuizResponse = z.infer<typeof CreateQuizResponseSchema>;
+
+export const GenerateQuizInputSchema = QuizSkeletonTopicSchema.extend({
+  questions: QuizSkeletonTopicQuestionsSchema,
+  topicChunks: z.array(z.string()).optional(),
+});
+
+export type GenerateQuizInput = z.infer<typeof GenerateQuizInputSchema>;

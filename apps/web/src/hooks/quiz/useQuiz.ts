@@ -1,9 +1,19 @@
-import type { Chapter, Course, QuizSkeletonInput } from "@hydrowise/entities";
-import { sendQuizSkeleton } from "@hydrowise/llm-client";
+import type {
+  Chapter,
+  Course,
+  QuizQuestion,
+  QuizSkeletonInput,
+} from "@hydrowise/entities";
+import { sendQuiz, sendQuizSkeleton } from "@hydrowise/llm-client";
 import { useTopicQueries } from "../query/topic.queries";
 
 export const useQuiz = () => {
   const { retrieveTopicEmbeddings, retrieveTopics } = useTopicQueries();
+  const questionOrder: Record<QuizQuestion["type"], number> = {
+    bool: 0,
+    multipleChoice: 1,
+    shortAnswer: 2,
+  };
 
   const createQuiz = async (
     selectedCourse: Course,
@@ -40,7 +50,7 @@ export const useQuiz = () => {
     const allTopics = inputSchema.flatMap((chapter) => chapter.topics);
     const normalize = (value: string) => value.trim().toLowerCase();
 
-    const embeddings = await Promise.all(
+    const generateQuizInput = await Promise.all(
       quizSkeleton.topics.map(async (topic) => {
         const exactMatch = allTopics.find(
           (candidate) => normalize(candidate.name) === normalize(topic.name),
@@ -60,12 +70,29 @@ export const useQuiz = () => {
           );
         }
 
-        return retrieveTopicEmbeddings(matchedTopic.id);
+        const embeddings = await retrieveTopicEmbeddings(matchedTopic.id);
+        const topicChunks = embeddings.map((embedding) => embedding.content);
+
+        return {
+          ...topic,
+          topicChunks,
+          questions: {
+            ...topic.questions,
+          },
+        };
       }),
     );
-    console.log("embeddings", embeddings);
 
-    return quizSkeleton;
+    console.log("generate quiz input", generateQuizInput);
+
+    const quizChunks = generateQuizInput.map((topic) => {
+      return sendQuiz(topic);
+    });
+
+    const quiz = await Promise.all(quizChunks);
+    return quiz
+      .flat()
+      .sort((a, b) => questionOrder[a.type] - questionOrder[b.type]);
   };
 
   return { createQuiz };
