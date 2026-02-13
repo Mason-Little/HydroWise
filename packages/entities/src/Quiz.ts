@@ -41,6 +41,54 @@ export const QuizSchema = z.object({
   questions: z.array(QuizQuestionSchema),
 });
 
+export const QuizSkeletonInputTopicSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().min(1),
+});
+
+export type QuizSkeletonInputTopic = z.infer<
+  typeof QuizSkeletonInputTopicSchema
+>;
+
+export const QuizSkeletonInputItemSchema = z.object({
+  selectedCourse: z.string().min(1),
+  selectedChapter: z.string().min(1),
+  topics: z.array(QuizSkeletonInputTopicSchema),
+});
+
+export type QuizSkeletonInputItem = z.infer<typeof QuizSkeletonInputItemSchema>;
+
+export const QuizSkeletonInputSchema = z.array(QuizSkeletonInputItemSchema);
+
+export type QuizSkeletonInput = z.infer<typeof QuizSkeletonInputSchema>;
+
+export const QuizSkeletonTopicQuestionsSchema = z.object({
+  bool: z.number().int().nonnegative(),
+  mcq: z.number().int().nonnegative(),
+  short: z.number().int().nonnegative(),
+});
+
+export type QuizSkeletonTopicQuestions = z.infer<
+  typeof QuizSkeletonTopicQuestionsSchema
+>;
+
+export const QuizSkeletonTopicSchema = z.object({
+  name: z.string().min(1),
+  chunkCount: z.number().int().nonnegative(),
+  questions: QuizSkeletonTopicQuestionsSchema,
+});
+
+export type QuizSkeletonTopic = z.infer<typeof QuizSkeletonTopicSchema>;
+
+export const QuizSkeletonSchema = z.object({
+  courseName: z.string().min(1),
+  scope: z.enum(["chapter", "course"]),
+  totalQuestions: z.number().int().nonnegative(),
+  topics: z.array(QuizSkeletonTopicSchema),
+});
+
+export type QuizSkeleton = z.infer<typeof QuizSkeletonSchema>;
+
 export type Quiz = z.infer<typeof QuizSchema>;
 
 export const GetQuizzesResponseSchema = z.array(QuizSchema);

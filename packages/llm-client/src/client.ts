@@ -4,6 +4,8 @@ import type {
   ConversationMessage,
   Course,
   EmbeddingChunk,
+  QuizSkeleton,
+  QuizSkeletonInput,
   Topic,
   TopicAssessmentInputChunk,
   TopicAssessmentResult,
@@ -17,6 +19,7 @@ import { sendDesktopEmbeddings } from "./desktop/run/embeddings";
 import { processDesktopImage } from "./desktop/run/image";
 import { postprocessDesktopOcrText } from "./desktop/run/ocr";
 import { sendDesktopQuiz } from "./desktop/run/quiz";
+import { sendDesktopQuizSkeleton } from "./desktop/run/quiz-skeleton";
 import { sendDesktopTopicIdea } from "./desktop/run/topic-idea";
 
 const getRuntimeMode = () => {
@@ -111,6 +114,14 @@ export const sendQuiz = async (messages: ConversationMessage) => {
   const mode = getRuntimeMode();
   assertWebRuntimeDisabled(mode, "sendQuiz");
   return sendDesktopQuiz(messages);
+};
+
+export const sendQuizSkeleton = async (
+  items: QuizSkeletonInput,
+): Promise<QuizSkeleton> => {
+  const mode = getRuntimeMode();
+  assertWebRuntimeDisabled(mode, "sendQuizSkeleton");
+  return sendDesktopQuizSkeleton(items);
 };
 
 export const initLLMClient = (onProgress?: (progress: number) => void) => {
