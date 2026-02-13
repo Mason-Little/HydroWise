@@ -6,9 +6,9 @@ import {
   topics,
 } from "@hydrowise/database";
 import {
-  type CreateTopicRequest,
-  CreateTopicRequestSchema,
-  RetrieveTopicsRequestSchema,
+  type TopicCreateInput,
+  TopicCreateInputSchema,
+  TopicQueryInputSchema,
 } from "@hydrowise/entities";
 import { Hono } from "hono";
 import { getUserId } from "../../shared/auth";
@@ -16,7 +16,7 @@ import { errorResponse } from "../../shared/http";
 
 const app = new Hono();
 
-const createTopicObject = (body: CreateTopicRequest, userId: string) => {
+const createTopicObject = (body: TopicCreateInput, userId: string) => {
   return {
     id: crypto.randomUUID(),
     userId,
@@ -32,7 +32,7 @@ export const createTopicRoutes = (db: DbClient) => {
   app.post("/retrieve-topics", async (c) => {
     const userId = getUserId();
     const body = await c.req.json().catch(() => null);
-    const parseResult = RetrieveTopicsRequestSchema.safeParse(body);
+    const parseResult = TopicQueryInputSchema.safeParse(body);
     if (!parseResult.success) {
       return c.json(errorResponse("invalid input"), 400);
     }
@@ -80,7 +80,7 @@ export const createTopicRoutes = (db: DbClient) => {
   app.post("/create-topic", async (c) => {
     const userId = getUserId();
     const body = await c.req.json().catch(() => null);
-    const parseResult = CreateTopicRequestSchema.safeParse(body);
+    const parseResult = TopicCreateInputSchema.safeParse(body);
     if (!parseResult.success) {
       return c.json(errorResponse("invalid input"), 400);
     }

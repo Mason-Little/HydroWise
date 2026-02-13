@@ -1,9 +1,9 @@
-import type { ConversationMessage } from "@hydrowise/entities";
+import type { ChatMessage } from "@hydrowise/entities";
 import { Streamdown } from "streamdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 type MessageAreaProps = {
-  messages: ConversationMessage[];
+  messages: ChatMessage[];
 };
 
 export const MessageArea = ({ messages }: MessageAreaProps) => {

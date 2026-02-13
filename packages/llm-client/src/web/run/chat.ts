@@ -1,12 +1,12 @@
-import type { ConversationMessage } from "@hydrowise/entities";
+import type { ChatMessage } from "@hydrowise/entities";
 import { streamText } from "ai";
 import { chatPrompt } from "../../config";
 import { buildPromptAwareMessages } from "../helpers/messages";
 import { getWebLLMEngine } from "../init/chat";
 
 export const sendWebChatCompletion = async (
-  history: ConversationMessage[],
-  query: ConversationMessage,
+  history: ChatMessage[],
+  query: ChatMessage,
   contextInjection: string,
   onChunk: (chunk: string) => void,
 ): Promise<string> => {

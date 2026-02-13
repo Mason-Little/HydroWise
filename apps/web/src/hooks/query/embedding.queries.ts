@@ -1,4 +1,4 @@
-import type { CreateEmbeddingRequest } from "@hydrowise/entities";
+import type { EmbeddingCreateInput } from "@hydrowise/entities";
 import { useMutation } from "@tanstack/react-query";
 import { embeddingAPI } from "@/api/embedding/embedding";
 
@@ -19,7 +19,7 @@ export const useEmbeddingQueries = () => {
     error: createEmbeddingChunkError,
   } = useMutation({
     mutationKey: ["create-embedding-chunk"],
-    mutationFn: (embeddingChunk: CreateEmbeddingRequest) =>
+    mutationFn: (embeddingChunk: EmbeddingCreateInput) =>
       embeddingAPI.createEmbeddingChunk(embeddingChunk),
   });
   return {

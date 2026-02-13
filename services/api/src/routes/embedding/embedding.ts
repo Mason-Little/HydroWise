@@ -9,8 +9,8 @@ import {
   sql,
 } from "@hydrowise/database";
 import {
-  CreateEmbeddingRequestSchema,
-  RetrieveContextRequestSchema,
+  ContextQueryInputSchema,
+  EmbeddingCreateInputSchema,
 } from "@hydrowise/entities";
 import { Hono } from "hono";
 import { getUserId } from "../../shared/auth";
@@ -40,7 +40,7 @@ export const createEmbeddingRoutes = (db: DbClient) => {
   app.post("/create-embedding-chunk", async (c) => {
     const userId = getUserId();
     const body = await c.req.json().catch(() => null);
-    const parseResult = CreateEmbeddingRequestSchema.safeParse(body);
+    const parseResult = EmbeddingCreateInputSchema.safeParse(body);
     if (!parseResult.success) {
       return c.json(errorResponse("embedding is required"), 400);
     }
@@ -72,7 +72,7 @@ export const createEmbeddingRoutes = (db: DbClient) => {
   app.post("/retrieve-context", async (c) => {
     const userId = getUserId();
     const body = await c.req.json().catch(() => null);
-    const parseResult = RetrieveContextRequestSchema.safeParse(body);
+    const parseResult = ContextQueryInputSchema.safeParse(body);
     if (!parseResult.success) {
       return c.json(errorResponse("embedding is required"), 400);
     }

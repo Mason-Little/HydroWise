@@ -1,4 +1,4 @@
-import type { CreateDocumentRequest } from "@hydrowise/entities";
+import type { DocumentCreateInput } from "@hydrowise/entities";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { documentAPI } from "@/api/document/document";
 
@@ -11,7 +11,7 @@ export const useDocument = () => {
 
   const { mutateAsync: uploadDocument } = useMutation({
     mutationKey: ["document-upload"],
-    mutationFn: (document: CreateDocumentRequest) =>
+    mutationFn: (document: DocumentCreateInput) =>
       documentAPI.uploadDocument(document),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["documents"] });

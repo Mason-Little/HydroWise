@@ -1,6 +1,6 @@
 import type {
-  CreateDocumentRequest,
   CreateDocumentResponse,
+  DocumentCreateInput,
   GetDocumentsResponse,
   NoContentResponse,
 } from "@hydrowise/entities";
@@ -11,7 +11,7 @@ export const documentAPI = {
     return client.get("document").json<GetDocumentsResponse>();
   },
 
-  uploadDocument: (document: CreateDocumentRequest) => {
+  uploadDocument: (document: DocumentCreateInput) => {
     return client
       .post("document", {
         json: document,

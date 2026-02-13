@@ -1,6 +1,6 @@
 import type { DbClient } from "@hydrowise/database";
 import { and, documentEmbeddings, documents, eq } from "@hydrowise/database";
-import { CreateDocumentRequestSchema } from "@hydrowise/entities";
+import { DocumentCreateInputSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
 import { getUserId } from "../../shared/auth";
 import { errorResponse } from "../../shared/http";
@@ -40,7 +40,7 @@ export const createDocumentRoutes = (db: DbClient) => {
   app.post("/", async (c) => {
     const userId = getUserId();
     const body = await c.req.json().catch(() => null);
-    const parseResult = CreateDocumentRequestSchema.safeParse(body);
+    const parseResult = DocumentCreateInputSchema.safeParse(body);
 
     if (!parseResult.success) {
       return c.json(errorResponse("invalid input"), 400);

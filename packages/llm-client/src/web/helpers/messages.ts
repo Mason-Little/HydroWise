@@ -1,6 +1,6 @@
 import type { ModelMessage } from "ai";
 
-type ConversationMessageInput = {
+type ChatMessageInput = {
   role?: "user" | "assistant";
   content?: string;
 };
@@ -10,7 +10,7 @@ const SYSTEM_INSTRUCTION_PREFIX =
 
 export const buildPromptAwareMessages = (
   prompt: string,
-  messages: ConversationMessageInput[],
+  messages: ChatMessageInput[],
 ): ModelMessage[] => {
   const instructionMessage: ModelMessage = {
     role: "user",

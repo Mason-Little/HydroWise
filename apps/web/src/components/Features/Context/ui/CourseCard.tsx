@@ -1,4 +1,4 @@
-import type { Course, CreatedDocument } from "@hydrowise/entities";
+import type { Course, Document } from "@hydrowise/entities";
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,7 +13,7 @@ import { DocumentCard } from "./DocumentCard";
 
 interface CourseCardProps {
   course: Course;
-  documents?: CreatedDocument[];
+  documents?: Document[];
 }
 
 export const CourseCard = ({ course, documents }: CourseCardProps) => {

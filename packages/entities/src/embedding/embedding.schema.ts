@@ -16,17 +16,5 @@ export const EmbeddingChunkSchema = z.object({
   chunkIndex: z.number(),
 });
 
-export const CreateEmbeddingRequestSchema = z.object({
-  documentId: z.string(),
-  content: z.string(),
-  embedding: z.array(z.number()),
-  topicId: z.string().nullable(),
-  chunkIndex: z.number(),
-  chunkIdea: z.string(),
-});
-
 export type Embedding = z.infer<typeof EmbeddingSchema>;
 export type EmbeddingChunk = z.infer<typeof EmbeddingChunkSchema>;
-export type CreateEmbeddingRequest = z.infer<
-  typeof CreateEmbeddingRequestSchema
->;

@@ -1,6 +1,6 @@
 import type { DbClient } from "@hydrowise/database";
 import { and, chats, eq, messages } from "@hydrowise/database";
-import { MessageCreateInputSchema } from "@hydrowise/entities";
+import { ChatMessageSchema } from "@hydrowise/entities";
 import { Hono } from "hono";
 import { getUserId } from "../../shared/auth";
 import { errorResponse } from "../../shared/http";
@@ -91,7 +91,7 @@ export const createChatRoutes = (db: DbClient) => {
       return c.json(errorResponse("chat not found"), 404);
     }
     const payload = await c.req.json().catch(() => null);
-    const parseResult = MessageCreateInputSchema.safeParse(payload);
+    const parseResult = ChatMessageSchema.safeParse(payload);
     if (!parseResult.success) {
       return c.json(errorResponse("role and content are required"), 400);
     }

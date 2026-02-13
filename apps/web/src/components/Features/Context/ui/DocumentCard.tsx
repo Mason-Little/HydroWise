@@ -1,10 +1,10 @@
-import type { CreatedDocument } from "@hydrowise/entities";
+import type { Document } from "@hydrowise/entities";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDocument } from "@/hooks/query/document.queries";
 
 interface DocumentCardProps {
-  document: CreatedDocument;
+  document: Document;
 }
 
 export const DocumentCard = ({ document }: DocumentCardProps) => {

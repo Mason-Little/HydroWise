@@ -1,7 +1,7 @@
 import type {
   Chapter,
+  ChatMessage,
   ChunkIdeaResult,
-  ConversationMessage,
   Course,
   EmbeddingChunk,
   GenerateQuizInput,
@@ -47,8 +47,8 @@ const assertWebRuntimeDisabled = (mode: string, operation: string) => {
 };
 
 export const sendChatCompletion = (
-  history: ConversationMessage[],
-  query: ConversationMessage,
+  history: ChatMessage[],
+  query: ChatMessage,
   contextInjection: string,
   onChunk: (chunk: string) => void,
 ) => {

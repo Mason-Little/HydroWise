@@ -1,20 +1,20 @@
 import type {
-  CreateEmbeddingRequest,
-  RetrieveContextRequest,
-  RetrieveContextResponse,
+  ContextQueryInput,
+  EmbeddingCreateInput,
+  GetContextResponse,
 } from "@hydrowise/entities";
 import { client } from "@/api/client";
 
 export const embeddingAPI = {
-  getContextRetrieval: (payload: RetrieveContextRequest) => {
+  getContextRetrieval: (payload: ContextQueryInput) => {
     return client
       .post("embedding/retrieve-context", {
         json: payload,
       })
-      .json<RetrieveContextResponse>();
+      .json<GetContextResponse>();
   },
 
-  createEmbeddingChunk: (payload: CreateEmbeddingRequest) => {
+  createEmbeddingChunk: (payload: EmbeddingCreateInput) => {
     return client
       .post("embedding/create-embedding-chunk", {
         json: payload,

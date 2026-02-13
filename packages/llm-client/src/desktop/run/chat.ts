@@ -1,5 +1,5 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import type { ConversationMessage } from "@hydrowise/entities";
+import type { ChatMessage } from "@hydrowise/entities";
 import { streamText } from "ai";
 import { chatPrompt } from "../../config";
 
@@ -10,8 +10,8 @@ const getOpenAIClient = () =>
   });
 
 export const sendDesktopChatCompletion = async (
-  history: ConversationMessage[],
-  query: ConversationMessage,
+  history: ChatMessage[],
+  query: ChatMessage,
   contextInjection: string,
   onChunk: (chunk: string) => void,
 ): Promise<string> => {

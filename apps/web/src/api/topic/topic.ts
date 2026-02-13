@@ -1,22 +1,22 @@
 import type {
-  CreateTopicRequest,
   Embedding,
-  RetrieveTopicsRequest,
-  RetrieveTopicsResponse,
+  GetTopicsResponse,
   Topic,
+  TopicCreateInput,
+  TopicQueryInput,
 } from "@hydrowise/entities";
 import { client } from "@/api/client";
 
 export const topicApi = {
-  retrieveTopics: (payload: RetrieveTopicsRequest) => {
+  retrieveTopics: (payload: TopicQueryInput) => {
     return client
       .post("topic/retrieve-topics", {
         json: payload,
       })
-      .json<RetrieveTopicsResponse>();
+      .json<GetTopicsResponse>();
   },
 
-  createTopic: (payload: CreateTopicRequest) => {
+  createTopic: (payload: TopicCreateInput) => {
     return client
       .post("topic/create-topic", {
         json: payload,

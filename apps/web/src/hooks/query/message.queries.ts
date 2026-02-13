@@ -1,4 +1,4 @@
-import type { ConversationMessage } from "@hydrowise/entities";
+import type { ChatMessage } from "@hydrowise/entities";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { chatAPI } from "@/api/conversation/chat";
 import { useChatStore } from "@/store/chatStore";
@@ -29,7 +29,7 @@ export const useMessages = () => {
       message,
     }: {
       chatId: string;
-      message: ConversationMessage;
+      message: ChatMessage;
     }) => chatAPI.sendMessage(chatId, message),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
@@ -38,7 +38,7 @@ export const useMessages = () => {
     },
   });
 
-  const sendChatMessage = (chatId: string, message: ConversationMessage) => {
+  const sendChatMessage = (chatId: string, message: ChatMessage) => {
     return sendMessage({ chatId, message });
   };
 

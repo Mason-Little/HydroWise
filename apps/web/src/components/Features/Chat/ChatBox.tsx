@@ -1,4 +1,4 @@
-import type { ConversationMessage } from "@hydrowise/entities";
+import type { ChatMessage } from "@hydrowise/entities";
 import { useState } from "react";
 import { ChatInput } from "@/components/Features/Chat/ui/ChatInput";
 import { MessageArea } from "@/components/Features/Chat/ui/MessageArea";
@@ -17,7 +17,7 @@ export const ChatBox = () => {
     setStreamingContent((previous) => previous + chunk);
   };
 
-  const displayedMessages: ConversationMessage[] = [
+  const displayedMessages: ChatMessage[] = [
     ...messages,
     ...(streamingContent
       ? [convertTextToMessage(streamingContent, "assistant")]
