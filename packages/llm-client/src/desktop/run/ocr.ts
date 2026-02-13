@@ -16,6 +16,7 @@ export const postprocessDesktopOcrText = async (
     system: ocrCorrectionPrompt,
     model: openai.chat("any"),
     temperature: 0,
+    topP: 1,
     messages: [
       {
         role: "user",

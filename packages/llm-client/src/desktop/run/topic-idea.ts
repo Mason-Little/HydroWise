@@ -34,6 +34,8 @@ export const sendDesktopTopicIdea = async (
     system: topicAssessmentPrompt(course, chapter, documentName),
     model: openai.chat("any"),
     prompt: JSON.stringify(payload),
+    temperature: 0,
+    topP: 1,
     output: Output.object({
       name: "topic-idea",
       description: "topic assignment and creation for chunk ideas",

@@ -26,6 +26,8 @@ export const sendDesktopChunkIdea = async (
     system: chunkIdeaPrompt(course, chapter, documentName),
     model: openai.chat("any"),
     prompt: chunk.content,
+    temperature: 0,
+    topP: 1,
     output: Output.object({
       name: "chunk-idea",
       description: "dominant idea for a document chunk",

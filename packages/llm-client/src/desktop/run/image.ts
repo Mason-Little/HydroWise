@@ -21,6 +21,8 @@ export const processDesktopImage = async (input: File): Promise<string> => {
   const base64 = await FileToBase64(input);
   const result = await generateText({
     model: openai.chat("any"),
+    temperature: 0,
+    topP: 1,
     messages: [
       {
         role: "user",
