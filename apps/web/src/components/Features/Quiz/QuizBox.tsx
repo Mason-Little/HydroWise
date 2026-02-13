@@ -1,26 +1,37 @@
-import { BoolQuestionCard } from "@/components/Features/Quiz/ui/BoolAnswer";
-import { MultipleQuestionCard } from "@/components/Features/Quiz/ui/MultipleAnswer";
-import { ShortQuestionCard } from "@/components/Features/Quiz/ui/ShortAnswer";
-import { Card } from "@/components/ui/card";
+import type { QuizQuestion } from "@hydrowise/entities";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { quizQuestions } from "./quizData";
+import { CreateQuizDialog } from "./ui/CreateQuizDialog";
+import { QuizCard } from "./ui/QuizCard";
 
 export const QuizBox = () => {
+  const [currentQuiz, setCurrentQuiz] = useState<QuizQuestion[] | null>(null);
+  const [createQuizOpen, setCreateQuizOpen] = useState(false);
+
   return (
-    <Card className="mx-auto flex h-[calc(100svh-1.5rem)] w-full max-w-4xl border-border/70 bg-card/90 py-0 shadow-sm backdrop-blur-sm md:h-[calc(100svh-2.5rem)]">
-      <div className="flex-1 space-y-3 overflow-y-auto p-4 sm:p-5">
-        {quizQuestions.map((question, index) => {
-          switch (question.type) {
-            case "multipleChoice":
-              return <MultipleQuestionCard key={index} question={question} />;
-            case "shortAnswer":
-              return <ShortQuestionCard key={index} question={question} />;
-            case "bool":
-              return <BoolQuestionCard key={index} question={question} />;
-            default:
-              return null;
-          }
-        })}
-      </div>
+    <Card className="mx-auto w-full max-w-4xl">
+      <CardHeader className="flex-row items-center justify-between space-y-0">
+        <CardTitle>Quiz</CardTitle>
+        <div className="flex gap-2">
+          <Button onClick={() => setCreateQuizOpen(true)}>Create Quiz</Button>
+          <Button>Quiz History</Button>
+        </div>
+      </CardHeader>
+      <CreateQuizDialog
+        open={createQuizOpen}
+        onOpenChange={setCreateQuizOpen}
+      />
+      <CardContent>
+        {currentQuiz ? (
+          <QuizCard questions={currentQuiz} />
+        ) : (
+          <Button onClick={() => setCurrentQuiz(quizQuestions)}>
+            Create Quiz to get started
+          </Button>
+        )}
+      </CardContent>
     </Card>
   );
 };
