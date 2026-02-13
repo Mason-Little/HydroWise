@@ -9,8 +9,6 @@ import {
 } from "@/components/ui/collapsible";
 import { useChapters } from "@/hooks/query/chapter.queries";
 import { useCourses } from "@/hooks/query/course.queries";
-// import { useDocument } from "@/hooks/query/document.queries";
-// import { useQuiz } from "@/hooks/quiz/quiz";
 import { DocumentCard } from "./DocumentCard";
 
 interface CourseCardProps {
@@ -20,9 +18,7 @@ interface CourseCardProps {
 
 export const CourseCard = ({ course, documents }: CourseCardProps) => {
   const { deleteCourse } = useCourses();
-  // const { getEmbeddingsChunks } = useDocument();
   const { chapters } = useChapters(course.id);
-  // const { generateQuiz } = useQuiz();
 
   const getDocsForChapter = (chapterId: string) => {
     return documents?.filter((document) => document.chapterId === chapterId);
@@ -31,24 +27,6 @@ export const CourseCard = ({ course, documents }: CourseCardProps) => {
   const unsortedDocs = useMemo(() => {
     return documents?.filter((document) => !document.chapterId);
   }, [documents]);
-
-  const quizForChapter = async (chapterId: string) => {
-    const documentIds = getDocsForChapter(chapterId)?.map(
-      (document) => document.id,
-    );
-
-    if (!documentIds?.length) return;
-
-    // try {
-    //   const embeddingsChunks = await getEmbeddingsChunks(documentIds);
-    //   const quiz = await generateQuiz(
-    //     embeddingsChunks.map((chunk) => chunk.content),
-    //   );
-    //   console.log(quiz);
-    // } catch (error) {
-    //   console.error("failed to generate quiz", error);
-    // }
-  };
 
   return (
     <Card className="border-border/60 bg-card/75 shadow-none">
@@ -82,8 +60,6 @@ export const CourseCard = ({ course, documents }: CourseCardProps) => {
             {chapters.length > 0 ? (
               chapters.map((chapter) => {
                 const chapterDocs = getDocsForChapter(chapter.id);
-                const hasChapterDocs = (chapterDocs?.length ?? 0) > 0;
-
                 return (
                   <Collapsible
                     key={chapter.id}
@@ -95,15 +71,6 @@ export const CourseCard = ({ course, documents }: CourseCardProps) => {
                         <span className="line-clamp-1">{chapter.name}</span>
                         <span className="text-muted-foreground text-xs"></span>
                       </CollapsibleTrigger>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 px-2.5 text-xs"
-                        disabled={!hasChapterDocs}
-                        onClick={() => quizForChapter(chapter.id)}
-                      >
-                        Quiz Me!
-                      </Button>
                     </div>
                     <CollapsibleContent className="px-2 pb-2">
                       {(chapterDocs?.length ?? 0) > 0 ? (
