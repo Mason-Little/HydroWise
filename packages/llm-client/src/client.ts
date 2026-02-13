@@ -18,14 +18,6 @@ import { processDesktopImage } from "./desktop/run/image";
 import { postprocessDesktopOcrText } from "./desktop/run/ocr";
 import { sendDesktopQuiz } from "./desktop/run/quiz";
 import { sendDesktopTopicIdea } from "./desktop/run/topic-idea";
-import { initWebLLMEngine } from "./web/init/chat";
-import { initWebEmbeddings } from "./web/init/embeddings";
-import { initWebVisionModel } from "./web/init/image";
-import { configureWebModelLogging } from "./web/init/logging";
-import { sendWebChatCompletion } from "./web/run/chat";
-import { sendWebEmbeddings } from "./web/run/embeddings";
-import { processWebImage } from "./web/run/image";
-import { postprocessWebOcrText } from "./web/run/ocr";
 
 const getRuntimeMode = () => {
   // Handle Vite/Browser environment
@@ -33,10 +25,21 @@ const getRuntimeMode = () => {
     return import.meta.env.VITE_RUNTIME;
   }
   // Handle Node/Bun environment
-  if (typeof process !== "undefined" && process.env?.RUNTIME_MODE) {
-    return process.env.RUNTIME_MODE;
+  const runtimeMode = (
+    globalThis as { process?: { env?: { RUNTIME_MODE?: string } } }
+  ).process?.env?.RUNTIME_MODE;
+  if (runtimeMode) {
+    return runtimeMode;
   }
   return "web";
+};
+
+const assertWebRuntimeDisabled = (mode: string, operation: string) => {
+  if (mode !== "web") return;
+
+  throw new Error(
+    `${operation} is disabled in web runtime. WebLLM is feature-flagged off right now. Run with VITE_RUNTIME=desktop.`,
+  );
 };
 
 export const sendChatCompletion = (
@@ -46,16 +49,14 @@ export const sendChatCompletion = (
   onChunk: (chunk: string) => void,
 ) => {
   const mode = getRuntimeMode();
-  return mode === "web"
-    ? sendWebChatCompletion(history, query, contextInjection, onChunk)
-    : sendDesktopChatCompletion(history, query, contextInjection, onChunk);
+  assertWebRuntimeDisabled(mode, "sendChatCompletion");
+  return sendDesktopChatCompletion(history, query, contextInjection, onChunk);
 };
 
 export const sendEmbeddings = async (values: string[]) => {
   const mode = getRuntimeMode();
-  return mode === "web"
-    ? await sendWebEmbeddings(values)
-    : await sendDesktopEmbeddings(values);
+  assertWebRuntimeDisabled(mode, "sendEmbeddings");
+  return await sendDesktopEmbeddings(values);
 };
 
 export const sendEmbedding = async (text: string) => {
@@ -65,14 +66,14 @@ export const sendEmbedding = async (text: string) => {
 
 export const processImage = async (image: File) => {
   const mode = getRuntimeMode();
-  return mode === "web" ? processWebImage(image) : processDesktopImage(image);
+  assertWebRuntimeDisabled(mode, "processImage");
+  return processDesktopImage(image);
 };
 
 export const postprocessOcrText = async (ocrText: string) => {
   const mode = getRuntimeMode();
-  return mode === "web"
-    ? postprocessWebOcrText(ocrText)
-    : postprocessDesktopOcrText(ocrText);
+  assertWebRuntimeDisabled(mode, "postprocessOcrText");
+  return postprocessDesktopOcrText(ocrText);
 };
 
 export const sendChunkIdea = async (
@@ -82,9 +83,7 @@ export const sendChunkIdea = async (
   chapter: Chapter | null,
 ): Promise<ChunkIdeaResult> => {
   const mode = getRuntimeMode();
-  if (mode === "web") {
-    throw new Error("sendChunkIdea is only implemented for desktop mode");
-  }
+  assertWebRuntimeDisabled(mode, "sendChunkIdea");
 
   return sendDesktopChunkIdea(chunk, documentName, course, chapter);
 };
@@ -97,9 +96,7 @@ export const sendTopicIdea = async (
   existingTopics: Pick<Topic, "name" | "description">[] = [],
 ): Promise<TopicAssessmentResult> => {
   const mode = getRuntimeMode();
-  if (mode === "web") {
-    throw new Error("sendTopicIdea is only implemented for desktop mode");
-  }
+  assertWebRuntimeDisabled(mode, "sendTopicIdea");
 
   return sendDesktopTopicIdea(
     chunks,
@@ -112,45 +109,34 @@ export const sendTopicIdea = async (
 
 export const sendQuiz = async (messages: ConversationMessage) => {
   const mode = getRuntimeMode();
-  return mode === "web" ? "not ready yet" : sendDesktopQuiz(messages);
+  assertWebRuntimeDisabled(mode, "sendQuiz");
+  return sendDesktopQuiz(messages);
 };
 
 export const initLLMClient = (onProgress?: (progress: number) => void) => {
   const mode = getRuntimeMode();
-  if (mode === "web") configureWebModelLogging();
-  return mode === "web"
-    ? initWebLLMEngine(onProgress)
-    : initDesktopLLMClient(onProgress);
+  assertWebRuntimeDisabled(mode, "initLLMClient");
+  return initDesktopLLMClient(onProgress);
 };
 
 export const initVisionModel = (onProgress?: (progress: number) => void) => {
   const mode = getRuntimeMode();
-  if (mode === "web") configureWebModelLogging();
-  return mode === "web"
-    ? initWebVisionModel(onProgress)
-    : initDesktopVisionModel(onProgress);
+  assertWebRuntimeDisabled(mode, "initVisionModel");
+  return initDesktopVisionModel(onProgress);
 };
 
 export const initEmbeddings = (onProgress?: (progress: number) => void) => {
   const mode = getRuntimeMode();
-  if (mode === "web") configureWebModelLogging();
-  return mode === "web"
-    ? initWebEmbeddings(onProgress)
-    : initDesktopEmbeddings(onProgress);
+  assertWebRuntimeDisabled(mode, "initEmbeddings");
+  return initDesktopEmbeddings(onProgress);
 };
 
 export const initAllEngines = (onProgress?: (progress: number) => void) => {
   const mode = getRuntimeMode();
-  if (mode === "web") configureWebModelLogging();
-  return mode === "web"
-    ? Promise.all([
-        initWebLLMEngine(onProgress),
-        initWebVisionModel(onProgress),
-        initWebEmbeddings(onProgress),
-      ])
-    : Promise.all([
-        initDesktopLLMClient(onProgress),
-        initDesktopVisionModel(onProgress),
-        initDesktopEmbeddings(onProgress),
-      ]);
+  assertWebRuntimeDisabled(mode, "initAllEngines");
+  return Promise.all([
+    initDesktopLLMClient(onProgress),
+    initDesktopVisionModel(onProgress),
+    initDesktopEmbeddings(onProgress),
+  ]);
 };
