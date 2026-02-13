@@ -1,4 +1,10 @@
-import { and, type DbClient, eq, topics } from "@hydrowise/database";
+import {
+  and,
+  type DbClient,
+  documentEmbeddings,
+  eq,
+  topics,
+} from "@hydrowise/database";
 import {
   type CreateTopicRequest,
   CreateTopicRequestSchema,
@@ -48,6 +54,27 @@ export const createTopicRoutes = (db: DbClient) => {
     }
 
     return c.json([]);
+  });
+
+  app.get("/:topicId/embeddings", async (c) => {
+    const userId = getUserId();
+
+    const topicId = c.req.param("topicId");
+
+    const topic = await db.query.topics.findFirst({
+      where: and(eq(topics.id, topicId), eq(topics.userId, userId)),
+    });
+
+    if (!topic) {
+      return c.json(errorResponse("topic not found"), 404);
+    }
+
+    const chunks = await db
+      .select()
+      .from(documentEmbeddings)
+      .where(eq(documentEmbeddings.topicId, topicId));
+
+    return c.json(chunks);
   });
 
   app.post("/create-topic", async (c) => {

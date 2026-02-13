@@ -15,5 +15,9 @@ export const useTopicQueries = () => {
     mutationFn: (request: CreateTopicRequest) => topicApi.createTopic(request),
   });
 
-  return { retrieveTopics, createTopic };
+  const { mutateAsync: retrieveTopicEmbeddings } = useMutation({
+    mutationFn: (topicId: string) => topicApi.retrieveTopicEmbeddings(topicId),
+  });
+
+  return { retrieveTopics, createTopic, retrieveTopicEmbeddings };
 };

@@ -1,5 +1,6 @@
 import type {
   CreateTopicRequest,
+  Embedding,
   RetrieveTopicsRequest,
   RetrieveTopicsResponse,
   Topic,
@@ -21,5 +22,9 @@ export const topicApi = {
         json: payload,
       })
       .json<Topic>();
+  },
+
+  retrieveTopicEmbeddings: (topicId: string) => {
+    return client.get(`topic/${topicId}/embeddings`).json<Embedding[]>();
   },
 };
