@@ -1,20 +1,20 @@
 import type { ChatMessage } from "@hydrowise/entities";
-import { sendChatCompletion } from "@hydrowise/llm-client";
+import { generateGroundedResponse } from "@hydrowise/llm-client";
 import { useState } from "react";
 
 export const useModel = () => {
   const [isStreaming, setIsStreaming] = useState(false);
 
   const generateResponse = async (
-    history: ChatMessage[],
     query: ChatMessage,
+    history: ChatMessage[],
     contextInjection: string,
     onmessage: (chunk: string) => void,
   ) => {
     setIsStreaming(true);
-    const fullResponse = await sendChatCompletion(
-      history,
+    const fullResponse = await generateGroundedResponse(
       query,
+      history,
       contextInjection,
       onmessage,
     );

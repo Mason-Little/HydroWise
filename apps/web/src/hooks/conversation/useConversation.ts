@@ -42,8 +42,8 @@ export const useConversation = () => {
     const contextInjection = contextToInjection(retrievedContext);
 
     const generated = await generateResponse(
-      messages,
       promptMessage,
+      messages,
       contextInjection,
       onmessage,
     );

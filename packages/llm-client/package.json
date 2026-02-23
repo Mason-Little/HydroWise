@@ -20,9 +20,6 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.24",
-    "@browser-ai/transformers-js": "^2.1.0",
-    "@huggingface/transformers": "^3.8.1",
-    "@mlc-ai/web-llm": "^0.2.79",
     "ai": "^6.0.66"
   },
   "exports": {

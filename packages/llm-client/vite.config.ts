@@ -17,13 +17,5 @@ export default defineConfig({
       fileName: "index",
       formats: ["es", "cjs"],
     },
-    rollupOptions: {
-      external: ["@mlc-ai/web-llm"],
-      output: {
-        globals: {
-          "@mlc-ai/web-llm": "WebLLM",
-        },
-      },
-    },
   },
 });
