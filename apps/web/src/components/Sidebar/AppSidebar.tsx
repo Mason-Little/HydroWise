@@ -1,7 +1,6 @@
 import { BrainIcon, FileTextIcon, MessageCircleIcon } from "lucide-react";
 import { ChatFeatureButton } from "@/components/Sidebar/ui/ChatFeatureButton";
 import { ChatHistoryButton } from "@/components/Sidebar/ui/ChatHistoryButton";
-import { ModelStatus } from "@/components/Sidebar/ui/ModelStatus";
 import { Button } from "@/components/ui/button";
 import {
   SidebarContent,
@@ -43,11 +42,6 @@ export const AppSidebar = ({ setFeature }: SidebarProps) => {
           <SidebarTrigger className="hidden md:inline-flex" />
         </div>
       </SidebarHeader>
-      <SidebarGroup className="pt-1 pb-0">
-        <SidebarGroupContent className="px-2">
-          <ModelStatus />
-        </SidebarGroupContent>
-      </SidebarGroup>
       <SidebarSeparator />
       <SidebarGroup>
         <SidebarGroupContent>
