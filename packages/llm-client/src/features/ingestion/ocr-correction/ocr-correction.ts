@@ -10,12 +10,7 @@ export const generateOcrCorrection = async (
     model: await getLanguageModel(),
     temperature: 0,
     topP: 1,
-    messages: [
-      {
-        role: "user",
-        content: ocrText,
-      },
-    ],
+    prompt: ocrText,
   });
 
   return result.text;
