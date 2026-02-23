@@ -1,7 +1,7 @@
 import type { EmbeddingChunk } from "@hydrowise/entities";
-import { sendEmbeddings } from "@hydrowise/llm-client";
+import { generateEmbeddings } from "@hydrowise/llm-client";
 
-export const generateEmbeddings = async (
+export const sendEmbeddings = async (
   chunks: string[],
   onProgress?: (completed: number, total: number) => void,
 ): Promise<EmbeddingChunk[]> => {
@@ -9,7 +9,7 @@ export const generateEmbeddings = async (
     return [];
   }
 
-  const embeddings = await sendEmbeddings(chunks);
+  const embeddings = await generateEmbeddings(chunks);
   onProgress?.(chunks.length, chunks.length);
 
   return chunks.map((content, index) => ({

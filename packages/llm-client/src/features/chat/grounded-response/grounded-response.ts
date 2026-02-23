@@ -9,10 +9,9 @@ export const generateGroundedResponse = async (
   contextInjection: string,
   onChunk: (chunk: string) => void,
 ) => {
-  const model = getLanguageModel();
-  const result = await streamText({
+  const result = streamText({
     system: systemPrompt(contextInjection),
-    model,
+    model: await getLanguageModel(),
     messages: [...history, userPrompt].map((m) => ({
       role: m.role,
       content: m.content,

@@ -4,7 +4,10 @@ import type {
   QuizQuestion,
   QuizSkeletonInput,
 } from "@hydrowise/entities";
-import { sendQuiz, sendQuizSkeleton } from "@hydrowise/llm-client";
+import {
+  generateQuizGeneration,
+  generateQuizPlan,
+} from "@hydrowise/llm-client";
 import { useTopicQueries } from "../query/topic.queries";
 
 export const useQuiz = () => {
@@ -44,7 +47,7 @@ export const useQuiz = () => {
       })),
     }));
 
-    const quizSkeleton = await sendQuizSkeleton(payload);
+    const quizSkeleton = await generateQuizPlan(payload);
     console.log("quiz skeleton output", quizSkeleton);
 
     const allTopics = inputSchema.flatMap((chapter) => chapter.topics);
@@ -86,7 +89,7 @@ export const useQuiz = () => {
     console.log("generate quiz input", generateQuizInput);
 
     const quizChunks = generateQuizInput.map((topic) => {
-      return sendQuiz(topic);
+      return generateQuizGeneration(topic);
     });
 
     const quiz = await Promise.all(quizChunks);

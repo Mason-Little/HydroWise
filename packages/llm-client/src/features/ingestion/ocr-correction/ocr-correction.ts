@@ -2,13 +2,12 @@ import { generateText } from "ai";
 import { getLanguageModel } from "../../../init/language";
 import { ocrCorrectionPrompt } from "./config";
 
-export const postprocessDesktopOcrText = async (
+export const generateOcrCorrection = async (
   ocrText: string,
 ): Promise<string> => {
-  const model = getLanguageModel();
   const result = await generateText({
     system: ocrCorrectionPrompt,
-    model,
+    model: await getLanguageModel(),
     temperature: 0,
     topP: 1,
     messages: [

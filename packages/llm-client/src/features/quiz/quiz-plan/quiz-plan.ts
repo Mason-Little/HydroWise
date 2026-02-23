@@ -8,15 +8,14 @@ import { generateText, Output } from "ai";
 import { getLanguageModel } from "../../../init/language";
 import { quizSkeletonPrompt } from "./config";
 
-export const sendDesktopQuizSkeleton = async (
+export const generateQuizPlan = async (
   items: QuizSkeletonInput,
 ): Promise<QuizSkeleton> => {
-  const model = getLanguageModel();
   const payload = QuizSkeletonInputSchema.parse(items);
 
   const result = await generateText({
     system: quizSkeletonPrompt(),
-    model,
+    model: await getLanguageModel(),
     prompt: JSON.stringify(payload),
     temperature: 0,
     topP: 1,

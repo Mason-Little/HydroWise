@@ -2,8 +2,8 @@ import { z } from "zod";
 
 const NonEmptyStringSchema = z.string().min(1);
 
-export const ChunkIdeaResultSchema = z.object({
+export const ChunkConceptResultSchema = z.object({
   idea: NonEmptyStringSchema,
 });
 
-export type ChunkIdeaResult = z.infer<typeof ChunkIdeaResultSchema>;
+export type ChunkConceptResult = z.infer<typeof ChunkConceptResultSchema>;

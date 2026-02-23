@@ -1,4 +1,4 @@
-import { postprocessOcrText, processImage } from "@hydrowise/llm-client";
+import { generateOcrCorrection, processImage } from "@hydrowise/llm-client";
 import { heicTo, isHeic } from "heic-to";
 
 const convertHeicToPng = async (file: File): Promise<File> => {
@@ -36,7 +36,7 @@ export const parseImage = async (image: File) => {
   try {
     const normalizedImage = await normalizeImageForOcr(image);
     const result = await processImage(normalizedImage);
-    const markdown = await postprocessOcrText(result);
+    const markdown = await generateOcrCorrection(result);
     return {
       text: markdown,
       pageCount: 1,

@@ -1,5 +1,5 @@
 import { generateText } from "ai";
-import { getLanguageModel } from "../../../init/language";
+import { getVisionModel } from "../../../init/image/index";
 
 const FileToBase64 = (file: File | Blob): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -10,11 +10,10 @@ const FileToBase64 = (file: File | Blob): Promise<string> => {
   });
 };
 
-export const processDesktopImage = async (input: File): Promise<string> => {
+export const processImage = async (input: File): Promise<string> => {
   const base64 = await FileToBase64(input);
-  const model = getLanguageModel();
   const result = await generateText({
-    model,
+    model: await getVisionModel(),
     temperature: 0,
     topP: 1,
     messages: [

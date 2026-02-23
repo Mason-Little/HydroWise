@@ -13,7 +13,9 @@ const modelState: ModelState = {};
 export const initEmbeddingModel = async (
   onProgress?: (progress: number) => void,
 ) => {
-  if (import.meta.env.VITE_APP_MODE === "desktop") {
+  const runtime = import.meta.env.VITE_RUNTIME ?? import.meta.env.VITE_APP_MODE;
+
+  if (runtime === "desktop") {
     await initDesktopEmbeddingModel(onProgress);
     modelState.activeModel = getDesktopEmbeddingModel();
   } else {
@@ -21,11 +23,14 @@ export const initEmbeddingModel = async (
   }
 };
 
-export const getEmbeddingModel = (): EmbeddingModel => {
+export const getEmbeddingModel = async (): Promise<EmbeddingModel> => {
   if (!modelState.activeModel) {
-    throw new Error(
-      "Embedding model has not been initialized. Call initEmbeddingModel first.",
-    );
+    await initEmbeddingModel();
   }
+
+  if (!modelState.activeModel) {
+    throw new Error("Embedding Model Couldn't be initialized.");
+  }
+
   return modelState.activeModel;
 };

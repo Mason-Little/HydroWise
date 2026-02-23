@@ -38,7 +38,7 @@ export const useConversation = () => {
     await sendMessage(chatId, promptMessage);
 
     const promptEmbedding = await generateEmbedding(prompt);
-    const retrievedContext = await contextRetrieval(promptEmbedding);
+    const retrievedContext = await contextRetrieval(promptEmbedding[0]);
     const contextInjection = contextToInjection(retrievedContext);
 
     const generated = await generateResponse(

@@ -4,13 +4,12 @@ import { generateText, Output } from "ai";
 import { getLanguageModel } from "../../../init/language";
 import { quizPrompt } from "./config";
 
-export const sendDesktopQuiz = async (
+export const generateQuizGeneration = async (
   quizChunk: GenerateQuizInput,
 ): Promise<QuizQuestion[]> => {
-  const model = getLanguageModel();
   const result = await generateText({
     system: quizPrompt(),
-    model,
+    model: await getLanguageModel(),
     prompt: JSON.stringify(quizChunk),
     output: Output.array({
       name: "quiz",

@@ -1,6 +1,6 @@
 import { parseDocument } from "@hydrowise/core";
 import type { Chapter, Course, EmbeddingChunk } from "@hydrowise/entities";
-import { sendChunkIdea, sendTopicIdea } from "@hydrowise/llm-client";
+import { sendChunkConcept, sendTopicAssignment } from "@hydrowise/llm-client";
 import { useTopicQueries } from "../query/topic.queries";
 
 export const useDocumentEnrichment = () => {
@@ -19,20 +19,20 @@ export const useDocumentEnrichment = () => {
   ): Promise<EnrichedChunk[]> => {
     const chunks = await parseDocument(file);
 
-    const chunkIdeas = await Promise.all(
+    const chunkConcepts = await Promise.all(
       chunks.map((chunk) =>
-        sendChunkIdea(chunk, documentName, course, chapter),
+        sendChunkConcept(chunk, documentName, course, chapter),
       ),
     );
 
-    const chunksWithIdeas: Array<EmbeddingChunk & { chunkIdea: string }> =
+    const chunksWithConcepts: Array<EmbeddingChunk & { chunkIdea: string }> =
       chunks.map((chunk, index) => ({
         ...chunk,
-        chunkIdea: chunkIdeas[index].idea,
+        chunkIdea: chunkConcepts[index].idea,
       }));
 
     if (!course) {
-      return chunksWithIdeas.map((chunk) => ({
+      return chunksWithConcepts.map((chunk) => ({
         ...chunk,
         topicId: null,
       }));
@@ -43,8 +43,8 @@ export const useDocumentEnrichment = () => {
       chapterId: chapter?.id,
     });
 
-    const topicIdeas = await sendTopicIdea(
-      chunksWithIdeas.map(({ chunkIndex, chunkIdea }) => ({
+    const topicIdeas = await sendTopicAssignment(
+      chunksWithConcepts.map(({ chunkIndex, chunkIdea }) => ({
         chunkIndex,
         chunkIdea,
       })),
@@ -75,7 +75,7 @@ export const useDocumentEnrichment = () => {
       [...existingTopics, ...createdTopics].map((t) => [t.name, t.id]),
     );
 
-    return chunksWithIdeas.map((chunk) => {
+    return chunksWithConcepts.map((chunk) => {
       const topicName = topicIdeas.assignments.find(
         (a) => a.chunkIndex === chunk.chunkIndex,
       )?.topicName;

@@ -10,8 +10,12 @@ type ModelState = {
 
 const modelState: ModelState = {};
 
-export const initLanguage = async (onProgress?: (progress: number) => void) => {
-  if (import.meta.env.VITE_APP_MODE === "desktop") {
+export const initLanguageModel = async (
+  onProgress?: (progress: number) => void,
+) => {
+  const runtime = import.meta.env.VITE_RUNTIME ?? import.meta.env.VITE_APP_MODE;
+
+  if (runtime === "desktop") {
     await initDesktopLanguageModel(onProgress);
     modelState.activeModel = getDesktopLanguageModel();
   } else {
@@ -19,11 +23,14 @@ export const initLanguage = async (onProgress?: (progress: number) => void) => {
   }
 };
 
-export const getLanguageModel = (): LanguageModel => {
+export const getLanguageModel = async (): Promise<LanguageModel> => {
   if (!modelState.activeModel) {
-    throw new Error(
-      "Language model has not been initialized. Call initLanguage first.",
-    );
+    await initLanguageModel();
   }
+
+  if (!modelState.activeModel) {
+    throw new Error("Language Model Couldn't be initialized.");
+  }
+
   return modelState.activeModel;
 };

@@ -1,6 +1,6 @@
 import type { Chapter, Course } from "@hydrowise/entities";
 
-export const chunkIdeaPrompt = (
+export const chunkConceptPrompt = (
   course: Course | null,
   chapter: Chapter | null,
   documentName: string,

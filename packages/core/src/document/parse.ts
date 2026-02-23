@@ -1,7 +1,7 @@
 import type { EmbeddingChunk } from "@hydrowise/entities";
 import { chunkText } from "../utils/chunk";
 import { parseDocx } from "./docx/parse-docx";
-import { generateEmbeddings } from "./embeddings";
+import { sendEmbeddings } from "./embeddings";
 import { parseImage } from "./image/parse-image";
 import { parsePdf } from "./pdf/parse-pdf";
 import { parsePptx } from "./pptx/parse-pptx";
@@ -65,7 +65,7 @@ export const parseDocument = async (file: File): Promise<EmbeddingChunk[]> => {
 
   const parsedDocument = await parser(file);
   const chunks = await chunkText(parsedDocument.text);
-  const embeddings = await generateEmbeddings(chunks);
+  const embeddings = await sendEmbeddings(chunks);
 
   return embeddings;
 };

@@ -1,6 +1,6 @@
 import {
-  initEmbeddings,
-  initLLMClient,
+  initEmbeddingModel,
+  initLanguageModel,
   initVisionModel,
 } from "@hydrowise/llm-client";
 import { create } from "zustand";
@@ -17,9 +17,9 @@ export type inferenceStatus = Record<modelKeys, modelStatus>;
 interface modelStore {
   inferenceStatus: inferenceStatus;
   setInferenceStatus: (progress: number, modelType: modelKeys) => void;
-  initLLMClient: () => Promise<void>;
+  initLanguageModel: () => Promise<void>;
   initVisionModel: () => Promise<void>;
-  initEmbeddings: () => Promise<void>;
+  initEmbeddingModel: () => Promise<void>;
   initAllEngines: () => Promise<void>;
 }
 
@@ -39,9 +39,9 @@ export const modelStore = create<modelStore>((set, get) => ({
         },
       },
     }),
-  initLLMClient: async () => {
+  initLanguageModel: async () => {
     if (get().inferenceStatus.LLM.status === "cold") {
-      await initLLMClient((progress) => {
+      await initLanguageModel((progress) => {
         get().setInferenceStatus(progress, "LLM");
       });
     }
@@ -55,9 +55,9 @@ export const modelStore = create<modelStore>((set, get) => ({
     }
     return Promise.resolve();
   },
-  initEmbeddings: async () => {
+  initEmbeddingModel: async () => {
     if (get().inferenceStatus.Embeddings.status === "cold") {
-      await initEmbeddings((progress) => {
+      await initEmbeddingModel((progress) => {
         get().setInferenceStatus(progress, "Embeddings");
       });
     }
@@ -66,9 +66,9 @@ export const modelStore = create<modelStore>((set, get) => ({
 
   initAllEngines: async () => {
     await Promise.all([
-      get().initLLMClient(),
+      get().initLanguageModel(),
       get().initVisionModel(),
-      get().initEmbeddings(),
+      get().initEmbeddingModel(),
     ]);
   },
 }));

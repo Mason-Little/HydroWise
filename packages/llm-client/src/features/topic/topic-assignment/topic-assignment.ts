@@ -10,7 +10,7 @@ import { generateText, Output } from "ai";
 import { getLanguageModel } from "../../../init/language";
 import { topicAssessmentPrompt } from "./config";
 
-export const sendDesktopTopicIdea = async (
+export const sendTopicAssignment = async (
   chunks: TopicAssessmentInputChunk[],
   course: Course | null,
   chapter: Chapter | null,
@@ -24,12 +24,12 @@ export const sendDesktopTopicIdea = async (
 
   const result = await generateText({
     system: topicAssessmentPrompt(course, chapter, documentName),
-    model: getLanguageModel(),
+    model: await getLanguageModel(),
     prompt: JSON.stringify(payload),
     temperature: 0,
     topP: 1,
     output: Output.object({
-      name: "topic-idea",
+      name: "topic-assignment",
       description: "topic assignment and creation for chunk ideas",
       schema: TopicAssessmentResultSchema,
     }),
