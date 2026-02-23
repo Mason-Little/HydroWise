@@ -2,7 +2,6 @@ import type { QuizQuestion } from "@hydrowise/entities";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { quizQuestions } from "./quizData";
 import { CreateQuizDialog } from "./ui/CreateQuizDialog";
 import { QuizCard } from "./ui/QuizCard";
 
@@ -14,9 +13,6 @@ export const QuizBox = () => {
     <Card className="mx-auto w-full max-w-4xl">
       <CardHeader className="flex-row items-center justify-between space-y-0">
         <CardTitle>Quiz</CardTitle>
-        <div className="flex gap-2">
-          <Button onClick={() => setCreateQuizOpen(true)}>Create Quiz</Button>
-        </div>
       </CardHeader>
       <CreateQuizDialog
         open={createQuizOpen}
@@ -27,9 +23,7 @@ export const QuizBox = () => {
         {currentQuiz ? (
           <QuizCard questions={currentQuiz} />
         ) : (
-          <Button onClick={() => setCurrentQuiz(quizQuestions)}>
-            Create Quiz to get started
-          </Button>
+          <Button onClick={() => setCreateQuizOpen(true)}>Create Quiz</Button>
         )}
       </CardContent>
     </Card>
