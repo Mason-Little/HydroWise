@@ -1,17 +1,7 @@
 import { generateText } from "ai";
 import { getVisionModel } from "../../../init/image/index";
 
-const FileToBase64 = (file: File | Blob): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
-  });
-};
-
-export const processImage = async (input: File): Promise<string> => {
-  const base64 = await FileToBase64(input);
+export const processImage = async (base64: string): Promise<string> => {
   const result = await generateText({
     model: await getVisionModel(),
     temperature: 0,

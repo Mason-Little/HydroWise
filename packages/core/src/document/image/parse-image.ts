@@ -15,6 +15,15 @@ const convertHeicToPng = async (file: File): Promise<File> => {
   return new File([converted], `${baseName}.png`, { type: "image/png" });
 };
 
+const convertFileToBase64 = (file: File | Blob): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+  });
+};
+
 const normalizeImageForOcr = async (file: File): Promise<File> => {
   const mimeType = file.type.toLowerCase();
   const isHeicImage = await isHeic(file).catch(() => false);
@@ -35,7 +44,8 @@ const normalizeImageForOcr = async (file: File): Promise<File> => {
 export const parseImage = async (image: File) => {
   try {
     const normalizedImage = await normalizeImageForOcr(image);
-    const result = await processImage(normalizedImage);
+    const base64 = await convertFileToBase64(normalizedImage);
+    const result = await processImage(base64);
     const markdown = await generateOcrCorrection(result);
     return {
       text: markdown,
