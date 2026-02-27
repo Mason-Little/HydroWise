@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { ChatBox } from "@/components/Features/Chat/ChatBox";
+import { CreateChatButton } from "@/components/Features/Chat/ui/CreateChatButton";
 import { ContextBox } from "@/components/Features/Context/ContextBox";
+import { CreateCourseButton } from "@/components/Features/Context/ui/CreateCourseButton";
 import { QuizBox } from "@/components/Features/Quiz/QuizBox";
+import { CreateQuizButton } from "@/components/Features/Quiz/ui/CreateQuizButton";
+import { UploadFileButton } from "@/components/Features/Upload/ui/UploadFileButton";
 import { AppSidebar } from "@/components/Sidebar/AppSidebar";
+import { TopBar } from "@/components/TopBar/TopBar";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AppSidebar } from "./Sidebar/AppSidebar";
 
 export const Workspace = () => {
   const [feature, setFeature] = useState<"chat" | "context" | "quiz">(
@@ -25,6 +29,16 @@ export const Workspace = () => {
             <SidebarTrigger className="-ml-1" />
             <div className="text-sm font-medium tracking-tight">HydroWise</div>
           </header>
+          <TopBar
+            actions={
+              <>
+                <UploadFileButton />
+                {feature === "context" && <CreateCourseButton />}
+                {feature === "quiz" && <CreateQuizButton />}
+                {feature === "chat" && <CreateChatButton />}
+              </>
+            }
+          />
           <div className="flex h-full flex-1 p-3 md:p-5">
             {feature === "chat" && <ChatBox />}
             {feature === "context" && <ContextBox />}

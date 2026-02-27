@@ -1,9 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { CourseCard } from "@/components/Features/Context/ui/CourseCard";
-import { CreateCourseDialog } from "@/components/Features/Context/ui/CreateCourseDialog";
 import { DocumentCard } from "@/components/Features/Context/ui/DocumentCard";
-import { UploadFile } from "@/components/Features/Upload/UploadFile";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   Collapsible,
@@ -14,8 +11,6 @@ import { useCourses } from "@/hooks/query/course.queries";
 import { useDocument } from "@/hooks/query/document.queries";
 
 export const ContextBox = () => {
-  const [uploadOpen, setUploadOpen] = useState(false);
-  const [courseOpen, setCourseOpen] = useState(false);
   const { documents } = useDocument();
   const { courses } = useCourses();
 
@@ -46,15 +41,6 @@ export const ContextBox = () => {
           <p className="text-muted-foreground text-sm">
             Manage HydroWise Workspace Context in your knowledge base.
           </p>
-        </div>
-        <div className="flex w-full items-center gap-2 sm:w-auto">
-          <Button
-            className="flex-1 sm:flex-none"
-            onClick={() => setUploadOpen(true)}
-          >
-            Upload Document
-          </Button>
-          <Button onClick={() => setCourseOpen(true)}>Create Course</Button>
         </div>
       </div>
 
@@ -135,8 +121,6 @@ export const ContextBox = () => {
           </CollapsibleContent>
         </Collapsible>
       </Card>
-      <UploadFile open={uploadOpen} onOpenChange={setUploadOpen} />
-      <CreateCourseDialog open={courseOpen} onOpenChange={setCourseOpen} />
     </div>
   );
 };
