@@ -1,92 +1,90 @@
-import { BrainIcon, FileTextIcon, MessageCircleIcon } from "lucide-react";
-import { ChatFeatureButton } from "@/components/Sidebar/ui/ChatFeatureButton";
-import { ChatHistoryButton } from "@/components/Sidebar/ui/ChatHistoryButton";
-import { Button } from "@/components/ui/button";
 import {
+  BookIcon,
+  CopyIcon,
+  LayoutDashboardIcon,
+  MessageSquareIcon,
+  PencilIcon,
+} from "lucide-react";
+import { HydroWiseLogo } from "@/components/ui/Logo";
+import {
+  Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
-  Sidebar as SidebarLayout,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
-  SidebarSeparator,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useChat } from "@/hooks/query/chat.queries";
-import { useChatStore } from "@/store/chatStore";
+import { cn } from "@/lib/utils";
+
+export type FeatureType = "chat" | "context" | "quiz" | "flash" | "notes";
 
 type SidebarProps = {
-  setFeature: (feature: "chat" | "context" | "quiz") => void;
+  feature: FeatureType;
+  setFeature: (feature: FeatureType) => void;
 };
 
-export const AppSidebar = ({ setFeature }: SidebarProps) => {
-  const { chats, deleteChat } = useChat();
-  const { setSelectedChatId } = useChatStore();
+const navigation = [
+  { name: "Dashboard", id: "context", icon: LayoutDashboardIcon },
+  { name: "Chat", id: "chat", icon: MessageSquareIcon },
+  { name: "Quiz", id: "quiz", icon: BookIcon },
+  { name: "Flashcards", id: "flash", icon: CopyIcon },
+  { name: "Notes", id: "notes", icon: PencilIcon },
+] as const;
 
+export const AppSidebar = ({ feature, setFeature }: SidebarProps) => {
   return (
-    <SidebarLayout
-      variant="inset"
-      className="border-r border-sidebar-border/60"
-    >
-      <SidebarHeader className="gap-3 p-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sidebar-foreground text-sm font-semibold tracking-tight">
-              HydroWise
-            </p>
-            <p className="text-sidebar-foreground/60 text-xs">
-              Study workspace
-            </p>
+    <Sidebar collapsible="icon" className="border-r border-[#ded7cc] bg-white">
+      <SidebarHeader className="flex flex-col items-center py-6">
+        <div className="flex w-full justify-center">
+          <div className="flex items-center justify-center rounded-md border border-transparent bg-transparent group-data-[state=collapsed]:h-[42px] group-data-[state=collapsed]:w-[42px] group-data-[state=collapsed]:border-[#ded7cc] group-data-[state=collapsed]:bg-white group-data-[state=expanded]:w-full group-data-[state=expanded]:px-2">
+            <div className="flex items-center gap-2">
+              <HydroWiseLogo className="shrink-0" />
+              <span className="font-semibold tracking-tight text-sidebar-foreground truncate group-data-[state=collapsed]:hidden text-lg">
+                HydroWise
+              </span>
+            </div>
           </div>
-          <SidebarTrigger className="hidden md:inline-flex" />
         </div>
       </SidebarHeader>
-      <SidebarSeparator />
-      <SidebarGroup>
-        <SidebarGroupContent>
-          <ChatFeatureButton
-            feature="Chat"
-            icon={<MessageCircleIcon className="size-4" />}
-            onClick={() => setFeature("chat")}
-          />
-          <ChatFeatureButton
-            feature="Context"
-            icon={<BrainIcon className="size-4" />}
-            onClick={() => setFeature("context")}
-          />
-          <ChatFeatureButton
-            feature="Quiz"
-            icon={<FileTextIcon className="size-4" />}
-            onClick={() => setFeature("quiz")}
-          />
-        </SidebarGroupContent>
-      </SidebarGroup>
-      <SidebarSeparator />
-      <Button
-        className="mt-2 mx-2 w-auto rounded-xl"
-        onClick={() => setSelectedChatId(null)}
-      >
-        New Chat
-      </Button>
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Recent chats</SidebarGroupLabel>
-          <SidebarGroupContent className="space-y-1 px-2 pb-2">
-            {chats.map((chat) => (
-              <ChatHistoryButton
-                key={chat.id}
-                chatId={chat.id}
-                chatName={chat.name}
-                onSelect={(chatId) => setSelectedChatId(chatId)}
-                onDelete={(chatId) => deleteChat(chatId)}
-              />
-            ))}
-          </SidebarGroupContent>
-        </SidebarGroup>
+      <SidebarContent className="px-3 gap-2 flex flex-col pt-2">
+        <SidebarMenu className="gap-2">
+          {navigation.map((item) => {
+            const isActive = feature === item.id;
+            return (
+              <SidebarMenuItem key={item.id}>
+                <SidebarMenuButton
+                  tooltip={item.name}
+                  isActive={isActive}
+                  onClick={() => setFeature(item.id)}
+                  className={cn(
+                    "flex items-center h-11 w-full rounded-md transition-colors",
+                    "group-data-[collapsible=icon]:!h-11 group-data-[collapsible=icon]:!w-full group-data-[collapsible=icon]:!p-0",
+                    "group-data-[state=collapsed]:justify-center group-data-[state=expanded]:justify-start group-data-[state=expanded]:px-3",
+                    isActive
+                      ? "bg-white text-[#1f2328] shadow-sm"
+                      : "bg-transparent text-[#5b6472] hover:bg-black/5",
+                  )}
+                >
+                  <item.icon
+                    className={cn(
+                      "shrink-0",
+                      isActive ? "text-[#1f2328]" : "text-[#5b6472]",
+                    )}
+                    size={24}
+                    strokeWidth={isActive ? 2.5 : 2}
+                  />
+                  <span className="truncate ml-2 group-data-[state=collapsed]:hidden font-medium">
+                    {item.name}
+                  </span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
       </SidebarContent>
       <SidebarRail />
-    </SidebarLayout>
+    </Sidebar>
   );
 };
