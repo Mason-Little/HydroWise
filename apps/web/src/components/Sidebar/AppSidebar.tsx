@@ -34,10 +34,13 @@ const navigation = [
 
 export const AppSidebar = ({ feature, setFeature }: SidebarProps) => {
   return (
-    <Sidebar collapsible="icon" className="border-r border-[#ded7cc] bg-white">
+    <Sidebar
+      collapsible="icon"
+      className="bg-sidebar border-sidebar-border border-r"
+    >
       <SidebarHeader className="flex flex-col items-center py-6">
         <div className="flex w-full justify-center">
-          <div className="flex items-center justify-center rounded-md border border-transparent bg-transparent group-data-[state=collapsed]:h-[42px] group-data-[state=collapsed]:w-[42px] group-data-[state=collapsed]:border-[#ded7cc] group-data-[state=collapsed]:bg-white group-data-[state=expanded]:w-full group-data-[state=expanded]:px-2">
+          <div className="flex items-center justify-center rounded-md border border-transparent bg-transparent group-data-[state=collapsed]:h-[42px] group-data-[state=collapsed]:w-[42px] group-data-[state=collapsed]:border-sidebar-border group-data-[state=collapsed]:bg-sidebar group-data-[state=expanded]:w-full group-data-[state=expanded]:px-2">
             <div className="flex items-center gap-2">
               <HydroWiseLogo className="shrink-0" />
               <span className="font-semibold tracking-tight text-sidebar-foreground truncate group-data-[state=collapsed]:hidden text-lg">
@@ -63,14 +66,16 @@ export const AppSidebar = ({ feature, setFeature }: SidebarProps) => {
                     "group-data-[collapsible=icon]:!h-11 group-data-[collapsible=icon]:!w-full group-data-[collapsible=icon]:!p-0",
                     "group-data-[state=collapsed]:justify-center group-data-[state=expanded]:justify-start group-data-[state=expanded]:px-3",
                     isActive
-                      ? "bg-white text-[#1f2328] shadow-sm"
-                      : "bg-transparent text-[#5b6472] hover:bg-black/5",
+                      ? "bg-sidebar-accent text-sidebar-foreground shadow-sm"
+                      : "bg-transparent text-muted-foreground hover:bg-sidebar-accent/60",
                   )}
                 >
                   <item.icon
                     className={cn(
                       "shrink-0",
-                      isActive ? "text-[#1f2328]" : "text-[#5b6472]",
+                      isActive
+                        ? "text-sidebar-foreground"
+                        : "text-muted-foreground",
                     )}
                     size={24}
                     strokeWidth={isActive ? 2.5 : 2}

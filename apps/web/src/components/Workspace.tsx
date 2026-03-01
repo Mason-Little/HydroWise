@@ -20,7 +20,7 @@ export const Workspace = () => {
     <TooltipProvider>
       <SidebarProvider defaultOpen={false}>
         <AppSidebar feature={feature} setFeature={setFeature} />
-        <SidebarInset className="min-h-svh bg-[#f8f9fa]">
+        <SidebarInset className="bg-background min-h-svh">
           <header className="bg-background/70 supports-[backdrop-filter]:bg-background/60 border-border/60 sticky top-0 z-20 flex h-14 items-center gap-2 border-b px-4 backdrop-blur-md md:hidden">
             <SidebarTrigger className="-ml-1" />
             <div className="text-sm font-medium tracking-tight">HydroWise</div>

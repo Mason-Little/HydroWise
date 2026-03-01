@@ -6,7 +6,7 @@ export const CreateChatButton = () => {
 
   return (
     <Button
-      className="h-9 border border-black/10 bg-[#c4d5ff] px-3 font-semibold text-[#1f2a4a] shadow-none hover:bg-[#b4c5ef]"
+      className="bg-secondary text-secondary-foreground border-border h-9 border px-3 font-semibold shadow-none hover:bg-secondary/80"
       onClick={() => setSelectedChatId(null)}
     >
       New Chat
