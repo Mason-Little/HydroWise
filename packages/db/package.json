@@ -11,6 +11,7 @@
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check .",
+    "seed:dummy": "bun run src/seed.ts",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "drizzle:push": "drizzle-kit push",
