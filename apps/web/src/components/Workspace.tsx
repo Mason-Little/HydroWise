@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChatBox } from "@/components/Features/Chat/ChatBox";
-import { ContextBox } from "@/components/Features/Context/ContextBox";
+import { Dashboard } from "@/components/Features/Dashboard/Dashboard";
 import { FlashcardBox } from "@/components/Features/Flashcards/FlashcardBox";
 import { NotesBox } from "@/components/Features/Notes/NotesBox";
 import { QuizBox } from "@/components/Features/Quiz/QuizBox";
@@ -14,7 +14,7 @@ import {
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const Workspace = () => {
-  const [feature, setFeature] = useState<FeatureType>("context");
+  const [feature, setFeature] = useState<FeatureType>("dashboard");
 
   return (
     <TooltipProvider>
@@ -28,7 +28,7 @@ export const Workspace = () => {
           <TopBar feature={feature} />
           <div className="flex h-full flex-1 p-3 md:p-5">
             {feature === "chat" && <ChatBox />}
-            {feature === "context" && <ContextBox />}
+            {feature === "dashboard" && <Dashboard />}
             {feature === "quiz" && <QuizBox />}
             {feature === "flash" && <FlashcardBox />}
             {feature === "notes" && <NotesBox />}

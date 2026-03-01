@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
-export type FeatureType = "chat" | "context" | "quiz" | "flash" | "notes";
+export type FeatureType = "chat" | "dashboard" | "quiz" | "flash" | "notes";
 
 type SidebarProps = {
   feature: FeatureType;
@@ -25,7 +25,7 @@ type SidebarProps = {
 };
 
 const navigation = [
-  { name: "Dashboard", id: "context", icon: LayoutDashboardIcon },
+  { name: "Dashboard", id: "dashboard", icon: LayoutDashboardIcon },
   { name: "Chat", id: "chat", icon: MessageSquareIcon },
   { name: "Quiz", id: "quiz", icon: BookIcon },
   { name: "Flashcards", id: "flash", icon: CopyIcon },
