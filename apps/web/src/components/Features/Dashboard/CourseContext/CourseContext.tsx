@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChapterView } from "@/components/Features/Dashboard/CourseContext/Chapters/ChapterView";
 import { OverviewContainer } from "@/components/Features/Dashboard/CourseContext/Overview/OverviewContainer";
+import { QuizzesContainer } from "@/components/Features/Dashboard/CourseContext/Quizzes/QuizzesContainer";
 import { ContextToggleGroup } from "@/components/Features/Dashboard/CourseContext/ui/ContextToggleGroup";
 import { useChapters } from "@/hooks/query/chapter.queries";
 
@@ -29,7 +30,7 @@ export const CourseContext = ({ courseId }: CourseContextProps) => {
       </div>
 
       {activeTab === "chapters" && <ChapterView chapters={chapters} />}
-      {activeTab === "quizzes" && <h1>Quizzes</h1>}
+      {activeTab === "quizzes" && <QuizzesContainer />}
       {activeTab === "overview" && <OverviewContainer courseId={courseId} />}
     </div>
   );
