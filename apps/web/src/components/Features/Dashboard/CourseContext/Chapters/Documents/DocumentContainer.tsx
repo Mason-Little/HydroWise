@@ -1,4 +1,4 @@
-import { DocumentCard } from "@/components/Features/Dashboard/CourseContext/Documents/DocumentCard";
+import { DocumentCard } from "@/components/Features/Dashboard/CourseContext/Chapters/Documents/DocumentCard";
 import { useDocument } from "@/hooks/query/document.queries";
 
 interface DocumentContainerProps {

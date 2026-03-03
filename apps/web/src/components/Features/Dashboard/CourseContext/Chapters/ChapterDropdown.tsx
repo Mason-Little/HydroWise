@@ -2,7 +2,7 @@ import type { Chapter } from "@hydrowise/entities";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight, SparklesIcon } from "lucide-react";
 import { useState } from "react";
-import { DocumentContainer } from "@/components/Features/Dashboard/CourseContext/Documents/DocumentContainer";
+import { DocumentContainer } from "@/components/Features/Dashboard/CourseContext/Chapters/Documents/DocumentContainer";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
 
