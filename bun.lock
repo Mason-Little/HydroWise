@@ -15,6 +15,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@base-ui/react": "^1.2.0",
+        "@chonkiejs/core": "^0.0.7",
         "@fontsource-variable/geist-mono": "^5.2.7",
         "@hydrowise/core": "workspace:*",
         "@hydrowise/entities": "workspace:*",
@@ -219,6 +220,10 @@
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.3.14", "", { "os": "win32", "cpu": "x64" }, "sha512-oizCjdyQ3WJEswpb3Chdngeat56rIdSYK12JI3iI11Mt5T5EXcZ7WLuowzEaFPNJ3zmOQFliMN8QY1Pi+qsfdQ=="],
 
     "@cfworker/json-schema": ["@cfworker/json-schema@4.1.1", "", {}, "sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og=="],
+
+    "@chonkiejs/chunk": ["@chonkiejs/chunk@0.9.3", "", {}, "sha512-uUOeoFGY3s6kzAoKskI50weZN0zvW3oLwUijA1uX7Wxuy9yZStF2IvGuXRigMgP2g/L85lsotYGkjpBMLjQnrg=="],
+
+    "@chonkiejs/core": ["@chonkiejs/core@0.0.7", "", { "dependencies": { "@chonkiejs/chunk": "^0.9.3" } }, "sha512-R17OW9TT1x7B6lDKTCaMd6NluAObleN/cCQtUbMK2UcFOguJtQz/cL0n1t0AzJWBFMVgYP8EcqTFn/fcKhzPiA=="],
 
     "@date-fns/tz": ["@date-fns/tz@1.4.1", "", {}, "sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA=="],
 

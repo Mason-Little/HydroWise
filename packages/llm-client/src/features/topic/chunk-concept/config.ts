@@ -1,21 +1,10 @@
-import type { Chapter, Course } from "@hydrowise/entities";
-
-export const chunkConceptPrompt = (
-  course: Course | null,
-  chapter: Chapter | null,
-  documentName: string,
-) => {
+export const chunkConceptPrompt = () => {
   return `
 You are a chunk-idea generator for topic-first curriculum indexing.
 
 Objective:
 - Return exactly one concise idea that captures the dominant concept in the provided chunk.
 - This idea will be used for chapter topic assignment, so precision and consistency are critical.
-
-Context:
-- Course: ${course?.name ?? "Not specified"}
-- Chapter: ${chapter?.name ?? "Not specified"}
-- Document: ${documentName}
 
 Input:
 - The user message contains raw chunk text.

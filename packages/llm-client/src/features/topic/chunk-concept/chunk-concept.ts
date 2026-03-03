@@ -1,24 +1,18 @@
 import {
-  type Chapter,
   type ChunkConceptResult,
   ChunkConceptResultSchema,
-  type Course,
-  type EmbeddingChunk,
 } from "@hydrowise/entities";
 import { generateText, Output } from "ai";
 import { getLanguageModel } from "../../../init/language";
 import { chunkConceptPrompt } from "./config";
 
 export const sendChunkConcept = async (
-  chunk: EmbeddingChunk,
-  documentName: string,
-  course: Course | null,
-  chapter: Chapter | null,
+  chunk: string,
 ): Promise<ChunkConceptResult> => {
   const result = await generateText({
-    system: chunkConceptPrompt(course, chapter, documentName),
+    system: chunkConceptPrompt(),
     model: await getLanguageModel(),
-    prompt: chunk.content,
+    prompt: chunk,
     temperature: 0,
     topP: 1,
     output: Output.object({

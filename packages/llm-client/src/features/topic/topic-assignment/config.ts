@@ -1,19 +1,8 @@
-import type { Chapter, Course } from "@hydrowise/entities";
-
-export const topicAssessmentPrompt = (
-  course: Course | null,
-  chapter: Chapter | null,
-  documentName: string,
-) => `
+export const topicAssessmentPrompt = () => `
 You are a chapter-topic assignment engine for course ingestion.
 
 Primary goal:
 - Assign each chunk idea to the best chapter topic while minimizing unnecessary topic creation.
-
-Caller context:
-- Course: ${course?.name ?? "Not specified"}
-- Chapter: ${chapter?.name ?? "Not specified"}
-- Document: ${documentName}
 
 The user message provides JSON with:
 - existingTopics: [{ "name": string, "description": string }]

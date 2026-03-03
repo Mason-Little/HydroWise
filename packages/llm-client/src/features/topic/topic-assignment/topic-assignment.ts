@@ -1,8 +1,5 @@
 import {
-  type Chapter,
-  type Course,
   type Topic,
-  type TopicAssessmentInputChunk,
   type TopicAssessmentResult,
   TopicAssessmentResultSchema,
 } from "@hydrowise/entities";
@@ -11,19 +8,16 @@ import { getLanguageModel } from "../../../init/language";
 import { topicAssessmentPrompt } from "./config";
 
 export const sendTopicAssignment = async (
-  chunks: TopicAssessmentInputChunk[],
-  course: Course | null,
-  chapter: Chapter | null,
-  documentName: string,
+  chunkConcepts: string[],
   existingTopics: Pick<Topic, "name" | "description">[] = [],
 ): Promise<TopicAssessmentResult> => {
   const payload = {
     existingTopics,
-    chunks,
+    chunks: chunkConcepts,
   };
 
   const result = await generateText({
-    system: topicAssessmentPrompt(course, chapter, documentName),
+    system: topicAssessmentPrompt(),
     model: await getLanguageModel(),
     prompt: JSON.stringify(payload),
     temperature: 0,

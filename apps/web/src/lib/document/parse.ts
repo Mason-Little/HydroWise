@@ -4,7 +4,7 @@ import { parsePdf } from "@/lib/document/parsers/pdf";
 import { parsePptx } from "@/lib/document/parsers/pptx";
 import { getDocumentType } from "@/lib/document/util/extension-type";
 
-export const parseDocument = async (file: File) => {
+export const parseDocument = async (file: File): Promise<string> => {
   const documentType = getDocumentType(file);
   switch (documentType) {
     case "pdf":
