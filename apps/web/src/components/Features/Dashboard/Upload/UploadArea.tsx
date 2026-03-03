@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useId, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { parseDocument } from "@/lib/document/parse";
 import { CompactBar } from "./ui/CompactBar";
 import { ExpandedView } from "./ui/ExpandedView";
 
@@ -22,8 +23,12 @@ export function UploadArea() {
     setFiles((prev) => prev.filter((f) => f.name !== name));
   };
 
-  const handleUpload = () => {
-    console.log("Uploading files:", files);
+  const handleUpload = async () => {
+    const fileText = await Promise.all(
+      files.map((file) => parseDocument(file)),
+    );
+
+    console.log("Uploading files:", fileText);
   };
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
