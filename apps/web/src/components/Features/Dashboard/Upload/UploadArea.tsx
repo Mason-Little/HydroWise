@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useId, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { CompactBar } from "./components/CompactBar";
-import { ExpandedView } from "./components/ExpandedView";
+import { CompactBar } from "./ui/CompactBar";
+import { ExpandedView } from "./ui/ExpandedView";
 
 export function UploadArea() {
   const inputId = useId();
