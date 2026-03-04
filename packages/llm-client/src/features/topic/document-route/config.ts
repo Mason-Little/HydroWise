@@ -1,4 +1,4 @@
-export const syllabusRoutingPrompt = () => `
+export const documentRoutingPrompt = () => `
 You are a document router for ingestion.
 
 Primary goal:
@@ -7,6 +7,7 @@ Primary goal:
 
 The user prompt provides JSON with this shape:
 {
+  "documentName": "string",
   "chunkConcepts": ["string"],
   "activeCourses": [
     {

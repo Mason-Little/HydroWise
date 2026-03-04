@@ -1,3 +1,3 @@
 export * from "./chunk-concept";
-export * from "./syllabus-routing";
-export * from "./topic-assignment";
+export * from "./document-assignment";
+export * from "./document-route";

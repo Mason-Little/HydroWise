@@ -2,11 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useId, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useCourses } from "@/hooks/query/course.queries";
-import { useTopicQueries } from "@/hooks/query/topic.queries";
-import { chunkText } from "@/lib/chunk/chunk-text";
-import { parseDocument } from "@/lib/document/parse";
-import { chunkConcepts } from "@/lib/upload/chunk-concept";
-import { routeDocuments } from "@/lib/upload/route-documents";
+import { uploadDocuments } from "@/hooks/upload/upload-document";
 import { CompactBar } from "./ui/CompactBar";
 import { ExpandedView } from "./ui/ExpandedView";
 
@@ -14,7 +10,6 @@ export function UploadArea() {
   const inputId = useId();
   const [files, setFiles] = useState<File[]>([]);
   const { courses } = useCourses();
-  const { retrieveTopics } = useTopicQueries();
 
   const handleDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles.length === 0) return;
@@ -31,25 +26,7 @@ export function UploadArea() {
   };
 
   const handleUpload = async () => {
-    const fileText = await Promise.all(
-      files.map((file) => parseDocument(file)),
-    );
-
-    const fileChunks = await Promise.all(
-      fileText.map((text) => chunkText(text)),
-    );
-
-    const allChunkConcepts = await Promise.all(
-      fileChunks.map((documentChunks) => chunkConcepts(documentChunks)),
-    );
-
-    const documentRoutes = await routeDocuments(
-      allChunkConcepts,
-      courses,
-      async (courseId) => retrieveTopics({ courseId }),
-    );
-
-    console.log("Uploading files:", documentRoutes);
+    uploadDocuments(files, courses);
   };
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({

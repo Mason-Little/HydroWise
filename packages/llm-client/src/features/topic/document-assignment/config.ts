@@ -1,4 +1,4 @@
-export const topicAssessmentPrompt = () => `
+export const documentAssignmentPrompt = () => `
 You are a chapter-topic assignment engine for course ingestion.
 
 Primary goal:

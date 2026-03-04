@@ -5,25 +5,27 @@ import {
 } from "@hydrowise/entities";
 import { generateText, Output } from "ai";
 import { getLanguageModel } from "../../../init/language";
-import { syllabusRoutingPrompt } from "./config";
+import { documentRoutingPrompt } from "./config";
 
-export const sendSyllabusRouting = async (
+export const sendDocumentRouting = async (
+  documentName: string,
   chunkConcepts: string[],
   activeCourses: Pick<Course, "id" | "name" | "number">[],
 ): Promise<SyllabusRoutingResult> => {
   const payload = {
+    documentName,
     chunkConcepts,
     activeCourses,
   };
 
   const result = await generateText({
-    system: syllabusRoutingPrompt(),
+    system: documentRoutingPrompt(),
     model: await getLanguageModel(),
     prompt: JSON.stringify(payload),
     temperature: 0,
     topP: 1,
     output: Output.object({
-      name: "syllabus-routing",
+      name: "document-routing",
       description: "classify syllabus vs course routing",
       schema: SyllabusRoutingResultSchema,
     }),
