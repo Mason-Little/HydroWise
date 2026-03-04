@@ -1,14 +1,10 @@
+import type { CreateCourseInput } from "@hydrowise/entities";
 import { eq } from "drizzle-orm";
 import type { DbClient } from "../client";
 import { courses } from "../schema";
 
-export type CreateCourseInput = Pick<typeof courses.$inferInsert, "name">;
-
 export async function createCourse(db: DbClient, input: CreateCourseInput) {
-  const [course] = await db
-    .insert(courses)
-    .values({ name: input.name })
-    .returning();
+  const [course] = await db.insert(courses).values(input).returning();
 
   return course;
 }

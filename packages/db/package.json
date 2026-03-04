@@ -20,6 +20,7 @@
     "check": "biome check ."
   },
   "dependencies": {
+    "@hydrowise/entities": "workspace:*",
     "@electric-sql/pglite": "^0.3.7",
     "drizzle-orm": "^0.45.1"
   },

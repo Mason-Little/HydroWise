@@ -1,29 +1,41 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 
-const GradeRubricItemSchema = z.object({
+export const GradeRubricItemSchema = z.object({
   category: z.string(),
   weight: z.number(),
 });
 
-const TestDateSchema = z.object({
+export const TestDateSchema = z.object({
   name: z.string(),
   date: z.string(),
 });
 
-const ProfessorInformationSchema = z.object({
+export const ProfessorInformationSchema = z.object({
   professorName: z.string(),
-  professorEmail: z.string(),
+  professorEmail: z.string().email(),
   professorOfficeHours: z.string(),
   professorOfficeDays: z.string(),
 });
 
 export const CourseSchema = z.object({
-  id: z.string().min(1),
-  courseName: z.string(),
-  courseCode: z.string(),
+  id: z.string(),
+  courseName: z.string().min(1),
+  courseCode: z.string().min(1),
   gradeRubric: z.array(GradeRubricItemSchema),
   testDates: z.array(TestDateSchema),
   professorInformation: ProfessorInformationSchema,
 });
 
+export const CreateCourseInputSchema = CourseSchema.pick({
+  courseName: true,
+  courseCode: true,
+  gradeRubric: true,
+  testDates: true,
+  professorInformation: true,
+});
+
+export type GradeRubricItem = z.infer<typeof GradeRubricItemSchema>;
+export type TestDate = z.infer<typeof TestDateSchema>;
+export type ProfessorInformation = z.infer<typeof ProfessorInformationSchema>;
 export type Course = z.infer<typeof CourseSchema>;
+export type CreateCourseInput = z.infer<typeof CreateCourseInputSchema>;
