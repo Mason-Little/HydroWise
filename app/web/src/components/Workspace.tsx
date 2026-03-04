@@ -4,4 +4,4 @@ export const Workspace = () => {
       <h1>Workspace</h1>
     </div>
   );
-}
+};

@@ -34,3 +34,4 @@ coverage
 # Database
 *.db
 *.sqlite
+packages/db/studio-db/
