@@ -1,4 +1,4 @@
-import { Workspace } from "@/components/Workspace";
+import { Workspace } from "@/components/layout/Workspace";
 
 export const App = () => {
   return (
@@ -6,4 +6,4 @@ export const App = () => {
       <Workspace />
     </div>
   );
-}
+};
