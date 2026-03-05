@@ -37,6 +37,18 @@
         "vite": "^7.2.4",
       },
     },
+    "packages/data": {
+      "name": "@hydrowise/data",
+      "version": "0.0.0",
+      "dependencies": {
+        "@hydrowise/db": "workspace:*",
+        "@hydrowise/entities": "workspace:*",
+      },
+      "devDependencies": {
+        "@types/node": "^24.10.1",
+        "typescript": "~5.9.3",
+      },
+    },
     "packages/db": {
       "name": "@hydrowise/db",
       "version": "0.0.0",
@@ -210,6 +222,8 @@
     "@fontsource-variable/geist-mono": ["@fontsource-variable/geist-mono@5.2.7", "", {}, "sha512-ZKlZ5sjtalb2TwXKs400mAGDlt/+2ENLNySPx0wTz3bP3mWARCsUW+rpxzZc7e05d2qGch70pItt3K4qttbIYA=="],
 
     "@hono/node-server": ["@hono/node-server@1.19.10", "", { "peerDependencies": { "hono": "^4" } }, "sha512-hZ7nOssGqRgyV3FVVQdfi+U4q02uB23bpnYpdvNXkYTRRyWx84b7yf1ans+dnJ/7h41sGL3CeQTfO+ZGxuO+Iw=="],
+
+    "@hydrowise/data": ["@hydrowise/data@workspace:packages/data"],
 
     "@hydrowise/db": ["@hydrowise/db@workspace:packages/db"],
 
