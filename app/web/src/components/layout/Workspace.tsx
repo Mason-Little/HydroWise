@@ -1,4 +1,5 @@
 import { Sidebar } from "@/components/layout/Sidebar";
+import { Topbar } from "@/components/layout/Topbar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { featureComponents } from "@/config/featureComponents";
@@ -13,6 +14,7 @@ export const Workspace = () => {
       <SidebarProvider defaultOpen={false}>
         <Sidebar />
         <SidebarInset className="p-6">
+          <Topbar />
           <Component />
         </SidebarInset>
       </SidebarProvider>
