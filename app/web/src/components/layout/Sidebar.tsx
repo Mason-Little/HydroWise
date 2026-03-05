@@ -1,3 +1,4 @@
+import { GlassWaterIcon } from "lucide-react";
 import {
   Sidebar as SidebarComponent,
   SidebarContent,
@@ -16,7 +17,9 @@ export const Sidebar = () => {
   return (
     <SidebarComponent collapsible="icon">
       <SidebarHeader>
-        <div className="px-2 py-1 text-sm font-semibold">HydroWise</div>
+        <div className="flex flex-1 items-center justify-center">
+          <GlassWaterIcon className="size-8 shrink-0" />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -34,7 +37,6 @@ export const Sidebar = () => {
                       tooltip={feature.label}
                     >
                       <Icon />
-                      <span>{feature.label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
