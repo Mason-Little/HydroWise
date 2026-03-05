@@ -21,11 +21,11 @@ export const features: FeatureMap = {
     icon: BookIcon,
   },
   flash: {
-    label: "Flash",
+    label: "Flash Cards",
     icon: CopyIcon,
   },
   notes: {
-    label: "Notes",
+    label: "Notes Assistant",
     icon: PencilIcon,
   },
 };
