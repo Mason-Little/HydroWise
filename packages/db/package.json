@@ -5,16 +5,12 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./queries": "./src/queries/index.ts",
     "./schema": "./src/schema/index.ts"
   },
   "scripts": {
     "build": "tsc --noEmit -p tsconfig.json",
     "clean": "rm -rf dist",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "bun scripts/migrate.ts",
-    "db:seed": "bun scripts/seed.ts",
-    "db:studio": "bun scripts/studio.ts",
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check ."

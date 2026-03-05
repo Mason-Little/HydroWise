@@ -1,4 +1,4 @@
-export type { Database, DbClient } from "./client";
-export { createDb } from "./client";
-export * from "./queries/index";
-export * from "./schema/index";
+export { createDesktopDb } from "./adapters/desktop";
+export { createWebDb } from "./adapters/web";
+export type { Db } from "./types/db";
+export * from "./schema";
