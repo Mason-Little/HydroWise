@@ -1,21 +1,332 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
+  "id": "2cc083fe-7ac4-4c38-9324-ba98dba1c535",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
-  "tables": {},
-  "enums": {},
+  "tables": {
+    "public.chapters": {
+      "name": "chapters",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "course_id": {
+          "name": "course_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chapter_name": {
+          "name": "chapter_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chapter_description": {
+          "name": "chapter_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "chapters_course_id_courses_id_fk": {
+          "name": "chapters_course_id_courses_id_fk",
+          "tableFrom": "chapters",
+          "tableTo": "courses",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.chunks": {
+      "name": "chunks",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "document_id": {
+          "name": "document_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chunk_concept": {
+          "name": "chunk_concept",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chunk_content": {
+          "name": "chunk_content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "chunk_embedding": {
+          "name": "chunk_embedding",
+          "type": "vector(768)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "chunks_document_id_documents_id_fk": {
+          "name": "chunks_document_id_documents_id_fk",
+          "tableFrom": "chunks",
+          "tableTo": "documents",
+          "columnsFrom": [
+            "document_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.courses": {
+      "name": "courses",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "course_name": {
+          "name": "course_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course_code": {
+          "name": "course_code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grade_rubric": {
+          "name": "grade_rubric",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "test_dates": {
+          "name": "test_dates",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "professor_information": {
+          "name": "professor_information",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.documents": {
+      "name": "documents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "chapter_id": {
+          "name": "chapter_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "topic_id": {
+          "name": "topic_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "file_type": {
+          "name": "file_type",
+          "type": "file_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "embedding_status": {
+          "name": "embedding_status",
+          "type": "embedding_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "documents_chapter_id_chapters_id_fk": {
+          "name": "documents_chapter_id_chapters_id_fk",
+          "tableFrom": "documents",
+          "tableTo": "chapters",
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "documents_topic_id_topics_id_fk": {
+          "name": "documents_topic_id_topics_id_fk",
+          "tableFrom": "documents",
+          "tableTo": "topics",
+          "columnsFrom": [
+            "topic_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.topics": {
+      "name": "topics",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "chapter_id": {
+          "name": "chapter_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "topics_chapter_id_chapters_id_fk": {
+          "name": "topics_chapter_id_chapters_id_fk",
+          "tableFrom": "topics",
+          "tableTo": "chapters",
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.embedding_status": {
+      "name": "embedding_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "completed",
+        "failed"
+      ]
+    },
+    "public.file_type": {
+      "name": "file_type",
+      "schema": "public",
+      "values": [
+        "pdf",
+        "docx",
+        "pptx",
+        "md",
+        "image"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
-  "views": {},
-  "policies": {},
   "roles": {},
+  "policies": {},
+  "views": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "internal": {
     "tables": {}
   }
 }

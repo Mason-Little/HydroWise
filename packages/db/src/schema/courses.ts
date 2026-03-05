@@ -1,9 +1,9 @@
-import { jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
 import type {
   GradeRubricItem,
   ProfessorInformation,
   TestDate,
 } from "@hydrowise/entities";
+import { jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
 
 export const courses = pgTable("courses", {
   id: uuid("id").defaultRandom().primaryKey(),

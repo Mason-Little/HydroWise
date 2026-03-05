@@ -1,25 +1,32 @@
-import {
-  index,
-  pgTable,
-  text,
-  timestamp,
-  uuid,
-  vector,
-} from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { chapters } from "./chapters";
+import { topics } from "./topics";
 
-export const documents = pgTable(
-  "documents",
-  {
-    id: uuid("id").defaultRandom().primaryKey(),
-    title: text("title").notNull(),
-    content: text("content").notNull(),
-    embedding: vector("embedding", { dimensions: 768 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-  },
-  (table) => ({
-    embeddingIdx: index("documents_embedding_idx").using(
-      "hnsw",
-      table.embedding.op("vector_cosine_ops"),
-    ),
+export const fileTypeEnum = pgEnum("file_type", [
+  "pdf",
+  "docx",
+  "pptx",
+  "md",
+  "image",
+]);
+
+export const embeddingStatusEnum = pgEnum("embedding_status", [
+  "pending",
+  "completed",
+  "failed",
+]);
+
+export const documents = pgTable("documents", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  chapterId: uuid("chapter_id")
+    .notNull()
+    .references(() => chapters.id, { onDelete: "cascade" }),
+  topicId: uuid("topic_id").references(() => topics.id, {
+    onDelete: "set null",
   }),
-);
+  name: text("name").notNull(),
+  fileType: fileTypeEnum("file_type").notNull(),
+  embeddingStatus: embeddingStatusEnum("embedding_status")
+    .notNull()
+    .default("pending"),
+});
