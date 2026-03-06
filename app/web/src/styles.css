@@ -1,0 +1,4 @@
+@import "@/index.css";
+
+@source "../../client/src/**/*.{ts,tsx}";
+@source "./**/*.{ts,tsx}";

@@ -9,14 +9,14 @@
   ],
   "scripts": {
     "dev": "turbo dev",
-    "dev:web": "turbo dev --filter=@hydrowise/client",
+    "dev:web": "turbo dev --filter=@hydrowise/web",
     "build": "turbo build",
     "build:packages": "turbo build --filter=./packages/*",
     "build:apps": "turbo build --filter=./app/*",
     "clean": "turbo clean",
     "clean:build": "turbo clean && turbo build",
     "nuke": "turbo clean && rm -rf node_modules **/node_modules",
-    "preview": "turbo preview --filter=@hydrowise/client",
+    "preview": "turbo preview --filter=@hydrowise/web",
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check . --write"
