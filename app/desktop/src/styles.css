@@ -1,4 +1,4 @@
-@import "@/index.css";
+@import "@shared/index.css";
 
-@source "../../client/src/**/*.{ts,tsx}";
+@source "../../shared/src/**/*.{ts,tsx}";
 @source "./**/*.{ts,tsx}";

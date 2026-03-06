@@ -1,20 +1,25 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-
 import "./styles.css";
 import { initData } from "@hydrowise/data";
 import { App } from "@/App";
+import type { PlatformConfig } from "@/platform";
+import { AppProviders } from "@/providers";
 
 const root = document.getElementById("root");
 if (!root) {
   throw new Error("Root element not found");
 }
 
+const platform: PlatformConfig = { kind: "web" };
+
 initData({ platform: "web" })
   .then(() => {
     createRoot(root).render(
       <StrictMode>
-        <App />
+        <AppProviders platform={platform}>
+          <App />
+        </AppProviders>
       </StrictMode>,
     );
   })
