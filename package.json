@@ -10,7 +10,9 @@
   "scripts": {
     "dev": "turbo dev",
     "dev:web": "turbo dev --filter=@hydrowise/web",
+    "dev:desktop": "turbo dev --filter=@hydrowise/desktop",
     "build": "turbo build",
+    "build:desktop": "turbo build --filter=@hydrowise/desktop",
     "build:packages": "turbo build --filter=./packages/*",
     "build:apps": "turbo build --filter=./app/*",
     "clean": "turbo clean",

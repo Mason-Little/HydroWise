@@ -30,6 +30,7 @@ dist-ssr
 *.tsbuildinfo
 coverage
 .cache
+**/src-tauri/target/
 
 # Database
 *.db
