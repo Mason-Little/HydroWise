@@ -1,5 +1,5 @@
-import { createDbForPlatform } from "./platform";
-import { makeQueries } from "./queries/makeQueries";
+import { createDbForPlatform } from "@/platform";
+import { makeQueries } from "@/queries/makeQueries";
 
 export type Queries = ReturnType<typeof makeQueries>;
 

@@ -1,5 +1,5 @@
 import type { Db } from "@hydrowise/db";
-import { makeCourseRepo } from "./course.queries";
+import { makeCourseRepo } from "@/queries/course.queries";
 
 export function makeQueries(db: Db) {
   const courses = makeCourseRepo(db);

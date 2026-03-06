@@ -7,7 +7,9 @@
     "strict": true,
     "skipLibCheck": true,
     "types": ["node"],
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] },
     "noEmit": true
   },
-  "include": ["**/*.ts"]
+  "include": ["src/**/*.ts", "vite.config.ts"]
 }

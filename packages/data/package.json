@@ -4,10 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "scripts": {
-    "build": "tsc --noEmit -p tsconfig.json",
+    "build": "vite build",
+    "dev": "vite build --watch",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "lint": "biome lint .",
     "format": "biome format . --write",
@@ -19,6 +23,8 @@
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4",
+    "vite-plugin-dts": "^4.5.4"
   }
 }
