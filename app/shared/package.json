@@ -1,13 +1,11 @@
 {
-  "name": "@hydrowise/client",
+  "name": "@hydrowise/shared",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.app.json --noEmit",
+    "clean": "rm -rf node_modules/.tmp",
     "lint": "biome lint .",
     "format": "biome format . --write",
     "check": "biome check ."
@@ -16,12 +14,10 @@
     "@base-ui/react": "^1.2.0",
     "@fontsource-variable/geist-mono": "^5.2.7",
     "@hydrowise/data": "workspace:*",
-    "@tailwindcss/vite": "^4.1.17",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.563.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
     "shadcn": "^3.8.3",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
@@ -29,12 +25,8 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
     "globals": "^16.5.0",
-    "typescript": "~5.9.3",
-    "vite": "^7.2.4"
+    "typescript": "~5.9.3"
   }
 }

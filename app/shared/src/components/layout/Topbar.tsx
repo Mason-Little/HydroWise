@@ -6,7 +6,7 @@ export const Topbar = () => {
   const { activeFeature } = useFeatureStore();
 
   return (
-    <div className="bg-card border-border sticky top-0 z-20 relative flex h-14 items-center gap-3 rounded-md border p-3">
+    <div className="bg-card border-border sticky top-0 z-20 relative flex h-14 w-full items-center gap-3 rounded-md border p-3">
       <span className="px-3 py-1 text-sm font-semibold tracking-[0.08em]">
         {features[activeFeature].label}
       </span>
