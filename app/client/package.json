@@ -1,5 +1,5 @@
 {
-  "name": "@hydrowise/web",
+  "name": "@hydrowise/client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,8 +13,9 @@
     "check": "biome check ."
   },
   "dependencies": {
-    "@hydrowise/data": "workspace:*",
+    "@base-ui/react": "^1.2.0",
     "@fontsource-variable/geist-mono": "^5.2.7",
+    "@hydrowise/data": "workspace:*",
     "@tailwindcss/vite": "^4.1.17",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
