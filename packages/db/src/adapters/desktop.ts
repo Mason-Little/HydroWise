@@ -1,8 +1,10 @@
 import { PGlite } from "@electric-sql/pglite";
-import { createDb } from "../client/createDb";
+import { vector } from "@electric-sql/pglite/vector";
+import { createDb } from "@/client/createDb";
+import { runFilesystemMigrations } from "@/client/migrate-filesystem";
 
 export async function createDesktopDb(path: string) {
-  const client = new PGlite(path);
+  const client = await PGlite.create(path, { extensions: { vector } });
 
-  return createDb(client);
+  return createDb(client, { runMigrations: runFilesystemMigrations });
 }

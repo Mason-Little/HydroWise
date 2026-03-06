@@ -1,14 +1,17 @@
 import type { PGlite } from "@electric-sql/pglite";
 import { drizzle } from "drizzle-orm/pglite";
+import * as schema from "@/schema";
 import { enableExtensions } from "./extensions";
-import { runMigrations } from "./migrate";
-import * as schema from "../schema";
+import type { RunMigrationsFn } from "./run-migrations";
 
-export async function createDb(client: PGlite) {
+export async function createDb(
+  client: PGlite,
+  options: { runMigrations: RunMigrationsFn },
+) {
   const db = drizzle(client, { schema });
 
   await enableExtensions(db);
-  await runMigrations(db);
+  await options.runMigrations(db);
 
   return db;
 }

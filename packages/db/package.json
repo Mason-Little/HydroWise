@@ -4,11 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./schema": "./src/schema/index.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./schema": {
+      "import": "./dist/schema/index.js",
+      "types": "./dist/schema/index.d.ts"
+    }
   },
   "scripts": {
-    "build": "tsc --noEmit -p tsconfig.json",
+    "build": "vite build",
+    "dev": "vite build --watch",
     "clean": "rm -rf dist",
     "db:generate": "drizzle-kit generate",
     "lint": "biome lint .",
@@ -18,12 +25,16 @@
   "dependencies": {
     "@hydrowise/entities": "workspace:*",
     "@electric-sql/pglite": "^0.3.7",
+    "@proj-airi/drizzle-orm-browser-migrator": "^0.1.4",
     "drizzle-orm": "^0.45.1"
   },
   "devDependencies": {
     "@electric-sql/pglite-socket": "^0.0.21",
+    "@proj-airi/unplugin-drizzle-orm-migrations": "^0.1.4",
     "@types/node": "^24.10.1",
     "drizzle-kit": "^0.31.1",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4",
+    "vite-plugin-dts": "^4.5.4"
   }
 }

@@ -1,3 +1,4 @@
-import type { createDb } from "../client/createDb";
+import type { PgliteDatabase } from "drizzle-orm/pglite";
+import type * as schema from "@/schema";
 
-export type Db = Awaited<ReturnType<typeof createDb>>;
+export type Db = PgliteDatabase<typeof schema>;
