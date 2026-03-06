@@ -1,4 +1,3 @@
-export { createDesktopDb } from "./adapters/desktop";
-export { createWebDb } from "./adapters/web";
-export type { Db } from "./types/db";
+export { createDb } from "./adapters/indexeddb";
 export * from "./schema";
+export type { Db } from "./types/db";

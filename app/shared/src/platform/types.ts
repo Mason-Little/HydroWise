@@ -6,7 +6,6 @@ export type WebPlatformConfig = {
 
 export type DesktopPlatformConfig = {
   kind: "desktop";
-  desktopDbDir: string;
 };
 
 export type PlatformConfig = WebPlatformConfig | DesktopPlatformConfig;

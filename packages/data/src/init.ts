@@ -11,7 +11,6 @@ const state: { promise: Promise<Queries> | null } = { promise: null };
  */
 export function initData(opts: {
   platform: "web" | "desktop";
-  desktopDbDir?: string;
 }): Promise<Queries> {
   if (!state.promise) {
     state.promise = createDbForPlatform(opts).then((db) => makeQueries(db));
@@ -25,7 +24,7 @@ export function initData(opts: {
 export async function getQueries(): Promise<Queries> {
   if (!state.promise) {
     throw new Error(
-      "@hydrowise/data not initialized. Call initData({ platform: ... }) during bootstrap."
+      "@hydrowise/data not initialized. Call initData({ platform: ... }) during bootstrap.",
     );
   }
   return state.promise;

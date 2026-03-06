@@ -2,7 +2,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 import { initData } from "@hydrowise/data";
-import { appDataDir, join } from "@tauri-apps/api/path";
 import { App } from "@/App";
 import type { PlatformConfig } from "@/platform";
 import { AppProviders } from "@/providers";
@@ -13,11 +12,9 @@ if (!root) {
 }
 
 const bootstrap = async () => {
-  const dataDir = await appDataDir();
-  const desktopDbDir = await join(dataDir, "hydrowise-db");
-  const platform: PlatformConfig = { kind: "desktop", desktopDbDir };
+  const platform: PlatformConfig = { kind: "desktop" };
 
-  await initData({ platform: "desktop", desktopDbDir });
+  await initData({ platform: "desktop" });
 
   createRoot(root).render(
     <StrictMode>

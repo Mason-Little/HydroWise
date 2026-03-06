@@ -4,7 +4,7 @@ import * as schema from "@/schema";
 import { enableExtensions } from "./extensions";
 import type { RunMigrationsFn } from "./run-migrations";
 
-export async function createDb(
+export async function createDrizzleDb(
   client: PGlite,
   options: { runMigrations: RunMigrationsFn },
 ) {

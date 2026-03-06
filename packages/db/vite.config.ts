@@ -7,10 +7,7 @@ import dts from "vite-plugin-dts";
 const root = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  plugins: [
-    DrizzleMigrations(),
-    dts({ include: ["src"], rollupTypes: false }),
-  ],
+  plugins: [DrizzleMigrations(), dts({ include: ["src"], rollupTypes: false })],
 
   build: {
     lib: {
@@ -31,9 +28,5 @@ export default defineConfig({
 
   resolve: {
     alias: { "@": path.join(root, "src") },
-  },
-
-  define: {
-    __MIGRATIONS_DIR__: JSON.stringify(path.join(root, "drizzle")),
   },
 });
