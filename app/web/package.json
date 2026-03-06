@@ -13,6 +13,7 @@
     "check": "biome check ."
   },
   "dependencies": {
+    "@hydrowise/data": "workspace:*",
     "@fontsource-variable/geist-mono": "^5.2.7",
     "@tailwindcss/vite": "^4.1.17",
     "class-variance-authority": "^0.7.1",
