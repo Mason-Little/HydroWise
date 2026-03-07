@@ -21,6 +21,7 @@
     "@hydrowise/shared": "workspace:*",
     "@tailwindcss/vite": "^4.1.17",
     "@tauri-apps/api": "^2.8.0",
+    "@tauri-apps/plugin-shell": "~2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "shadcn": "^3.8.3",
