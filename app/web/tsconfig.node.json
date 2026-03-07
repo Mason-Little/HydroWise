@@ -12,6 +12,10 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@hydrowise/db-view/vite": ["../../packages/db-view/src/vite.ts"]
+    },
 
     "strict": true,
     "noUnusedLocals": true,

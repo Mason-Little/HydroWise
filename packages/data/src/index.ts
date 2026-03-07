@@ -1,2 +1,2 @@
 export type { Queries } from "@/init";
-export { getQueries, initData } from "@/init";
+export { dumpDbDataDir, getQueries, initData } from "@/init";

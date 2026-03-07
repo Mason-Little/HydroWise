@@ -1,0 +1,12 @@
+export const DEFAULT_APP_URL = "http://localhost:5173";
+export const DEFAULT_SOCKET_HOST = "localhost";
+export const DEFAULT_SOCKET_PORT = 55432;
+export const DEFAULT_STUDIO_HOST = "localhost";
+export const DEFAULT_STUDIO_PORT = 4983;
+export const SNAPSHOT_PATH = "/__hydrowise/db-snapshot";
+export const SNAPSHOT_ENDPOINT = SNAPSHOT_PATH;
+export const SNAPSHOT_REQUEST_EVENT = "hydrowise:db-snapshot-request";
+export const SNAPSHOT_RESPONSE_EVENT = "hydrowise:db-snapshot-response";
+export const VIRTUAL_CLIENT_MODULE_ID = "virtual:hydrowise-db-view/client";
+export const RESOLVED_VIRTUAL_CLIENT_MODULE_ID = `\0${VIRTUAL_CLIENT_MODULE_ID}`;
+export const SNAPSHOT_TIMEOUT_MS = 15000;

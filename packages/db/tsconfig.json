@@ -11,5 +11,10 @@
     "paths": { "@/*": ["./src/*"] },
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "scripts/**/*.ts", "drizzle.config.ts", "vite.config.ts"]
+  "include": [
+    "src/**/*.ts",
+    "scripts/**/*.ts",
+    "drizzle.config.ts",
+    "vite.config.ts"
+  ]
 }

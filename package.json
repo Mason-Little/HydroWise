@@ -11,6 +11,7 @@
     "dev": "turbo dev",
     "dev:web": "turbo dev --filter=@hydrowise/web",
     "dev:desktop": "turbo dev --filter=@hydrowise/desktop",
+    "db:view": "bun --filter @hydrowise/db-view run",
     "build": "turbo build",
     "build:desktop": "turbo build --filter=@hydrowise/desktop",
     "build:packages": "turbo build --filter=./packages/*",
