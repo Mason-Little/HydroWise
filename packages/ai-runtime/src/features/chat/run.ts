@@ -1,10 +1,10 @@
 import { generateText, streamText } from "ai";
-import { createHydroWiseWebModel } from "../../provider/language-model";
+import { getLanguageModel } from "../../init";
 import type { ChatRunInput, ChatRunResult, ChatRunStreamResult } from "./types";
 
-const model = createHydroWiseWebModel();
-
 export async function runChat(input: ChatRunInput): Promise<ChatRunResult> {
+  const model = getLanguageModel();
+
   const result = await generateText({
     model,
     messages: [
@@ -20,7 +20,11 @@ export async function runChat(input: ChatRunInput): Promise<ChatRunResult> {
   };
 }
 
-export async function runChatStream(input: ChatRunInput): Promise<ChatRunStreamResult> {
+export async function runChatStream(
+  input: ChatRunInput,
+): Promise<ChatRunStreamResult> {
+  const model = getLanguageModel();
+
   const result = streamText({
     model,
     messages: [

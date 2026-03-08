@@ -1,5 +1,5 @@
 import type { LanguageModelV3Prompt } from "@ai-sdk/provider";
-import type { WebChatMessage, WebChatPart } from "../runtime/web/transformers";
+import type { WebChatMessage, WebChatPart } from "../backends/web/chat";
 
 /** Coerce AI SDK file/image data to WebChatPart image (string | URL | Blob). */
 function toImagePartValue(
@@ -10,13 +10,17 @@ function toImagePartValue(
   if (data instanceof URL) return data;
   if (data instanceof Blob) return data;
   if (data instanceof Uint8Array)
-    return new Blob([data.buffer as ArrayBuffer], { type: mediaType ?? "application/octet-stream" });
+    return new Blob([data.buffer as ArrayBuffer], {
+      type: mediaType ?? "application/octet-stream",
+    });
   return undefined;
 }
 
 function normalizeAssistantOrSystemMessage(
   role: "assistant" | "system",
-  content: string | Array<{ type: string; text?: string } & Record<string, unknown>>,
+  content:
+    | string
+    | Array<{ type: string; text?: string } & Record<string, unknown>>,
 ): WebChatMessage {
   if (typeof content === "string") {
     return { role, content };
@@ -75,14 +79,21 @@ function normalizeUserMessage(
   };
 }
 
-export function toWebChatMessages(messages: LanguageModelV3Prompt): WebChatMessage[] {
+export function toWebChatMessages(
+  messages: LanguageModelV3Prompt,
+): WebChatMessage[] {
   return messages.flatMap((message) => {
     if (message.role === "system") {
       return [normalizeAssistantOrSystemMessage("system", message.content)];
     }
     if (message.role === "assistant") {
       return [
-        normalizeAssistantOrSystemMessage("assistant", message.content as Array<{ type: string; text?: string } & Record<string, unknown>>),
+        normalizeAssistantOrSystemMessage(
+          "assistant",
+          message.content as Array<
+            { type: string; text?: string } & Record<string, unknown>
+          >,
+        ),
       ];
     }
     if (message.role === "user") {

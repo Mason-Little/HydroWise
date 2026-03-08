@@ -1,4 +1,4 @@
-import { runChat } from "../features/chat/run";
+import { runChat } from "../index";
 
 const prompt = "Explain closures in JavaScript in 3 short bullet points.";
 

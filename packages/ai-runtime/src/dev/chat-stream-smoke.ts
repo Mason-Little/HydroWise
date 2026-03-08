@@ -1,4 +1,4 @@
-import { runChatStream } from "../features/chat/run";
+import { runChatStream } from "../index";
 
 const prompt = "Explain closures in JavaScript in 3 short bullet points.";
 

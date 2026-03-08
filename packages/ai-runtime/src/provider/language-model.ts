@@ -6,7 +6,7 @@ import type {
   ProviderV3,
 } from "@ai-sdk/provider";
 import { customProvider } from "ai";
-import { generateWebChat } from "../runtime/web/transformers";
+import { generateWebChat } from "../backends/web/chat";
 import { toWebChatMessages } from "./message-conversions";
 
 const PROVIDER = "hydrowise" as const;
@@ -14,7 +14,12 @@ const MODEL_ID = "web" as const;
 
 // Usage tokens are unavailable for locally-run web models.
 const emptyUsage = {
-  inputTokens: { total: undefined, noCache: undefined, cacheRead: undefined, cacheWrite: undefined },
+  inputTokens: {
+    total: undefined,
+    noCache: undefined,
+    cacheRead: undefined,
+    cacheWrite: undefined,
+  },
   outputTokens: { total: undefined, text: undefined, reasoning: undefined },
   raw: undefined,
 };
@@ -28,14 +33,16 @@ function mapGenerateOptions(options: LanguageModelV3CallOptions) {
   };
 }
 
-function createHydroWiseWebModel(): LanguageModelV3 {
+export function createWebLanguageModel(): LanguageModelV3 {
   return {
     specificationVersion: "v3",
     provider: PROVIDER,
     modelId: MODEL_ID,
     supportedUrls: {},
 
-    async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
+    async doGenerate(
+      options: LanguageModelV3CallOptions,
+    ): Promise<LanguageModelV3GenerateResult> {
       const messages = toWebChatMessages(options.prompt);
       const text = await generateWebChat({
         messages,
@@ -50,7 +57,9 @@ function createHydroWiseWebModel(): LanguageModelV3 {
       };
     },
 
-    async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
+    async doStream(
+      options: LanguageModelV3CallOptions,
+    ): Promise<LanguageModelV3StreamResult> {
       const messages = toWebChatMessages(options.prompt);
       const id = crypto.randomUUID();
 
@@ -90,12 +99,12 @@ function createHydroWiseWebModel(): LanguageModelV3 {
   };
 }
 
-export { createHydroWiseWebModel };
+export const createHydroWiseModel = createWebLanguageModel;
 
-export function hydrowiseWebProvider(): ProviderV3 {
+export function hydrowiseProvider(): ProviderV3 {
   return customProvider({
     languageModels: {
-      "hydrowise:web": createHydroWiseWebModel(),
+      "hydrowise:web": createWebLanguageModel(),
     },
   });
 }
