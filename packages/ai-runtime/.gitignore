@@ -22,20 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-**/**/.env
-
-# Monorepo / Tooling
-.turbo
-*.tsbuildinfo
-coverage
-.cache
-**/src-tauri/target/
-
-# Database
-*.db
-*.sqlite
-packages/db/studio-db/
-
-# Models
-/models
