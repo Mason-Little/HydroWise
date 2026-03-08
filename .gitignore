@@ -36,3 +36,6 @@ coverage
 *.db
 *.sqlite
 packages/db/studio-db/
+
+# Models
+models/
