@@ -7,6 +7,6 @@ const configDir = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   dialect: "postgresql",
   schema: path.join(configDir, "src/schema/index.ts"),
-  out: path.join(configDir, "drizzle"),
+  out: "drizzle",
   dbCredentials: { url: process.env.DATABASE_URL ?? "./studio-db/" },
 });
