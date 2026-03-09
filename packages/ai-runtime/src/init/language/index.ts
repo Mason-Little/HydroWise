@@ -1,26 +1,22 @@
 import type { LanguageModelV3 } from "@ai-sdk/provider";
-import { resolveAiRuntime } from "../runtime";
+import { getAiRuntime } from "../runtime";
+import { getDesktopLanguageModel, initDesktopLanguageModel } from "./desktop/init";
 import { getWebLanguageModel, initWebLanguageModel } from "./web/init";
 
-function getRuntimeLanguageModelApi(): {
-  initLanguageModel: () => LanguageModelV3;
-  getLanguageModel: () => LanguageModelV3;
-} {
-  switch (resolveAiRuntime()) {
+export function initLanguageModel(): LanguageModelV3 {
+  switch (getAiRuntime()) {
     case "web":
-      return {
-        initLanguageModel: initWebLanguageModel,
-        getLanguageModel: getWebLanguageModel,
-      };
+      return initWebLanguageModel();
     case "desktop":
-      throw new Error("Desktop language model not implemented yet");
+      return initDesktopLanguageModel();
   }
 }
 
-export function initLanguageModel(): LanguageModelV3 {
-  return getRuntimeLanguageModelApi().initLanguageModel();
-}
-
 export function getLanguageModel(): LanguageModelV3 {
-  return getRuntimeLanguageModelApi().getLanguageModel();
+  switch (getAiRuntime()) {
+    case "web":
+      return getWebLanguageModel();
+    case "desktop":
+      return getDesktopLanguageModel();
+  }
 }
