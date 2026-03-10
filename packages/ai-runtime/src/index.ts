@@ -6,3 +6,4 @@ export type {
 export { runChat, runChatStream } from "./features/chat";
 export { getLanguageModel, initLanguageModel } from "./init";
 export type { AiRuntime } from "./init/runtime";
+export * from "./models";
