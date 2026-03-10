@@ -1,4 +1,6 @@
-import { runChat } from "../index";
+import { initAiRuntime, runChat } from "../index";
+
+initAiRuntime("web");
 
 const prompt = "Explain closures in JavaScript in 3 short bullet points.";
 

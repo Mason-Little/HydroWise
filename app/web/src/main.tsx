@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
+import { initAiRuntime } from "@hydrowise/ai-runtime";
 import { initData } from "@hydrowise/data";
 import { App } from "@/App";
 import type { PlatformConfig } from "@/platform";
@@ -13,6 +14,7 @@ if (!root) {
 
 const platform: PlatformConfig = { kind: "web" };
 
+initAiRuntime("web");
 initData({ platform: "web" })
   .then(() => {
     createRoot(root).render(

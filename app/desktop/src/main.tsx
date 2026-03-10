@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
+import { initAiRuntime } from "@hydrowise/ai-runtime";
 import { initData } from "@hydrowise/data";
 import { App } from "@/App";
 import type { PlatformConfig } from "@/platform";
@@ -14,6 +15,7 @@ if (!root) {
 const bootstrap = async () => {
   const platform: PlatformConfig = { kind: "desktop" };
 
+  initAiRuntime("desktop");
   await initData({ platform: "desktop" });
 
   createRoot(root).render(

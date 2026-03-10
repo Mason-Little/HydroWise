@@ -14,10 +14,10 @@
     "dev": "vite build --watch",
     "clean": "rm -rf dist",
     "check": "tsc --noEmit",
-    "smoke:chat": "VITE_HYDROWISE_AI_RUNTIME=web bun run src/dev/chat-smoke.ts",
-    "smoke:chat:stream": "VITE_HYDROWISE_AI_RUNTIME=web bun run src/dev/chat-stream-smoke.ts",
-    "smoke:chat:desktop": "VITE_HYDROWISE_AI_RUNTIME=desktop bun run src/dev/chat-smoke-desktop.ts",
-    "smoke:chat:stream:desktop": "VITE_HYDROWISE_AI_RUNTIME=desktop bun run src/dev/chat-stream-smoke-desktop.ts"
+    "smoke:chat": "bun run src/dev/chat-smoke.ts",
+    "smoke:chat:stream": "bun run src/dev/chat-stream-smoke.ts",
+    "smoke:chat:desktop": "bun run src/dev/chat-smoke-desktop.ts",
+    "smoke:chat:stream:desktop": "bun run src/dev/chat-stream-smoke-desktop.ts"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "2.0.35",
