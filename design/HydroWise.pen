@@ -4807,7 +4807,172 @@
                   "id": "igZsn",
                   "name": "rightWrap",
                   "width": "fill_container",
-                  "height": "fit_content(0)"
+                  "height": "fill_container",
+                  "justifyContent": "end",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "l79HP",
+                      "name": "modelSelector",
+                      "height": 28,
+                      "fill": "$--wash-04",
+                      "cornerRadius": 6,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$--border"
+                      },
+                      "gap": 1,
+                      "padding": 2,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "QSc2C",
+                          "name": "tierFast",
+                          "height": "fill_container",
+                          "fill": "#00000000",
+                          "cornerRadius": 4,
+                          "padding": [
+                            4,
+                            8
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "rruSY",
+                              "name": "fastLabel",
+                              "fill": "$--muted-2",
+                              "content": "Fast",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "DnGLl",
+                          "name": "tierBalanced",
+                          "height": "fill_container",
+                          "fill": "$--surface",
+                          "cornerRadius": 4,
+                          "stroke": {
+                            "thickness": 1,
+                            "fill": "$--border"
+                          },
+                          "effect": {
+                            "type": "shadow",
+                            "shadowType": "outer",
+                            "color": "#0000000A",
+                            "offset": {
+                              "x": 0,
+                              "y": 1
+                            },
+                            "blur": 2
+                          },
+                          "padding": [
+                            4,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "SJ25i",
+                              "name": "balLabel",
+                              "fill": "$--text",
+                              "content": "Balanced",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "XrWV5",
+                          "name": "tierBetter",
+                          "height": "fill_container",
+                          "fill": "#00000000",
+                          "cornerRadius": 4,
+                          "padding": [
+                            4,
+                            8
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "fraeG",
+                              "name": "betterLabel",
+                              "fill": "$--muted-2",
+                              "content": "Better",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "h5fXF",
+                          "name": "tierHigh",
+                          "height": "fill_container",
+                          "fill": "#00000000",
+                          "cornerRadius": 4,
+                          "padding": [
+                            4,
+                            8
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "PNNw9",
+                              "name": "highLabel",
+                              "fill": "$--muted-2",
+                              "content": "High",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "q1oL0",
+                          "name": "tierMax",
+                          "height": "fill_container",
+                          "fill": "#00000000",
+                          "cornerRadius": 4,
+                          "padding": [
+                            4,
+                            8
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "osOjr",
+                              "name": "maxLabel",
+                              "fill": "$--muted-2",
+                              "content": "Max",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             },
