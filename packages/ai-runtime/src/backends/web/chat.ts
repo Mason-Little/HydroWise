@@ -19,7 +19,7 @@ export type GenerateWebChatOptions = {
   onToken?: (token: string) => void;
 };
 
-function normalizeConversation(messages: WebChatMessage[]) {
+const normalizeConversation = (messages: WebChatMessage[]) => {
   return messages.map((message) => {
     if (typeof message.content === "string") {
       return {
@@ -39,9 +39,9 @@ function normalizeConversation(messages: WebChatMessage[]) {
       }),
     };
   });
-}
+};
 
-async function extractImages(messages: WebChatMessage[]) {
+const extractImages = async (messages: WebChatMessage[]) => {
   const promises: ReturnType<typeof toRawImage>[] = [];
 
   for (const message of messages) {
@@ -55,9 +55,9 @@ async function extractImages(messages: WebChatMessage[]) {
   }
 
   return Promise.all(promises);
-}
+};
 
-function decodeGeneratedText(
+const decodeGeneratedText = (
   processor: {
     tokenizer: {
       batch_decode: (batch: number[][] | any, opts?: any) => string[];
@@ -65,7 +65,7 @@ function decodeGeneratedText(
   },
   outputs: any,
   promptLength: number,
-) {
+) => {
   const seqLen = outputs.dims?.[1] ?? outputs.dims?.[outputs.dims?.length - 1];
   const end = seqLen != null ? seqLen : promptLength + 256;
   const sliced =
@@ -75,9 +75,9 @@ function decodeGeneratedText(
   return processor.tokenizer.batch_decode(sliced, {
     skip_special_tokens: true,
   })[0] as string;
-}
+};
 
-export async function generateWebChat(options: GenerateWebChatOptions) {
+export const generateWebChat = async (options: GenerateWebChatOptions) => {
   const {
     messages,
     maxNewTokens = 256,
@@ -128,8 +128,8 @@ export async function generateWebChat(options: GenerateWebChatOptions) {
   }
 
   return decodeGeneratedText(processor, outputs, promptLength) ?? streamed;
-}
+};
 
-export async function warmupWebBackend() {
+export const warmupWebBackend = async () => {
   await warmupTransformersModel();
-}
+};

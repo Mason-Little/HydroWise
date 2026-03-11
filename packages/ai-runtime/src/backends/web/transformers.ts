@@ -28,7 +28,7 @@ export type WebChatMessage = {
 let processorPromise: Promise<any> | null = null;
 let modelPromise: Promise<any> | null = null;
 
-function onProgress(progress: LoadProgress) {
+const onProgress = (progress: LoadProgress) => {
   const pct = progress.progress ?? 0;
   const file = progress.file ?? "";
   const status = progress.status ?? "";
@@ -46,9 +46,9 @@ function onProgress(progress: LoadProgress) {
       loaded && total ? `(${loaded} / ${total})` : ""
     }`,
   );
-}
+};
 
-export function getWebProcessor() {
+export const getWebProcessor = () => {
   if (!processorPromise) {
     processorPromise = AutoProcessor.from_pretrained(MODEL_ID, {
       progress_callback: onProgress,
@@ -56,9 +56,9 @@ export function getWebProcessor() {
   }
 
   return processorPromise;
-}
+};
 
-export function getWebModel() {
+export const getWebModel = () => {
   if (!modelPromise) {
     const device =
       typeof navigator !== "undefined" && "gpu" in navigator ? "webgpu" : "cpu";
@@ -74,14 +74,14 @@ export function getWebModel() {
   }
 
   return modelPromise;
-}
+};
 
-export async function toRawImage(input: string | Blob | File | URL) {
+export const toRawImage = async (input: string | Blob | File | URL) => {
   const image =
     input instanceof URL ? input.toString() : (input as string | Blob | File);
   return (await RawImage.read(image)).resize(448, 448);
-}
+};
 
-export async function warmupTransformersModel() {
+export const warmupTransformersModel = async () => {
   await Promise.all([getWebProcessor(), getWebModel()]);
-}
+};

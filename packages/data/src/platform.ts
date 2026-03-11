@@ -5,9 +5,9 @@ const DB_DATA_DIRS = {
   web: "idb://hydrowise",
 } as const;
 
-export async function createDbForPlatform(opts: {
+export const createDbForPlatform = async (opts: {
   platform: "web" | "desktop";
-}) {
+}) => {
   if (opts.platform === "web") {
     return createDb({ dataDir: DB_DATA_DIRS.web });
   }
@@ -17,4 +17,4 @@ export async function createDbForPlatform(opts: {
   }
 
   throw new Error("Unknown platform");
-}
+};

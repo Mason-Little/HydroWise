@@ -24,16 +24,16 @@ const emptyUsage = {
   raw: undefined,
 };
 
-function mapGenerateOptions(options: LanguageModelV3CallOptions) {
+const mapGenerateOptions = (options: LanguageModelV3CallOptions) => {
   return {
     maxNewTokens: options.maxOutputTokens ?? 256,
     temperature: options.temperature ?? 0.7,
     topP: options.topP ?? 0.8,
     topK: options.topK,
   };
-}
+};
 
-export function createWebLanguageModel(): LanguageModelV3 {
+export const createWebLanguageModel = (): LanguageModelV3 => {
   return {
     specificationVersion: "v3",
     provider: PROVIDER,
@@ -76,7 +76,7 @@ export function createWebLanguageModel(): LanguageModelV3 {
           await generateWebChat({
             messages,
             ...mapGenerateOptions(options),
-            onToken(token) {
+            onToken: (token) => {
               controller.enqueue({
                 type: "text-delta",
                 id,
@@ -97,14 +97,14 @@ export function createWebLanguageModel(): LanguageModelV3 {
       return { stream };
     },
   };
-}
+};
 
 export const createHydroWiseModel = createWebLanguageModel;
 
-export function hydrowiseProvider(): ProviderV3 {
+export const hydrowiseProvider = (): ProviderV3 => {
   return customProvider({
     languageModels: {
       "hydrowise:web": createWebLanguageModel(),
     },
   });
-}
+};

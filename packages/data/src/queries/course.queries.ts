@@ -2,15 +2,15 @@ import type { Db } from "@hydrowise/db";
 import { courses } from "@hydrowise/db/schema";
 import type { CreateCourseInput } from "@hydrowise/entities";
 
-export function makeCourseRepo(db: Db) {
+export const makeCourseRepo = (db: Db) => {
   return {
-    async listCourses() {
+    listCourses: async () => {
       return db.select().from(courses);
     },
 
-    async createCourse(input: CreateCourseInput) {
+    createCourse: async (input: CreateCourseInput) => {
       const [row] = await db.insert(courses).values(input).returning();
       return row;
     },
   };
-}
+};

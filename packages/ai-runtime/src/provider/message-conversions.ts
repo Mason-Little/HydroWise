@@ -2,10 +2,10 @@ import type { LanguageModelV3Prompt } from "@ai-sdk/provider";
 import type { WebChatMessage, WebChatPart } from "../backends/web/chat";
 
 /** Coerce AI SDK file/image data to WebChatPart image (string | URL | Blob). */
-function toImagePartValue(
+const toImagePartValue = (
   data: unknown,
   mediaType?: string,
-): string | URL | Blob | undefined {
+): string | URL | Blob | undefined => {
   if (typeof data === "string") return data;
   if (data instanceof URL) return data;
   if (data instanceof Blob) return data;
@@ -14,14 +14,14 @@ function toImagePartValue(
       type: mediaType ?? "application/octet-stream",
     });
   return undefined;
-}
+};
 
-function normalizeAssistantOrSystemMessage(
+const normalizeAssistantOrSystemMessage = (
   role: "assistant" | "system",
   content:
     | string
     | Array<{ type: string; text?: string } & Record<string, unknown>>,
-): WebChatMessage {
+): WebChatMessage => {
   if (typeof content === "string") {
     return { role, content };
   }
@@ -36,9 +36,9 @@ function normalizeAssistantOrSystemMessage(
     .join("\n");
 
   return { role, content: text || "" };
-}
+};
 
-function normalizeUserMessage(
+const normalizeUserMessage = (
   content:
     | string
     | Array<
@@ -46,7 +46,7 @@ function normalizeUserMessage(
         | { type: "file"; data: unknown; mediaType: string; filename?: string }
         | { type: "image"; image: unknown; mediaType?: string }
       >,
-): WebChatMessage {
+): WebChatMessage => {
   if (typeof content === "string") {
     return { role: "user", content };
   }
@@ -77,12 +77,12 @@ function normalizeUserMessage(
     role: "user",
     content: parts.length > 0 ? parts : "",
   };
-}
+};
 
-export function toWebChatMessages(
+export const toWebChatMessages = (
   messages: LanguageModelV3Prompt,
-): WebChatMessage[] {
-  return messages.flatMap((message) => {
+): WebChatMessage[] =>
+  messages.flatMap((message) => {
     if (message.role === "system") {
       return [normalizeAssistantOrSystemMessage("system", message.content)];
     }
@@ -101,4 +101,3 @@ export function toWebChatMessages(
     }
     return [];
   });
-}

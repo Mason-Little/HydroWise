@@ -2,10 +2,10 @@ export type AiRuntime = "web" | "desktop";
 
 let currentRuntime: AiRuntime = "web";
 
-export function initAiRuntime(runtime: AiRuntime): void {
+export const initAiRuntime = (runtime: AiRuntime): void => {
   currentRuntime = runtime;
-}
+};
 
-export function getAiRuntime(): AiRuntime {
+export const getAiRuntime = (): AiRuntime => {
   return currentRuntime;
-}
+};

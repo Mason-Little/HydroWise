@@ -4,10 +4,10 @@ import {
   initDefaultWebLanguageModel,
 } from "./models";
 
-export function initWebLanguageModel(): LanguageModelV3 {
+export const initWebLanguageModel = (): LanguageModelV3 => {
   return initDefaultWebLanguageModel();
-}
+};
 
-export function getWebLanguageModel(): LanguageModelV3 {
+export const getWebLanguageModel = (): LanguageModelV3 => {
   return getDefaultWebLanguageModel();
-}
+};

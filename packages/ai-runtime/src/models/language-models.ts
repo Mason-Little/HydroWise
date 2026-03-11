@@ -1,9 +1,4 @@
-export type LanguageModelTier =
-  | "tiny"
-  | "fast"
-  | "balanced"
-  | "high"
-  | "max";
+export type LanguageModelTier = "tiny" | "fast" | "balanced" | "high" | "max";
 
 export type LanguageModelId =
   | "qwen3.5-0.8b"
@@ -43,8 +38,7 @@ export const LANGUAGE_MODELS = [
     id: "qwen3.5-0.8b",
     tier: "tiny",
     label: "Tiny",
-    description:
-      "Fastest option for simple questions and quick study help.",
+    description: "Fastest option for simple questions and quick study help.",
     sortOrder: 0,
     web: {
       enabled: true,

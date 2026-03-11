@@ -8,30 +8,30 @@ const DEFAULT_DESKTOP_MODEL_ALIAS = "chat";
 let cachedModel: LanguageModelV3 | null = null;
 let cachedBaseUrl: string | null = null;
 
-function getProvider(baseUrl: string = DEFAULT_BASE_URL) {
+const getProvider = (baseUrl: string = DEFAULT_BASE_URL) => {
   return createOpenAICompatible({
     name: "hydrowise-desktop",
     baseURL: baseUrl,
   });
-}
+};
 
-export function initDesktopLanguageModel(options?: {
+export const initDesktopLanguageModel = (options?: {
   baseUrl?: string;
-}): LanguageModelV3 {
+}): LanguageModelV3 => {
   const baseUrl = options?.baseUrl ?? DEFAULT_BASE_URL;
   const provider = getProvider(baseUrl);
   const model = provider(DEFAULT_DESKTOP_MODEL_ALIAS) as LanguageModelV3;
   cachedModel = model;
   cachedBaseUrl = baseUrl;
   return model;
-}
+};
 
-export function getDesktopLanguageModel(options?: {
+export const getDesktopLanguageModel = (options?: {
   baseUrl?: string;
-}): LanguageModelV3 {
+}): LanguageModelV3 => {
   const baseUrl = options?.baseUrl ?? DEFAULT_BASE_URL;
   if (cachedModel !== null && cachedBaseUrl === baseUrl) {
     return cachedModel;
   }
   return initDesktopLanguageModel({ baseUrl });
-}
+};

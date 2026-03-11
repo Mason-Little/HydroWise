@@ -2,7 +2,7 @@ import { generateText, streamText } from "ai";
 import { getLanguageModel } from "../../init";
 import type { ChatRunInput, ChatRunResult, ChatRunStreamResult } from "./types";
 
-export async function runChat(input: ChatRunInput): Promise<ChatRunResult> {
+export const runChat = async (input: ChatRunInput): Promise<ChatRunResult> => {
   const model = getLanguageModel();
 
   const result = await generateText({
@@ -18,11 +18,11 @@ export async function runChat(input: ChatRunInput): Promise<ChatRunResult> {
   return {
     text: result.text,
   };
-}
+};
 
-export async function runChatStream(
+export const runChatStream = async (
   input: ChatRunInput,
-): Promise<ChatRunStreamResult> {
+): Promise<ChatRunStreamResult> => {
   const model = getLanguageModel();
 
   const result = streamText({
@@ -34,4 +34,4 @@ export async function runChatStream(
   return {
     textStream: result.textStream,
   };
-}
+};
