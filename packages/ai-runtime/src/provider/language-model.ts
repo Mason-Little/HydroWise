@@ -3,9 +3,7 @@ import type {
   LanguageModelV3CallOptions,
   LanguageModelV3GenerateResult,
   LanguageModelV3StreamResult,
-  ProviderV3,
 } from "@ai-sdk/provider";
-import { customProvider } from "ai";
 import { generateWebChat } from "../backends/web/chat";
 import { toWebChatMessages } from "./message-conversions";
 
@@ -97,14 +95,4 @@ export const createWebLanguageModel = (): LanguageModelV3 => {
       return { stream };
     },
   };
-};
-
-export const createHydroWiseModel = createWebLanguageModel;
-
-export const hydrowiseProvider = (): ProviderV3 => {
-  return customProvider({
-    languageModels: {
-      "hydrowise:web": createWebLanguageModel(),
-    },
-  });
 };

@@ -30,7 +30,7 @@ const getDownloadSizeBytes = (id: LanguageModelId) =>
 
 const getWebModelDefinition = (id: LanguageModelId) => {
   const model = getLanguageModelDefinition(id);
-  return model.web.enabled ? model : null;
+  return model.webModelId ? model : null;
 };
 
 const getWarmingModelId = (
@@ -44,7 +44,7 @@ const buildInitialModelStates = (): Record<LanguageModelId, PerModelState> => {
   const record = {} as Record<LanguageModelId, PerModelState>;
   const activeModelId = DEFAULT_MODEL_ID;
   for (const model of LANGUAGE_MODELS) {
-    const webEnabled = model.web.enabled;
+    const webEnabled = Boolean(model.webModelId);
     const bytesTotal = getDownloadSizeBytes(model.id);
     const isActive = model.id === activeModelId;
     record[model.id] = {

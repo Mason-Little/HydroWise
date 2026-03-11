@@ -110,7 +110,7 @@ export const ModelSelectInfo = () => {
       downloadState,
       loadState,
       selectedModelId,
-      webEnabled: model.web.enabled,
+      webEnabled: Boolean(model.webModelId),
     });
 
   const handleAction = () => {

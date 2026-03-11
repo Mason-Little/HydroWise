@@ -4,27 +4,27 @@ import {
   LANGUAGE_MODELS,
   type LanguageModelDefinition,
   type LanguageModelId,
-} from "./language-models";
+} from "./definitions";
 
-export const LANGUAGE_MODEL_BY_ID = Object.fromEntries(
+const languageModelById = Object.fromEntries(
   LANGUAGE_MODELS.map((model) => [model.id, model]),
 ) as Record<LanguageModelId, LanguageModelDefinition>;
 
-export function getLanguageModelDefinition(id: LanguageModelId) {
-  return LANGUAGE_MODEL_BY_ID[id];
-}
+export const getLanguageModelDefinition = (
+  id: LanguageModelId,
+): LanguageModelDefinition => languageModelById[id];
 
-export function getLanguageModels() {
+export const getLanguageModels = (): readonly LanguageModelDefinition[] => {
   return LANGUAGE_MODELS;
-}
+};
 
-export function getDefaultLanguageModelId(
-  platform: "web" | "desktop",
-): LanguageModelId {
-  switch (platform) {
+export const getDefaultLanguageModelId = (
+  runtime: "web" | "desktop",
+): LanguageModelId => {
+  switch (runtime) {
     case "web":
       return DEFAULT_WEB_LANGUAGE_MODEL_ID;
     case "desktop":
       return DEFAULT_DESKTOP_LANGUAGE_MODEL_ID;
   }
-}
+};

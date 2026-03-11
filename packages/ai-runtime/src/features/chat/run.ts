@@ -1,5 +1,5 @@
 import { generateText, streamText } from "ai";
-import { getLanguageModel } from "../../init";
+import { getLanguageModel } from "../../runtime";
 import type { ChatRunInput, ChatRunResult, ChatRunStreamResult } from "./types";
 
 export const runChat = async (input: ChatRunInput): Promise<ChatRunResult> => {

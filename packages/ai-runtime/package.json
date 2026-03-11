@@ -13,11 +13,7 @@
     "build": "vite build",
     "dev": "vite build --watch",
     "clean": "rm -rf dist",
-    "check": "tsc --noEmit",
-    "smoke:chat": "bun run src/dev/chat-smoke.ts",
-    "smoke:chat:stream": "bun run src/dev/chat-stream-smoke.ts",
-    "smoke:chat:desktop": "bun run src/dev/chat-smoke-desktop.ts",
-    "smoke:chat:stream:desktop": "bun run src/dev/chat-stream-smoke-desktop.ts"
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "2.0.35",

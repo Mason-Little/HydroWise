@@ -42,7 +42,7 @@ export const ModelSelectToggleGroup = () => {
       >
         {LANGUAGE_MODELS.map((model) => {
           const isSelected = selectedModelId === model.id;
-          const desktopOnly = !model.web.enabled;
+          const desktopOnly = !model.webModelId;
 
           return (
             <ToggleGroupItem
@@ -51,9 +51,7 @@ export const ModelSelectToggleGroup = () => {
               aria-label={`${model.label} model`}
               className={cn(
                 "h-8 w-full overflow-hidden rounded-lg border border-transparent bg-transparent px-1 text-muted-foreground shadow-none transition-[color,border-color,transform] duration-200 hover:bg-transparent hover:text-secondary-foreground focus-visible:ring-1 focus-visible:ring-ring",
-                isSelected
-                  ? "text-foreground"
-                  : "border-transparent",
+                isSelected ? "text-foreground" : "border-transparent",
               )}
             >
               <span className="relative z-10 inline-flex h-full w-full items-center justify-center gap-1 rounded-md px-1.5">

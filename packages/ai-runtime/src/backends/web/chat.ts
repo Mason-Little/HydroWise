@@ -1,14 +1,16 @@
 import { TextStreamer } from "@huggingface/transformers";
-import {
-  getWebModel,
-  getWebProcessor,
-  toRawImage,
-  type WebChatMessage,
-  type WebChatPart,
-  warmupTransformersModel,
-} from "./transformers";
+import { loadDefaultWebChatBackend, toRawImage } from "./loader";
 
-export type { WebChatMessage, WebChatPart };
+export type WebChatRole = "system" | "user" | "assistant";
+
+export type WebChatPart =
+  | { type: "text"; text: string }
+  | { type: "image"; image: string | Blob | File | URL };
+
+export type WebChatMessage = {
+  role: WebChatRole;
+  content: string | WebChatPart[];
+};
 
 export type GenerateWebChatOptions = {
   messages: WebChatMessage[];
@@ -77,6 +79,16 @@ const decodeGeneratedText = (
   })[0] as string;
 };
 
+const getTokenizer = (processor: { tokenizer?: unknown }) => {
+  if (!processor.tokenizer) {
+    throw new Error("Web processor tokenizer is unavailable.");
+  }
+
+  return processor.tokenizer as {
+    batch_decode: (batch: number[][] | any, opts?: any) => string[];
+  };
+};
+
 export const generateWebChat = async (options: GenerateWebChatOptions) => {
   const {
     messages,
@@ -87,13 +99,11 @@ export const generateWebChat = async (options: GenerateWebChatOptions) => {
     onToken,
   } = options;
 
-  const [processor, model] = await Promise.all([
-    getWebProcessor(),
-    getWebModel(),
-  ]);
+  const { processor, model } = await loadDefaultWebChatBackend();
 
   const conversation = normalizeConversation(messages);
   const images = await extractImages(messages);
+  const tokenizer = getTokenizer(processor);
 
   const text = processor.apply_chat_template(conversation, {
     add_generation_prompt: true,
@@ -103,7 +113,7 @@ export const generateWebChat = async (options: GenerateWebChatOptions) => {
     images.length > 0 ? await processor(text, images) : await processor(text);
 
   let streamed = "";
-  const streamer = new TextStreamer(processor.tokenizer, {
+  const streamer = new TextStreamer(tokenizer as any, {
     skip_prompt: true,
     skip_special_tokens: true,
     callback_function: (chunk: string) => {
@@ -127,9 +137,5 @@ export const generateWebChat = async (options: GenerateWebChatOptions) => {
     return streamed;
   }
 
-  return decodeGeneratedText(processor, outputs, promptLength) ?? streamed;
-};
-
-export const warmupWebBackend = async () => {
-  await warmupTransformersModel();
+  return decodeGeneratedText({ tokenizer }, outputs, promptLength) ?? streamed;
 };
