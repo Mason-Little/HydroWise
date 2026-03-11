@@ -24,7 +24,7 @@ export const ModelSelect = ({
       <PopoverContent
         align="end"
         sideOffset={8}
-        className="w-[26rem] max-w-[calc(100vw-2rem)] rounded-[var(--hw-radius-2xl)] border border-[var(--border-solid)] bg-[var(--surface)] p-3 shadow-[var(--shadow-popover)]"
+        className="w-[var(--width-popover-panel)] max-w-[var(--max-width-popover)] rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-popover)]"
       >
         <ModelSelectToggleGroup />
         <ModelSelectInfo />

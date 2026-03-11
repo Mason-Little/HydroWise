@@ -15,15 +15,15 @@ export const ModelDownloadBar = ({ bytesDownloaded, bytesTotal }: Props) => {
 
   return (
     <div className="mt-2 space-y-1">
-      <div className="flex justify-between text-[10.5px] font-medium text-[var(--text-tertiary)]">
+      <div className="flex justify-between text-[length:var(--font-size-sm)] font-medium text-muted-2">
         <span>Downloading…</span>
         <span>
           {formatBytes(bytesDownloaded)} / {formatBytes(bytesTotal)}
         </span>
       </div>
-      <div className="h-[5px] overflow-hidden rounded-[3px] bg-[var(--progress-track)]">
+      <div className="h-[var(--height-progress-track)] overflow-hidden rounded-xs bg-[var(--progress-track)]">
         <div
-          className="h-full rounded-[3px] bg-[image:var(--progress-fill)] transition-[width] duration-100"
+          className="h-full rounded-xs bg-[image:var(--progress-fill)] transition-[width] duration-100"
           style={{ width: `${progress}%` }}
         />
       </div>

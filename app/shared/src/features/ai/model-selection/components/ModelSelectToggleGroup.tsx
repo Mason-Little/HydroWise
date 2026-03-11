@@ -37,8 +37,8 @@ export const ModelSelectToggleGroup = () => {
         onValueChange={handleValueChange}
         spacing={1}
         aria-label="AI model selection"
-        indicatorClassName="inset-y-1 rounded-[var(--hw-radius-lg)] border border-[var(--border-solid)] bg-[var(--surface)] shadow-[var(--shadow-sm)]"
-        className="relative grid w-full grid-cols-5 rounded-[var(--hw-radius-xl)] border border-[var(--border-solid)] bg-[color:color-mix(in_srgb,var(--surface-alt)_82%,white)] p-1 shadow-[var(--shadow-sm)]"
+        indicatorClassName="inset-y-1 rounded-lg border border-border bg-card shadow-sm"
+        className="relative grid w-full grid-cols-5 rounded-xl border border-border bg-[var(--surface-toggle-track)] p-1 shadow-sm"
       >
         {LANGUAGE_MODELS.map((model) => {
           const isSelected = selectedModelId === model.id;
@@ -50,13 +50,13 @@ export const ModelSelectToggleGroup = () => {
               value={model.id}
               aria-label={`${model.label} model`}
               className={cn(
-                "h-8 w-full overflow-hidden rounded-[var(--hw-radius-lg)] border border-transparent bg-transparent px-1 text-[var(--text-muted)] shadow-none transition-[color,border-color,transform] duration-200 hover:bg-transparent hover:text-[var(--text-secondary)] focus-visible:ring-1 focus-visible:ring-[var(--border-focus)]",
+                "h-8 w-full overflow-hidden rounded-lg border border-transparent bg-transparent px-1 text-muted-foreground shadow-none transition-[color,border-color,transform] duration-200 hover:bg-transparent hover:text-secondary-foreground focus-visible:ring-1 focus-visible:ring-ring",
                 isSelected
-                  ? "text-[var(--text-primary)]"
+                  ? "text-foreground"
                   : "border-transparent",
               )}
             >
-              <span className="relative z-10 inline-flex h-full w-full items-center justify-center gap-1 rounded-[var(--hw-radius-md)] px-1.5">
+              <span className="relative z-10 inline-flex h-full w-full items-center justify-center gap-1 rounded-md px-1.5">
                 <span className="text-xs font-semibold tracking-normal">
                   {model.label}
                 </span>
@@ -65,7 +65,7 @@ export const ModelSelectToggleGroup = () => {
                     className={cn(
                       "size-3",
                       isSelected
-                        ? "text-[var(--text-tertiary)]"
+                        ? "text-muted-2"
                         : "text-[var(--text-disabled)]",
                     )}
                     strokeWidth={2.1}

@@ -57,7 +57,7 @@ export const ModelStatusTag = ({
 
   return (
     <span
-      className={`rounded-[var(--hw-radius-xs)] px-[7px] py-[2px] text-[10px] font-semibold uppercase tracking-[0.03em] ${tag.className}`}
+      className={`rounded-xs px-2 py-0.5 text-[length:var(--font-size-xs)] font-semibold uppercase tracking-tight ${tag.className}`}
     >
       {tag.text}
     </span>

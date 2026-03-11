@@ -39,13 +39,13 @@ const styles: Record<ModelActionVariant, string> = {
 };
 
 const renderIcon = (variant: ModelActionVariant) => {
-  if (variant === "download") return <DownloadIcon className="size-[13px]" />;
-  if (variant === "warmup") return <FlameIcon className="size-[13px]" />;
+  if (variant === "download") return <DownloadIcon className="size-[var(--size-icon-sm)]" />;
+  if (variant === "warmup") return <FlameIcon className="size-[var(--size-icon-sm)]" />;
   if (variant === "warming" || variant === "progress") {
-    return <Loader2Icon className="size-[13px] animate-spin" />;
+    return <Loader2Icon className="size-[var(--size-icon-sm)] animate-spin" />;
   }
-  if (variant === "active") return <CheckIcon className="size-[13px]" />;
-  return <MonitorIcon className="size-[13px]" />;
+  if (variant === "active") return <CheckIcon className="size-[var(--size-icon-sm)]" />;
+  return <MonitorIcon className="size-[var(--size-icon-sm)]" />;
 };
 
 const renderLabel = (variant: ModelActionVariant, progressPercent?: number) => {
@@ -72,7 +72,7 @@ export const ModelActionButton = ({
       animate={shake ? { x: [0, -4, 4, -2, 2, 0] } : {}}
       transition={{ duration: 0.3 }}
       className={cn(
-        "inline-flex items-center gap-[5px] rounded-[var(--hw-radius-sm)] border px-[14px] py-[6px] text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--border-focus)]",
+        "inline-flex items-center gap-1.5 rounded-sm border px-3.5 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
         styles[variant],
       )}
       disabled={!clickable}

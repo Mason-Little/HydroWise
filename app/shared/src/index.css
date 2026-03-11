@@ -76,6 +76,12 @@
   --overlay: rgba(30, 25, 18, 0.3);
   --overlay-blur: 4px;
 
+  --width-popover-panel: 26rem;
+  --max-width-popover: min(26rem, calc(100vw - 2rem));
+  --height-progress-track: 5px;
+  --size-icon-sm: 13px;
+  --surface-toggle-track: color-mix(in srgb, var(--surface-alt) 82%, white);
+
   --hw-radius-xs: 4px;
   --hw-radius-sm: 6px;
   --hw-radius-md: 8px;
@@ -203,6 +209,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Radius */
+  --radius-xs: var(--hw-radius-xs);
   --radius-sm: var(--hw-radius-sm);
   --radius-md: var(--hw-radius-md);
   --radius-lg: var(--hw-radius-lg);

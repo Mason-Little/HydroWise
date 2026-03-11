@@ -8,7 +8,7 @@ export const Topbar = () => {
 
   return (
     <div className="bg-card border-border sticky top-0 z-20 flex h-auto w-full shrink-0 flex-row flex-nowrap items-center gap-3 rounded-md border p-3">
-      <span className="shrink-0 px-3 py-1 text-sm font-semibold tracking-[0.08em]">
+      <span className="shrink-0 px-3 py-1 text-sm font-semibold tracking-wide">
         {features[activeFeature].label}
       </span>
       <div className="min-w-0 flex-1" aria-hidden />

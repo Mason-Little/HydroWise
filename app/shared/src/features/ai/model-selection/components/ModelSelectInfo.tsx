@@ -137,10 +137,10 @@ export const ModelSelectInfo = () => {
     <div className="mt-3 space-y-2">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-semibold text-[var(--text-primary)]">
+          <span className="text-sm font-semibold text-foreground">
             {model.label}
           </span>
-          <span className="text-xs text-[var(--text-tertiary)]">
+          <span className="text-xs text-muted-2">
             {MODEL_UI_META[selectedModelId].sizeLabel}
           </span>
           <ModelStatusTag
@@ -157,7 +157,7 @@ export const ModelSelectInfo = () => {
         />
       </div>
 
-      <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
+      <p className="text-xs leading-relaxed text-muted-foreground">
         {model.description}
       </p>
 
