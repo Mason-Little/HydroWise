@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@fontsource/dm-sans";
 @import "@fontsource-variable/geist-mono";
 
 @source "./**/*.{ts,tsx}";
@@ -8,72 +9,137 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* --- Core surfaces --- */
-  --background: #f8f4ee;
-  --foreground: #212833;
-  --card: #fffcf7;
-  --card-foreground: #1d2430;
-  --popover: #ffffff;
-  --popover-foreground: #1d2430;
+  --bg: #f8f3ea;
+  --surface: #fffcf5;
+  --surface-alt: #f5f0e6;
+  --surface-hover: #faf6ee;
 
-  /* --- Primary (blue) --- */
-  --primary: #6a8eea;
-  --primary-foreground: #ffffff;
-
-  /* --- CTA (warm gold buttons) --- */
-  --cta: #d8b993;
-  --cta-foreground: #1f2a4a;
-  --cta-border: #c8a176;
-
-  /* --- Secondary (info-toned) --- */
-  --secondary: #e4f3ff;
-  --secondary-foreground: #2a5b7a;
-  --secondary-border: #c9dff1;
-
-  /* --- Muted --- */
-  --muted: #f0ebe1;
-  --muted-foreground: #616b7b;
-  --muted-2: #737c8c;
-
-  /* --- Accent (success-toned) --- */
-  --accent: #e8f6ee;
-  --accent-foreground: #2d6f48;
-  --accent-border: #bfe0ca;
-
-  /* --- Destructive --- */
-  --destructive: #dc2626;
-
-  /* --- Borders & inputs --- */
-  --border: #ddd4c7;
-  --input: #ddd4c7;
-  --ring: #6a8eea;
-
-  /* --- Label (warm brown captions) --- */
-  --label: #8b7355;
-
-  /* --- Charts --- */
-  --chart-1: #6a8eea;
-  --chart-2: #c4e8ff;
-  --chart-3: #c8f2d4;
-  --chart-4: #fbefb9;
-  --chart-5: #737c8c;
-
-  /* --- Radius --- */
-  --radius: 0.625rem;
-
-  /* --- Sidebar --- */
-  --sidebar: #efe8dc;
-  --sidebar-foreground: #212833;
-  --sidebar-primary: #6a8eea;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-bg: #efe8dc;
+  --sidebar-icon: #7a6750;
+  --sidebar-icon-hover: #5c3d2e;
+  --sidebar-active-bg: #ddd0be;
+  --sidebar-active-icon: #212833;
   --sidebar-accent: #ddd0be;
-  --sidebar-accent-foreground: #5c3d2e;
   --sidebar-border: #ddd4c7;
-  --sidebar-ring: #6a8eea;
+
+  --border: rgba(140, 120, 90, 0.1);
+  --border-solid: #e8e0d0;
+  --border-focus: rgba(196, 168, 108, 0.3);
+  --ring-focus: rgba(196, 168, 108, 0.15);
+
+  --text-primary: #3d2e1e;
+  --text-secondary: #6b5d4a;
+  --text-tertiary: #8c7a5a;
+  --text-muted: #9a8b74;
+  --text-disabled: #b8ad9a;
+  --text-inverse: #f5f0e8;
+
+  --accent: #c4a46c;
+  --accent-warm: #d4a054;
+  --accent-warm-hover: #c4883c;
+
+  --green: #4a7c59;
+  --green-bg: #e6f0e6;
+  --green-border: #c2dcc2;
+  --green-dot-ring: rgba(74, 124, 89, 0.2);
+
+  --gold: #b8860b;
+  --gold-bg: #f5ecd4;
+
+  --olive: #7a8c5a;
+  --olive-bg: #eaf0e0;
+
+  --badge-pdf-bg: #e8d8c4;
+  --badge-pdf-text: #8a7050;
+  --badge-docx-bg: #c8dcc8;
+  --badge-docx-text: #4a6a4a;
+
+  --btn-download-bg: #3d2e1e;
+  --btn-download-text: #f5f0e8;
+  --btn-warmup-bg: linear-gradient(135deg, #d4a054, #c4883c);
+  --btn-warmup-text: #ffffff;
+  --btn-warming-bg: #e8dcc8;
+  --btn-warming-text: #8c7a5a;
+  --btn-active-bg: #e6f0e6;
+  --btn-active-text: #4a7c59;
+  --btn-active-border: #c2dcc2;
+  --btn-locked-bg: #f0ece4;
+  --btn-locked-text: #b0a48e;
+  --btn-locked-border: #ddd5c5;
+
+  --progress-track: #ede6d8;
+  --progress-fill: linear-gradient(90deg, #c4a46c, #d4a054);
+
+  --toast-bg: #3d2e1e;
+  --toast-text: #f5f0e8;
+
+  --overlay: rgba(30, 25, 18, 0.3);
+  --overlay-blur: 4px;
+
+  --hw-radius-xs: 4px;
+  --hw-radius-sm: 6px;
+  --hw-radius-md: 8px;
+  --hw-radius-lg: 10px;
+  --hw-radius-xl: 14px;
+  --hw-radius-2xl: 18px;
+
+  --shadow-sm: 0 1px 2px rgba(80, 60, 30, 0.06);
+  --shadow-md:
+    0 1px 3px rgba(80, 60, 30, 0.08), 0 0 0 1px rgba(140, 120, 90, 0.07);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.18);
+  --shadow-popover:
+    0 12px 40px rgba(30, 20, 10, 0.14), 0 0 0 1px rgba(140, 120, 90, 0.1);
+  --shadow-dialog:
+    0 16px 48px rgba(30, 20, 10, 0.2), 0 0 0 1px rgba(140, 120, 90, 0.1);
+
+  --font-family: "DM Sans", sans-serif;
+  --font-size-xs: 10px;
+  --font-size-sm: 11.5px;
+  --font-size-base: 12.5px;
+  --font-size-md: 13px;
+  --font-size-lg: 15px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+
+  --background: var(--bg);
+  --foreground: var(--text-primary);
+  --card: var(--surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent);
+  --primary-foreground: var(--text-inverse);
+  --cta: var(--accent-warm);
+  --cta-foreground: var(--text-primary);
+  --cta-border: var(--border-solid);
+  --secondary: var(--surface-alt);
+  --secondary-foreground: var(--text-secondary);
+  --secondary-border: var(--border-solid);
+  --muted: var(--surface-alt);
+  --muted-foreground: var(--text-secondary);
+  --muted-2: var(--text-tertiary);
+  --accent-foreground: var(--text-primary);
+  --accent-border: var(--green-border);
+  --destructive: #dc2626;
+  --input: var(--border-solid);
+  --ring: var(--border-focus);
+  --label: var(--text-tertiary);
+  --chart-1: var(--accent);
+  --chart-2: var(--accent-warm);
+  --chart-3: var(--green);
+  --chart-4: var(--gold);
+  --chart-5: var(--text-tertiary);
+  --radius: var(--hw-radius-lg);
+  --sidebar: var(--sidebar-bg);
+  --sidebar-foreground: var(--sidebar-icon);
+  --sidebar-primary: var(--sidebar-accent);
+  --sidebar-primary-foreground: var(--sidebar-active-icon);
+  --sidebar-accent-foreground: var(--sidebar-icon-hover);
+  --sidebar-ring: var(--border-focus);
 }
 
 @theme inline {
-  --font-sans: "Geist", "Inter", "Segoe UI", sans-serif;
+  --font-sans: var(--font-family);
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Core */
@@ -137,13 +203,13 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* Radius */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --radius-sm: var(--hw-radius-sm);
+  --radius-md: var(--hw-radius-md);
+  --radius-lg: var(--hw-radius-lg);
+  --radius-xl: var(--hw-radius-xl);
+  --radius-2xl: var(--hw-radius-2xl);
+  --radius-3xl: calc(var(--hw-radius-2xl) + 4px);
+  --radius-4xl: calc(var(--hw-radius-2xl) + 8px);
 }
 
 @layer base {

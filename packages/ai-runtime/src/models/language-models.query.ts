@@ -1,5 +1,6 @@
-import type { AiRuntime } from "@/init/runtime";
 import {
+  DEFAULT_DESKTOP_LANGUAGE_MODEL_ID,
+  DEFAULT_WEB_LANGUAGE_MODEL_ID,
   LANGUAGE_MODELS,
   type LanguageModelDefinition,
   type LanguageModelId,
@@ -17,8 +18,13 @@ export function getLanguageModels() {
   return LANGUAGE_MODELS;
 }
 
-export function getLanguageModelsForRuntime(runtime: AiRuntime) {
-  return LANGUAGE_MODELS.filter((model) =>
-    runtime === "web" ? model.web.enabled : model.desktop.enabled,
-  );
+export function getDefaultLanguageModelId(
+  platform: "web" | "desktop",
+): LanguageModelId {
+  switch (platform) {
+    case "web":
+      return DEFAULT_WEB_LANGUAGE_MODEL_ID;
+    case "desktop":
+      return DEFAULT_DESKTOP_LANGUAGE_MODEL_ID;
+  }
 }
