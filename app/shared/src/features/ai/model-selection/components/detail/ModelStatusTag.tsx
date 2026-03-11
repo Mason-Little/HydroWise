@@ -1,7 +1,7 @@
 import type {
   LanguageModelDownloadState,
   LanguageModelLoadState,
-} from "@hydrowise/ai-runtime";
+} from "../../temp-config";
 
 type Props = {
   downloadState: LanguageModelDownloadState;
@@ -18,12 +18,6 @@ const getTag = (
     return {
       text: "loaded",
       className: "bg-[var(--green-bg)] text-[var(--green)]",
-    };
-  }
-  if (loadState === "warming") {
-    return {
-      text: "loading",
-      className: "bg-[var(--gold-bg)] text-[var(--gold)]",
     };
   }
   if (downloadState === "downloading") {

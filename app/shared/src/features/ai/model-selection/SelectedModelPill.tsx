@@ -1,17 +1,106 @@
-import { getLanguageModelDefinition } from "@hydrowise/ai-runtime";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import { ModelSelect } from "@/features/ai/model-selection/ModelSelect";
+import {
+  DEFAULT_MODEL_ID,
+  getModelDefinition,
+  type LanguageModelDownloadState,
+  type LanguageModelId,
+  type LanguageModelLoadState,
+  MODEL_OPTIONS,
+} from "@/features/ai/model-selection/temp-config";
 import { cn } from "@/lib/utils";
-import { useModelSelectorStore } from "@/store/modelSelectorStore";
+
+export type TempModelState = {
+  downloadState: LanguageModelDownloadState;
+  loadState: LanguageModelLoadState;
+};
+
+export type TempModelStateMap = Record<LanguageModelId, TempModelState>;
+
+const buildInitialModelStates = (): TempModelStateMap => {
+  const states = {} as TempModelStateMap;
+
+  for (const model of MODEL_OPTIONS) {
+    const isActive = model.id === DEFAULT_MODEL_ID;
+
+    states[model.id] = model.web.enabled
+      ? {
+          downloadState: "downloaded",
+          loadState: isActive ? "in-use" : "ready",
+        }
+      : {
+          downloadState: "not-downloaded",
+          loadState: "unavailable",
+        };
+  }
+
+  return states;
+};
 
 export const SelectedModelPill = () => {
   const [open, setOpen] = useState(false);
-  const activeModelId = useModelSelectorStore((s) => s.activeModelId);
-  const model = getLanguageModelDefinition(activeModelId);
+  const [selectedModelId, setSelectedModelId] =
+    useState<LanguageModelId>(DEFAULT_MODEL_ID);
+  const [activeModelId, setActiveModelId] =
+    useState<LanguageModelId>(DEFAULT_MODEL_ID);
+  const [modelStates, setModelStates] = useState(buildInitialModelStates);
+
+  const activeModel = getModelDefinition(activeModelId);
+
+  const handleSelectModel = (id: LanguageModelId) => {
+    setSelectedModelId(id);
+  };
+
+  const handleStartDownload = (id: LanguageModelId) => {
+    const model = getModelDefinition(id);
+
+    if (!model.web.enabled) {
+      return;
+    }
+
+    setModelStates((current) => ({
+      ...current,
+      [id]: {
+        downloadState: "downloaded",
+        loadState: current[id].loadState === "in-use" ? "in-use" : "ready",
+      },
+    }));
+  };
+
+  const handleWarmUp = (id: LanguageModelId) => {
+    const model = getModelDefinition(id);
+    const nextState = modelStates[id];
+
+    if (!model.web.enabled || nextState.downloadState !== "downloaded") {
+      return;
+    }
+
+    setModelStates((current) => ({
+      ...current,
+      [activeModelId]: {
+        ...current[activeModelId],
+        loadState: activeModelId === id ? "in-use" : "ready",
+      },
+      [id]: {
+        ...current[id],
+        loadState: "in-use",
+      },
+    }));
+    setActiveModelId(id);
+  };
 
   return (
-    <ModelSelect open={open} onOpenChange={setOpen}>
+    <ModelSelect
+      open={open}
+      onOpenChange={setOpen}
+      selectedModelId={selectedModelId}
+      activeModelId={activeModelId}
+      modelStates={modelStates}
+      onSelectModel={handleSelectModel}
+      onStartDownload={handleStartDownload}
+      onWarmUp={handleWarmUp}
+    >
       <button
         type="button"
         className={cn(
@@ -24,7 +113,7 @@ export const SelectedModelPill = () => {
             <span className="size-2 rounded-full bg-[var(--green)]" />
           </span>
           <span className="text-sm font-semibold text-foreground">
-            {model.label}
+            {activeModel.label}
           </span>
         </span>
         <ChevronDownIcon

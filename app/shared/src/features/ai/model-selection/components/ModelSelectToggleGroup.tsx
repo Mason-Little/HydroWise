@@ -1,27 +1,26 @@
 "use client";
 
-import { LANGUAGE_MODELS, type LanguageModelId } from "@hydrowise/ai-runtime";
 import { LockIcon } from "lucide-react";
 import { motion } from "motion/react";
-import { useShallow } from "zustand/react/shallow";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
-import { useModelSelectorStore } from "@/store/modelSelectorStore";
+import { type LanguageModelId, MODEL_OPTIONS } from "../temp-config";
 
-export const ModelSelectToggleGroup = () => {
-  const { selectModel, selectedModelId } = useModelSelectorStore(
-    useShallow((s) => ({
-      selectModel: s.selectModel,
-      selectedModelId: s.selectedModelId,
-    })),
-  );
+type ModelSelectToggleGroupProps = {
+  selectedModelId: LanguageModelId;
+  onSelectModel: (id: LanguageModelId) => void;
+};
 
+export const ModelSelectToggleGroup = ({
+  selectedModelId,
+  onSelectModel,
+}: ModelSelectToggleGroupProps) => {
   const handleValueChange = ([nextValue]: string[]) => {
     if (!nextValue) {
       return;
     }
 
-    selectModel(nextValue as LanguageModelId);
+    onSelectModel(nextValue as LanguageModelId);
   };
 
   return (
@@ -40,9 +39,9 @@ export const ModelSelectToggleGroup = () => {
         indicatorClassName="inset-y-1 rounded-lg border border-border bg-card shadow-sm"
         className="relative grid w-full grid-cols-5 rounded-xl border border-border bg-[var(--surface-toggle-track)] p-1 shadow-sm"
       >
-        {LANGUAGE_MODELS.map((model) => {
+        {MODEL_OPTIONS.map((model) => {
           const isSelected = selectedModelId === model.id;
-          const desktopOnly = !model.webModelId;
+          const desktopOnly = !model.web.enabled;
 
           return (
             <ToggleGroupItem
