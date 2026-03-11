@@ -4,17 +4,17 @@ import {
   RawImage,
 } from "@huggingface/transformers";
 import {
-  DEFAULT_WEB_LANGUAGE_MODEL_ID,
+  DEFAULT_WEB_LANGUAGE_MODEL_TIER,
   getLanguageModelDefinition,
-} from "../../models";
+} from "../../config";
 
 const defaultWebChatBackendPromise = (async () => {
-  const definition = getLanguageModelDefinition(DEFAULT_WEB_LANGUAGE_MODEL_ID);
+  const definition = getLanguageModelDefinition(DEFAULT_WEB_LANGUAGE_MODEL_TIER);
   const modelId = definition.webModelId;
 
   if (!modelId) {
     throw new Error(
-      `Model ${DEFAULT_WEB_LANGUAGE_MODEL_ID} is not available on web.`,
+      `Model ${definition.modelId} is not available on web.`,
     );
   }
 
