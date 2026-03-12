@@ -3,20 +3,22 @@ import {
   AutoProcessor,
   Qwen3_5ForConditionalGeneration,
 } from "@huggingface/transformers";
-import { initWebModelCache } from "@/backends/web/cache";
 import type { LanguageModelTier } from "@/config/definitions";
 import { getLanguageModelDefinition } from "@/config/queries";
 import type { DownloadProgress } from "@/managers/manager";
 
+type DownloadWebModelRequest = {
+  tier: LanguageModelTier;
+  onProgress?: (progress: DownloadProgress) => void;
+};
+
+// Maps HuggingFace ProgressInfo to our DownloadProgress when status is progress.
 function toDownloadProgress(info: ProgressInfo): DownloadProgress | null {
-  if (info.status === "progress" && "loaded" in info && "total" in info) {
-    return {
-      bytesDownloaded: info.loaded,
-      bytesTotal: info.total,
-      progress: info.progress / 100,
-    };
-  }
-  if (info.status === "progress_total" && "loaded" in info && "total" in info) {
+  if (
+    (info.status === "progress" || info.status === "progress_total") &&
+    "loaded" in info &&
+    "total" in info
+  ) {
     return {
       bytesDownloaded: info.loaded,
       bytesTotal: info.total,
@@ -26,23 +28,19 @@ function toDownloadProgress(info: ProgressInfo): DownloadProgress | null {
   return null;
 }
 
-export const downloadWebModel = async (
-  tier: LanguageModelTier,
-  callbacks?: { onProgress?: (progress: DownloadProgress) => void },
-) => {
-  initWebModelCache();
-
-  const definition = getLanguageModelDefinition(tier);
+// Loads the tier's ONNX model and processor from HuggingFace with optional progress.
+export const downloadWebModel = async (request: DownloadWebModelRequest) => {
+  const definition = getLanguageModelDefinition(request.tier);
 
   if (!definition?.webModelId) {
-    throw new Error(`Model ${tier} is not available on web.`);
+    throw new Error(`Model ${request.tier} is not available on web.`);
   }
 
   const progressCallback =
-    callbacks?.onProgress &&
+    request.onProgress &&
     ((info: ProgressInfo) => {
       const progress = toDownloadProgress(info);
-      if (progress) callbacks.onProgress?.(progress);
+      if (progress) request.onProgress?.(progress);
     });
 
   const processor = await AutoProcessor.from_pretrained(definition.webModelId, {
