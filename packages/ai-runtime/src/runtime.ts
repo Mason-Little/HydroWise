@@ -1,6 +1,6 @@
 import type { LanguageModelV3 } from "@ai-sdk/provider";
-import { getDesktopLanguageModel } from "./backends/desktop/language-model";
-import { getWebLanguageModel } from "./backends/web/language-model";
+import { getDesktopLanguageModel } from "@/backends/desktop/language-model";
+import { getWebLanguageModel } from "@/managers/web";
 
 export type AiRuntime = "web" | "desktop";
 

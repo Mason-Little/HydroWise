@@ -1,45 +1,66 @@
+import type { ProgressInfo } from "@huggingface/transformers";
 import {
   AutoProcessor,
   Qwen3_5ForConditionalGeneration,
-  RawImage,
 } from "@huggingface/transformers";
-import {
-  DEFAULT_WEB_LANGUAGE_MODEL_TIER,
-  getLanguageModelDefinition,
-} from "../../config";
+import { initWebModelCache } from "@/backends/web/cache";
+import type { LanguageModelTier } from "@/config/definitions";
+import { getLanguageModelDefinition } from "@/config/queries";
+import type { DownloadProgress } from "@/managers/manager";
 
-const defaultWebChatBackendPromise = (async () => {
-  const definition = getLanguageModelDefinition(DEFAULT_WEB_LANGUAGE_MODEL_TIER);
-  const modelId = definition.webModelId;
+function toDownloadProgress(info: ProgressInfo): DownloadProgress | null {
+  if (info.status === "progress" && "loaded" in info && "total" in info) {
+    return {
+      bytesDownloaded: info.loaded,
+      bytesTotal: info.total,
+      progress: info.progress / 100,
+    };
+  }
+  if (info.status === "progress_total" && "loaded" in info && "total" in info) {
+    return {
+      bytesDownloaded: info.loaded,
+      bytesTotal: info.total,
+      progress: info.progress / 100,
+    };
+  }
+  return null;
+}
 
-  if (!modelId) {
-    throw new Error(
-      `Model ${definition.modelId} is not available on web.`,
-    );
+export const downloadWebModel = async (
+  tier: LanguageModelTier,
+  callbacks?: { onProgress?: (progress: DownloadProgress) => void },
+) => {
+  initWebModelCache();
+
+  const definition = getLanguageModelDefinition(tier);
+
+  if (!definition?.webModelId) {
+    throw new Error(`Model ${tier} is not available on web.`);
   }
 
-  const device =
-    typeof navigator !== "undefined" && "gpu" in navigator ? "webgpu" : "cpu";
+  const progressCallback =
+    callbacks?.onProgress &&
+    ((info: ProgressInfo) => {
+      const progress = toDownloadProgress(info);
+      if (progress) callbacks.onProgress?.(progress);
+    });
 
-  const [processor, model] = await Promise.all([
-    AutoProcessor.from_pretrained(modelId),
-    Qwen3_5ForConditionalGeneration.from_pretrained(modelId, {
+  const processor = await AutoProcessor.from_pretrained(definition.webModelId, {
+    progress_callback: progressCallback,
+  });
+
+  const model = await Qwen3_5ForConditionalGeneration.from_pretrained(
+    definition.webModelId,
+    {
       dtype: {
         embed_tokens: "q4",
         vision_encoder: "fp16",
         decoder_model_merged: "q4",
       },
-      device,
-    }),
-  ]);
+      device: "webgpu",
+      progress_callback: progressCallback,
+    },
+  );
 
   return { processor, model };
-})();
-
-export const loadDefaultWebChatBackend = () => defaultWebChatBackendPromise;
-
-export const toRawImage = async (input: string | Blob | File | URL) => {
-  const image =
-    input instanceof URL ? input.toString() : (input as string | Blob | File);
-  return (await RawImage.read(image)).resize(448, 448);
 };
