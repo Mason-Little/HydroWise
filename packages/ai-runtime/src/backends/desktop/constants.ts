@@ -1,0 +1,2 @@
+export const DESKTOP_SERVER_ORIGIN = "http://127.0.0.1:39281";
+export const DESKTOP_PROVIDER_BASE_URL = `${DESKTOP_SERVER_ORIGIN}/v1`;
