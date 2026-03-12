@@ -1,15 +1,22 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod ai;
+mod language_model;
 
+// Builds the Tauri app, registers language-model commands and state, starts the server in setup, stops it on exit.
 fn main() {
     let app = tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .manage(ai::state::LlamaSidecarState::default())
+        .manage(language_model::state::LanguageModelServerState::default())
+        .invoke_handler(tauri::generate_handler![
+            language_model::download::download_language_model,
+            language_model::server::start_language_model_server_command,
+            language_model::server::stop_language_model_server_command,
+            language_model::server::restart_language_model_server_command,
+        ])
         .setup(|app| {
-            if let Err(err) = ai::start_sidecar(app.handle()) {
-                eprintln!("[llama] sidecar startup skipped: {err}");
-                eprintln!("[llama] continuing app startup without local AI runtime");
+            if let Err(err) = language_model::server::start_language_model_server(app.handle()) {
+                eprintln!("[language-model] server startup skipped: {err}");
+                eprintln!("[language-model] continuing app startup without local runtime");
             }
             Ok(())
         })
@@ -18,8 +25,8 @@ fn main() {
 
     app.run(|app_handle, event| {
         if matches!(event, tauri::RunEvent::Exit) {
-            if let Err(err) = ai::stop_sidecar(app_handle) {
-                eprintln!("failed to stop llama sidecar: {err}");
+            if let Err(err) = language_model::server::stop_language_model_server(app_handle) {
+                eprintln!("failed to stop language-model server: {err}");
             }
         }
     });
