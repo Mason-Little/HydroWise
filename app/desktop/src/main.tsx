@@ -12,10 +12,12 @@ if (!root) {
   throw new Error("Root element not found");
 }
 
+// Initializes desktop AI runtime and data, then mounts the app.
 const bootstrap = async () => {
   const platform: PlatformConfig = { kind: "desktop" };
 
-  initAiRuntime("desktop");
+  await initAiRuntime("desktop");
+
   await initData({ platform: "desktop" });
 
   createRoot(root).render(
