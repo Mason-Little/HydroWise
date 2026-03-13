@@ -11,6 +11,7 @@ export const createDesktopLanguageModelAdapter = (
   const provider = createOpenAICompatible({
     baseURL: DESKTOP_PROVIDER_BASE_URL,
     name: DESKTOP_PROVIDER_NAME,
+    supportsStructuredOutputs: true,
   });
 
   return provider(modelId);

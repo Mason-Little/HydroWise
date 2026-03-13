@@ -1,37 +1,26 @@
-import { generateText, streamText } from "ai";
-import { getLanguageModel } from "../../runtime";
-import type { ChatRunInput, ChatRunResult, ChatRunStreamResult } from "./types";
+import { generateText, Output } from "ai";
+import { z } from "zod";
+import { getLanguageModel } from "@/runtime";
 
-export const runChat = async (input: ChatRunInput): Promise<ChatRunResult> => {
+export const sendGroundedChat = async (input: string) => {
   const model = getLanguageModel();
 
   const result = await generateText({
     model,
-    messages: [
-      {
-        role: "user",
-        content: [{ type: "text", text: input.prompt }],
-      },
-    ],
+    prompt: input,
+    temperature: 0,
+    topP: 1,
+    output: Output.object({
+      name: "chat",
+      description: "chat response",
+      schema: z.object({
+        responseIdeas: z.array(z.string()).length(3),
+      }),
+    }),
   });
 
-  return {
-    text: result.text,
-  };
-};
+  console.log("result");
+  console.log(result);
 
-export const runChatStream = async (
-  input: ChatRunInput,
-): Promise<ChatRunStreamResult> => {
-  const model = getLanguageModel();
-
-  const result = streamText({
-    model,
-    messages: [
-      { role: "user", content: [{ type: "text", text: input.prompt }] },
-    ],
-  });
-  return {
-    textStream: result.textStream,
-  };
+  return result.output;
 };
