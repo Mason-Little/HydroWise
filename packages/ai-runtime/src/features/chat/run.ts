@@ -1,11 +1,11 @@
-import { generateText, Output } from "ai";
+import { Output, streamText } from "ai";
 import { z } from "zod";
 import { getLanguageModel } from "@/runtime";
 
 export const sendGroundedChat = async (input: string) => {
   const model = getLanguageModel();
 
-  const result = await generateText({
+  const { partialOutputStream, output } = streamText({
     model,
     prompt: input,
     temperature: 0,
@@ -19,8 +19,9 @@ export const sendGroundedChat = async (input: string) => {
     }),
   });
 
-  console.log("result");
-  console.log(result);
+  for await (const text of partialOutputStream) {
+    console.log("text", text);
+  }
 
-  return result.output;
+  return output;
 };
