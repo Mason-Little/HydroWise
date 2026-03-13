@@ -1,52 +1,30 @@
-import type {
-  LanguageModelDownloadState,
-  LanguageModelLoadState,
-} from "../../temp-config";
-
 type Props = {
-  downloadState: LanguageModelDownloadState;
-  loadState: LanguageModelLoadState;
+  isActive: boolean;
+  isDownloading: boolean;
+  isCached: boolean;
   desktopOnly: boolean;
 };
 
 const getTag = (
-  downloadState: LanguageModelDownloadState,
-  loadState: LanguageModelLoadState,
-  desktopOnly: boolean,
+  props: Props,
 ): { text: string; className: string } | null => {
-  if (loadState === "in-use") {
-    return {
-      text: "loaded",
-      className: "bg-[var(--green-bg)] text-[var(--green)]",
-    };
+  if (props.isActive) {
+    return { text: "loaded", className: "bg-[var(--green-bg)] text-[var(--green)]" };
   }
-  if (downloadState === "downloading") {
-    return {
-      text: "downloading",
-      className: "bg-[var(--surface-alt)] text-[var(--text-tertiary)]",
-    };
+  if (props.isDownloading) {
+    return { text: "downloading", className: "bg-[var(--surface-alt)] text-[var(--text-tertiary)]" };
   }
-  if (downloadState === "downloaded") {
-    return {
-      text: "on device",
-      className: "bg-[var(--olive-bg)] text-[var(--olive)]",
-    };
+  if (props.isCached) {
+    return { text: "on device", className: "bg-[var(--olive-bg)] text-[var(--olive)]" };
   }
-  if (desktopOnly) {
-    return {
-      text: "desktop",
-      className: "bg-[var(--surface-alt)] text-[var(--text-muted)]",
-    };
+  if (props.desktopOnly) {
+    return { text: "desktop", className: "bg-[var(--surface-alt)] text-[var(--text-muted)]" };
   }
   return null;
 };
 
-export const ModelStatusTag = ({
-  downloadState,
-  loadState,
-  desktopOnly,
-}: Props) => {
-  const tag = getTag(downloadState, loadState, desktopOnly);
+export const ModelStatusTag = (props: Props) => {
+  const tag = getTag(props);
   if (!tag) return null;
 
   return (

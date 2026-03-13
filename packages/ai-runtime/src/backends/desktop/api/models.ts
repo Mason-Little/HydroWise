@@ -24,6 +24,15 @@ type DesktopLanguageModelListResponse = {
   object: string;
 };
 
+const MODEL_ALREADY_LOADED_MESSAGE = '"message":"model is already loaded"';
+
+const isModelAlreadyLoadedError = (error: unknown): boolean => {
+  return (
+    error instanceof Error &&
+    error.message.includes(MODEL_ALREADY_LOADED_MESSAGE)
+  );
+};
+
 // Lists models exposed by the desktop server.
 export const listDesktopLanguageModels = async (): Promise<
   DesktopLanguageModel[]
@@ -39,11 +48,19 @@ export const listDesktopLanguageModels = async (): Promise<
 export const loadDesktopLanguageModel = async (
   modelId: string,
 ): Promise<void> => {
-  await requestDesktopVoid({
-    path: "models/load",
-    init: {
-      method: "POST",
-      body: JSON.stringify({ model: modelId }),
-    },
-  });
+  try {
+    await requestDesktopVoid({
+      path: "models/load",
+      init: {
+        method: "POST",
+        body: JSON.stringify({ model: modelId }),
+      },
+    });
+  } catch (error) {
+    if (isModelAlreadyLoadedError(error)) {
+      return;
+    }
+
+    throw error;
+  }
 };

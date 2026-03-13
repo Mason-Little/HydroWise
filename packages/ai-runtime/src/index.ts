@@ -10,5 +10,11 @@ export type {
   ChatRunStreamResult,
 } from "./features/chat";
 export { runChat, runChatStream } from "./features/chat";
+export type { DownloadProgress } from "./managers/manager";
 export type { AiRuntime } from "./runtime";
-export { getLanguageModel, initAiRuntime } from "./runtime";
+export {
+  getLanguageModel,
+  getLanguageModelManager,
+  getRuntime,
+  initAiRuntime,
+} from "./runtime";

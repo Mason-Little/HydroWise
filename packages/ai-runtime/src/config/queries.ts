@@ -1,3 +1,4 @@
+import { runtimeState } from "../runtime";
 import {
   DEFAULT_DESKTOP_LANGUAGE_MODEL_TIER,
   DEFAULT_WEB_LANGUAGE_MODEL_TIER,
@@ -18,10 +19,8 @@ export const getLanguageModels = (): Record<
 > => LANGUAGE_MODELS;
 
 // Returns the default tier for the given runtime.
-export const getDefaultLanguageModelTier = (
-  runtime: "web" | "desktop",
-): LanguageModelTier => {
-  switch (runtime) {
+export const getDefaultLanguageModelTier = (): LanguageModelTier => {
+  switch (runtimeState.currentRuntime) {
     case "web":
       return DEFAULT_WEB_LANGUAGE_MODEL_TIER;
     case "desktop":

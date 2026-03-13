@@ -1,26 +1,20 @@
 "use client";
 
+import {
+  getLanguageModels,
+  type LanguageModelTier,
+} from "@hydrowise/ai-runtime";
 import { LockIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
-import { type LanguageModelId, MODEL_OPTIONS } from "../temp-config";
+import { useModelStore } from "@/store/modelStore";
 
-type ModelSelectToggleGroupProps = {
-  selectedModelId: LanguageModelId;
-  onSelectModel: (id: LanguageModelId) => void;
-};
+export const ModelSelectToggleGroup = () => {
+  const { runtime, selectedModelTier, setSelectedModelTier } = useModelStore();
 
-export const ModelSelectToggleGroup = ({
-  selectedModelId,
-  onSelectModel,
-}: ModelSelectToggleGroupProps) => {
   const handleValueChange = ([nextValue]: string[]) => {
-    if (!nextValue) {
-      return;
-    }
-
-    onSelectModel(nextValue as LanguageModelId);
+    if (nextValue) setSelectedModelTier(nextValue as LanguageModelTier);
   };
 
   return (
@@ -32,22 +26,22 @@ export const ModelSelectToggleGroup = ({
     >
       <ToggleGroup
         orientation="horizontal"
-        value={[selectedModelId]}
+        value={selectedModelTier ? [selectedModelTier] : []}
         onValueChange={handleValueChange}
         spacing={1}
         aria-label="AI model selection"
         indicatorClassName="inset-y-1 rounded-lg border border-border bg-card shadow-sm"
         className="relative grid w-full grid-cols-5 rounded-xl border border-border bg-[var(--surface-toggle-track)] p-1 shadow-sm"
       >
-        {MODEL_OPTIONS.map((model) => {
-          const isSelected = selectedModelId === model.id;
-          const desktopOnly = !model.web.enabled;
+        {Object.entries(getLanguageModels()).map(([tier, definition]) => {
+          const isSelected = selectedModelTier === tier;
+          const desktopOnly = runtime === "web" && !definition.webModelId;
 
           return (
             <ToggleGroupItem
-              key={model.id}
-              value={model.id}
-              aria-label={`${model.label} model`}
+              key={tier}
+              value={tier}
+              aria-label={`${tier} model`}
               className={cn(
                 "h-8 w-full overflow-hidden rounded-lg border border-transparent bg-transparent px-1 text-muted-foreground shadow-none transition-[color,border-color,transform] duration-200 hover:bg-transparent hover:text-secondary-foreground focus-visible:ring-1 focus-visible:ring-ring",
                 isSelected ? "text-foreground" : "border-transparent",
@@ -55,7 +49,7 @@ export const ModelSelectToggleGroup = ({
             >
               <span className="relative z-10 inline-flex h-full w-full items-center justify-center gap-1 rounded-md px-1.5">
                 <span className="text-xs font-semibold tracking-normal">
-                  {model.label}
+                  {tier}
                 </span>
                 {desktopOnly ? (
                   <LockIcon

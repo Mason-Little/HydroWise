@@ -51,6 +51,7 @@ export const downloadDesktopModel = async (
 
   await restartLanguageModelServer();
   await waitForDesktopServerReady();
+  await warmDesktopModel(options.tier);
 };
 
 // Waits for server readiness and loads the tier's model; returns its id.

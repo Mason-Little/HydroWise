@@ -6,6 +6,7 @@ import { initData } from "@hydrowise/data";
 import { App } from "@/App";
 import type { PlatformConfig } from "@/platform";
 import { AppProviders } from "@/providers";
+import { bootstrapModelStore } from "@/store/modelStore";
 
 const root = document.getElementById("root");
 if (!root) {
@@ -17,7 +18,7 @@ const bootstrap = async () => {
   const platform: PlatformConfig = { kind: "desktop" };
 
   await initAiRuntime("desktop");
-
+  await bootstrapModelStore();
   await initData({ platform: "desktop" });
 
   createRoot(root).render(

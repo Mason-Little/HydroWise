@@ -1,127 +1,45 @@
-import type { TempModelState } from "../SelectedModelPill";
-import {
-  getModelDefinition,
-  type LanguageModelDownloadState,
-  type LanguageModelId,
-} from "../temp-config";
-import {
-  ModelActionButton,
-  type ModelActionVariant,
-} from "./detail/ModelActionButton";
+import type { LanguageModelTier } from "@hydrowise/ai-runtime";
+import { useModelStore } from "@/store/modelStore";
+import { useModelTierStatus } from "../hooks/useModelTierStatus";
+import { ModelActionButton } from "./detail/ModelActionButton";
 import { ModelDesktopNotice } from "./detail/ModelDesktopNotice";
 import { ModelStatusTag } from "./detail/ModelStatusTag";
 
-const getActionVariant = (
-  downloadState: LanguageModelDownloadState,
-  loadState: TempModelState["loadState"],
-  desktopOnly: boolean,
-  isActive: boolean,
-): ModelActionVariant => {
-  if (desktopOnly) return "locked";
-  if (downloadState === "not-downloaded") return "download";
-  if (loadState === "in-use" && isActive) return "active";
-  return "warmup";
+export const ModelSelectInfo = () => {
+  const selectedModelTier = useModelStore((s) => s.selectedModelTier);
+  if (!selectedModelTier) return null;
+  return <ModelSelectInfoPanel tier={selectedModelTier} />;
 };
 
-type ModelInfoViewState = {
-  actionVariant: ModelActionVariant;
-  desktopOnly: boolean;
-  isActive: boolean;
-};
-
-const getModelInfoViewState = ({
-  activeModelId,
-  downloadState,
-  loadState,
-  selectedModelId,
-  webEnabled,
-}: {
-  activeModelId: LanguageModelId;
-  downloadState: LanguageModelDownloadState;
-  loadState: TempModelState["loadState"];
-  selectedModelId: LanguageModelId;
-  webEnabled: boolean;
-}): ModelInfoViewState => {
-  const isActive = activeModelId === selectedModelId;
-  const desktopOnly = !webEnabled;
-  const actionVariant = getActionVariant(
-    downloadState,
-    loadState,
-    desktopOnly,
-    isActive,
-  );
-
-  return {
-    actionVariant,
-    desktopOnly,
-    isActive,
-  };
-};
-
-type ModelSelectInfoProps = {
-  selectedModelId: LanguageModelId;
-  activeModelId: LanguageModelId;
-  modelState: TempModelState;
-  onStartDownload: (id: LanguageModelId) => void;
-  onWarmUp: (id: LanguageModelId) => void;
-};
-
-export const ModelSelectInfo = ({
-  selectedModelId,
-  activeModelId,
-  modelState,
-  onStartDownload,
-  onWarmUp,
-}: ModelSelectInfoProps) => {
-  const model = getModelDefinition(selectedModelId);
-  const { downloadState, loadState } = modelState;
-
-  const { actionVariant, desktopOnly, isActive } = getModelInfoViewState({
-    activeModelId,
-    downloadState,
-    loadState,
-    selectedModelId,
-    webEnabled: model.web.enabled,
-  });
-
-  const handleAction = () => {
-    if (desktopOnly || isActive) {
-      return;
-    }
-
-    if (downloadState === "not-downloaded") {
-      onStartDownload(selectedModelId);
-      return;
-    }
-
-    if (loadState === "ready") {
-      onWarmUp(selectedModelId);
-    }
-  };
+const ModelSelectInfoPanel = ({ tier }: { tier: LanguageModelTier }) => {
+  const status = useModelTierStatus(tier);
 
   return (
     <div className="mt-3 space-y-2">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-semibold text-foreground">
-            {model.label}
-          </span>
-          <span className="text-xs text-muted-2">{model.sizeLabel}</span>
+          <span className="text-sm font-semibold text-foreground">{tier}</span>
+          <span className="text-xs text-muted-2">{status.sizeLabel}</span>
           <ModelStatusTag
-            downloadState={downloadState}
-            loadState={loadState}
-            desktopOnly={desktopOnly}
+            isActive={status.isActive}
+            isDownloading={status.isDownloading}
+            isCached={status.isCached}
+            desktopOnly={status.desktopOnly}
           />
         </div>
 
-        <ModelActionButton variant={actionVariant} onClick={handleAction} />
+        <ModelActionButton
+          variant={status.actionVariant}
+          progressPercent={status.downloadProgressPercent}
+          onClick={status.onAction}
+        />
       </div>
 
       <p className="text-xs leading-relaxed text-muted-foreground">
-        {model.description}
+        {status.description}
       </p>
 
-      {desktopOnly ? <ModelDesktopNotice /> : null}
+      {status.desktopOnly ? <ModelDesktopNotice /> : null}
     </div>
   );
 };
