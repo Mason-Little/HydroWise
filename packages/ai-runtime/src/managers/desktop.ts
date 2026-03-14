@@ -17,17 +17,19 @@ const desktopLanguageModelState: {
 // Builds the LanguageModelManager implementation for desktop.
 export const createDesktopLanguageModelManager = (): LanguageModelManager => {
   return {
+    // TODO: Desktop download progress updates arrive infrequently (every 10-20s) with
+    // large percent jumps. Progress granularity is controlled by the llama.cpp/Tauri
+    // backend — needs either more frequent emission or client-side interpolation.
     downloadModel(tier, callbacks) {
       return downloadDesktopModel({
         tier,
         onProgress: callbacks.onProgress,
       });
     },
-    async warmModel(tier, callbacks) {
+    async warmModel(tier) {
       const modelId = await warmDesktopModel(tier);
       desktopLanguageModelState.activeLanguageModel =
         createDesktopLanguageModelAdapter(modelId);
-      callbacks.onWarmed();
     },
     listCachedModels() {
       return listCachedDesktopModels();

@@ -55,7 +55,6 @@ export const useModelStore = create<ModelStore>((set) => ({
 
     await manager.downloadModel(model, {
       onProgress: (progress) => set({ activeDownload: { tier: model, ...progress } }),
-      onWarmed: () => {},
     });
 
     const cachedModelTiers = await listCachedModelTiers();
@@ -68,7 +67,7 @@ export const useModelStore = create<ModelStore>((set) => ({
     set({ isWarmingModel: true, selectedModelTier: model });
 
     try {
-      await manager.warmModel(model, { onWarmed: () => {} });
+      await manager.warmModel(model);
       set({ activeModelTier: model });
     } finally {
       set({ isWarmingModel: false });
@@ -101,7 +100,7 @@ export const bootstrapModelStore = async (): Promise<void> => {
   useModelStore.setState({ isWarmingModel: true });
 
   try {
-    await manager.warmModel(defaultModelTier, { onWarmed: () => {} });
+    await manager.warmModel(defaultModelTier);
 
     useModelStore.setState({
       activeModelTier: defaultModelTier,

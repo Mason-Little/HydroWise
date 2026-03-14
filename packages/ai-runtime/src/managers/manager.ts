@@ -8,11 +8,6 @@ export type DownloadProgress = {
 
 export type DownloadCallbacks = {
   onProgress: (progress: DownloadProgress) => void;
-  onWarmed: () => void;
-};
-
-export type WarmCallbacks = {
-  onWarmed: () => void;
 };
 
 export interface LanguageModelManager {
@@ -20,6 +15,6 @@ export interface LanguageModelManager {
     tier: LanguageModelTier,
     callbacks: DownloadCallbacks,
   ): Promise<void>;
-  warmModel(tier: LanguageModelTier, callbacks: WarmCallbacks): Promise<void>;
+  warmModel(tier: LanguageModelTier): Promise<void>;
   listCachedModels(): Promise<LanguageModelTier[]>;
 }

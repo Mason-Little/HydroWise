@@ -16,19 +16,21 @@ const webLanguageModelState: {
 // Builds the LanguageModelManager implementation for web.
 export const createWebLanguageModelManager = (): LanguageModelManager => {
   return {
+    // TODO: Web download progress jumps around because each model file (embed_tokens,
+    // vision_encoder, decoder_model_merged) reports its own independent progress,
+    // causing the overall bar to reset and spike per-file rather than tracking total bytes.
     downloadModel: async (tier, callbacks) => {
       await downloadWebModel({ tier, onProgress: callbacks.onProgress });
     },
-    listCachedModels: async () => {
-      return listCachedWebModelTiers();
-    },
-    warmModel: async (tier, callbacks) => {
+    warmModel: async (tier) => {
       const { model, processor } = await warmWebModel({ tier });
       webLanguageModelState.activeLanguageModel = createWebLanguageModelAdapter(
         model,
         processor,
       );
-      callbacks.onWarmed();
+    },
+    listCachedModels: async () => {
+      return listCachedWebModelTiers();
     },
   };
 };
