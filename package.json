@@ -18,7 +18,7 @@
     "build:apps": "turbo build --filter=./app/*",
     "clean": "turbo clean",
     "clean:build": "turbo clean && turbo build",
-    "nuke": "turbo clean && rm -rf node_modules **/node_modules",
+    "nuke": "turbo clean && rm -f bun.lock && rm -rf node_modules && find . -name 'node_modules' -type d -prune -exec rm -rf {} +",
     "preview": "turbo preview --filter=@hydrowise/web",
     "lint": "biome lint .",
     "format": "biome format . --write",
