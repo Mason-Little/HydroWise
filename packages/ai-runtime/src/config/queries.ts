@@ -1,11 +1,11 @@
-import { runtimeState } from "../runtime";
+import { runtimeState } from "@/runtime";
 import {
   DEFAULT_DESKTOP_LANGUAGE_MODEL_TIER,
   DEFAULT_WEB_LANGUAGE_MODEL_TIER,
   LANGUAGE_MODELS,
   type LanguageModelDefinition,
   type LanguageModelTier,
-} from "./definitions";
+} from "@/config/definitions";
 
 // Returns the definition for the given tier.
 export const getLanguageModelDefinition = (

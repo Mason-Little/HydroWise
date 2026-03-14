@@ -4,45 +4,19 @@ import type {
 } from "@ai-sdk/provider";
 import type { PreTrainedModel, Processor } from "@huggingface/transformers";
 import { TextStreamer } from "@huggingface/transformers";
-import { decodeGeneratedText } from "./decode";
-import { mapGenerateOptions } from "./options";
-import { toConversation } from "./prompt";
-
-const PROVIDER = "hydrowise" as const;
-const MODEL_ID = "web" as const;
-
-const emptyUsage = {
-  inputTokens: {
-    total: undefined,
-    noCache: undefined,
-    cacheRead: undefined,
-    cacheWrite: undefined,
-  },
-  outputTokens: { total: undefined, text: undefined, reasoning: undefined },
-  raw: undefined,
-};
-
-const finishReason = { unified: "stop" as const, raw: undefined };
+import {
+  createWebTextStreamResult,
+  getPromptLength,
+  prepareWebInputs,
+} from "@/adapters/web/common";
+import { decodeGeneratedText } from "@/adapters/web/decode";
+import { mapGenerateOptions } from "@/adapters/web/options";
 
 type GenerateWebChatParams = {
   model: PreTrainedModel;
   processor: Processor;
   options: LanguageModelV3CallOptions;
   onToken?: (token: string) => void;
-};
-
-const prepareInputs = async (
-  processor: Processor,
-  options: LanguageModelV3CallOptions,
-) => {
-  const conversation = toConversation(options.prompt);
-  const text = processor.apply_chat_template(conversation, {
-    add_generation_prompt: true,
-  });
-  const inputs = await processor(text);
-  const { tokenizer } = processor;
-  if (!tokenizer) throw new Error("Web processor tokenizer is unavailable.");
-  return { inputs, tokenizer };
 };
 
 const createTokenStreamer = (
@@ -61,7 +35,7 @@ const generateWebChat = async ({
   options,
   onToken,
 }: GenerateWebChatParams): Promise<string> => {
-  const { inputs, tokenizer } = await prepareInputs(processor, options);
+  const { inputs, tokenizer } = await prepareWebInputs(processor, options);
 
   let streamed = "";
   const streamer = createTokenStreamer(tokenizer, (chunk) => {
@@ -74,39 +48,24 @@ const generateWebChat = async ({
     ...mapGenerateOptions(options),
     streamer,
   });
-  const promptLength =
-    inputs.input_ids.dims?.at(-1) ?? inputs.input_ids.dims?.[1];
+  const promptLength = getPromptLength(inputs);
 
   return promptLength != null
     ? (decodeGeneratedText(processor, outputs, promptLength) ?? streamed)
     : streamed;
 };
 
+// Creates an AI SDK v3 stream result for plain (non-structured) text generation.
 export const createWebStream = (
   model: PreTrainedModel,
   processor: Processor,
   options: LanguageModelV3CallOptions,
-): Promise<LanguageModelV3StreamResult> => {
-  const id = crypto.randomUUID();
-  const stream = new ReadableStream({
-    async start(controller) {
-      controller.enqueue({ type: "stream-start", warnings: [] });
-      controller.enqueue({
-        type: "response-metadata",
-        id,
-        modelId: `${PROVIDER}:${MODEL_ID}`,
-        timestamp: new Date(),
-      });
-      await generateWebChat({
-        model,
-        processor,
-        options,
-        onToken: (token) =>
-          controller.enqueue({ type: "text-delta", id, delta: token }),
-      });
-      controller.enqueue({ type: "finish", usage: emptyUsage, finishReason });
-      controller.close();
-    },
+): Promise<LanguageModelV3StreamResult> =>
+  createWebTextStreamResult(async (emitTextDelta) => {
+    await generateWebChat({
+      model,
+      processor,
+      options,
+      onToken: emitTextDelta,
+    });
   });
-  return Promise.resolve({ stream });
-};
