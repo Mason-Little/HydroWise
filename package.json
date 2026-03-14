@@ -28,5 +28,8 @@
     "@biomejs/biome": "^2.3.13",
     "turbo": "^2.8.1",
     "typescript": "~5.9.3"
+  },
+  "patchedDependencies": {
+    "@huggingface/transformers@4.0.0-next.7": "patches/@huggingface%2Ftransformers@4.0.0-next.7.patch"
   }
 }

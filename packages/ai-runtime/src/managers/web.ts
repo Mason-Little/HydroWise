@@ -4,8 +4,7 @@ import {
   initWebModelCache,
   listCachedWebModelTiers,
 } from "@/backends/web/cache";
-import { downloadWebModel } from "@/backends/web/loader";
-import { getLanguageModelDefinition } from "@/config/queries";
+import { downloadWebModel, warmWebModel } from "@/backends/web/loader";
 import type { LanguageModelManager } from "@/managers/manager";
 
 const webLanguageModelState: {
@@ -18,27 +17,13 @@ const webLanguageModelState: {
 export const createWebLanguageModelManager = (): LanguageModelManager => {
   return {
     downloadModel: async (tier, callbacks) => {
-      const { model, processor } = await downloadWebModel({
-        tier,
-        onProgress: callbacks.onProgress,
-      });
-      webLanguageModelState.activeLanguageModel = createWebLanguageModelAdapter(
-        model,
-        processor,
-      );
-      callbacks.onWarmed();
+      await downloadWebModel({ tier, onProgress: callbacks.onProgress });
     },
     listCachedModels: async () => {
       return listCachedWebModelTiers();
     },
     warmModel: async (tier, callbacks) => {
-      const definition = getLanguageModelDefinition(tier);
-
-      if (!definition.webModelId) {
-        throw new Error(`Model ${tier} is not available on web.`);
-      }
-
-      const { model, processor } = await downloadWebModel({ tier });
+      const { model, processor } = await warmWebModel({ tier });
       webLanguageModelState.activeLanguageModel = createWebLanguageModelAdapter(
         model,
         processor,

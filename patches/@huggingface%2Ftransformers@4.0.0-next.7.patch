@@ -1,0 +1,34 @@
+diff --git a/src/models/modeling_utils.js b/src/models/modeling_utils.js
+index e222a773514ca304e9b0867526935883ce6af16f..67fcc98fd6127176444fabf7d1798a68959352a2 100644
+--- a/src/models/modeling_utils.js
++++ b/src/models/modeling_utils.js
+@@ -368,6 +368,7 @@ export class PreTrainedModel extends Callable {
+             dtype = null,
+             use_external_data_format = null,
+             session_options = {},
++            downloadOnly = false,
+         } = {},
+     ) {
+         const options = {
+@@ -382,6 +383,7 @@ export class PreTrainedModel extends Callable {
+             dtype,
+             use_external_data_format,
+             session_options,
++            downloadOnly,
+         };
+ 
+         const modelName = MODEL_CLASS_TO_NAME_MAPPING.get(this);
+diff --git a/src/models/session.js b/src/models/session.js
+index b3897892ebe4743ec5f57d99c88b6b24bc7f5c60..d8973a1711aed366f313cd06940a4324063b733f 100644
+--- a/src/models/session.js
++++ b/src/models/session.js
+@@ -167,6 +167,9 @@ export async function constructSessions(pretrained_model_name_or_path, names, op
+                     cache_config,
+                     name,
+                 );
++                if (options.downloadOnly) {
++                    return [name, null];
++                }
+                 const session = await createInferenceSession(buffer_or_path, session_options, session_config);
+                 return [name, session];
+             }),
