@@ -1502,8 +1502,8 @@
     {
       "type": "frame",
       "id": "MZjtU",
-      "x": 0,
-      "y": 1768,
+      "x": 7,
+      "y": 2008,
       "name": "Dashboard Quizzes",
       "theme": {
         "Theme": "Light"
@@ -3118,7 +3118,6 @@
         "Theme": "Light"
       },
       "width": 1280,
-      "height": 800,
       "fill": "#F6F1E7",
       "children": [
         {
@@ -3332,7 +3331,6 @@
           "id": "jV2ig",
           "name": "mainArea",
           "width": "fill_container",
-          "height": "fill_container",
           "layout": "vertical",
           "gap": 12,
           "padding": [
@@ -3424,7 +3422,6 @@
               "id": "uRted",
               "name": "dashGrid",
               "width": "fill_container",
-              "height": "fill_container",
               "layout": "vertical",
               "gap": 14,
               "children": [
@@ -3857,7 +3854,6 @@
                   "id": "aHWgh",
                   "name": "courseWorkspace",
                   "width": "fill_container",
-                  "height": "fill_container",
                   "fill": "#FFFCF6",
                   "cornerRadius": 10,
                   "stroke": {
@@ -3865,7 +3861,7 @@
                     "fill": "#DED7CC"
                   },
                   "layout": "vertical",
-                  "gap": 10,
+                  "gap": 12,
                   "padding": 12,
                   "children": [
                     {
@@ -3881,7 +3877,7 @@
                           "id": "j5PsF",
                           "name": "wsTitle",
                           "fill": "$--text",
-                          "content": "Biology 101 Overview",
+                          "content": "BIOL 111 Overview",
                           "fontFamily": "Inter",
                           "fontSize": 18,
                           "fontWeight": "700"
@@ -3937,7 +3933,7 @@
                                   "type": "text",
                                   "id": "QWwzd",
                                   "fill": "$--muted",
-                                  "content": "Chapters",
+                                  "content": "Outline",
                                   "fontFamily": "Inter",
                                   "fontSize": 12,
                                   "fontWeight": "600"
@@ -3976,167 +3972,713 @@
                     },
                     {
                       "type": "frame",
-                      "id": "fRmpp",
-                      "name": "overviewPanel",
+                      "id": "YXXtM",
+                      "name": "overviewLayout",
                       "width": "fill_container",
-                      "layout": "vertical",
-                      "gap": 10,
+                      "gap": 12,
                       "children": [
                         {
-                          "type": "text",
-                          "id": "GjKl8",
-                          "name": "overviewTitle",
-                          "fill": "$--card-title",
-                          "content": "Syllabus Overview",
-                          "fontFamily": "Inter",
-                          "fontSize": 14,
-                          "fontWeight": "700"
-                        },
-                        {
                           "type": "frame",
-                          "id": "BWly5",
-                          "name": "metaRow",
+                          "id": "IVzNU",
+                          "name": "overviewMain",
                           "width": "fill_container",
-                          "gap": 8,
+                          "layout": "vertical",
+                          "gap": 12,
                           "children": [
                             {
                               "type": "frame",
-                              "id": "MR7Bx",
-                              "name": "classMeet",
+                              "id": "yfBOb",
+                              "name": "courseHeaderBar",
                               "width": "fill_container",
-                              "fill": "#FFFDF8",
-                              "cornerRadius": 10,
+                              "fill": "$--surface-2",
+                              "cornerRadius": 12,
                               "stroke": {
                                 "thickness": 1,
-                                "fill": "#DED7CC"
+                                "fill": "$--border"
                               },
-                              "layout": "vertical",
-                              "gap": 4,
-                              "padding": [
-                                10,
-                                12
-                              ],
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "wppCV",
-                                  "fill": "#7A6A58",
-                                  "content": "Class Meetings",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 11,
-                                  "fontWeight": "600"
+                                  "type": "frame",
+                                  "id": "g9PIO",
+                                  "name": "instructorBlock",
+                                  "width": "fill_container",
+                                  "stroke": {
+                                    "thickness": {
+                                      "right": 1
+                                    },
+                                    "fill": "$--border"
+                                  },
+                                  "layout": "vertical",
+                                  "gap": 8,
+                                  "padding": 16,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "OOT2Z",
+                                      "name": "insteyebrow",
+                                      "fill": "$--muted",
+                                      "content": "INSTRUCTOR",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 11,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "cFLbP",
+                                      "name": "instname",
+                                      "fill": "$--card-title",
+                                      "content": "Edward Pokrishevsky",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 20,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "V1cHN",
+                                      "name": "instmeta",
+                                      "fill": "$--muted-2",
+                                      "content": "edwardpokrishevsky@capilanou.ca",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "EAqDe",
+                                      "name": "instoffice",
+                                      "fill": "$--muted-2",
+                                      "content": "Office: FR 480",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "5VA6A",
+                                      "name": "insthours",
+                                      "fill": "#A27A2B",
+                                      "content": "Hours: + Add hours",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "2xdsn",
+                                      "name": "instschedule",
+                                      "fill": "$--surface",
+                                      "cornerRadius": 999,
+                                      "stroke": {
+                                        "thickness": 1,
+                                        "fill": "$--border"
+                                      },
+                                      "gap": 8,
+                                      "padding": [
+                                        6,
+                                        10
+                                      ],
+                                      "children": [
+                                        {
+                                          "type": "icon_font",
+                                          "id": "7ww8D",
+                                          "name": "instscheduleIcon",
+                                          "width": 12,
+                                          "height": 12,
+                                          "iconFontName": "plus",
+                                          "iconFontFamily": "lucide",
+                                          "fill": "$--muted"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "pBaLi",
+                                          "name": "instscheduleText",
+                                          "fill": "$--muted",
+                                          "content": "Add class schedule",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 11,
+                                          "fontWeight": "600"
+                                        }
+                                      ]
+                                    }
+                                  ]
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "DK5jr",
-                                  "fill": "$--text",
-                                  "content": "Mon & Wed",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 13,
-                                  "fontWeight": "700"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "egBXE",
-                                  "fill": "$--muted",
-                                  "content": "Start: 9:30 AM  |  End: 10:45 AM",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 11,
-                                  "fontWeight": "normal"
+                                  "type": "frame",
+                                  "id": "CPxlE",
+                                  "name": "courseMetaBlock",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 8,
+                                  "padding": 16,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "8TPjl",
+                                      "name": "metaeyebrow",
+                                      "fill": "$--muted",
+                                      "content": "COURSE INFO",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 11,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "eZakC",
+                                      "name": "metatitle",
+                                      "fill": "$--card-title",
+                                      "content": "BIOL 111  General Biology II",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 20,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "AM2CK",
+                                      "name": "termrow",
+                                      "gap": 8,
+                                      "children": [
+                                        {
+                                          "type": "frame",
+                                          "id": "5Oufz",
+                                          "name": "termbadge",
+                                          "fill": "$--surface",
+                                          "cornerRadius": 999,
+                                          "stroke": {
+                                            "thickness": 1,
+                                            "fill": "$--border"
+                                          },
+                                          "padding": [
+                                            5,
+                                            10
+                                          ],
+                                          "children": [
+                                            {
+                                              "type": "text",
+                                              "id": "Bqey2",
+                                              "name": "termbadgetxt",
+                                              "fill": "#A27A2B",
+                                              "content": "Spring 2026",
+                                              "fontFamily": "Inter",
+                                              "fontSize": 11,
+                                              "fontWeight": "700"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "7ZnJX",
+                                          "name": "termcredits",
+                                          "fill": "$--muted-2",
+                                          "content": "4 credits",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "KZhGM",
+                                      "name": "metaprereq",
+                                      "fill": "$--muted-2",
+                                      "content": "Prereqs: BIOL 106 & 107; or BIOL 109; or BIOL 110",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "GFL7S",
+                                      "name": "metabook",
+                                      "fill": "$--muted-2",
+                                      "content": "Textbook: Campbell Biology in Focus, 3rd ed.",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
                                 }
                               ]
                             },
                             {
                               "type": "frame",
-                              "id": "kRx9i",
-                              "name": "termDates",
+                              "id": "tlLvH",
+                              "name": "gradingRubricCard",
                               "width": "fill_container",
-                              "fill": "#FFFDF8",
-                              "cornerRadius": 10,
+                              "fill": "$--surface-2",
+                              "cornerRadius": 12,
                               "stroke": {
                                 "thickness": 1,
-                                "fill": "#DED7CC"
+                                "fill": "$--border"
                               },
                               "layout": "vertical",
-                              "gap": 4,
-                              "padding": [
-                                10,
-                                12
-                              ],
+                              "gap": 12,
+                              "padding": 16,
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "B5VcU",
-                                  "fill": "#7A6A58",
-                                  "content": "Term Dates",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 11,
-                                  "fontWeight": "600"
+                                  "type": "frame",
+                                  "id": "kt5vu",
+                                  "name": "rubricTop",
+                                  "width": "fill_container",
+                                  "justifyContent": "space_between",
+                                  "alignItems": "center",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "sY9AE",
+                                      "name": "rubricTitle",
+                                      "fill": "$--muted",
+                                      "content": "GRADING RUBRIC",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 11,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "WEqBQ",
+                                      "name": "targetWrap",
+                                      "gap": 8,
+                                      "alignItems": "center",
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "KWzSG",
+                                          "name": "targetLabel",
+                                          "fill": "$--muted-2",
+                                          "content": "Desired grade:",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 11,
+                                          "fontWeight": "normal"
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "mZEAt",
+                                          "name": "targetSelect",
+                                          "fill": "$--surface",
+                                          "cornerRadius": 8,
+                                          "stroke": {
+                                            "thickness": 1,
+                                            "fill": "$--border"
+                                          },
+                                          "gap": 8,
+                                          "padding": [
+                                            6,
+                                            10
+                                          ],
+                                          "alignItems": "center",
+                                          "children": [
+                                            {
+                                              "type": "text",
+                                              "id": "6bj1Q",
+                                              "name": "targetText",
+                                              "fill": "$--card-title",
+                                              "content": "B",
+                                              "fontFamily": "Inter",
+                                              "fontSize": 11,
+                                              "fontWeight": "700"
+                                            },
+                                            {
+                                              "type": "icon_font",
+                                              "id": "sVKig",
+                                              "name": "targetIcon",
+                                              "width": 12,
+                                              "height": 12,
+                                              "iconFontName": "chevron-down",
+                                              "iconFontFamily": "lucide",
+                                              "fill": "$--muted"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "imwah",
-                                  "fill": "$--text",
-                                  "content": "Aug 28 - Dec 12",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 13,
-                                  "fontWeight": "700"
+                                  "type": "frame",
+                                  "id": "p8Ntl",
+                                  "name": "rubricBody",
+                                  "width": "fill_container",
+                                  "gap": 16,
+                                  "children": [
+                                    {
+                                      "type": "frame",
+                                      "id": "EZ3La",
+                                      "name": "rubricList",
+                                      "width": "fill_container",
+                                      "layout": "vertical",
+                                      "gap": 10,
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "8YZ6c",
+                                          "name": "listTitle",
+                                          "fill": "$--muted-2",
+                                          "content": "Each category updates your target calculator as scores land.",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 11,
+                                          "fontWeight": "normal"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "WAJya",
+                                          "name": "list1",
+                                          "fill": "$--card-title",
+                                          "content": "• Midterm Exams (2)                                 30%",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "600"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "n4ooS",
+                                          "name": "list2",
+                                          "fill": "$--card-title",
+                                          "content": "• Final Exam                                              30%",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "600"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "ZFubB",
+                                          "name": "list3",
+                                          "fill": "$--card-title",
+                                          "content": "• Lab                                                        30%",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "600"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "Z138k",
+                                          "name": "list4",
+                                          "fill": "$--card-title",
+                                          "content": "• Participation & Assignments              10%",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "600"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "a1PiV",
+                                      "name": "rubricStats",
+                                      "width": 188,
+                                      "layout": "vertical",
+                                      "gap": 10,
+                                      "children": [
+                                        {
+                                          "type": "frame",
+                                          "id": "txhBt",
+                                          "name": "bar1",
+                                          "width": "fill_container",
+                                          "layout": "vertical",
+                                          "gap": 4,
+                                          "children": [
+                                            {
+                                              "type": "frame",
+                                              "id": "NVU6m",
+                                              "name": "bar1fill",
+                                              "width": 92,
+                                              "height": 6,
+                                              "fill": "#9F7F45",
+                                              "cornerRadius": 999
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "1uDAi",
+                                          "name": "bar2",
+                                          "width": "fill_container",
+                                          "layout": "vertical",
+                                          "gap": 4,
+                                          "children": [
+                                            {
+                                              "type": "frame",
+                                              "id": "Z3z3W",
+                                              "name": "bar2fill",
+                                              "width": 92,
+                                              "height": 6,
+                                              "fill": "#6B8D79",
+                                              "cornerRadius": 999
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "FLp8a",
+                                          "name": "bar3",
+                                          "width": "fill_container",
+                                          "layout": "vertical",
+                                          "gap": 4,
+                                          "children": [
+                                            {
+                                              "type": "frame",
+                                              "id": "yaZzn",
+                                              "name": "bar3fill",
+                                              "width": 92,
+                                              "height": 6,
+                                              "fill": "#7B8DA8",
+                                              "cornerRadius": 999
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "frame",
+                                          "id": "gLQgI",
+                                          "name": "bar4",
+                                          "width": "fill_container",
+                                          "layout": "vertical",
+                                          "gap": 4,
+                                          "children": [
+                                            {
+                                              "type": "frame",
+                                              "id": "2Xu4E",
+                                              "name": "bar4fill",
+                                              "width": 32,
+                                              "height": 6,
+                                              "fill": "#C59F58",
+                                              "cornerRadius": 999
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "w0eOx",
-                                  "fill": "$--muted",
-                                  "content": "Final Exam: Dec 14, 10:00 AM",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 11,
-                                  "fontWeight": "normal"
+                                  "type": "frame",
+                                  "id": "dR5Ys",
+                                  "name": "currentWrap",
+                                  "width": "fill_container",
+                                  "justifyContent": "space_between",
+                                  "alignItems": "end",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "0XTZH",
+                                      "name": "currentText",
+                                      "fill": "$--card-title",
+                                      "content": "56.4%  A- 70% of course graded",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 15,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "7Cv91",
+                                      "name": "needText",
+                                      "fill": "$--success-fg",
+                                      "content": "Need 55.3% avg on remaining 30% for B",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    }
+                                  ]
                                 }
                               ]
                             },
                             {
                               "type": "frame",
-                              "id": "pcx94",
-                              "name": "locationInfo",
+                              "id": "Us86s",
+                              "name": "assessmentTimelineCard",
                               "width": "fill_container",
-                              "fill": "#FFFDF8",
-                              "cornerRadius": 10,
+                              "fill": "$--surface-2",
+                              "cornerRadius": 12,
                               "stroke": {
                                 "thickness": 1,
-                                "fill": "#DED7CC"
+                                "fill": "$--border"
                               },
                               "layout": "vertical",
-                              "gap": 4,
-                              "padding": [
-                                10,
-                                12
-                              ],
+                              "gap": 10,
+                              "padding": 14,
                               "children": [
                                 {
-                                  "type": "text",
-                                  "id": "Drh52",
-                                  "fill": "#7A6A58",
-                                  "content": "Class + Contact",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 11,
-                                  "fontWeight": "600"
+                                  "type": "frame",
+                                  "id": "djFiF",
+                                  "name": "timeTop",
+                                  "width": "fill_container",
+                                  "justifyContent": "space_between",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "kkt24",
+                                      "name": "timeTitle",
+                                      "fill": "$--muted",
+                                      "content": "ASSESSMENT TIMELINE",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 11,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "O698E",
+                                      "name": "timeHint",
+                                      "fill": "$--muted-2",
+                                      "content": "Sample weeks only for now.",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 10,
+                                      "fontWeight": "normal"
+                                    }
+                                  ]
                                 },
                                 {
-                                  "type": "text",
-                                  "id": "NBnrB",
-                                  "fill": "$--text",
-                                  "content": "Science Hall 204",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 13,
-                                  "fontWeight": "700"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "0LPvO",
-                                  "fill": "$--muted",
-                                  "content": "Dr. Rivera | rivera@univ.edu",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 11,
-                                  "fontWeight": "normal"
+                                  "type": "frame",
+                                  "id": "i4gVw",
+                                  "name": "timeList",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 4,
+                                  "children": [
+                                    {
+                                      "type": "frame",
+                                      "id": "6r1Nq",
+                                      "name": "week3",
+                                      "width": "fill_container",
+                                      "layout": "vertical",
+                                      "gap": 4,
+                                      "padding": [
+                                        4,
+                                        0
+                                      ],
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "kkmI9",
+                                          "name": "week3Title",
+                                          "fill": "$--card-title",
+                                          "content": "Week 3   Jan 19",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "700"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "g8UJl",
+                                          "name": "week3Item",
+                                          "fill": "$--muted-2",
+                                          "content": "• Lab Report 1                             42/50    84%",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "t3c9z",
+                                      "name": "week5",
+                                      "width": "fill_container",
+                                      "layout": "vertical",
+                                      "gap": 4,
+                                      "padding": [
+                                        4,
+                                        0
+                                      ],
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "GsvoY",
+                                          "name": "week5Title",
+                                          "fill": "$--card-title",
+                                          "content": "Week 5   Feb 2",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "700"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "CiGl0",
+                                          "name": "week5Item",
+                                          "fill": "$--muted-2",
+                                          "content": "• Midterm Exams                      78/100    78%",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "w9Mjy",
+                                      "name": "week6",
+                                      "width": "fill_container",
+                                      "layout": "vertical",
+                                      "gap": 4,
+                                      "padding": [
+                                        4,
+                                        0
+                                      ],
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "97OaT",
+                                          "name": "week6Title",
+                                          "fill": "$--card-title",
+                                          "content": "Week 6   Feb 9",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "700"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "6siS3",
+                                          "name": "week6Item1",
+                                          "fill": "$--muted-2",
+                                          "content": "• Lab Report 2                             38/50    76%",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "LR1qc",
+                                          "name": "week6Item2",
+                                          "fill": "$--muted-2",
+                                          "content": "• Participation & Assignments      9/10    90%",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "D77mh",
+                                      "name": "week14",
+                                      "width": "fill_container",
+                                      "layout": "vertical",
+                                      "gap": 4,
+                                      "padding": [
+                                        4,
+                                        0
+                                      ],
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "Nn3Bg",
+                                          "name": "week14Title",
+                                          "fill": "$--card-title",
+                                          "content": "Week 14 Apr 6",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "700"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "WGySD",
+                                          "name": "week14Item",
+                                          "fill": "$--muted-2",
+                                          "content": "• Final Exam Period                 Comprehensive",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        }
+                                      ]
+                                    }
+                                  ]
                                 }
                               ]
                             }
@@ -4144,349 +4686,363 @@
                         },
                         {
                           "type": "frame",
-                          "id": "k1N2m",
-                          "name": "gradingRubric",
-                          "width": "fill_container",
-                          "fill": "#FFFDF8",
-                          "cornerRadius": 10,
-                          "stroke": {
-                            "thickness": 1,
-                            "fill": "#DED7CC"
-                          },
+                          "id": "lRASy",
+                          "name": "overviewRail",
+                          "width": 284,
                           "layout": "vertical",
-                          "gap": 6,
-                          "padding": [
-                            10,
-                            12
-                          ],
+                          "gap": 12,
                           "children": [
                             {
-                              "type": "text",
-                              "id": "cK28X",
-                              "fill": "$--text",
-                              "content": "Grading Rubric",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "700"
-                            },
-                            {
                               "type": "frame",
-                              "id": "bTYl0",
-                              "name": "gradeRow1",
+                              "id": "9tYQ6",
+                              "name": "gradeScaleCard",
                               "width": "fill_container",
-                              "justifyContent": "space_between",
+                              "fill": "$--surface-2",
+                              "cornerRadius": 12,
+                              "stroke": {
+                                "thickness": 1,
+                                "fill": "$--border"
+                              },
+                              "layout": "vertical",
+                              "gap": 6,
+                              "padding": [
+                                10,
+                                12
+                              ],
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "5rVBS",
+                                  "id": "wWLsP",
+                                  "name": "scaleTitle",
                                   "fill": "$--muted",
-                                  "content": "Labs + Participation",
+                                  "content": "GRADE SCALE",
                                   "fontFamily": "Inter",
-                                  "fontSize": 12,
+                                  "fontSize": 11,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "COrFz",
+                                  "name": "scaleRow1",
+                                  "fill": "$--muted-2",
+                                  "content": "A+            90-100%",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
                                   "fontWeight": "normal"
                                 },
                                 {
                                   "type": "text",
-                                  "id": "5O6DX",
-                                  "fill": "$--text",
-                                  "content": "20%",
+                                  "id": "wrHN6",
+                                  "name": "scaleRow2",
+                                  "fill": "$--muted-2",
+                                  "content": "A              85-89%",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "9PaXX",
+                                  "name": "scaleCurrent",
+                                  "width": "fill_container",
+                                  "fill": "$--success-bg",
+                                  "cornerRadius": 6,
+                                  "stroke": {
+                                    "thickness": 1,
+                                    "fill": "$--success-border"
+                                  },
+                                  "padding": [
+                                    5,
+                                    8
+                                  ],
+                                  "justifyContent": "space_between",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "JKyGq",
+                                      "name": "scaleCurrentL",
+                                      "fill": "$--success-fg",
+                                      "content": "A-",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 11,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "sXHh8",
+                                      "name": "scaleCurrentR",
+                                      "fill": "$--success-fg",
+                                      "content": "80-84%",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 11,
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "n3pTS",
+                                  "name": "scaleTarget",
+                                  "width": "fill_container",
+                                  "fill": "#F6EEDB",
+                                  "cornerRadius": 6,
+                                  "stroke": {
+                                    "thickness": 1,
+                                    "fill": "#E0CFAD"
+                                  },
+                                  "padding": [
+                                    5,
+                                    8
+                                  ],
+                                  "justifyContent": "space_between",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "xVUBk",
+                                      "name": "scaleTargetL",
+                                      "fill": "#9A7440",
+                                      "content": "B",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 11,
+                                      "fontWeight": "700"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "HCHt0",
+                                      "name": "scaleTargetR",
+                                      "fill": "#9A7440",
+                                      "content": "73-76%",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 11,
+                                      "fontWeight": "700"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "dHqXv",
+                                  "name": "scaleRow3",
+                                  "fill": "$--muted-2",
+                                  "content": "B-             70-72%",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "adCPz",
+                                  "name": "scaleRow4",
+                                  "fill": "$--muted-2",
+                                  "content": "C+            67-69%",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "eiGVd",
+                                  "name": "scaleRow5",
+                                  "fill": "$--muted-2",
+                                  "content": "C              63-66%",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "CjGgp",
+                                  "name": "scaleRow6",
+                                  "fill": "$--muted-2",
+                                  "content": "C-             60-62%",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "MYEhj",
+                                  "name": "scaleRow7",
+                                  "fill": "$--muted-2",
+                                  "content": "D              50-59%",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "NEBrW",
+                                  "name": "scaleRow8",
+                                  "fill": "$--muted-2",
+                                  "content": "F                0-49%",
                                   "fontFamily": "Inter",
                                   "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "Yf8tS",
+                              "name": "chaptersCard",
+                              "width": "fill_container",
+                              "fill": "$--surface-2",
+                              "cornerRadius": 12,
+                              "stroke": {
+                                "thickness": 1,
+                                "fill": "$--border"
+                              },
+                              "layout": "vertical",
+                              "gap": 10,
+                              "padding": 14,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "vtpPj",
+                                  "name": "chapTitle",
+                                  "fill": "$--muted",
+                                  "content": "CHAPTERS",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "vtin6",
+                                  "name": "chap1",
+                                  "fill": "$--card-title",
+                                  "content": "Evolution                     W1-5",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "exu4U",
+                                  "name": "chap1sub",
+                                  "fill": "$--muted-2",
+                                  "content": "Ch. 19-23",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "sSbhJ",
+                                  "name": "chap2",
+                                  "fill": "$--card-title",
+                                  "content": "Diversity of Life          W6-9",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "CkP9G",
+                                  "name": "chap2sub",
+                                  "fill": "$--muted-2",
+                                  "content": "Ch. 24-27",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "0AwXa",
+                                  "name": "chap3",
+                                  "fill": "$--card-title",
+                                  "content": "Ecology                       W10-13",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "8LYzc",
+                                  "name": "chap3sub",
+                                  "fill": "$--muted-2",
+                                  "content": "Ch. 40-42",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "XXQ3r",
+                                  "name": "chap4",
+                                  "fill": "$--card-title",
+                                  "content": "Final Exam Period          W14-15",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 13,
                                   "fontWeight": "700"
                                 }
                               ]
                             },
                             {
                               "type": "frame",
-                              "id": "LWbRp",
-                              "name": "gradeRow2",
+                              "id": "Er5Qw",
+                              "name": "policiesCard",
                               "width": "fill_container",
-                              "justifyContent": "space_between",
+                              "fill": "$--surface-2",
+                              "cornerRadius": 12,
+                              "stroke": {
+                                "thickness": 1,
+                                "fill": "$--border"
+                              },
+                              "layout": "vertical",
+                              "gap": 10,
+                              "padding": 14,
                               "children": [
                                 {
                                   "type": "text",
-                                  "id": "ZeM03",
+                                  "id": "HvcTR",
+                                  "name": "polTitle",
                                   "fill": "$--muted",
-                                  "content": "Quizzes",
+                                  "content": "KEY POLICIES",
                                   "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "GUjNn",
-                                  "fill": "$--text",
-                                  "content": "15%",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
+                                  "fontSize": 11,
                                   "fontWeight": "700"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "9Cv7Z",
-                              "name": "gradeRow3",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "9p0MS",
-                                  "fill": "$--muted",
-                                  "content": "Midterm Exam",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
                                 },
                                 {
                                   "type": "text",
-                                  "id": "ctD14",
-                                  "fill": "$--text",
-                                  "content": "25%",
+                                  "id": "YVBCp",
+                                  "name": "pol1",
+                                  "fill": "#9A7440",
+                                  "content": "LATE WORK",
                                   "fontFamily": "Inter",
-                                  "fontSize": 12,
+                                  "fontSize": 11,
                                   "fontWeight": "700"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "GC8K5",
-                              "name": "gradeRow4",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "children": [
+                                },
                                 {
                                   "type": "text",
-                                  "id": "cyi4j",
-                                  "fill": "$--muted",
-                                  "content": "Final Exam",
+                                  "id": "NXEmo",
+                                  "name": "pol1b",
+                                  "fill": "$--muted-2",
+                                  "content": "Submissions after deadline receive 0",
                                   "fontFamily": "Inter",
                                   "fontSize": 12,
                                   "fontWeight": "normal"
                                 },
                                 {
                                   "type": "text",
-                                  "id": "crNyi",
-                                  "fill": "$--text",
-                                  "content": "30%",
+                                  "id": "XM06a",
+                                  "name": "pol2",
+                                  "fill": "#9A7440",
+                                  "content": "LAB ATTENDANCE",
                                   "fontFamily": "Inter",
-                                  "fontSize": 12,
+                                  "fontSize": 11,
                                   "fontWeight": "700"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "zLknU",
-                              "name": "gradeRow5",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "szzgD",
-                                  "fill": "$--muted",
-                                  "content": "Homework",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
                                 },
                                 {
                                   "type": "text",
-                                  "id": "hpe8i",
-                                  "fill": "$--text",
-                                  "content": "10%",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "700"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "FOFm4",
-                          "name": "scheduleBlock",
-                          "width": "fill_container",
-                          "fill": "#FFFDF8",
-                          "cornerRadius": 10,
-                          "stroke": {
-                            "thickness": 1,
-                            "fill": "#DED7CC"
-                          },
-                          "layout": "vertical",
-                          "gap": 6,
-                          "padding": [
-                            10,
-                            12
-                          ],
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "9hNRf",
-                              "fill": "$--text",
-                              "content": "Test, Quiz, and Exam Dates",
-                              "fontFamily": "Inter",
-                              "fontSize": 13,
-                              "fontWeight": "700"
-                            },
-                            {
-                              "type": "frame",
-                              "id": "ZQmoL",
-                              "name": "d2",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "Yn467",
-                                  "fill": "$--muted",
-                                  "content": "Sep 12  |  Quiz 1 (Cell Structure)",
+                                  "id": "CUppi",
+                                  "name": "pol2b",
+                                  "fill": "$--muted-2",
+                                  "content": "Mandatory, 3 missed labs = fail",
                                   "fontFamily": "Inter",
                                   "fontSize": 12,
                                   "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "LEd3r",
-                                  "fill": "#5C4B2F",
-                                  "content": "9:30 - 10:00 AM",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "600"
                                 }
                               ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "TzeOm",
-                              "name": "d3",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "3QUqc",
-                                  "fill": "$--muted",
-                                  "content": "Oct 03  |  Midterm Exam",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "7b4lJ",
-                                  "fill": "#5C4B2F",
-                                  "content": "10:00 - 11:30 AM",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "6OCke",
-                              "name": "d4",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "mXqVh",
-                                  "fill": "$--muted",
-                                  "content": "Nov 14  |  Quiz 2 (Genetics)",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "stya0",
-                                  "fill": "#5C4B2F",
-                                  "content": "9:30 - 10:00 AM",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            },
-                            {
-                              "type": "frame",
-                              "id": "R47qi",
-                              "name": "d5",
-                              "width": "fill_container",
-                              "justifyContent": "space_between",
-                              "children": [
-                                {
-                                  "type": "text",
-                                  "id": "LPu3t",
-                                  "fill": "$--muted",
-                                  "content": "Dec 14  |  Final Exam",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "normal"
-                                },
-                                {
-                                  "type": "text",
-                                  "id": "GIa3J",
-                                  "fill": "#5C4B2F",
-                                  "content": "10:00 - 12:00 PM",
-                                  "fontFamily": "Inter",
-                                  "fontSize": 12,
-                                  "fontWeight": "600"
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                        {
-                          "type": "frame",
-                          "id": "pOau7",
-                          "name": "policyBlock",
-                          "width": "fill_container",
-                          "fill": "#FFF9F0",
-                          "cornerRadius": 10,
-                          "stroke": {
-                            "thickness": 1,
-                            "fill": "#E8D8C0"
-                          },
-                          "layout": "vertical",
-                          "gap": 4,
-                          "padding": [
-                            10,
-                            12
-                          ],
-                          "children": [
-                            {
-                              "type": "text",
-                              "id": "viukk",
-                              "fill": "#5C4B2F",
-                              "content": "Key Policies",
-                              "fontFamily": "Inter",
-                              "fontSize": 12,
-                              "fontWeight": "700"
-                            },
-                            {
-                              "type": "text",
-                              "id": "Gdp6J",
-                              "fill": "$--muted",
-                              "content": "Attendance required for labs. Late homework accepted up to 48 hours with 10% deduction.",
-                              "fontFamily": "Inter",
-                              "fontSize": 11,
-                              "fontWeight": "normal"
-                            },
-                            {
-                              "type": "text",
-                              "id": "aS9MV",
-                              "fill": "$--muted",
-                              "content": "Office hours: Tue/Thu 1:00-2:00 PM (Science Hall 3rd floor).",
-                              "fontFamily": "Inter",
-                              "fontSize": 11,
-                              "fontWeight": "normal"
                             }
                           ]
                         }
@@ -9674,6 +10230,173 @@
                   "height": "fill_container",
                   "x": 0,
                   "y": 0
+                },
+                "0wUCk": {
+                  "width": "fill_container"
+                },
+                "sLx3E": {
+                  "x": 12,
+                  "y": 15
+                },
+                "ayW0X": {
+                  "width": "fit_content",
+                  "height": "fit_content",
+                  "x": 983,
+                  "y": 13.5
+                },
+                "Da2xR": {
+                  "x": 6,
+                  "y": 2
+                },
+                "OTVwP": {
+                  "width": "fill_container",
+                  "height": "fill_container",
+                  "y": 46
+                },
+                "a1NMp": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "x": 12,
+                  "y": 12
+                },
+                "N5GQx": {
+                  "x": 1048
+                },
+                "U5q36": {
+                  "width": "fit_content",
+                  "height": "fit_content",
+                  "x": 768,
+                  "y": 17
+                },
+                "mIGEN": {
+                  "x": 10,
+                  "y": 10
+                },
+                "TmRg0": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "x": 12,
+                  "y": 89
+                },
+                "QO2Ly": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "y": 17
+                },
+                "45MRj": {
+                  "width": "fill_container",
+                  "x": 10,
+                  "y": 10
+                },
+                "4zbKC": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "x": 12,
+                  "y": 166
+                },
+                "EOnUe": {
+                  "x": 1048
+                },
+                "CbWEg": {
+                  "width": "fit_content",
+                  "height": "fit_content",
+                  "x": 635,
+                  "y": 17
+                },
+                "7vkDk": {
+                  "x": 10,
+                  "y": 10
+                },
+                "UDjqD": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "x": 12,
+                  "y": 228
+                },
+                "TR4Sf": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "y": 17
+                },
+                "xsIbx": {
+                  "x": 10,
+                  "y": 10
+                },
+                "NCub4": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "x": 10,
+                  "y": 33
+                },
+                "E5aEO": {
+                  "x": 10,
+                  "y": 8
+                },
+                "NnVsA": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "x": 10,
+                  "y": 27
+                },
+                "IzZ8a": {
+                  "width": "fit_content",
+                  "height": "fit_content"
+                },
+                "nFHCc": {
+                  "y": 0.5
+                },
+                "WtfEg": {
+                  "x": 20
+                },
+                "YtwJ6": {
+                  "x": 953
+                },
+                "pehdE": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "x": 10,
+                  "y": 48
+                },
+                "Vm6Ky": {
+                  "width": "fit_content",
+                  "height": "fit_content"
+                },
+                "rHlWF": {
+                  "y": 0.5
+                },
+                "wfGPX": {
+                  "x": 20
+                },
+                "li3qI": {
+                  "x": 962
+                },
+                "JrOzx": {
+                  "x": 10,
+                  "y": 112
+                },
+                "GjAYv": {
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "y": 638
+                },
+                "4tdpu": {
+                  "width": "fill_container",
+                  "x": 12,
+                  "y": 12
+                },
+                "zqHCl": {
+                  "x": 10,
+                  "y": 11
+                },
+                "0knGz": {
+                  "width": "fit_content",
+                  "height": "fit_content",
+                  "x": 1023,
+                  "y": 13
+                },
+                "hlhnH": {
+                  "x": 12,
+                  "y": 10
                 }
               }
             },
