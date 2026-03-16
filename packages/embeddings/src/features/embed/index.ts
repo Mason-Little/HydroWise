@@ -1,1 +1,1 @@
-export { embed, embedMany, type EmbeddedText } from "./run";
+export { type EmbeddedText, embedChunks, embedString } from "./run";
