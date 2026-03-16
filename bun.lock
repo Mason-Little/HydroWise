@@ -17,6 +17,8 @@
         "@fontsource-variable/geist-mono": "^5.2.7",
         "@hydrowise/ai-runtime": "workspace:*",
         "@hydrowise/data": "workspace:*",
+        "@hydrowise/embeddings": "workspace:*",
+        "@hydrowise/file-ingest": "workspace:*",
         "@hydrowise/shared": "workspace:*",
         "@tailwindcss/vite": "^4.1.17",
         "@tauri-apps/api": "^2.8.0",
@@ -47,6 +49,8 @@
         "@fontsource/dm-sans": "^5.2.8",
         "@hydrowise/ai-runtime": "workspace:*",
         "@hydrowise/data": "workspace:*",
+        "@hydrowise/embeddings": "workspace:*",
+        "@hydrowise/file-ingest": "workspace:*",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "lucide-react": "^0.563.0",
@@ -71,6 +75,8 @@
         "@fontsource-variable/geist-mono": "^5.2.7",
         "@hydrowise/ai-runtime": "workspace:*",
         "@hydrowise/data": "workspace:*",
+        "@hydrowise/embeddings": "workspace:*",
+        "@hydrowise/file-ingest": "workspace:*",
         "@hydrowise/shared": "workspace:*",
         "@tailwindcss/vite": "^4.1.17",
         "react": "^19.2.0",
@@ -185,6 +191,19 @@
       "version": "0.0.0",
       "dependencies": {
         "zod": "^4.3.6",
+      },
+    },
+    "packages/file-ingest": {
+      "name": "@hydrowise/file-ingest",
+      "version": "0.0.0",
+      "dependencies": {
+        "@matbee/libreoffice-converter": "^2.5.1",
+      },
+      "devDependencies": {
+        "@types/node": "^24.10.1",
+        "typescript": "~5.9.3",
+        "vite": "^7.2.4",
+        "vite-plugin-dts": "^4.5.4",
       },
     },
   },
@@ -390,6 +409,8 @@
 
     "@hydrowise/entities": ["@hydrowise/entities@workspace:packages/entities"],
 
+    "@hydrowise/file-ingest": ["@hydrowise/file-ingest@workspace:packages/file-ingest"],
+
     "@hydrowise/shared": ["@hydrowise/shared@workspace:app/shared"],
 
     "@hydrowise/web": ["@hydrowise/web@workspace:app/web"],
@@ -463,6 +484,8 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.5", "", {}, "sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
+
+    "@matbee/libreoffice-converter": ["@matbee/libreoffice-converter@2.5.1", "", { "dependencies": { "zod": "^4.1.13" }, "peerDependencies": { "sharp": ">=0.32.0" }, "optionalPeers": ["sharp"] }, "sha512-aGzLdMBdWEW1pGR9maxpYHxaJfbUB78adlh+BVV15mGGYrGrE4iu19oy/Vf93zF8wss150M4Ugp3Sdk8Vko6SA=="],
 
     "@microsoft/api-extractor": ["@microsoft/api-extractor@7.57.7", "", { "dependencies": { "@microsoft/api-extractor-model": "7.33.4", "@microsoft/tsdoc": "~0.16.0", "@microsoft/tsdoc-config": "~0.18.1", "@rushstack/node-core-library": "5.20.3", "@rushstack/rig-package": "0.7.2", "@rushstack/terminal": "0.22.3", "@rushstack/ts-command-line": "5.3.3", "diff": "~8.0.2", "lodash": "~4.17.23", "minimatch": "10.2.3", "resolve": "~1.22.1", "semver": "~7.5.4", "source-map": "~0.6.1", "typescript": "5.8.2" }, "bin": { "api-extractor": "bin/api-extractor" } }, "sha512-kmnmVs32MFWbV5X6BInC1/TfCs7y1ugwxv1xHsAIj/DyUfoe7vtO0alRUgbQa57+yRGHBBjlNcEk33SCAt5/dA=="],
 
