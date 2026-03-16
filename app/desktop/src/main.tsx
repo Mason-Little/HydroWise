@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./styles.css";
 import { initAiRuntime } from "@hydrowise/ai-runtime";
 import { initData } from "@hydrowise/data";
+import { initEmbeddingsRuntime } from "@hydrowise/embeddings";
 import { App } from "@/App";
 import type { PlatformConfig } from "@/platform";
 import { AppProviders } from "@/providers";
@@ -18,6 +19,7 @@ const bootstrap = async () => {
   const platform: PlatformConfig = { kind: "desktop" };
 
   await initAiRuntime("desktop");
+  await initEmbeddingsRuntime("desktop");
   await bootstrapModelStore();
   await initData({ platform: "desktop" });
 
