@@ -11,18 +11,15 @@ const CONTEXT_SIZE: &str = "8192";
 const MAX_LOADED_MODELS: &str = "1";
 const IDLE_SLEEP_SECONDS: &str = "300";
 
-// Creates management/models/embeddings dirs and returns models dir path.
+// Creates management/models dirs and returns models dir path.
 fn ensure_runtime_directories(app: &AppHandle) -> Result<String, String> {
     let management_root = paths::management_root(app)?;
     let models_dir = paths::models_dir(app)?;
-    let embeddings_dir = paths::embeddings_dir(app)?;
 
     fs::create_dir_all(&management_root)
         .map_err(|err| format!("failed to create management directory: {err}"))?;
     fs::create_dir_all(&models_dir)
         .map_err(|err| format!("failed to create models directory: {err}"))?;
-    fs::create_dir_all(&embeddings_dir)
-        .map_err(|err| format!("failed to create embeddings directory: {err}"))?;
 
     models_dir.to_str().map(str::to_owned).ok_or_else(|| {
         format!(

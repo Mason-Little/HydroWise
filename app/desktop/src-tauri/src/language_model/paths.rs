@@ -15,11 +15,6 @@ pub fn models_dir(app: &AppHandle) -> Result<PathBuf, String> {
     Ok(management_root(app)?.join("models"))
 }
 
-// Directory for embedding model files.
-pub fn embeddings_dir(app: &AppHandle) -> Result<PathBuf, String> {
-    Ok(management_root(app)?.join("embeddings"))
-}
-
 // Path to the GGUF file for the given tier.
 pub fn model_slot(app: &AppHandle, tier: &str) -> Result<PathBuf, String> {
     Ok(models_dir(app)?.join(format!("{tier}.gguf")))
