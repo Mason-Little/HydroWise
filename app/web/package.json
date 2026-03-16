@@ -17,6 +17,7 @@
     "@hydrowise/ai-runtime": "workspace:*",
     "@hydrowise/embeddings": "workspace:*",
     "@hydrowise/data": "workspace:*",
+    "@hydrowise/file-ingest": "workspace:*",
     "@hydrowise/shared": "workspace:*",
     "@tailwindcss/vite": "^4.1.17",
     "react": "^19.2.0",
