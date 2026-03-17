@@ -28,3 +28,20 @@ export const downloadLanguageModelFile = async ({
     url,
   });
 };
+
+// Invokes Tauri to download a vision projection (mmproj) file, reporting progress on the channel.
+export const downloadLanguageModelMmprojFile = async ({
+  progress,
+  tier,
+  url,
+}: {
+  progress: Channel<DownloadProgress>;
+  tier: string;
+  url: string;
+}): Promise<void> => {
+  await invoke("download_language_model_mmproj", {
+    progress,
+    tier,
+    url,
+  });
+};

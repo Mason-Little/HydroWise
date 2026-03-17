@@ -15,9 +15,16 @@ pub fn models_dir(app: &AppHandle) -> Result<PathBuf, String> {
     Ok(management_root(app)?.join("models"))
 }
 
-// Path to the GGUF file for the given tier.
+// Path to the model GGUF for the given tier.
+// Each tier lives in its own subdirectory so llama-server --models-dir treats it as a
 pub fn model_slot(app: &AppHandle, tier: &str) -> Result<PathBuf, String> {
-    Ok(models_dir(app)?.join(format!("{tier}.gguf")))
+    Ok(models_dir(app)?.join(tier).join("model.gguf"))
+}
+
+// Path to the vision projection GGUF for the given tier.
+// The filename must start with "mmproj" for llama-server bundle auto-detection.
+pub fn mmproj_slot(app: &AppHandle, tier: &str) -> Result<PathBuf, String> {
+    Ok(models_dir(app)?.join(tier).join("mmproj-F16.gguf"))
 }
 
 // Sidecar binary name for the llama server.

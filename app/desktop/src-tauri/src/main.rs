@@ -11,6 +11,7 @@ fn main() {
         .manage(language_model::state::LanguageModelServerState::default())
         .invoke_handler(tauri::generate_handler![
             language_model::download::download_language_model,
+            language_model::download::download_language_model_mmproj,
             language_model::server::start_language_model_server_command,
             language_model::server::stop_language_model_server_command,
             language_model::server::restart_language_model_server_command,

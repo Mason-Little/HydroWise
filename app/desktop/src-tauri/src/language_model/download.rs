@@ -6,11 +6,6 @@ use tokio::{fs, io::AsyncWriteExt};
 
 use super::paths;
 
-// Resolves the on-disk path for a model tier.
-fn download_path(app: &AppHandle, tier: &str) -> Result<PathBuf, String> {
-    paths::model_slot(app, tier)
-}
-
 #[derive(Clone, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DownloadProgress {
@@ -19,16 +14,12 @@ pub struct DownloadProgress {
     progress: Option<f64>,
 }
 
-#[tauri::command]
 // Downloads a GGUF model from url into the tier slot, streaming progress on progress.
-pub async fn download_language_model(
-    app: AppHandle,
-    tier: String,
+async fn download_gguf(
+    destination: PathBuf,
     url: String,
     progress: tauri::ipc::Channel<DownloadProgress>,
 ) -> Result<(), String> {
-    let destination = download_path(&app, &tier)?;
-
     if destination.is_file() {
         let size = fs::metadata(&destination).await.ok().map(|metadata| metadata.len());
         let _ = progress.send(DownloadProgress {
@@ -88,4 +79,28 @@ pub async fn download_language_model(
         .map_err(|err| format!("failed to finalize model file: {err}"))?;
 
     Ok(())
+}
+
+#[tauri::command]
+// Downloads a GGUF model from url into the tier slot, streaming progress on progress.
+pub async fn download_language_model(
+    app: AppHandle,
+    tier: String,
+    url: String,
+    progress: tauri::ipc::Channel<DownloadProgress>,
+) -> Result<(), String> {
+    let destination = paths::model_slot(&app, &tier)?;
+    download_gguf(destination, url, progress).await
+}
+
+#[tauri::command]
+// Downloads the vision projection GGUF from url into the tier mmproj slot, streaming progress.
+pub async fn download_language_model_mmproj(
+    app: AppHandle,
+    tier: String,
+    url: String,
+    progress: tauri::ipc::Channel<DownloadProgress>,
+) -> Result<(), String> {
+    let destination = paths::mmproj_slot(&app, &tier)?;
+    download_gguf(destination, url, progress).await
 }

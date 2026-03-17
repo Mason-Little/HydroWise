@@ -8,6 +8,7 @@ import {
 } from "./api/models";
 import {
   downloadLanguageModelFile,
+  downloadLanguageModelMmprojFile,
   restartLanguageModelServer,
 } from "./host/commands";
 import { waitForDesktopServerReady } from "./readiness";
@@ -48,6 +49,14 @@ export const downloadDesktopModel = async (
     tier: options.tier,
     url: definition.hfModelUrl,
   });
+
+  if (definition.hfMmprojUrl) {
+    await downloadLanguageModelMmprojFile({
+      progress,
+      tier: options.tier,
+      url: definition.hfMmprojUrl,
+    });
+  }
 
   await restartLanguageModelServer();
   await waitForDesktopServerReady();

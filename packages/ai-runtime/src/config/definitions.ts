@@ -14,6 +14,7 @@ export type LanguageModelDefinition = {
   sizeBytes: number;
   webModelId?: string;
   hfModelUrl?: string;
+  hfMmprojUrl?: string;
 };
 
 export const DEFAULT_WEB_LANGUAGE_MODEL_TIER: LanguageModelTier = "Balanced";
@@ -27,7 +28,9 @@ export const LANGUAGE_MODELS = {
     sizeBytes: 500_000_000,
     webModelId: "onnx-community/Qwen3.5-0.8B-ONNX",
     hfModelUrl:
-      "https://huggingface.co/bartowski/Qwen_Qwen3.5-0.8B-GGUF/resolve/main/Qwen_Qwen3.5-0.8B-Q4_K_M.gguf",
+      "https://huggingface.co/unsloth/Qwen3.5-0.8B-GGUF/resolve/main/Qwen3.5-0.8B-Q4_K_M.gguf?download=true",
+    hfMmprojUrl:
+      "https://huggingface.co/unsloth/Qwen3.5-0.8B-GGUF/resolve/main/mmproj-F16.gguf?download=true",
   },
   Fast: {
     modelId: "qwen3.5-2b",
@@ -36,7 +39,9 @@ export const LANGUAGE_MODELS = {
     sizeBytes: 1_400_000_000,
     webModelId: "onnx-community/Qwen3.5-2B-ONNX",
     hfModelUrl:
-      "https://huggingface.co/bartowski/Qwen_Qwen3.5-2B-GGUF/resolve/main/Qwen_Qwen3.5-2B-Q4_K_M.gguf",
+      "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/resolve/main/Qwen3.5-2B-Q4_K_M.gguf?download=true",
+    hfMmprojUrl:
+      "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/resolve/main/mmproj-F16.gguf?download=true",
   },
   Balanced: {
     modelId: "qwen3.5-4b",
@@ -45,7 +50,9 @@ export const LANGUAGE_MODELS = {
     sizeBytes: 2_500_000_000,
     webModelId: "onnx-community/Qwen3.5-4B-ONNX",
     hfModelUrl:
-      "https://huggingface.co/bartowski/Qwen_Qwen3.5-4B-GGUF/resolve/main/Qwen_Qwen3.5-4B-Q4_K_M.gguf",
+      "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/resolve/main/Qwen3.5-4B-Q4_K_M.gguf?download=true",
+    hfMmprojUrl:
+      "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/resolve/main/mmproj-F16.gguf?download=true",
   },
   High: {
     modelId: "qwen3.5-9b",
@@ -54,7 +61,9 @@ export const LANGUAGE_MODELS = {
     sizeLabel: "5.4 GB",
     sizeBytes: 5_400_000_000,
     hfModelUrl:
-      "https://huggingface.co/bartowski/Qwen_Qwen3.5-9B-GGUF/resolve/main/Qwen_Qwen3.5-9B-Q4_K_M.gguf",
+      "https://huggingface.co/unsloth/Qwen3.5-9B-GGUF/resolve/main/Qwen3.5-9B-Q4_K_M.gguf?download=true",
+    hfMmprojUrl:
+      "https://huggingface.co/unsloth/Qwen3.5-9B-GGUF/resolve/main/mmproj-F16.gguf?download=true",
   },
   Max: {
     modelId: "qwen3.5-27b",
@@ -62,6 +71,8 @@ export const LANGUAGE_MODELS = {
     sizeLabel: "16 GB",
     sizeBytes: 16_000_000_000,
     hfModelUrl:
-      "https://huggingface.co/bartowski/Qwen_Qwen3.5-27B-GGUF/resolve/main/Qwen_Qwen3.5-27B-Q4_K_M.gguf",
+      "https://huggingface.co/unsloth/Qwen3.5-27B-GGUF/resolve/main/Qwen3.5-27B-Q4_K_M.gguf?download=true",
+    hfMmprojUrl:
+      "https://huggingface.co/unsloth/Qwen3.5-27B-GGUF/resolve/main/mmproj-F16.gguf?download=true",
   },
 } satisfies Record<LanguageModelTier, LanguageModelDefinition>;
