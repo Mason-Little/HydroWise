@@ -10,6 +10,7 @@ const PORT: &str = "39281";
 const CONTEXT_SIZE: &str = "8192";
 const MAX_LOADED_MODELS: &str = "1";
 const IDLE_SLEEP_SECONDS: &str = "300";
+const PARALLEL: &str = "1";
 
 // Creates management/models dirs and returns models dir path.
 fn ensure_runtime_directories(app: &AppHandle) -> Result<String, String> {
@@ -54,6 +55,8 @@ pub fn start_language_model_server(app: &AppHandle) -> Result<(), String> {
             MAX_LOADED_MODELS,
             "--sleep-idle-seconds",
             IDLE_SLEEP_SECONDS,
+            "--parallel",
+            PARALLEL,
             "--no-webui",
         ])
         .spawn()
