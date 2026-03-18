@@ -11,6 +11,7 @@ export const Upload = () => {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (!selected) return;
+
     setFile(selected);
     await ingestFile(selected);
   };

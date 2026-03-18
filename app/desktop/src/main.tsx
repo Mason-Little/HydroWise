@@ -4,6 +4,7 @@ import "./styles.css";
 import { initAiRuntime } from "@hydrowise/ai-runtime";
 import { initData } from "@hydrowise/data";
 import { initEmbeddingsRuntime } from "@hydrowise/embeddings";
+import { initFileIngest } from "@hydrowise/file-ingest";
 import { App } from "@/App";
 import type { PlatformConfig } from "@/platform";
 import { AppProviders } from "@/providers";
@@ -21,6 +22,7 @@ const bootstrap = async () => {
   await initAiRuntime("desktop");
   await initEmbeddingsRuntime("desktop");
   await bootstrapModelStore();
+  await initFileIngest();
   await initData({ platform: "desktop" });
 
   createRoot(root).render(

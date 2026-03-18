@@ -1,31 +1,27 @@
-import { convertImage } from "./converter/image";
-import { convertOffice } from "./converter/office";
-import { convertPdf } from "./converter/pdf";
-import { detectFileKind } from "./detector";
+import { classifyFile } from "./classify";
+import { heicFileToNormalizedPage } from "./handlers/heic";
+import { libreofficeFileToNormalizedPages } from "./handlers/libreoffice";
+import { rasterFileToNormalizedPage } from "./handlers/raster";
+import type { IngestedDocument, NormalizedPage } from "./types";
 
-export const ingestFile = async (file: File): Promise<void> => {
-  console.log(
-    "[file-ingest] received file:",
-    file.name,
-    file.type,
-    file.size,
-    "bytes",
-  );
-
-  const kind = detectFileKind(file);
+export async function ingestFile(file: File): Promise<IngestedDocument> {
+  const kind = await classifyFile(file);
+  let pages: NormalizedPage[];
 
   switch (kind) {
-    case "image":
-      await convertImage(file);
+    case "heic-image":
+      pages = [await heicFileToNormalizedPage(file)];
+      break;
+    case "raster-image":
+      pages = [await rasterFileToNormalizedPage(file)];
       break;
     case "pdf":
-      await convertPdf(file);
+    case "office":
+      pages = await libreofficeFileToNormalizedPages(file);
       break;
-    case "document":
-      await convertOffice(file);
-      break;
-    case "unsupported":
-      console.warn("[file-ingest] unsupported file type:", file.type);
-      break;
+    default:
+      throw new Error(`[file-ingest] Unsupported file: ${file.name} (${file.type})`);
   }
-};
+
+  return { documentTitle: file.name, fileSizeBytes: file.size, pages };
+}
