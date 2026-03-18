@@ -1,5 +1,31 @@
 export type LanguageModelTier = "Tiny" | "Fast" | "Balanced" | "High" | "Max";
 
+export type VisionModelId = "lighton-ocr-1b";
+
+export type VisionModelDefinition = {
+  modelId: VisionModelId;
+  description: string;
+  sizeLabel: string;
+  sizeBytes: number;
+  webModelId?: string;
+  hfModelUrl?: string;
+  hfMmprojUrl?: string;
+};
+
+export const VISION_MODELS = {
+  OCR: {
+    modelId: "lighton-ocr-1b",
+    description: "Specialized OCR model for extracting text from images and documents.",
+    sizeLabel: "0.8 GB",
+    sizeBytes: 800_000_000,
+    webModelId: "onnx-community/LightOnOCR-2-1B-ONNX",
+    hfModelUrl:
+      "https://huggingface.co/mradermacher/LightOnOCR-1B-1025-GGUF/resolve/main/LightOnOCR-1B-1025.Q4_K_M.gguf",
+    hfMmprojUrl:
+      "https://huggingface.co/mradermacher/LightOnOCR-1B-1025-GGUF/resolve/main/LightOnOCR-1B-1025.mmproj-Q8_0.gguf",
+  },
+} satisfies Record<string, VisionModelDefinition>;
+
 export type LanguageModelId =
   | "qwen3.5-0.8b"
   | "qwen3.5-2b"

@@ -1,8 +1,5 @@
 import type { ProgressInfo } from "@huggingface/transformers";
-import {
-  AutoProcessor,
-  Qwen3_5ForConditionalGeneration,
-} from "@huggingface/transformers";
+import { AutoModel, AutoProcessor } from "@huggingface/transformers";
 import type { LanguageModelTier } from "@/config/definitions";
 import { getLanguageModelDefinition } from "@/config/queries";
 import type { DownloadProgress } from "@/managers/manager";
@@ -64,7 +61,7 @@ export const downloadWebModel = async (request: WebModelRequest) => {
     progress_callback: progressCallback,
   });
 
-  await Qwen3_5ForConditionalGeneration.from_pretrained(modelId, {
+  await AutoModel.from_pretrained(modelId, {
     dtype: MODEL_DTYPE,
     device: "webgpu",
     progress_callback: progressCallback,
@@ -82,7 +79,7 @@ export const warmWebModel = async (request: WebModelRequest) => {
     progress_callback: progressCallback,
   });
 
-  const model = await Qwen3_5ForConditionalGeneration.from_pretrained(modelId, {
+  const model = await AutoModel.from_pretrained(modelId, {
     dtype: MODEL_DTYPE,
     device: "webgpu",
     progress_callback: progressCallback,
