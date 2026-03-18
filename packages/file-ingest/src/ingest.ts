@@ -1,8 +1,8 @@
-import { classifyFile } from "./classify";
-import { heicFileToNormalizedPage } from "./handlers/heic";
-import { libreofficeFileToNormalizedPages } from "./handlers/libreoffice";
-import { rasterFileToNormalizedPage } from "./handlers/raster";
-import type { IngestedDocument, NormalizedPage } from "./types";
+import { classifyFile } from "@/classify";
+import { heicFileToNormalizedPage } from "@/handlers/heic";
+import { libreofficeFileToNormalizedPages } from "@/handlers/libreoffice";
+import { rasterFileToNormalizedPage } from "@/handlers/raster";
+import type { IngestedDocument, NormalizedPage } from "@/types";
 
 export async function ingestFile(file: File): Promise<IngestedDocument> {
   const kind = await classifyFile(file);

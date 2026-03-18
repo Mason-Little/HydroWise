@@ -1,6 +1,6 @@
 import { filetypeinfo } from "magic-bytes.js";
-import { FILE_SIGNATURE_BYTE_COUNT, type SourceKind } from "../types";
-import { getFileExtension } from "../utils";
+import { FILE_SIGNATURE_BYTE_COUNT, type SourceKind } from "@/types";
+import { getFileExtension } from "@/utils";
 
 const CLASSIFIERS: Array<[SourceKind, Set<string>, Set<string>]> = [
   [

@@ -1,7 +1,7 @@
 import { encode } from "uint8-to-base64";
-import { getConverter } from "../init";
-import { IMAGE_MAX_DIMENSION, type NormalizedPage, OUTPUT_MIME_TYPE } from "../types";
-import { getFileExtension } from "../utils";
+import { getConverter } from "@/init";
+import { IMAGE_MAX_DIMENSION, type NormalizedPage, OUTPUT_MIME_TYPE } from "@/types";
+import { getFileExtension } from "@/utils";
 
 const INPUT_FORMATS = [
   "doc", "docx", "xls", "xlsx", "ppt", "pptx",

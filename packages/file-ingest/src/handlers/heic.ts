@@ -1,7 +1,7 @@
 import { heicTo } from "heic-to";
-import type { NormalizedPage } from "../types";
-import { OUTPUT_MIME_TYPE } from "../types";
-import { rasterFileToNormalizedPage } from "./raster";
+import type { NormalizedPage } from "@/types";
+import { OUTPUT_MIME_TYPE } from "@/types";
+import { rasterFileToNormalizedPage } from "@/handlers/raster";
 
 export async function heicFileToNormalizedPage(file: File): Promise<NormalizedPage> {
   const converted = await heicTo({ blob: file, type: "image/png" });

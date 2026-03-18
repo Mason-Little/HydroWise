@@ -1,6 +1,6 @@
 import imageCompression from "browser-image-compression";
-import { blobToBase64 } from "../encode";
-import { IMAGE_MAX_DIMENSION, type NormalizedPage, OUTPUT_MIME_TYPE } from "../types";
+import { blobToBase64 } from "@/encode";
+import { IMAGE_MAX_DIMENSION, type NormalizedPage, OUTPUT_MIME_TYPE } from "@/types";
 
 async function getImageDimensions(blob: Blob): Promise<{ width: number; height: number }> {
   const objectUrl = URL.createObjectURL(blob);
