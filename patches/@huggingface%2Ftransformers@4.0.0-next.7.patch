@@ -1,3 +1,25 @@
+diff --git a/src/configs.js b/src/configs.js
+index 8de31f6e241651dd0aab696d6cf0a9c31111b789..291cb225826b16db9840682b9f162213c2f1a083 100644
+--- a/src/configs.js
++++ b/src/configs.js
+@@ -76,6 +76,7 @@ function getNormalizedConfig(config) {
+         case 'gemma3n':
+         case 'lfm2_vl':
+         case 'chatterbox':
++        case 'lighton_ocr':
+         case 'mistral3':
+         case 'qwen2_5_vl':
+         case 'qwen3_vl':
+diff --git a/src/models/llava/modeling_llava.js b/src/models/llava/modeling_llava.js
+index 3b8fcd7487e6465d7be340f1c2a71fa6850abb94..9460c0a2ce285f4c53bffa6c6cb4931b8ead39bf 100644
+--- a/src/models/llava/modeling_llava.js
++++ b/src/models/llava/modeling_llava.js
+@@ -24,3 +24,5 @@ export class Moondream1ForConditionalGeneration extends LlavaForConditionalGener
+ export class Moondream1ForConditionalGeneration extends LlavaForConditionalGeneration {} // NOTE: extends LlavaForConditionalGeneration
+
+ export class LlavaQwen2ForCausalLM extends LlavaForConditionalGeneration {} // NOTE: extends LlavaForConditionalGeneration
++
++export class LightOnOcrForConditionalGeneration extends LlavaForConditionalGeneration {} // NOTE: extends LlavaForConditionalGeneration
 diff --git a/src/models/modeling_utils.js b/src/models/modeling_utils.js
 index e222a773514ca304e9b0867526935883ce6af16f..67fcc98fd6127176444fabf7d1798a68959352a2 100644
 --- a/src/models/modeling_utils.js
@@ -16,8 +38,20 @@ index e222a773514ca304e9b0867526935883ce6af16f..67fcc98fd6127176444fabf7d1798a68
              session_options,
 +            downloadOnly,
          };
- 
+
          const modelName = MODEL_CLASS_TO_NAME_MAPPING.get(this);
+diff --git a/src/models/registry.js b/src/models/registry.js
+index cf963149325850ba55c15d3880bff0eebc499ee0..532eb5e0800ba4e8a791d3101b8b3c0cc820cd8d 100644
+--- a/src/models/registry.js
++++ b/src/models/registry.js
+@@ -379,6 +379,7 @@ const MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES = new Map([
+     ['llava_qwen2', 'LlavaQwen2ForCausalLM'],
+     ['gemma3n', 'Gemma3nForConditionalGeneration'],
+     ['mistral3', 'Mistral3ForConditionalGeneration'],
++    ['lighton_ocr', 'LightOnOcrForConditionalGeneration'],
+ ]);
+
+ const MODEL_FOR_AUDIO_TEXT_TO_TEXT_MAPPING_NAMES = new Map([
 diff --git a/src/models/session.js b/src/models/session.js
 index b3897892ebe4743ec5f57d99c88b6b24bc7f5c60..d8973a1711aed366f313cd06940a4324063b733f 100644
 --- a/src/models/session.js
@@ -32,3 +66,48 @@ index b3897892ebe4743ec5f57d99c88b6b24bc7f5c60..d8973a1711aed366f313cd06940a4324
                  const session = await createInferenceSession(buffer_or_path, session_options, session_config);
                  return [name, session];
              }),
+diff --git a/dist/transformers.node.mjs b/dist/transformers.node.mjs
+index 081870f..08a912c 100644
+--- a/dist/transformers.node.mjs
++++ b/dist/transformers.node.mjs
+@@ -21294,6 +21294,7 @@ function getNormalizedConfig(config) {
+     case "gemma3n":
+     case "lfm2_vl":
+     case "chatterbox":
++    case "lighton_ocr":
+     case "mistral3":
+     case "qwen2_5_vl":
+     case "qwen3_vl":
+@@ -24734,6 +24735,7 @@ __export(models_exports, {
+   ModernBertForTokenClassification: () => ModernBertForTokenClassification,
+   ModernBertModel: () => ModernBertModel,
+   ModernBertPreTrainedModel: () => ModernBertPreTrainedModel,
++  LightOnOcrForConditionalGeneration: () => LightOnOcrForConditionalGeneration,
+   Moondream1ForConditionalGeneration: () => Moondream1ForConditionalGeneration,
+   MoonshineForConditionalGeneration: () => MoonshineForConditionalGeneration,
+   MoonshineModel: () => MoonshineModel,
+@@ -26575,6 +26577,8 @@ var Moondream1ForConditionalGeneration = class extends LlavaForConditionalGenera
+ };
+ var LlavaQwen2ForCausalLM = class extends LlavaForConditionalGeneration {
+ };
++var LightOnOcrForConditionalGeneration = class extends LlavaForConditionalGeneration {
++};
+ 
+ // src/models/idefics3/modeling_idefics3.js
+ var Idefics3ForConditionalGeneration = class extends LlavaForConditionalGeneration {
+@@ -29765,6 +29769,7 @@ var MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES = /* @__PURE__ */ new Map([
+   ["paligemma", "PaliGemmaForConditionalGeneration"],
+   ["llava_qwen2", "LlavaQwen2ForCausalLM"],
+   ["gemma3n", "Gemma3nForConditionalGeneration"],
++  ["lighton_ocr", "LightOnOcrForConditionalGeneration"],
+   ["mistral3", "Mistral3ForConditionalGeneration"]
+ ]);
+ var MODEL_FOR_AUDIO_TEXT_TO_TEXT_MAPPING_NAMES = /* @__PURE__ */ new Map([
+@@ -33009,6 +33014,7 @@ export {
+   ModernBertForTokenClassification,
+   ModernBertModel,
+   ModernBertPreTrainedModel,
++  LightOnOcrForConditionalGeneration,
+   Moondream1ForConditionalGeneration,
+   MoonshineFeatureExtractor,
+   MoonshineForConditionalGeneration,
