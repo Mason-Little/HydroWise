@@ -1,10 +1,12 @@
-import { runtimeState } from "@/runtime";
 import {
-  DEFAULT_DESKTOP_LANGUAGE_MODEL_TIER,
-  DEFAULT_WEB_LANGUAGE_MODEL_TIER,
+  DEFAULT_LANGUAGE_MODEL_TIER,
+  EMBEDDING_MODEL,
+  type EmbeddingModelDefinition,
   LANGUAGE_MODELS,
   type LanguageModelDefinition,
   type LanguageModelTier,
+  VISION_MODEL,
+  type VisionModelDefinition,
 } from "@/config/definitions";
 
 // Returns the definition for the given tier.
@@ -18,12 +20,14 @@ export const getLanguageModels = (): Record<
   LanguageModelDefinition
 > => LANGUAGE_MODELS;
 
-// Returns the default tier for the given runtime.
-export const getDefaultLanguageModelTier = (): LanguageModelTier => {
-  switch (runtimeState.currentRuntime) {
-    case "web":
-      return DEFAULT_WEB_LANGUAGE_MODEL_TIER;
-    case "desktop":
-      return DEFAULT_DESKTOP_LANGUAGE_MODEL_TIER;
-  }
-};
+// Returns the default language model tier.
+export const getDefaultLanguageModelTier = (): LanguageModelTier =>
+  DEFAULT_LANGUAGE_MODEL_TIER;
+
+// Returns the single embedding model definition.
+export const getEmbeddingModelDefinition = (): EmbeddingModelDefinition =>
+  EMBEDDING_MODEL;
+
+// Returns the single vision model definition.
+export const getVisionModelDefinition = (): VisionModelDefinition =>
+  VISION_MODEL;

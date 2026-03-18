@@ -15,9 +15,9 @@ import {
   type ProgressInfo,
   RawImage,
 } from "@huggingface/transformers";
-import { VISION_MODELS } from "@/config/definitions";
+import { VISION_MODEL } from "@/config/definitions";
 
-const MODEL_ID = VISION_MODELS.OCR.webModelId!;
+const MODEL_ID = VISION_MODEL.webModelId;
 
 const MODEL_DTYPE = {
   embed_tokens: "q4",
