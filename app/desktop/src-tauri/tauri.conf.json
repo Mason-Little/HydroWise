@@ -30,7 +30,6 @@
     "active": true,
     "targets": "all",
     "icon": ["icons/icon.png"],
-    "externalBin": ["binaries/llama-server"],
-    "resources": ["resources/bge-small-en-v1.5-q4_k_m.gguf"]
+    "externalBin": ["binaries/llama-server"]
   }
 }
