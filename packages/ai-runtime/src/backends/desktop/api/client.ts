@@ -30,7 +30,7 @@ export const requestDesktop = async (
 
   if (!response.ok) {
     throw new Error(
-      `Desktop language-model server request failed: ${await toErrorMessage(response)}`,
+      `Desktop model server request failed: ${await toErrorMessage(response)}`,
     );
   }
 

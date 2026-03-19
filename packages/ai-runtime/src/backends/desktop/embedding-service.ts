@@ -2,12 +2,12 @@ import { Channel } from "@tauri-apps/api/core";
 import { getEmbeddingModelDefinition } from "@/config/queries";
 import type { DownloadProgress } from "@/managers/types";
 import {
-  listDesktopLanguageModels,
-  loadDesktopLanguageModel,
+  listDesktopServerModels,
+  loadDesktopServerModel,
 } from "./api/models";
 import {
-  downloadLanguageModelFile,
-  restartLanguageModelServer,
+  downloadDesktopModelFile,
+  restartDesktopModelServer,
 } from "./host/commands";
 import { waitForDesktopServerReady } from "./readiness";
 
@@ -26,7 +26,7 @@ export const downloadDesktopEmbeddingModel = async (
     options.onProgress?.(payload);
   };
 
-  await downloadLanguageModelFile({
+  await downloadDesktopModelFile({
     progress,
     tier: "embedding",
     url: desktop.hfModelUrl,
@@ -34,7 +34,7 @@ export const downloadDesktopEmbeddingModel = async (
 
   // hfMmprojUrl is null for embedding — no projection file to download.
 
-  await restartLanguageModelServer();
+  await restartDesktopModelServer();
   await waitForDesktopServerReady();
   await warmDesktopEmbeddingModel();
 };
@@ -43,20 +43,20 @@ export const downloadDesktopEmbeddingModel = async (
 export const warmDesktopEmbeddingModel = async (): Promise<string> => {
   await waitForDesktopServerReady();
 
-  const models = await listDesktopLanguageModels();
+  const models = await listDesktopServerModels();
   const modelId = models.find((m) => m.id === "embedding")?.id;
 
   if (!modelId) {
     throw new Error("Desktop embedding model is not available.");
   }
 
-  await loadDesktopLanguageModel(modelId);
+  await loadDesktopServerModel(modelId);
 
   return modelId;
 };
 
 // Returns true if the embedding model is present in the desktop server's model list.
 export const isDesktopEmbeddingModelCached = async (): Promise<boolean> => {
-  const models = await listDesktopLanguageModels();
+  const models = await listDesktopServerModels();
   return models.some((m) => m.id === "embedding");
 };

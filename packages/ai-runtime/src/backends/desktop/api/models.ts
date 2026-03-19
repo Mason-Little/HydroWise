@@ -3,24 +3,24 @@ import {
   requestDesktopVoid,
 } from "@/backends/desktop/api/client";
 
-export type DesktopLanguageModelStatus = {
+export type DesktopServerModelStatus = {
   value: string;
   args?: string[];
   preset?: string;
 };
 
-export type DesktopLanguageModel = {
+export type DesktopServerModel = {
   id: string;
   aliases: string[];
   tags: string[];
   object: string;
   owned_by: string;
   created: number;
-  status?: DesktopLanguageModelStatus;
+  status?: DesktopServerModelStatus;
 };
 
-type DesktopLanguageModelListResponse = {
-  data: DesktopLanguageModel[];
+type DesktopServerModelListResponse = {
+  data: DesktopServerModel[];
   object: string;
 };
 
@@ -34,10 +34,10 @@ const isModelAlreadyLoadedError = (error: unknown): boolean => {
 };
 
 // Lists models exposed by the desktop server.
-export const listDesktopLanguageModels = async (): Promise<
-  DesktopLanguageModel[]
+export const listDesktopServerModels = async (): Promise<
+  DesktopServerModel[]
 > => {
-  const response = await requestDesktopJson<DesktopLanguageModelListResponse>({
+  const response = await requestDesktopJson<DesktopServerModelListResponse>({
     path: "v1/models",
   });
 
@@ -45,7 +45,7 @@ export const listDesktopLanguageModels = async (): Promise<
 };
 
 // Tells the desktop server to load the given model id.
-export const loadDesktopLanguageModel = async (
+export const loadDesktopServerModel = async (
   modelId: string,
 ): Promise<void> => {
   try {
@@ -65,8 +65,8 @@ export const loadDesktopLanguageModel = async (
   }
 };
 
-// Tells the desktop server to cool the given model id.
-export const coolDesktopLanguageModel = async (
+// Tells the desktop server to unload the given model id.
+export const coolDesktopServerModel = async (
   modelId: string,
 ): Promise<void> => {
   await requestDesktopVoid({

@@ -3,14 +3,14 @@ import type { LanguageModelTier } from "@/config/definitions";
 import { getLanguageModelDefinition } from "@/config/queries";
 import type { DownloadProgress } from "@/managers/types";
 import {
-  coolDesktopLanguageModel,
-  listDesktopLanguageModels,
-  loadDesktopLanguageModel,
+  coolDesktopServerModel,
+  listDesktopServerModels,
+  loadDesktopServerModel,
 } from "./api/models";
 import {
-  downloadLanguageModelFile,
-  downloadLanguageModelMmprojFile,
-  restartLanguageModelServer,
+  downloadDesktopModelFile,
+  downloadDesktopMmprojFile,
+  restartDesktopModelServer,
 } from "./host/commands";
 import { waitForDesktopServerReady } from "./readiness";
 
@@ -25,7 +25,7 @@ export const ensureDesktopServerReady = waitForDesktopServerReady;
 const findDesktopModelId = async (
   tier: LanguageModelTier,
 ): Promise<string | undefined> => {
-  const models = await listDesktopLanguageModels();
+  const models = await listDesktopServerModels();
 
   return models.find((model) => model.id === tier)?.id;
 };
@@ -45,21 +45,21 @@ export const downloadDesktopModel = async (
     options.onProgress?.(payload);
   };
 
-  await downloadLanguageModelFile({
+  await downloadDesktopModelFile({
     progress,
     tier: options.tier,
     url: desktop.hfModelUrl,
   });
 
   if (desktop.hfMmprojUrl) {
-    await downloadLanguageModelMmprojFile({
+    await downloadDesktopMmprojFile({
       progress,
       tier: options.tier,
       url: desktop.hfMmprojUrl,
     });
   }
 
-  await restartLanguageModelServer();
+  await restartDesktopModelServer();
   await waitForDesktopServerReady();
   await warmDesktopModel(options.tier);
 };
@@ -73,10 +73,10 @@ export const warmDesktopModel = async (
   const modelId = await findDesktopModelId(tier);
 
   if (!modelId) {
-    throw new Error(`Desktop language model ${tier} is not available.`);
+    throw new Error(`Desktop model ${tier} is not available.`);
   }
 
-  await loadDesktopLanguageModel(modelId);
+  await loadDesktopServerModel(modelId);
 
   return modelId;
 };
@@ -90,10 +90,10 @@ export const coolDesktopModel = async (
   const modelId = await findDesktopModelId(tier);
 
   if (!modelId) {
-    throw new Error(`Desktop language model ${tier} is not available.`);
+    throw new Error(`Desktop model ${tier} is not available.`);
   }
 
-  await coolDesktopLanguageModel(modelId);
+  await coolDesktopServerModel(modelId);
 
   return modelId;
 };
@@ -102,7 +102,7 @@ export const coolDesktopModel = async (
 export const listCachedDesktopModels = async (): Promise<
   LanguageModelTier[]
 > => {
-  const models = await listDesktopLanguageModels();
+  const models = await listDesktopServerModels();
 
   return models.map((model) => model.id as LanguageModelTier);
 };

@@ -2,14 +2,14 @@ import { Channel } from "@tauri-apps/api/core";
 import { getVisionModelDefinition } from "@/config/queries";
 import type { DownloadProgress } from "@/managers/types";
 import {
-  coolDesktopLanguageModel,
-  listDesktopLanguageModels,
-  loadDesktopLanguageModel,
+  coolDesktopServerModel,
+  listDesktopServerModels,
+  loadDesktopServerModel,
 } from "./api/models";
 import {
-  downloadLanguageModelFile,
-  downloadLanguageModelMmprojFile,
-  restartLanguageModelServer,
+  downloadDesktopModelFile,
+  downloadDesktopMmprojFile,
+  restartDesktopModelServer,
 } from "./host/commands";
 import { waitForDesktopServerReady } from "./readiness";
 
@@ -28,21 +28,21 @@ export const downloadDesktopVisionModel = async (
     options.onProgress?.(payload);
   };
 
-  await downloadLanguageModelFile({
+  await downloadDesktopModelFile({
     progress,
     tier: "vision",
     url: desktop.hfModelUrl,
   });
 
   if (desktop.hfMmprojUrl) {
-    await downloadLanguageModelMmprojFile({
+    await downloadDesktopMmprojFile({
       progress,
       tier: "vision",
       url: desktop.hfMmprojUrl,
     });
   }
 
-  await restartLanguageModelServer();
+  await restartDesktopModelServer();
   await waitForDesktopServerReady();
   await warmDesktopVisionModel();
 };
@@ -51,14 +51,14 @@ export const downloadDesktopVisionModel = async (
 export const warmDesktopVisionModel = async (): Promise<string> => {
   await waitForDesktopServerReady();
 
-  const models = await listDesktopLanguageModels();
+  const models = await listDesktopServerModels();
   const modelId = models.find((m) => m.id === "vision")?.id;
 
   if (!modelId) {
     throw new Error("Desktop vision model is not available.");
   }
 
-  await loadDesktopLanguageModel(modelId);
+  await loadDesktopServerModel(modelId);
 
   return modelId;
 };
@@ -67,18 +67,18 @@ export const warmDesktopVisionModel = async (): Promise<string> => {
 export const coolDesktopVisionModel = async (): Promise<void> => {
   await waitForDesktopServerReady();
 
-  const models = await listDesktopLanguageModels();
+  const models = await listDesktopServerModels();
   const modelId = models.find((m) => m.id === "vision")?.id;
 
   if (!modelId) {
     throw new Error("Desktop vision model is not available.");
   }
 
-  await coolDesktopLanguageModel(modelId);
+  await coolDesktopServerModel(modelId);
 };
 
 // Returns true if the vision model is present in the desktop server's model list.
 export const isDesktopVisionModelCached = async (): Promise<boolean> => {
-  const models = await listDesktopLanguageModels();
+  const models = await listDesktopServerModels();
   return models.some((m) => m.id === "vision");
 };

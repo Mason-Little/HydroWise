@@ -24,6 +24,6 @@ export const waitForDesktopServerReady = async (): Promise<void> => {
   }
 
   throw new Error(
-    `Desktop language-model server did not become ready after ${DEFAULT_WAIT_ATTEMPTS} attempts.`,
+    `Desktop model server did not become ready after ${DEFAULT_WAIT_ATTEMPTS} attempts.`,
   );
 };

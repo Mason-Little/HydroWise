@@ -3,11 +3,11 @@ use std::{error::Error, sync::Mutex};
 use tauri_plugin_shell::process::CommandChild;
 
 #[derive(Default)]
-pub struct LanguageModelServerState {
+pub struct DesktopModelServerState {
     child: Mutex<Option<CommandChild>>,
 }
 
-impl LanguageModelServerState {
+impl DesktopModelServerState {
     // True if a server process is currently stored.
     pub fn is_running(&self) -> bool {
         self.child

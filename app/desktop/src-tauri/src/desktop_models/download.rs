@@ -83,7 +83,7 @@ async fn download_gguf(
 
 #[tauri::command]
 // Downloads a GGUF model from url into the tier slot, streaming progress on progress.
-pub async fn download_language_model(
+pub async fn download_desktop_model(
     app: AppHandle,
     tier: String,
     url: String,
@@ -95,7 +95,7 @@ pub async fn download_language_model(
 
 #[tauri::command]
 // Downloads the vision projection GGUF from url into the tier mmproj slot, streaming progress.
-pub async fn download_language_model_mmproj(
+pub async fn download_desktop_model_mmproj(
     app: AppHandle,
     tier: String,
     url: String,

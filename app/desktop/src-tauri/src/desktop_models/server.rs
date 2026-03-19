@@ -31,8 +31,8 @@ fn ensure_runtime_directories(app: &AppHandle) -> Result<String, String> {
 }
 
 // Spawns the llama sidecar and registers it in app state.
-pub fn start_language_model_server(app: &AppHandle) -> Result<(), String> {
-    let state: tauri::State<'_, state::LanguageModelServerState> = app.state();
+pub fn start_desktop_model_server(app: &AppHandle) -> Result<(), String> {
+    let state: tauri::State<'_, state::DesktopModelServerState> = app.state();
 
     let models_dir = ensure_runtime_directories(app)?;
 
@@ -64,10 +64,10 @@ pub fn start_language_model_server(app: &AppHandle) -> Result<(), String> {
 
     if let Some(duplicate_child) = state
         .set_if_stopped(child)
-        .map_err(|err| format!("failed to store language-model server handle: {err}"))?
+        .map_err(|err| format!("failed to store desktop model server handle: {err}"))?
     {
         duplicate_child.kill().map_err(|err| {
-            format!("language-model server already running; failed to stop extra process: {err}")
+            format!("desktop model server already running; failed to stop extra process: {err}")
         })?;
         return Ok(());
     }
@@ -105,22 +105,22 @@ pub fn start_language_model_server(app: &AppHandle) -> Result<(), String> {
 
 // Tauri invoke handler for starting the server.
 #[tauri::command]
-pub fn start_language_model_server_command(app: AppHandle) -> Result<(), String> {
-    start_language_model_server(&app)
+pub fn start_desktop_model_server_command(app: AppHandle) -> Result<(), String> {
+    start_desktop_model_server(&app)
 }
 
 // Stops the sidecar and clears state.
-pub fn stop_language_model_server(app: &AppHandle) -> Result<(), String> {
-    let state: tauri::State<'_, state::LanguageModelServerState> = app.state();
+pub fn stop_desktop_model_server(app: &AppHandle) -> Result<(), String> {
+    let state: tauri::State<'_, state::DesktopModelServerState> = app.state();
 
     let child = state
         .take()
-        .map_err(|err| format!("failed to clear language-model server state: {err}"))?;
+        .map_err(|err| format!("failed to clear desktop model server state: {err}"))?;
 
     if let Some(child) = child {
         child
             .kill()
-            .map_err(|err| format!("failed to stop language-model server: {err}"))?;
+            .map_err(|err| format!("failed to stop desktop model server: {err}"))?;
     }
 
     Ok(())
@@ -128,15 +128,15 @@ pub fn stop_language_model_server(app: &AppHandle) -> Result<(), String> {
 
 // Tauri invoke handler for stopping the server.
 #[tauri::command]
-pub fn stop_language_model_server_command(app: AppHandle) -> Result<(), String> {
-    stop_language_model_server(&app)
+pub fn stop_desktop_model_server_command(app: AppHandle) -> Result<(), String> {
+    stop_desktop_model_server(&app)
 }
 
 // Tauri invoke handler that stops then starts the server.
 #[tauri::command]
-pub fn restart_language_model_server_command(app: AppHandle) -> Result<(), String> {
-    stop_language_model_server(&app)?;
-    start_language_model_server(&app)
+pub fn restart_desktop_model_server_command(app: AppHandle) -> Result<(), String> {
+    stop_desktop_model_server(&app)?;
+    start_desktop_model_server(&app)
 }
 
 // Logs sidecar stdout/stderr lines in debug builds.

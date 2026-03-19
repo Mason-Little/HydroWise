@@ -1,29 +1,23 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod embedding_model;
-mod language_model;
+mod desktop_models;
 
-// Builds the Tauri app, registers language-model and embedding-model commands/state, starts both servers in setup, and stops them on exit.
+// Builds the Tauri app, registers desktop-model commands/state, starts the llama server in setup, and stops it on exit.
 fn main() {
     let app = tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .manage(embedding_model::state::EmbeddingModelServerState::default())
-        .manage(language_model::state::LanguageModelServerState::default())
+        .manage(desktop_models::state::DesktopModelServerState::default())
         .invoke_handler(tauri::generate_handler![
-            language_model::download::download_language_model,
-            language_model::download::download_language_model_mmproj,
-            language_model::server::start_language_model_server_command,
-            language_model::server::stop_language_model_server_command,
-            language_model::server::restart_language_model_server_command,
+            desktop_models::download::download_desktop_model,
+            desktop_models::download::download_desktop_model_mmproj,
+            desktop_models::server::start_desktop_model_server_command,
+            desktop_models::server::stop_desktop_model_server_command,
+            desktop_models::server::restart_desktop_model_server_command,
         ])
         .setup(|app| {
-            if let Err(err) = embedding_model::server::start_embedding_model_server(app.handle()) {
-                eprintln!("[embedding-model] server startup skipped: {err}");
-                eprintln!("[embedding-model] continuing app startup without local embeddings");
-            }
-            if let Err(err) = language_model::server::start_language_model_server(app.handle()) {
-                eprintln!("[language-model] server startup skipped: {err}");
-                eprintln!("[language-model] continuing app startup without local runtime");
+            if let Err(err) = desktop_models::server::start_desktop_model_server(app.handle()) {
+                eprintln!("[desktop-model] server startup skipped: {err}");
+                eprintln!("[desktop-model] continuing app startup without local runtime");
             }
             Ok(())
         })
@@ -32,11 +26,8 @@ fn main() {
 
     app.run(|app_handle, event| {
         if matches!(event, tauri::RunEvent::Exit) {
-            if let Err(err) = embedding_model::server::stop_embedding_model_server(app_handle) {
-                eprintln!("failed to stop embedding-model server: {err}");
-            }
-            if let Err(err) = language_model::server::stop_language_model_server(app_handle) {
-                eprintln!("failed to stop language-model server: {err}");
+            if let Err(err) = desktop_models::server::stop_desktop_model_server(app_handle) {
+                eprintln!("failed to stop desktop-model server: {err}");
             }
         }
     });
