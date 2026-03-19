@@ -1,6 +1,6 @@
 import type { Channel } from "@tauri-apps/api/core";
 import { invoke } from "@tauri-apps/api/core";
-import type { DownloadProgress } from "@/managers/manager";
+import type { DownloadProgress } from "@/managers/language/manager";
 
 // Invokes Tauri to stop the language-model server.
 export const stopLanguageModelServer = async (): Promise<void> => {

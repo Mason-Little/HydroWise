@@ -1,15 +1,15 @@
 import type { LanguageModelV3 } from "@ai-sdk/provider";
 import {
+  createDesktopLanguageModelManager,
   getDesktopLanguageModel,
   initDesktopModelManager,
-} from "@/managers/desktop";
+} from "@/managers/language/desktop";
+import type { LanguageModelManager } from "@/managers/language/manager";
 import {
   createWebLanguageModelManager,
   getWebLanguageModel,
   initWebModelManager,
-} from "@/managers/web";
-import { createDesktopLanguageModelManager } from "./managers/desktop";
-import type { LanguageModelManager } from "./managers/manager";
+} from "@/managers/language/web";
 
 export type AiRuntime = "web" | "desktop";
 

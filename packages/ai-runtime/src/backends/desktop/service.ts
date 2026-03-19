@@ -1,8 +1,9 @@
 import { Channel } from "@tauri-apps/api/core";
 import type { LanguageModelTier } from "@/config/definitions";
 import { getLanguageModelDefinition } from "@/config/queries";
-import type { DownloadProgress } from "@/managers/manager";
+import type { DownloadProgress } from "@/managers/language/manager";
 import {
+  coolDesktopLanguageModel,
   listDesktopLanguageModels,
   loadDesktopLanguageModel,
 } from "./api/models";
@@ -76,6 +77,23 @@ export const warmDesktopModel = async (
   }
 
   await loadDesktopLanguageModel(modelId);
+
+  return modelId;
+};
+
+// waits for server readiness and cools the tier's model; returns its id.
+export const coolDesktopModel = async (
+  tier: LanguageModelTier,
+): Promise<string> => {
+  await waitForDesktopServerReady();
+
+  const modelId = await findDesktopModelId(tier);
+
+  if (!modelId) {
+    throw new Error(`Desktop language model ${tier} is not available.`);
+  }
+
+  await coolDesktopLanguageModel(modelId);
 
   return modelId;
 };

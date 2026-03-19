@@ -1,6 +1,7 @@
 import type { LanguageModelV3 } from "@ai-sdk/provider";
 import { createDesktopLanguageModelAdapter } from "@/adapters/desktop/language-model";
 import {
+  coolDesktopModel,
   downloadDesktopModel,
   ensureDesktopServerReady,
   listCachedDesktopModels,
@@ -30,6 +31,9 @@ export const createDesktopLanguageModelManager = (): LanguageModelManager => {
       const modelId = await warmDesktopModel(tier);
       desktopLanguageModelState.activeLanguageModel =
         createDesktopLanguageModelAdapter(modelId);
+    },
+    async coolModel(tier) {
+      await coolDesktopModel(tier);
     },
     listCachedModels() {
       return listCachedDesktopModels();

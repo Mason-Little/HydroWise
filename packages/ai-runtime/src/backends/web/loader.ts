@@ -2,7 +2,7 @@ import type { ProgressInfo } from "@huggingface/transformers";
 import { AutoModel, AutoProcessor } from "@huggingface/transformers";
 import type { LanguageModelTier } from "@/config/definitions";
 import { getLanguageModelDefinition } from "@/config/queries";
-import type { DownloadProgress } from "@/managers/manager";
+import type { DownloadProgress } from "@/managers/language/manager";
 
 type WebModelRequest = {
   tier: LanguageModelTier;

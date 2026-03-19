@@ -5,7 +5,7 @@ import {
   listCachedWebModelTiers,
 } from "@/backends/web/cache";
 import { downloadWebModel, warmWebModel } from "@/backends/web/loader";
-import type { LanguageModelManager } from "@/managers/manager";
+import type { LanguageModelManager } from "@/managers/language/manager";
 
 const webLanguageModelState: {
   activeLanguageModel: LanguageModelV3 | undefined;
@@ -28,6 +28,9 @@ export const createWebLanguageModelManager = (): LanguageModelManager => {
         model,
         processor,
       );
+    },
+    coolModel: async () => {
+      webLanguageModelState.activeLanguageModel = undefined;
     },
     listCachedModels: async () => {
       return listCachedWebModelTiers();

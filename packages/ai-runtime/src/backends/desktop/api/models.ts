@@ -64,3 +64,13 @@ export const loadDesktopLanguageModel = async (
     throw error;
   }
 };
+
+// Tells the desktop server to cool the given model id.
+export const coolDesktopLanguageModel = async (
+  modelId: string,
+): Promise<void> => {
+  await requestDesktopVoid({
+    path: "models/unload",
+    init: { method: "POST", body: JSON.stringify({ model: modelId }) },
+  });
+};

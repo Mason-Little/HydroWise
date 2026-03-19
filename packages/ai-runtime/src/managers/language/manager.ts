@@ -1,14 +1,7 @@
 import type { LanguageModelTier } from "@/config/definitions";
+import type { DownloadCallbacks } from "@/managers/types";
 
-export type DownloadProgress = {
-  bytesDownloaded: number;
-  bytesTotal: number;
-  progress: number;
-};
-
-export type DownloadCallbacks = {
-  onProgress: (progress: DownloadProgress) => void;
-};
+export type { DownloadCallbacks, DownloadProgress } from "@/managers/types";
 
 export interface LanguageModelManager {
   downloadModel(
@@ -16,5 +9,6 @@ export interface LanguageModelManager {
     callbacks: DownloadCallbacks,
   ): Promise<void>;
   warmModel(tier: LanguageModelTier): Promise<void>;
+  coolModel(tier: LanguageModelTier): Promise<void>;
   listCachedModels(): Promise<LanguageModelTier[]>;
 }
