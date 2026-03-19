@@ -16,7 +16,6 @@
     "@fontsource-variable/geist-mono": "^5.2.7",
     "@hydrowise/data": "workspace:*",
     "@hydrowise/ai-runtime": "workspace:*",
-    "@hydrowise/embeddings": "workspace:*",
     "@hydrowise/file-ingest": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -15,7 +15,6 @@
   "dependencies": {
     "@fontsource-variable/geist-mono": "^5.2.7",
     "@hydrowise/ai-runtime": "workspace:*",
-    "@hydrowise/embeddings": "workspace:*",
     "@hydrowise/data": "workspace:*",
     "@hydrowise/file-ingest": "workspace:*",
     "@hydrowise/shared": "workspace:*",

@@ -20,7 +20,6 @@
     "@hydrowise/ai-runtime": "workspace:*",
     "@hydrowise/data": "workspace:*",
     "@hydrowise/file-ingest": "workspace:*",
-    "@hydrowise/embeddings": "workspace:*",
     "@hydrowise/shared": "workspace:*",
     "@tailwindcss/vite": "^4.1.17",
     "@tauri-apps/api": "^2.8.0",
