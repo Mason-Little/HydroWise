@@ -1,6 +1,6 @@
 import type { EmbeddingModelV3 } from "@ai-sdk/provider";
 import { createWebEmbeddingAdapter } from "@/adapters/web/embedding";
-import { initWebModelCache, isWebModelCached } from "@/backends/web/cache";
+import { isWebModelCached } from "@/backends/web/cache";
 import {
   downloadWebEmbeddingModel,
   warmWebEmbeddingModel,
@@ -29,11 +29,6 @@ export const createWebEmbeddingManager = (): EmbeddingModelManager => ({
     webEmbeddingState.activeModel = createWebEmbeddingAdapter(pipe);
   },
 });
-
-// Initializes the web embedding model cache.
-export const initWebEmbeddingManager = () => {
-  initWebModelCache();
-};
 
 // Returns the currently loaded web embedding model or throws.
 export const getWebEmbeddingModel = (): EmbeddingModelV3 => {

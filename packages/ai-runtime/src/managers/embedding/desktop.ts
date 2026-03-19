@@ -5,7 +5,6 @@ import {
   isDesktopEmbeddingModelCached,
   warmDesktopEmbeddingModel,
 } from "@/backends/desktop/embedding-service";
-import { ensureDesktopServerReady } from "@/backends/desktop/service";
 import type { EmbeddingModelManager } from "./manager";
 
 const desktopEmbeddingState: { activeModel: EmbeddingModelV3 | undefined } = {
@@ -25,11 +24,6 @@ export const createDesktopEmbeddingManager = (): EmbeddingModelManager => ({
     desktopEmbeddingState.activeModel = createDesktopEmbeddingAdapter(modelId);
   },
 });
-
-// Kicks off desktop server readiness in the background.
-export const initDesktopEmbeddingManager = () => {
-  void ensureDesktopServerReady();
-};
 
 // Returns the currently loaded desktop embedding model or throws.
 export const getDesktopEmbeddingModel = (): EmbeddingModelV3 => {

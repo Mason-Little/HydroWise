@@ -1,15 +1,18 @@
 import type { Channel } from "@tauri-apps/api/core";
 import { invoke } from "@tauri-apps/api/core";
+import { invalidateDesktopServerReadiness } from "@/backends/desktop/readiness";
 import type { DownloadProgress } from "@/managers/types";
 
 // Invokes Tauri to stop the desktop model (llama) server.
 export const stopDesktopModelServer = async (): Promise<void> => {
   await invoke("stop_desktop_model_server_command");
+  invalidateDesktopServerReadiness();
 };
 
 // Invokes Tauri to restart the desktop model server.
 export const restartDesktopModelServer = async (): Promise<void> => {
   await invoke("restart_desktop_model_server_command");
+  invalidateDesktopServerReadiness();
 };
 
 // Invokes Tauri to download a GGUF into a model slot, reporting progress on the channel.

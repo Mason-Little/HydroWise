@@ -14,7 +14,7 @@ alwaysApply: false
 
 ```typescript
 // Polls the desktop server until it responds or attempts are exhausted.
-export const waitForDesktopServerReady = async (): Promise<void> => { ... }
+export const ensureDesktopServerReady = async (): Promise<void> => { ... }
 ```
 
 ```rust

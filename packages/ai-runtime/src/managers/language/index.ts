@@ -1,7 +1,6 @@
 export {
   createDesktopLanguageModelManager,
   getDesktopLanguageModel,
-  initDesktopModelManager,
 } from "./desktop";
 export type {
   DownloadCallbacks,
@@ -11,5 +10,4 @@ export type {
 export {
   createWebLanguageModelManager,
   getWebLanguageModel,
-  initWebModelManager,
 } from "./web";

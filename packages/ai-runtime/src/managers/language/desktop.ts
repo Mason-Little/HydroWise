@@ -3,7 +3,6 @@ import { createDesktopLanguageModelAdapter } from "@/adapters/desktop/language-m
 import {
   coolDesktopModel,
   downloadDesktopModel,
-  ensureDesktopServerReady,
   listCachedDesktopModels,
   warmDesktopModel,
 } from "@/backends/desktop/service";
@@ -39,11 +38,6 @@ export const createDesktopLanguageModelManager = (): LanguageModelManager => {
       return listCachedDesktopModels();
     },
   };
-};
-
-// Kicks off desktop server readiness in the background.
-export const initDesktopModelManager = () => {
-  void ensureDesktopServerReady();
 };
 
 // Returns the currently warmed desktop model or throws.

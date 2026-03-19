@@ -7,7 +7,6 @@ import {
   getRuntime,
   getVisionModelManager,
   type LanguageModelTier,
-  waitForDesktopServerReady,
 } from "@hydrowise/ai-runtime";
 import { create } from "zustand";
 
@@ -89,10 +88,6 @@ export const useModelStore = create<ModelStore>((set) => ({
 
 export const bootstrapModelStore = async (): Promise<void> => {
   const runtime = getRuntime();
-
-  if (runtime === "desktop") {
-    await waitForDesktopServerReady();
-  }
 
   const defaultModelTier = getDefaultLanguageModelTier();
   const languageManager = getLanguageModelManager();

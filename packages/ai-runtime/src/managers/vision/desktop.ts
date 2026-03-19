@@ -1,6 +1,5 @@
 import type { LanguageModelV3 } from "@ai-sdk/provider";
 import { createDesktopVisionAdapter } from "@/adapters/desktop/vision";
-import { ensureDesktopServerReady } from "@/backends/desktop/service";
 import {
   coolDesktopVisionModel,
   downloadDesktopVisionModel,
@@ -30,11 +29,6 @@ export const createDesktopVisionManager = (): VisionModelManager => ({
     desktopVisionState.activeModel = undefined;
   },
 });
-
-// Kicks off desktop server readiness in the background.
-export const initDesktopVisionManager = () => {
-  void ensureDesktopServerReady();
-};
 
 // Returns the currently loaded desktop vision model or throws.
 export const getDesktopVisionModel = (): LanguageModelV3 => {

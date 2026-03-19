@@ -1,21 +1,17 @@
 import { Channel } from "@tauri-apps/api/core";
 import { getEmbeddingModelDefinition } from "@/config/queries";
 import type { DownloadProgress } from "@/managers/types";
-import {
-  listDesktopServerModels,
-  loadDesktopServerModel,
-} from "./api/models";
+import { listDesktopServerModels, loadDesktopServerModel } from "./api/models";
 import {
   downloadDesktopModelFile,
   restartDesktopModelServer,
 } from "./host/commands";
-import { waitForDesktopServerReady } from "./readiness";
 
 type DownloadDesktopEmbeddingModelOptions = {
   onProgress?: (progress: DownloadProgress) => void;
 };
 
-// Downloads the embedding model via Tauri, restarts the server, and waits until ready.
+// Downloads the embedding model via Tauri, restarts the server, and warms the model.
 export const downloadDesktopEmbeddingModel = async (
   options: DownloadDesktopEmbeddingModelOptions,
 ): Promise<void> => {
@@ -35,14 +31,11 @@ export const downloadDesktopEmbeddingModel = async (
   // hfMmprojUrl is null for embedding — no projection file to download.
 
   await restartDesktopModelServer();
-  await waitForDesktopServerReady();
   await warmDesktopEmbeddingModel();
 };
 
 // Waits for server readiness and loads the embedding model; returns its id.
 export const warmDesktopEmbeddingModel = async (): Promise<string> => {
-  await waitForDesktopServerReady();
-
   const models = await listDesktopServerModels();
   const modelId = models.find((m) => m.id === "embedding")?.id;
 

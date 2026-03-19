@@ -12,14 +12,11 @@ import {
   downloadDesktopMmprojFile,
   restartDesktopModelServer,
 } from "./host/commands";
-import { waitForDesktopServerReady } from "./readiness";
 
 type DownloadDesktopModelOptions = {
   tier: LanguageModelTier;
   onProgress?: (progress: DownloadProgress) => void;
 };
-
-export const ensureDesktopServerReady = waitForDesktopServerReady;
 
 // Returns the desktop server model id for the given tier, if present.
 const findDesktopModelId = async (
@@ -30,7 +27,7 @@ const findDesktopModelId = async (
   return models.find((model) => model.id === tier)?.id;
 };
 
-// Downloads the tier's model via Tauri, restarts the server, and waits until ready.
+// Downloads the tier's model via Tauri, restarts the server, and warms the model.
 export const downloadDesktopModel = async (
   options: DownloadDesktopModelOptions,
 ) => {
@@ -60,16 +57,13 @@ export const downloadDesktopModel = async (
   }
 
   await restartDesktopModelServer();
-  await waitForDesktopServerReady();
   await warmDesktopModel(options.tier);
 };
 
-// Waits for server readiness and loads the tier's model; returns its id.
+// Loads the tier's model on the desktop server; returns its id.
 export const warmDesktopModel = async (
   tier: LanguageModelTier,
 ): Promise<string> => {
-  await waitForDesktopServerReady();
-
   const modelId = await findDesktopModelId(tier);
 
   if (!modelId) {
@@ -81,12 +75,10 @@ export const warmDesktopModel = async (
   return modelId;
 };
 
-// Waits for server readiness and cools the tier's model; returns its id.
+// Unloads the tier's model from the desktop server; returns its id.
 export const coolDesktopModel = async (
   tier: LanguageModelTier,
 ): Promise<string> => {
-  await waitForDesktopServerReady();
-
   const modelId = await findDesktopModelId(tier);
 
   if (!modelId) {

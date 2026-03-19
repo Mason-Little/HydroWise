@@ -1,24 +1,14 @@
-export { waitForDesktopServerReady } from "@/backends/desktop/readiness";
+export { ensureDesktopServerReady } from "@/backends/desktop/readiness";
 export {
   getDesktopEmbeddingModel,
   getWebEmbeddingModel,
-  initDesktopEmbeddingManager,
-  initWebEmbeddingManager,
 } from "@/managers/embedding";
 export type { EmbeddingModelManager } from "@/managers/embedding/manager";
-export {
-  getDesktopLanguageModel,
-  initDesktopModelManager,
-} from "@/managers/language/desktop";
-export {
-  getWebLanguageModel,
-  initWebModelManager,
-} from "@/managers/language/web";
+export { getDesktopLanguageModel } from "@/managers/language/desktop";
+export { getWebLanguageModel } from "@/managers/language/web";
 export {
   getDesktopVisionModel,
   getWebVisionModel,
-  initDesktopVisionManager,
-  initWebVisionManager,
 } from "@/managers/vision";
 export type { VisionModelManager } from "@/managers/vision/manager";
 export * from "./config";

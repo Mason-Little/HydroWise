@@ -1,9 +1,6 @@
 import type { LanguageModelV3 } from "@ai-sdk/provider";
 import { createWebLanguageModelAdapter } from "@/adapters/web/language-model";
-import {
-  initWebModelCache,
-  listCachedWebModelTiers,
-} from "@/backends/web/cache";
+import { listCachedWebModelTiers } from "@/backends/web/cache";
 import { downloadWebModel, warmWebModel } from "@/backends/web/loader";
 import { getLanguageModelDefinition } from "@/config/queries";
 import type { LanguageModelManager } from "@/managers/language/manager";
@@ -43,11 +40,6 @@ export const createWebLanguageModelManager = (): LanguageModelManager => {
       return listCachedWebModelTiers();
     },
   };
-};
-
-// Initializes the web model cache.
-export const initWebModelManager = () => {
-  initWebModelCache();
 };
 
 // Returns the currently loaded web model or throws.

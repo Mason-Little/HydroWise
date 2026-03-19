@@ -1,11 +1,9 @@
-export type { VisionModelManager } from "./manager";
 export {
   createDesktopVisionManager,
   getDesktopVisionModel,
-  initDesktopVisionManager,
 } from "./desktop";
+export type { VisionModelManager } from "./manager";
 export {
   createWebVisionManager,
   getWebVisionModel,
-  initWebVisionManager,
 } from "./web";

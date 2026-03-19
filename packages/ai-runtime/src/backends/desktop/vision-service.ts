@@ -11,13 +11,12 @@ import {
   downloadDesktopMmprojFile,
   restartDesktopModelServer,
 } from "./host/commands";
-import { waitForDesktopServerReady } from "./readiness";
 
 type DownloadDesktopVisionModelOptions = {
   onProgress?: (progress: DownloadProgress) => void;
 };
 
-// Downloads the vision model + mmproj via Tauri, restarts the server, and waits until ready.
+// Downloads the vision model + mmproj via Tauri, restarts the server, and warms the model.
 export const downloadDesktopVisionModel = async (
   options: DownloadDesktopVisionModelOptions,
 ): Promise<void> => {
@@ -43,14 +42,11 @@ export const downloadDesktopVisionModel = async (
   }
 
   await restartDesktopModelServer();
-  await waitForDesktopServerReady();
   await warmDesktopVisionModel();
 };
 
-// Waits for server readiness and loads the vision model; returns its id.
+// Loads the vision model on the desktop server; returns its id.
 export const warmDesktopVisionModel = async (): Promise<string> => {
-  await waitForDesktopServerReady();
-
   const models = await listDesktopServerModels();
   const modelId = models.find((m) => m.id === "vision")?.id;
 
@@ -65,8 +61,6 @@ export const warmDesktopVisionModel = async (): Promise<string> => {
 
 // Unloads the vision model from the desktop server.
 export const coolDesktopVisionModel = async (): Promise<void> => {
-  await waitForDesktopServerReady();
-
   const models = await listDesktopServerModels();
   const modelId = models.find((m) => m.id === "vision")?.id;
 

@@ -1,6 +1,6 @@
 import {
-  requestDesktopJson,
-  requestDesktopVoid,
+  desktopFetch,
+  desktopFetchJson,
 } from "@/backends/desktop/api/client";
 
 export type DesktopServerModelStatus = {
@@ -37,7 +37,7 @@ const isModelAlreadyLoadedError = (error: unknown): boolean => {
 export const listDesktopServerModels = async (): Promise<
   DesktopServerModel[]
 > => {
-  const response = await requestDesktopJson<DesktopServerModelListResponse>({
+  const response = await desktopFetchJson<DesktopServerModelListResponse>({
     path: "v1/models",
   });
 
@@ -49,7 +49,7 @@ export const loadDesktopServerModel = async (
   modelId: string,
 ): Promise<void> => {
   try {
-    await requestDesktopVoid({
+    await desktopFetch({
       path: "models/load",
       init: {
         method: "POST",
@@ -69,7 +69,7 @@ export const loadDesktopServerModel = async (
 export const coolDesktopServerModel = async (
   modelId: string,
 ): Promise<void> => {
-  await requestDesktopVoid({
+  await desktopFetch({
     path: "models/unload",
     init: { method: "POST", body: JSON.stringify({ model: modelId }) },
   });

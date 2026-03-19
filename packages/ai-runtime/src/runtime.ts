@@ -4,29 +4,24 @@ import {
   createWebEmbeddingManager,
   getDesktopEmbeddingModel,
   getWebEmbeddingModel,
-  initDesktopEmbeddingManager,
-  initWebEmbeddingManager,
 } from "@/managers/embedding";
 import type { EmbeddingModelManager } from "@/managers/embedding/manager";
 import {
   createDesktopLanguageModelManager,
   getDesktopLanguageModel,
-  initDesktopModelManager,
 } from "@/managers/language/desktop";
 import type { LanguageModelManager } from "@/managers/language/manager";
 import {
   createWebLanguageModelManager,
   getWebLanguageModel,
-  initWebModelManager,
 } from "@/managers/language/web";
 import {
   createDesktopVisionManager,
   createWebVisionManager,
   getDesktopVisionModel,
   getWebVisionModel,
-  initDesktopVisionManager,
-  initWebVisionManager,
 } from "@/managers/vision";
+import { initWebModelCache } from "@/backends/web/cache";
 import type { VisionModelManager } from "@/managers/vision/manager";
 
 export type AiRuntime = "web" | "desktop";
@@ -48,17 +43,12 @@ export const initAiRuntime = (runtime: AiRuntime): void => {
   runtimeState.currentRuntime = runtime;
   switch (runtime) {
     case "desktop":
-      initDesktopModelManager();
-      initDesktopEmbeddingManager();
-      initDesktopVisionManager();
       runtimeState.languageModelManager = createDesktopLanguageModelManager();
       runtimeState.embeddingModelManager = createDesktopEmbeddingManager();
       runtimeState.visionModelManager = createDesktopVisionManager();
       break;
     case "web":
-      initWebModelManager();
-      initWebEmbeddingManager();
-      initWebVisionManager();
+      initWebModelCache();
       runtimeState.languageModelManager = createWebLanguageModelManager();
       runtimeState.embeddingModelManager = createWebEmbeddingManager();
       runtimeState.visionModelManager = createWebVisionManager();
