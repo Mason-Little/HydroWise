@@ -1,3 +1,4 @@
+export { waitForDesktopServerReady } from "@/backends/desktop/readiness";
 export {
   getDesktopEmbeddingModel,
   getWebEmbeddingModel,
