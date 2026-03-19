@@ -10,5 +10,6 @@ export interface LanguageModelManager {
   ): Promise<void>;
   warmModel(tier: LanguageModelTier): Promise<void>;
   coolModel(tier: LanguageModelTier): Promise<void>;
+  isDefaultModelCached(): Promise<boolean>;
   listCachedModels(): Promise<LanguageModelTier[]>;
 }

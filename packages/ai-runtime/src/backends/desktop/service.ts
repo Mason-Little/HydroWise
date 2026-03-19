@@ -8,8 +8,8 @@ import {
   loadDesktopServerModel,
 } from "./api/models";
 import {
-  downloadDesktopModelFile,
   downloadDesktopMmprojFile,
+  downloadDesktopModelFile,
   restartDesktopModelServer,
 } from "./host/commands";
 
@@ -88,6 +88,13 @@ export const coolDesktopModel = async (
   await coolDesktopServerModel(modelId);
 
   return modelId;
+};
+
+export const isDesktopModelCached = async (
+  tier: LanguageModelTier,
+): Promise<boolean> => {
+  const modelId = await findDesktopModelId(tier);
+  return !!modelId;
 };
 
 // Returns tiers for models currently available on the desktop server.

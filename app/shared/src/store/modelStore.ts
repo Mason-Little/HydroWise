@@ -94,13 +94,15 @@ export const bootstrapModelStore = async (): Promise<void> => {
   const embeddingManager = getEmbeddingModelManager();
   const visionManager = getVisionModelManager();
 
-  const cachedModelTiers = await languageManager.listCachedModels();
-  const [isEmbeddingCached, isVisionCached] = await Promise.all([
-    embeddingManager.isModelCached(),
-    visionManager.isModelCached(),
-  ]);
+  const [cachedModelTiers, isLanguageCached, isEmbeddingCached, isVisionCached] =
+    await Promise.all([
+      languageManager.listCachedModels(),
+      languageManager.isDefaultModelCached(),
+      embeddingManager.isModelCached(),
+      visionManager.isModelCached(),
+    ]);
 
-  const bootstrapMissingLanguage = !cachedModelTiers.includes(defaultModelTier);
+  const bootstrapMissingLanguage = !isLanguageCached;
   const bootstrapMissingEmbedding = !isEmbeddingCached;
   const bootstrapMissingVision = !isVisionCached;
   const userBootstrapRequired =
@@ -114,7 +116,7 @@ export const bootstrapModelStore = async (): Promise<void> => {
     cachedModelTiers,
     selectedModelTier: defaultModelTier,
     activeModelTier: null,
-    isBootstrapped: false,
+    isBootstrapped: userBootstrapRequired,
     userBootstrapRequired,
     bootstrapMissingLanguage,
     bootstrapMissingEmbedding,
@@ -122,10 +124,7 @@ export const bootstrapModelStore = async (): Promise<void> => {
     isWarmingModel: false,
   });
 
-  if (userBootstrapRequired) {
-    useModelStore.setState({ isBootstrapped: true });
-    return;
-  }
+  if (userBootstrapRequired) return;
 
   useModelStore.setState({ isWarmingModel: true });
 
@@ -133,14 +132,7 @@ export const bootstrapModelStore = async (): Promise<void> => {
     await languageManager.warmModel(defaultModelTier);
     await embeddingManager.warmModel();
 
-    useModelStore.setState({
-      activeModelTier: defaultModelTier,
-      isBootstrapped: true,
-      userBootstrapRequired: false,
-      bootstrapMissingLanguage: false,
-      bootstrapMissingEmbedding: false,
-      bootstrapMissingVision: false,
-    });
+    useModelStore.setState({ activeModelTier: defaultModelTier, isBootstrapped: true });
   } finally {
     useModelStore.setState({ isWarmingModel: false });
   }

@@ -3,9 +3,11 @@ import { createDesktopLanguageModelAdapter } from "@/adapters/desktop/language-m
 import {
   coolDesktopModel,
   downloadDesktopModel,
+  isDesktopModelCached,
   listCachedDesktopModels,
   warmDesktopModel,
 } from "@/backends/desktop/service";
+import { getDefaultLanguageModelTier } from "@/config/queries";
 import type { LanguageModelManager } from "./manager";
 
 const desktopLanguageModelState: {
@@ -33,6 +35,10 @@ export const createDesktopLanguageModelManager = (): LanguageModelManager => {
     },
     async coolModel(tier) {
       await coolDesktopModel(tier);
+    },
+    isDefaultModelCached() {
+      const defaultModelTier = getDefaultLanguageModelTier();
+      return isDesktopModelCached(defaultModelTier);
     },
     listCachedModels() {
       return listCachedDesktopModels();

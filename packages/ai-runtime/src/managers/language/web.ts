@@ -1,8 +1,14 @@
 import type { LanguageModelV3 } from "@ai-sdk/provider";
 import { createWebLanguageModelAdapter } from "@/adapters/web/language-model";
-import { listCachedWebModelTiers } from "@/backends/web/cache";
+import {
+  isWebModelCached,
+  listCachedWebModelTiers,
+} from "@/backends/web/cache";
 import { downloadWebModel, warmWebModel } from "@/backends/web/loader";
-import { getLanguageModelDefinition } from "@/config/queries";
+import {
+  getDefaultLanguageModelTier,
+  getLanguageModelDefinition,
+} from "@/config/queries";
 import type { LanguageModelManager } from "@/managers/language/manager";
 
 const webLanguageModelState: {
@@ -35,6 +41,15 @@ export const createWebLanguageModelManager = (): LanguageModelManager => {
     },
     coolModel: async () => {
       webLanguageModelState.activeLanguageModel = undefined;
+    },
+    isDefaultModelCached: async () => {
+      const defaultModelTier = getDefaultLanguageModelTier();
+      const { web } = getLanguageModelDefinition(defaultModelTier);
+      if (!web)
+        throw new Error(
+          `Language model ${defaultModelTier} is not available on web.`,
+        );
+      return isWebModelCached(web.modelId);
     },
     listCachedModels: async () => {
       return listCachedWebModelTiers();
