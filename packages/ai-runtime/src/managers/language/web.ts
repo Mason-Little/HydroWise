@@ -5,6 +5,7 @@ import {
   listCachedWebModelTiers,
 } from "@/backends/web/cache";
 import { downloadWebModel, warmWebModel } from "@/backends/web/loader";
+import { getLanguageModelDefinition } from "@/config/queries";
 import type { LanguageModelManager } from "@/managers/language/manager";
 
 const webLanguageModelState: {
@@ -20,10 +21,16 @@ export const createWebLanguageModelManager = (): LanguageModelManager => {
     // vision_encoder, decoder_model_merged) reports its own independent progress,
     // causing the overall bar to reset and spike per-file rather than tracking total bytes.
     downloadModel: async (tier, callbacks) => {
-      await downloadWebModel({ tier, onProgress: callbacks.onProgress });
+      const { web } = getLanguageModelDefinition(tier);
+      if (!web)
+        throw new Error(`Language model ${tier} is not available on web.`);
+      await downloadWebModel({ web, onProgress: callbacks.onProgress });
     },
     warmModel: async (tier) => {
-      const { model, processor } = await warmWebModel({ tier });
+      const { web } = getLanguageModelDefinition(tier);
+      if (!web)
+        throw new Error(`Language model ${tier} is not available on web.`);
+      const { model, processor } = await warmWebModel({ web });
       webLanguageModelState.activeLanguageModel = createWebLanguageModelAdapter(
         model,
         processor,

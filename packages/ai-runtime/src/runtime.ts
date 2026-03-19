@@ -1,4 +1,13 @@
-import type { LanguageModelV3 } from "@ai-sdk/provider";
+import type { EmbeddingModelV3, LanguageModelV3 } from "@ai-sdk/provider";
+import {
+  createDesktopEmbeddingManager,
+  createWebEmbeddingManager,
+  getDesktopEmbeddingModel,
+  getWebEmbeddingModel,
+  initDesktopEmbeddingManager,
+  initWebEmbeddingManager,
+} from "@/managers/embedding";
+import type { EmbeddingModelManager } from "@/managers/embedding/manager";
 import {
   createDesktopLanguageModelManager,
   getDesktopLanguageModel,
@@ -10,28 +19,49 @@ import {
   getWebLanguageModel,
   initWebModelManager,
 } from "@/managers/language/web";
+import {
+  createDesktopVisionManager,
+  createWebVisionManager,
+  getDesktopVisionModel,
+  getWebVisionModel,
+  initDesktopVisionManager,
+  initWebVisionManager,
+} from "@/managers/vision";
+import type { VisionModelManager } from "@/managers/vision/manager";
 
 export type AiRuntime = "web" | "desktop";
 
 export const runtimeState: {
   currentRuntime: AiRuntime;
   languageModelManager: LanguageModelManager | undefined;
+  embeddingModelManager: EmbeddingModelManager | undefined;
+  visionModelManager: VisionModelManager | undefined;
 } = {
   currentRuntime: "web",
   languageModelManager: undefined,
+  embeddingModelManager: undefined,
+  visionModelManager: undefined,
 };
 
-// Sets the runtime and initializes the matching model manager.
+// Sets the runtime and initializes all model managers.
 export const initAiRuntime = (runtime: AiRuntime): void => {
   runtimeState.currentRuntime = runtime;
   switch (runtime) {
     case "desktop":
       initDesktopModelManager();
+      initDesktopEmbeddingManager();
+      initDesktopVisionManager();
       runtimeState.languageModelManager = createDesktopLanguageModelManager();
+      runtimeState.embeddingModelManager = createDesktopEmbeddingManager();
+      runtimeState.visionModelManager = createDesktopVisionManager();
       break;
     case "web":
       initWebModelManager();
+      initWebEmbeddingManager();
+      initWebVisionManager();
       runtimeState.languageModelManager = createWebLanguageModelManager();
+      runtimeState.embeddingModelManager = createWebEmbeddingManager();
+      runtimeState.visionModelManager = createWebVisionManager();
       break;
   }
 };
@@ -50,8 +80,41 @@ export const getLanguageModelManager = (): LanguageModelManager => {
   if (!runtimeState.languageModelManager) {
     throw new Error("Language model manager not initialized.");
   }
-
   return runtimeState.languageModelManager;
+};
+
+// Returns the embedding model for the current runtime.
+export const getEmbeddingModel = (): EmbeddingModelV3 => {
+  switch (runtimeState.currentRuntime) {
+    case "desktop":
+      return getDesktopEmbeddingModel();
+    case "web":
+      return getWebEmbeddingModel();
+  }
+};
+
+// Returns the vision model for the current runtime.
+export const getVisionModel = (): LanguageModelV3 => {
+  switch (runtimeState.currentRuntime) {
+    case "desktop":
+      return getDesktopVisionModel();
+    case "web":
+      return getWebVisionModel();
+  }
+};
+
+export const getEmbeddingModelManager = (): EmbeddingModelManager => {
+  if (!runtimeState.embeddingModelManager) {
+    throw new Error("Embedding model manager not initialized.");
+  }
+  return runtimeState.embeddingModelManager;
+};
+
+export const getVisionModelManager = (): VisionModelManager => {
+  if (!runtimeState.visionModelManager) {
+    throw new Error("Vision model manager not initialized.");
+  }
+  return runtimeState.visionModelManager;
 };
 
 export const getRuntime = (): AiRuntime => {

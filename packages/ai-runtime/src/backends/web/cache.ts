@@ -44,7 +44,7 @@ export const listCachedWebModelTiers = async (): Promise<
 
   return getWebModelEntries()
     .filter(([, definition]) => {
-      const modelId = definition.webModelId;
+      const modelId = definition.web?.modelId;
 
       if (!modelId) {
         return false;
@@ -53,4 +53,10 @@ export const listCachedWebModelTiers = async (): Promise<
       return keys.some((url) => isModelCachedRequest(url, modelId));
     })
     .map(([tier]) => tier);
+};
+
+// Returns true if the given ONNX model id has any files in the browser cache.
+export const isWebModelCached = async (modelId: string): Promise<boolean> => {
+  const keys = await listWebModelCacheKeys();
+  return keys.some((url) => isModelCachedRequest(url, modelId));
 };

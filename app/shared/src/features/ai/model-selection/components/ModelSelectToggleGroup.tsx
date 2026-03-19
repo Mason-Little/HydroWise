@@ -35,7 +35,7 @@ export const ModelSelectToggleGroup = () => {
       >
         {Object.entries(getLanguageModels()).map(([tier, definition]) => {
           const isSelected = selectedModelTier === tier;
-          const desktopOnly = runtime === "web" && !definition.webModelId;
+          const desktopOnly = runtime === "web" && !definition.web;
 
           return (
             <ToggleGroupItem

@@ -15,9 +15,11 @@ import {
   type ProgressInfo,
   RawImage,
 } from "@huggingface/transformers";
-import { VISION_MODEL } from "@/config/definitions";
+import { getVisionModelDefinition } from "@/config/queries";
 
-const MODEL_ID = VISION_MODEL.webModelId;
+const { web } = getVisionModelDefinition();
+
+const MODEL_ID = web.modelId;
 
 const MODEL_DTYPE = {
   embed_tokens: "q4",
@@ -126,7 +128,7 @@ async function disposeModel(
 
 // ── Entry point ───────────────────────────────────────────────────────────────
 
-const [, , imageArg, customPrompt] = Bun.argv;
+const [, , imageArg, customPrompt] = process.argv;
 const imageSrc = imageArg ?? "/Users/mason/Downloads/text_ex1.png";
 const prompt =
   customPrompt ?? "Read all text in this image exactly as it appears.";

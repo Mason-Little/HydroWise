@@ -51,7 +51,7 @@ export const useModelTierStatus = (tier: LanguageModelTier): ModelTierStatus => 
   const isWarming = isWarmingModel && selectedModelTier === tier;
   const isDownloading = tierDownload !== null;
   const downloadProgressPercent = tierDownload ? Math.round(tierDownload.progress * 100) : 0;
-  const desktopOnly = runtime === "web" && !definition.webModelId;
+  const desktopOnly = runtime === "web" && !definition.web;
 
   const partial = {
     description: definition.description,

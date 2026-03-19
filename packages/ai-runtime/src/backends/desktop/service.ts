@@ -1,7 +1,7 @@
 import { Channel } from "@tauri-apps/api/core";
 import type { LanguageModelTier } from "@/config/definitions";
 import { getLanguageModelDefinition } from "@/config/queries";
-import type { DownloadProgress } from "@/managers/language/manager";
+import type { DownloadProgress } from "@/managers/types";
 import {
   coolDesktopLanguageModel,
   listDesktopLanguageModels,
@@ -34,9 +34,9 @@ const findDesktopModelId = async (
 export const downloadDesktopModel = async (
   options: DownloadDesktopModelOptions,
 ) => {
-  const definition = getLanguageModelDefinition(options.tier);
+  const { desktop } = getLanguageModelDefinition(options.tier);
 
-  if (!definition.hfModelUrl) {
+  if (!desktop?.hfModelUrl) {
     throw new Error(`Model ${options.tier} is not available on desktop.`);
   }
 
@@ -48,14 +48,14 @@ export const downloadDesktopModel = async (
   await downloadLanguageModelFile({
     progress,
     tier: options.tier,
-    url: definition.hfModelUrl,
+    url: desktop.hfModelUrl,
   });
 
-  if (definition.hfMmprojUrl) {
+  if (desktop.hfMmprojUrl) {
     await downloadLanguageModelMmprojFile({
       progress,
       tier: options.tier,
-      url: definition.hfMmprojUrl,
+      url: desktop.hfMmprojUrl,
     });
   }
 
@@ -81,7 +81,7 @@ export const warmDesktopModel = async (
   return modelId;
 };
 
-// waits for server readiness and cools the tier's model; returns its id.
+// Waits for server readiness and cools the tier's model; returns its id.
 export const coolDesktopModel = async (
   tier: LanguageModelTier,
 ): Promise<string> => {
