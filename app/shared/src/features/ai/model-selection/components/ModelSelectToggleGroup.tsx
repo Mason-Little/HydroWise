@@ -11,7 +11,9 @@ import { cn } from "@/lib/utils";
 import { useModelStore } from "@/store/modelStore";
 
 export const ModelSelectToggleGroup = () => {
-  const { runtime, selectedModelTier, setSelectedModelTier } = useModelStore();
+  const runtime = useModelStore((s) => s.runtime);
+  const selectedModelTier = useModelStore((s) => s.selectedModelTier);
+  const setSelectedModelTier = useModelStore((s) => s.setSelectedModelTier);
 
   const handleValueChange = ([nextValue]: string[]) => {
     if (nextValue) setSelectedModelTier(nextValue as LanguageModelTier);

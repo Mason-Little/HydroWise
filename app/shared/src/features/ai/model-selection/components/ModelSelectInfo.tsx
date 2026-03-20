@@ -3,6 +3,7 @@ import { useModelStore } from "@/store/modelStore";
 import { useModelTierStatus } from "../hooks/useModelTierStatus";
 import { ModelActionButton } from "./detail/ModelActionButton";
 import { ModelDesktopNotice } from "./detail/ModelDesktopNotice";
+import { ModelDownloadBar } from "./detail/ModelDownloadBar";
 import { ModelStatusTag } from "./detail/ModelStatusTag";
 
 export const ModelSelectInfo = () => {
@@ -30,7 +31,6 @@ const ModelSelectInfoPanel = ({ tier }: { tier: LanguageModelTier }) => {
 
         <ModelActionButton
           variant={status.actionVariant}
-          progressPercent={status.downloadProgressPercent}
           onClick={status.onAction}
         />
       </div>
@@ -38,6 +38,13 @@ const ModelSelectInfoPanel = ({ tier }: { tier: LanguageModelTier }) => {
       <p className="text-xs leading-relaxed text-muted-foreground">
         {status.description}
       </p>
+
+      {status.isDownloading && (
+        <ModelDownloadBar
+          bytesDownloaded={status.downloadBytesDownloaded}
+          bytesTotal={status.downloadBytesTotal}
+        />
+      )}
 
       {status.desktopOnly ? <ModelDesktopNotice /> : null}
     </div>

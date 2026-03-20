@@ -63,6 +63,11 @@ export const useModelStore = create<ModelStore>((set) => ({
   downloadModel: async (model) => {
     const manager = getLanguageModelManager();
 
+    // TODO: mmproj file (~300 MB–1 GB) is downloaded separately after the main
+    // model file but is not tracked here. The download appears "complete" before
+    // the mmproj finishes, so the progress bar disappears early and warmup
+    // takes unexpectedly long. Need to expose mmproj download progress from
+    // ai-runtime and include it in activeDownload (or as a second phase).
     await manager.downloadModel(model, {
       onProgress: (progress) =>
         set({ activeDownload: { tier: model, ...progress } }),

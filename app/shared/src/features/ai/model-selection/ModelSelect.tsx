@@ -4,6 +4,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useModelStore } from "@/store/modelStore";
+import { ModelBootstrapBanner } from "./components/ModelBootstrapBanner";
 import { ModelSelectInfo } from "./components/ModelSelectInfo";
 import { ModelSelectToggleGroup } from "./components/ModelSelectToggleGroup";
 
@@ -13,7 +15,13 @@ interface ModelSelectProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export const ModelSelect = ({ children, open, onOpenChange }: ModelSelectProps) => {
+export const ModelSelect = ({
+  children,
+  open,
+  onOpenChange,
+}: ModelSelectProps) => {
+  const userBootstrapRequired = useModelStore((s) => s.userBootstrapRequired);
+
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger render={children} />
@@ -22,6 +30,7 @@ export const ModelSelect = ({ children, open, onOpenChange }: ModelSelectProps) 
         sideOffset={8}
         className="w-[var(--width-popover-panel)] max-w-[var(--max-width-popover)] rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-popover)]"
       >
+        {userBootstrapRequired && <ModelBootstrapBanner />}
         <ModelSelectToggleGroup />
         <ModelSelectInfo />
       </PopoverContent>

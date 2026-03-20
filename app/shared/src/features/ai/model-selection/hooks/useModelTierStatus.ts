@@ -14,7 +14,8 @@ export type ModelTierStatus = {
   isSelected: boolean;
   isWarming: boolean;
   isDownloading: boolean;
-  downloadProgressPercent: number;
+  downloadBytesDownloaded: number;
+  downloadBytesTotal: number;
   desktopOnly: boolean;
   actionVariant: ModelActionVariant;
   onAction: () => void;
@@ -24,7 +25,7 @@ const deriveActionVariant = (
   status: Omit<ModelTierStatus, "actionVariant" | "onAction">,
 ): ModelActionVariant => {
   if (status.desktopOnly) return "locked";
-  if (status.isDownloading) return "progress";
+  if (status.isDownloading) return "warming";
   if (!status.isCached) return "download";
   if (status.isWarming) return "warming";
   if (status.isActive) return "active";
@@ -32,16 +33,14 @@ const deriveActionVariant = (
 };
 
 export const useModelTierStatus = (tier: LanguageModelTier): ModelTierStatus => {
-  const {
-    runtime,
-    activeModelTier,
-    selectedModelTier,
-    cachedModelTiers,
-    isWarmingModel,
-    activeDownload,
-    downloadModel,
-    warmModel,
-  } = useModelStore();
+  const runtime = useModelStore((s) => s.runtime);
+  const activeModelTier = useModelStore((s) => s.activeModelTier);
+  const selectedModelTier = useModelStore((s) => s.selectedModelTier);
+  const cachedModelTiers = useModelStore((s) => s.cachedModelTiers);
+  const isWarmingModel = useModelStore((s) => s.isWarmingModel);
+  const activeDownload = useModelStore((s) => s.activeDownload);
+  const downloadModel = useModelStore((s) => s.downloadModel);
+  const warmModel = useModelStore((s) => s.warmModel);
 
   const definition = getLanguageModelDefinition(tier);
   const tierDownload = activeDownload?.tier === tier ? activeDownload : null;
@@ -50,7 +49,8 @@ export const useModelTierStatus = (tier: LanguageModelTier): ModelTierStatus => 
   const isSelected = selectedModelTier === tier;
   const isWarming = isWarmingModel && selectedModelTier === tier;
   const isDownloading = tierDownload !== null;
-  const downloadProgressPercent = tierDownload ? Math.round(tierDownload.progress * 100) : 0;
+  const downloadBytesDownloaded = tierDownload?.bytesDownloaded ?? 0;
+  const downloadBytesTotal = tierDownload?.bytesTotal ?? 0;
   const desktopOnly = runtime === "web" && !definition.web;
 
   const partial = {
@@ -62,7 +62,8 @@ export const useModelTierStatus = (tier: LanguageModelTier): ModelTierStatus => 
     isSelected,
     isWarming,
     isDownloading,
-    downloadProgressPercent,
+    downloadBytesDownloaded,
+    downloadBytesTotal,
     desktopOnly,
   };
 

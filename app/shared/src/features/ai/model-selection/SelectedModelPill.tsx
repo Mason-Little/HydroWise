@@ -4,9 +4,37 @@ import { cn } from "@/lib/utils";
 import { useModelStore } from "@/store/modelStore";
 import { ModelSelect } from "./ModelSelect";
 
+type IndicatorStatus = "active" | "loading" | "inactive";
+
+const indicatorStyles: Record<IndicatorStatus, { outer: string; inner: string }> = {
+  active: {
+    outer: "bg-[var(--green-bg)]",
+    inner: "bg-[var(--green)]",
+  },
+  loading: {
+    outer: "bg-amber-500/20",
+    inner: "bg-amber-500 animate-pulse",
+  },
+  inactive: {
+    outer: "bg-red-500/20",
+    inner: "bg-red-500",
+  },
+};
+
 export const SelectedModelPill = () => {
   const [open, setOpen] = useState(false);
-  const { activeModelTier } = useModelStore();
+  const activeModelTier = useModelStore((s) => s.activeModelTier);
+  const isWarmingModel = useModelStore((s) => s.isWarmingModel);
+  const activeDownload = useModelStore((s) => s.activeDownload);
+
+  const status: IndicatorStatus =
+    isWarmingModel || activeDownload !== null
+      ? "loading"
+      : activeModelTier !== null
+        ? "active"
+        : "inactive";
+
+  const { outer, inner } = indicatorStyles[status];
 
   return (
     <ModelSelect open={open} onOpenChange={setOpen}>
@@ -18,8 +46,8 @@ export const SelectedModelPill = () => {
         )}
       >
         <span className="flex items-center gap-2.5">
-          <span className="flex size-3.5 items-center justify-center rounded-full bg-[var(--green-bg)]">
-            <span className="size-2 rounded-full bg-[var(--green)]" />
+          <span className={cn("flex size-3.5 items-center justify-center rounded-full", outer)}>
+            <span className={cn("size-2 rounded-full", inner)} />
           </span>
           <span className="text-sm font-semibold text-foreground">
             {activeModelTier ?? "—"}
