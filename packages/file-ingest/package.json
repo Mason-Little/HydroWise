@@ -16,10 +16,9 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
-    "@matbee/libreoffice-converter": "^2.5.1",
-    "browser-image-compression": "^2.0.2",
+    "@matbee/libreoffice-converter": "^2.6.0",
+    "fflate": "^0.8.2",
     "heic-to": "^1.4.2",
-    "magic-bytes.js": "^1.13.0",
     "uint8-to-base64": "^0.2.1"
   },
   "devDependencies": {

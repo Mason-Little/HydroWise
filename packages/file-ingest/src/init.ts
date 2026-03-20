@@ -17,15 +17,12 @@ export const initFileIngest = async (
   config?: FileIngestConfig,
 ): Promise<void> => {
   if (initPromise) {
-    console.log("[file-ingest] waiting for existing init");
     await initPromise;
     return;
   }
 
   const wasmBase = config?.wasmBase ?? "/wasm/libreoffice/";
   const workerJs = config?.workerJs ?? "/assets/lo-browser-worker.js";
-
-  console.log("[file-ingest] initializing", { wasmBase, workerJs });
 
   const nextConverter = new WorkerBrowserConverter({
     ...createWasmPaths(wasmBase),
@@ -44,7 +41,6 @@ export const initFileIngest = async (
   });
 
   await initPromise;
-  console.log("[file-ingest] ready");
 };
 
 export function getConverter(): WorkerBrowserConverter {

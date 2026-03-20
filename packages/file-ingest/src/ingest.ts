@@ -1,27 +1,12 @@
 import { classifyFile } from "@/classify";
-import { heicFileToNormalizedPage } from "@/handlers/heic";
-import { libreofficeFileToNormalizedPages } from "@/handlers/libreoffice";
-import { rasterFileToNormalizedPage } from "@/handlers/raster";
-import type { IngestedDocument, NormalizedPage } from "@/types";
+import { officeToPngPages } from "@/handlers/office";
+import { rasterToPngPages } from "@/handlers/raster";
 
-export async function ingestFile(file: File): Promise<IngestedDocument> {
-  const kind = await classifyFile(file);
-  let pages: NormalizedPage[];
-
+export async function ingestFile(file: File): Promise<string[]> {
+  const kind = classifyFile(file);
   switch (kind) {
-    case "heic-image":
-      pages = [await heicFileToNormalizedPage(file)];
-      break;
-    case "raster-image":
-      pages = [await rasterFileToNormalizedPage(file)];
-      break;
-    case "pdf":
-    case "office":
-      pages = await libreofficeFileToNormalizedPages(file);
-      break;
-    default:
-      throw new Error(`[file-ingest] Unsupported file: ${file.name} (${file.type})`);
+    case "raster": return rasterToPngPages(file);
+    case "office": return officeToPngPages(file);
+    default: throw new Error(`[file-ingest] Unsupported file: ${file.name}`);
   }
-
-  return { documentTitle: file.name, fileSizeBytes: file.size, pages };
 }

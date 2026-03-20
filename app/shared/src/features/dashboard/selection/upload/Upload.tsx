@@ -13,7 +13,8 @@ export const Upload = () => {
     if (!selected) return;
 
     setFile(selected);
-    await ingestFile(selected);
+    const pages = await ingestFile(selected);
+    console.log(pages);
   };
 
   return (
