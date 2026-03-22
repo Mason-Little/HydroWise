@@ -11,7 +11,7 @@ export async function officeToPngPages(file: File): Promise<Blob[]> {
 
   return Promise.all(
     Array.from({ length: pageCount }, (_, i) =>
-      converter.renderPageViaConvert(input, { inputFormat }, i).then((page) => {
+      converter.renderPageViaConvert(input, { inputFormat }, i, 512).then((page) => {
         const png = new Uint8Array(page.data);
         return new Blob([png], { type: "image/png" });
       }),
