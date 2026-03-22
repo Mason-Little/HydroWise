@@ -1,18 +1,20 @@
 import { heicTo } from "heic-to";
-import { encode } from "uint8-to-base64";
 
-async function blobToPngBase64(blob: Blob): Promise<string> {
+async function blobToPng(blob: Blob): Promise<Blob> {
   const bitmap = await createImageBitmap(blob);
-  const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
-  const ctx = canvas.getContext("2d")!;
-  ctx.drawImage(bitmap, 0, 0);
+  const MAX = 1024;
+  const scale = Math.min(1, MAX / Math.max(bitmap.width, bitmap.height));
+  const w = Math.round(bitmap.width * scale);
+  const h = Math.round(bitmap.height * scale);
+  const canvas = new OffscreenCanvas(w, h);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error(`[file-ingest] Failed to get canvas context`);
+  ctx.drawImage(bitmap, 0, 0, w, h);
   bitmap.close();
-  const pngBlob = await canvas.convertToBlob({ type: "image/png" });
-  const buffer = await pngBlob.arrayBuffer();
-  return encode(new Uint8Array(buffer));
+  return canvas.convertToBlob({ type: "image/png" });
 }
 
-export async function rasterToPngPages(file: File): Promise<string[]> {
+export async function rasterToPngPages(file: File): Promise<Blob[]> {
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
 
   if (ext === "heic" || ext === "heif") {
@@ -20,8 +22,8 @@ export async function rasterToPngPages(file: File): Promise<string[]> {
     if (!(converted instanceof Blob)) {
       throw new Error(`[file-ingest] HEIC conversion failed: ${file.name}`);
     }
-    return [await blobToPngBase64(converted)];
+    return [await blobToPng(converted)];
   }
 
-  return [await blobToPngBase64(file)];
+  return [await blobToPng(file)];
 }

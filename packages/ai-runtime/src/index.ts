@@ -1,4 +1,5 @@
 export { ensureDesktopServerReady } from "@/backends/desktop/readiness";
+export { extractText } from "@/features/ocr/run";
 export {
   getDesktopEmbeddingModel,
   getWebEmbeddingModel,

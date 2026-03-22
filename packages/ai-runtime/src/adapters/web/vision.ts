@@ -7,7 +7,10 @@ import { runWebOcr } from "./ocr";
 
 // Implements LanguageModelV3 using a locally-loaded ONNX vision model.
 // The OCR model is a multimodal LLM — vision in, text out — so callers can use
-// standard generateText() with a base64 PNG file content part.
+// standard generateText() with an ArrayBuffer PNG image part.
+//
+// Note: generateText() normalizes image parts (ArrayBuffer) to file parts
+// (Uint8Array) before reaching doGenerate, so we filter for type "file" here.
 export const createWebVisionAdapter = (
   model: PreTrainedModel,
   processor: Processor,
@@ -23,11 +26,14 @@ export const createWebVisionAdapter = (
       )
       .find((part): part is LanguageModelV3FilePart => part.type === "file");
 
-    if (!filePart || typeof filePart.data !== "string") {
-      throw new Error("Web vision adapter requires a base64 PNG image.");
+    if (!filePart || !(filePart.data instanceof Uint8Array)) {
+      throw new Error(
+        "Web vision adapter requires a Uint8Array image file part.",
+      );
     }
 
-    const text = await runWebOcr(model, processor, filePart.data);
+    const blob = new Blob([filePart.data], { type: "image/png" });
+    const text = await runWebOcr(model, processor, blob);
 
     return {
       content: [{ type: "text" as const, text }],
@@ -39,7 +45,11 @@ export const createWebVisionAdapter = (
           cacheRead: undefined,
           cacheWrite: undefined,
         },
-        outputTokens: { total: undefined, text: undefined, reasoning: undefined },
+        outputTokens: {
+          total: undefined,
+          text: undefined,
+          reasoning: undefined,
+        },
       },
       warnings: [],
     };

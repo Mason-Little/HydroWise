@@ -1,32 +1,20 @@
 import type { InputFormat } from "@matbee/libreoffice-converter/browser";
-import { encode } from "uint8-to-base64";
 import { getConverter } from "@/init";
 
-const PAGE_RENDER_WIDTH = 1024;
-
-function getInputFormat(file: File): InputFormat {
-  return file.name.split(".").pop()!.toLowerCase() as InputFormat;
-}
-
-async function renderPagesAsBase64(
-  file: File,
-  inputFormat: InputFormat,
-): Promise<string[]> {
+export async function officeToPngPages(file: File): Promise<Blob[]> {
   const converter = getConverter();
-  const inputData = new Uint8Array(await file.arrayBuffer());
-  const pageCount = await converter.getPageCount(inputData, { inputFormat });
+  const input = new Uint8Array(await file.arrayBuffer());
+  const ext = file.name.split(".").at(-1);
+  if (!ext) throw new Error(`[file-ingest] Missing extension: ${file.name}`);
+  const inputFormat = ext.toLowerCase() as InputFormat;
+  const pageCount = await converter.getPageCount(input, { inputFormat });
 
-  const pageRenders = [];
-  for (let i = 0; i < pageCount; i++) {
-    pageRenders.push(
-      converter
-        .renderPageViaConvert(inputData, { inputFormat }, i, PAGE_RENDER_WIDTH)
-        .then((preview) => encode(preview.data)),
-    );
-  }
-  return Promise.all(pageRenders);
-}
-
-export async function officeToPngPages(file: File): Promise<string[]> {
-  return renderPagesAsBase64(file, getInputFormat(file));
+  return Promise.all(
+    Array.from({ length: pageCount }, (_, i) =>
+      converter.renderPageViaConvert(input, { inputFormat }, i).then((page) => {
+        const png = new Uint8Array(page.data);
+        return new Blob([png], { type: "image/png" });
+      }),
+    ),
+  );
 }

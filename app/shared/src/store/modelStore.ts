@@ -36,6 +36,8 @@ interface ModelStore {
   refreshCachedModelTiers: () => Promise<LanguageModelTier[]>;
   downloadModel: (model: LanguageModelTier) => Promise<void>;
   warmModel: (model: LanguageModelTier) => Promise<void>;
+  warmVisionModel: () => Promise<void>;
+  coolVisionModel: () => Promise<void>;
 }
 
 export const useModelStore = create<ModelStore>((set) => ({
@@ -89,6 +91,14 @@ export const useModelStore = create<ModelStore>((set) => ({
       set({ isWarmingModel: false });
     }
   },
+  warmVisionModel: async () => {
+    const manager = getVisionModelManager();
+    await manager.warmModel();
+  },
+  coolVisionModel: async () => {
+    const manager = getVisionModelManager();
+    await manager.coolModel();
+  },
 }));
 
 export const bootstrapModelStore = async (): Promise<void> => {
@@ -99,13 +109,17 @@ export const bootstrapModelStore = async (): Promise<void> => {
   const embeddingManager = getEmbeddingModelManager();
   const visionManager = getVisionModelManager();
 
-  const [cachedModelTiers, isLanguageCached, isEmbeddingCached, isVisionCached] =
-    await Promise.all([
-      languageManager.listCachedModels(),
-      languageManager.isDefaultModelCached(),
-      embeddingManager.isModelCached(),
-      visionManager.isModelCached(),
-    ]);
+  const [
+    cachedModelTiers,
+    isLanguageCached,
+    isEmbeddingCached,
+    isVisionCached,
+  ] = await Promise.all([
+    languageManager.listCachedModels(),
+    languageManager.isDefaultModelCached(),
+    embeddingManager.isModelCached(),
+    visionManager.isModelCached(),
+  ]);
 
   const bootstrapMissingLanguage = !isLanguageCached;
   const bootstrapMissingEmbedding = !isEmbeddingCached;
@@ -137,7 +151,10 @@ export const bootstrapModelStore = async (): Promise<void> => {
     await languageManager.warmModel(defaultModelTier);
     await embeddingManager.warmModel();
 
-    useModelStore.setState({ activeModelTier: defaultModelTier, isBootstrapped: true });
+    useModelStore.setState({
+      activeModelTier: defaultModelTier,
+      isBootstrapped: true,
+    });
   } finally {
     useModelStore.setState({ isWarmingModel: false });
   }

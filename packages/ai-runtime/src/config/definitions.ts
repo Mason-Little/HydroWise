@@ -65,7 +65,11 @@ export const LANGUAGE_MODELS = {
     sizeBytes: 500_000_000,
     web: {
       modelId: "onnx-community/Qwen3.5-0.8B-ONNX",
-      config: { embed_tokens: "q4", vision_encoder: "fp16", decoder_model_merged: "q4" },
+      config: {
+        embed_tokens: "q4",
+        vision_encoder: "fp16",
+        decoder_model_merged: "q4",
+      },
     },
     desktop: {
       hfModelUrl:
@@ -81,7 +85,11 @@ export const LANGUAGE_MODELS = {
     sizeBytes: 1_400_000_000,
     web: {
       modelId: "onnx-community/Qwen3.5-2B-ONNX",
-      config: { embed_tokens: "q4", vision_encoder: "fp16", decoder_model_merged: "q4" },
+      config: {
+        embed_tokens: "q4",
+        vision_encoder: "fp16",
+        decoder_model_merged: "q4",
+      },
     },
     desktop: {
       hfModelUrl:
@@ -97,7 +105,11 @@ export const LANGUAGE_MODELS = {
     sizeBytes: 2_500_000_000,
     web: {
       modelId: "onnx-community/Qwen3.5-4B-ONNX",
-      config: { embed_tokens: "q4", vision_encoder: "fp16", decoder_model_merged: "q4" },
+      config: {
+        embed_tokens: "q4",
+        vision_encoder: "fp16",
+        decoder_model_merged: "q4",
+      },
     },
     desktop: {
       hfModelUrl:
@@ -157,7 +169,11 @@ export const VISION_MODEL = {
   sizeBytes: 800_000_000,
   web: {
     modelId: "onnx-community/LightOnOCR-2-1B-ONNX",
-    config: { embed_tokens: "q4", vision_encoder: "fp16", decoder_model_merged: "q4" },
+    config: {
+      embed_tokens: "q4",
+      vision_encoder: "fp32",
+      decoder_model_merged: "q4",
+    },
   },
   desktop: {
     hfModelUrl:

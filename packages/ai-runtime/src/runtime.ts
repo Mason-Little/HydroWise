@@ -1,4 +1,5 @@
 import type { EmbeddingModelV3, LanguageModelV3 } from "@ai-sdk/provider";
+import { initWebModelCache } from "@/backends/web/cache";
 import {
   createDesktopEmbeddingManager,
   createWebEmbeddingManager,
@@ -21,7 +22,6 @@ import {
   getDesktopVisionModel,
   getWebVisionModel,
 } from "@/managers/vision";
-import { initWebModelCache } from "@/backends/web/cache";
 import type { VisionModelManager } from "@/managers/vision/manager";
 
 export type AiRuntime = "web" | "desktop";

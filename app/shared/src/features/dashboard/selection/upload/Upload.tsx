@@ -1,12 +1,14 @@
+import { extractText } from "@hydrowise/ai-runtime";
 import { ingestFile } from "@hydrowise/file-ingest";
 import { useRef, useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useModelStore } from "@/store";
 
 export const Upload = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
+  const { warmVisionModel } = useModelStore();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
@@ -14,7 +16,13 @@ export const Upload = () => {
 
     setFile(selected);
     const pages = await ingestFile(selected);
-    console.log(pages);
+    await warmVisionModel();
+
+    // Process pages sequentially — WebGPU can't run concurrent inference sessions
+    const texts: string[] = [];
+    for (const page of pages) {
+      texts.push(await extractText(page));
+    }
   };
 
   return (
@@ -37,7 +45,8 @@ export const Upload = () => {
           <>
             <span className="font-medium">{file.name}</span>
             <span className="text-[0.625rem] text-muted-foreground">
-              {(file.size / 1024).toFixed(1)} KB · click to change
+              {(file.size / 1024).toFixed(1)} KB
+              {" · click to change"}
             </span>
           </>
         ) : (
