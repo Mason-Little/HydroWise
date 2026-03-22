@@ -171,7 +171,7 @@ export const VISION_MODEL = {
     modelId: "onnx-community/LightOnOCR-2-1B-ONNX",
     config: {
       embed_tokens: "q4",
-      vision_encoder: "fp32",
+      vision_encoder: "q4",
       decoder_model_merged: "q4",
     },
   },
