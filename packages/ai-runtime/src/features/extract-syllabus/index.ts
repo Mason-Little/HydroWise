@@ -1,0 +1,1 @@
+export { extractSyllabus } from "./run";

@@ -14,6 +14,8 @@ export {
 export type { VisionModelManager } from "@/managers/vision/manager";
 export * from "./config";
 export { sendGroundedChat } from "./features/chat";
+export { classify } from "./features/classify-document";
+export { extractSyllabus } from "./features/extract-syllabus";
 export type { DownloadProgress } from "./managers/language/manager";
 export type { AiRuntime } from "./runtime";
 export {
