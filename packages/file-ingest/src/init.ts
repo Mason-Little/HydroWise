@@ -2,12 +2,15 @@ import {
   createWasmPaths,
   WorkerBrowserConverter,
 } from "@matbee/libreoffice-converter/browser";
+import { GlobalWorkerOptions } from "pdfjs-dist";
 
 export interface FileIngestConfig {
   /** Base URL where the WASM files are served. Defaults to "/wasm/libreoffice/". */
   wasmBase?: string;
   /** URL of the browser worker script. Defaults to "/assets/lo-browser-worker.js". */
   workerJs?: string;
+  /** URL of the PDF.js worker script. Defaults to "/assets/pdf.worker.mjs". */
+  pdfjsWorkerSrc?: string;
 }
 
 let converter: WorkerBrowserConverter | null = null;
@@ -23,6 +26,7 @@ export const initFileIngest = async (
 
   const wasmBase = config?.wasmBase ?? "/wasm/libreoffice/";
   const workerJs = config?.workerJs ?? "/assets/lo-browser-worker.js";
+  GlobalWorkerOptions.workerSrc = config?.pdfjsWorkerSrc ?? "/assets/pdf.worker.mjs";
 
   const nextConverter = new WorkerBrowserConverter({
     ...createWasmPaths(wasmBase),

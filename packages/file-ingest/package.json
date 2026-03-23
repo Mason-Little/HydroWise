@@ -19,6 +19,7 @@
     "@matbee/libreoffice-converter": "^2.6.0",
     "fflate": "^0.8.2",
     "heic-to": "^1.4.2",
+    "pdfjs-dist": "^4.10.38",
     "uint8-to-base64": "^0.2.1"
   },
   "devDependencies": {

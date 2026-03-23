@@ -1,4 +1,8 @@
-import { ingestFile } from "@hydrowise/file-ingest";
+import {
+  classifyFile,
+  extractTextPages,
+  ingestFile,
+} from "@hydrowise/file-ingest";
 import { useState } from "react";
 import { handleClassify } from "@/features/dashboard/selection/upload/helpers/handleClassify";
 import { handleDocument } from "@/features/dashboard/selection/upload/helpers/handleDocument";
@@ -14,14 +18,33 @@ export const useUpload = () => {
 
     setFile(selected);
 
-    const pages = await ingestFile(selected);
-    const texts = await handleExtract(pages);
+    const kind = classifyFile(selected);
 
-    const classification = await handleClassify(texts);
+    if (kind === "raster") {
+      const pages = await ingestFile(selected);
+      const texts = await handleExtract(pages);
+      const classification = await handleClassify(texts);
+      if (classification === "syllabus") await handleSyllabus(texts);
+      else await handleDocument(texts);
+      return;
+    }
 
-    if (classification === "syllabus") await handleSyllabus(texts);
-    else if (classification === "course") await handleDocument(texts);
-    else throw new Error("Unsupported file type");
+    if (kind === "office") {
+      const textPages = await extractTextPages(selected);
+      const classification = await handleClassify(textPages);
+
+      if (classification === "syllabus") {
+        await handleSyllabus(textPages);
+        return;
+      }
+
+      const pages = await ingestFile(selected);
+      const ocrTexts = await handleExtract(pages);
+      await handleDocument(ocrTexts);
+      return;
+    }
+
+    throw new Error(`[upload] Unsupported file: ${selected.name}`);
   };
 
   return { file, handleChange };

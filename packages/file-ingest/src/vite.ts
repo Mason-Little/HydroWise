@@ -11,6 +11,7 @@ import type { Plugin, ResolvedConfig } from "vite";
 
 const WASM_URL_PREFIX = "/wasm/libreoffice/";
 const WORKER_URL = "/assets/lo-browser-worker.js";
+const PDFJS_WORKER_URL = "/assets/pdf.worker.mjs";
 
 const COOP = "Cross-Origin-Opener-Policy";
 const COEP = "Cross-Origin-Embedder-Policy";
@@ -22,7 +23,11 @@ const MIME: Record<string, string> = {
   ".data": "application/octet-stream",
 };
 
-function resolveLibraryPaths(): { wasmDir: string; workerFile: string } {
+function resolveLibraryPaths(): {
+  wasmDir: string;
+  workerFile: string;
+  pdfjsWorkerFile: string;
+} {
   const require = createRequire(import.meta.url);
   // Resolve via the wasm/loader export to get the wasm directory path.
   const loaderPath = require.resolve(
@@ -34,7 +39,8 @@ function resolveLibraryPaths(): { wasmDir: string; workerFile: string } {
     "dist",
     "browser.worker.global.js",
   );
-  return { wasmDir, workerFile };
+  const pdfjsWorkerFile = require.resolve("pdfjs-dist/build/pdf.worker.mjs");
+  return { wasmDir, workerFile, pdfjsWorkerFile };
 }
 
 function setCorsIsolationHeaders(res: {
@@ -45,7 +51,7 @@ function setCorsIsolationHeaders(res: {
 }
 
 export function hydrowiseFileIngestPlugin(): Plugin[] {
-  const { wasmDir, workerFile } = resolveLibraryPaths();
+  const { wasmDir, workerFile, pdfjsWorkerFile } = resolveLibraryPaths();
 
   // Plugin 1: dev server — serve WASM assets and inject COOP/COEP on all responses.
   const servePlugin: Plugin = {
@@ -86,6 +92,12 @@ export function hydrowiseFileIngestPlugin(): Plugin[] {
           return;
         }
 
+        if (url === PDFJS_WORKER_URL && existsSync(pdfjsWorkerFile)) {
+          res.setHeader("Content-Type", "application/javascript");
+          res.end(readFileSync(pdfjsWorkerFile));
+          return;
+        }
+
         next();
       });
     },
@@ -117,6 +129,7 @@ export function hydrowiseFileIngestPlugin(): Plugin[] {
       }
 
       copyFileSync(workerFile, path.join(assetsOutDir, "lo-browser-worker.js"));
+      copyFileSync(pdfjsWorkerFile, path.join(assetsOutDir, "pdf.worker.mjs"));
     },
   };
 
