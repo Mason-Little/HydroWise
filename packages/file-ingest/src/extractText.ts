@@ -1,23 +1,13 @@
-import type { InputFormat } from "@matbee/libreoffice-converter/browser";
-import { getDocument } from "pdfjs-dist";
+import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
 import { getFileExtension } from "@/classify";
-import { getConverter } from "@/init";
+import { fileToPdf } from "@/handlers/office";
 
-async function fileToPdf(
-  file: File,
-  ext: string,
-): Promise<ArrayBuffer | Uint8Array> {
-  if (ext === "pdf") return file.arrayBuffer();
-  const result = await getConverter().convertFile(file, {
-    inputFormat: ext as InputFormat,
-    outputFormat: "pdf",
-  });
-  return result.data;
-}
+GlobalWorkerOptions.workerSrc = "/assets/pdf.worker.mjs";
 
-export async function extractTextPages(file: File): Promise<string[]> {
-  const ext = getFileExtension(file);
-  const pdf = await getDocument({ data: await fileToPdf(file, ext) }).promise;
+async function pdfToTextPages(
+  pdfData: Uint8Array | ArrayBuffer,
+): Promise<string[]> {
+  const pdf = await getDocument({ data: pdfData }).promise;
 
   return Promise.all(
     Array.from({ length: pdf.numPages }, async (_, i) => {
@@ -29,4 +19,8 @@ export async function extractTextPages(file: File): Promise<string[]> {
         .join(" ");
     }),
   );
+}
+
+export async function extractTextPages(file: File): Promise<string[]> {
+  return pdfToTextPages(await fileToPdf(file, getFileExtension(file)));
 }

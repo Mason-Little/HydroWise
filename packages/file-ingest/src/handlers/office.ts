@@ -1,20 +1,33 @@
 import type { InputFormat } from "@matbee/libreoffice-converter/browser";
-import { getConverter } from "@/init";
+import { getFileExtension } from "@/classify";
+import { withConverter } from "@/lifecycle";
+
+export async function fileToPdf(file: File, ext: string): Promise<Uint8Array> {
+  if (ext === "pdf") return new Uint8Array(await file.arrayBuffer());
+  return withConverter((c) =>
+    c
+      .convertFile(file, {
+        inputFormat: ext as InputFormat,
+        outputFormat: "pdf",
+      })
+      .then((r) => new Uint8Array(r.data)),
+  );
+}
 
 export async function officeToPngPages(file: File): Promise<Blob[]> {
-  const converter = getConverter();
   const input = new Uint8Array(await file.arrayBuffer());
-  const ext = file.name.split(".").at(-1);
-  if (!ext) throw new Error(`[file-ingest] Missing extension: ${file.name}`);
-  const inputFormat = ext.toLowerCase() as InputFormat;
-  const pageCount = await converter.getPageCount(input, { inputFormat });
-
-  return Promise.all(
-    Array.from({ length: pageCount }, (_, i) =>
-      converter.renderPageViaConvert(input, { inputFormat }, i, 512).then((page) => {
-        const png = new Uint8Array(page.data);
-        return new Blob([png], { type: "image/png" });
-      }),
-    ),
-  );
+  const inputFormat = getFileExtension(file) as InputFormat;
+  return withConverter(async (c) => {
+    const pageCount = await c.getPageCount(input, { inputFormat });
+    return Promise.all(
+      Array.from({ length: pageCount }, (_, i) =>
+        c
+          .renderPageViaConvert(input, { inputFormat }, i, 512)
+          .then(
+            (page) =>
+              new Blob([new Uint8Array(page.data)], { type: "image/png" }),
+          ),
+      ),
+    );
+  });
 }
