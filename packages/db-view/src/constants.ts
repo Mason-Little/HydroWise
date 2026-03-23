@@ -1,4 +1,4 @@
-export const DEFAULT_APP_URL = "http://localhost:5173";
+export const DEFAULT_APP_URL = "http://localhost:1420";
 export const DEFAULT_SOCKET_HOST = "localhost";
 export const DEFAULT_SOCKET_PORT = 55432;
 export const DEFAULT_STUDIO_HOST = "localhost";

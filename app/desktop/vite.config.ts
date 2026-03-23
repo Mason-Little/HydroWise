@@ -2,12 +2,16 @@ import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-// Keep this sourced directly in local dev so Vite uses the latest plugin
-// changes instead of a stale built package artifact.
+import { hydrowiseDbViewPlugin } from "../../packages/db-view/src/vite";
 import { hydrowiseFileIngestPlugin } from "../../packages/file-ingest/src/vite";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), hydrowiseFileIngestPlugin()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    hydrowiseDbViewPlugin(),
+    hydrowiseFileIngestPlugin(),
+  ],
   optimizeDeps: {
     exclude: ["@electric-sql/pglite", "@electric-sql/pglite/vector"],
   },

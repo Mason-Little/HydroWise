@@ -1,29 +1,11 @@
-import { extractText } from "@hydrowise/ai-runtime";
-import { ingestFile } from "@hydrowise/file-ingest";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { useUpload } from "@/features/dashboard/selection/upload/hooks/useUpload";
 import { cn } from "@/lib/utils";
-import { useModelStore } from "@/store";
 
 export const Upload = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<File | null>(null);
-  const { warmVisionModel } = useModelStore();
-
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0];
-    if (!selected) return;
-
-    setFile(selected);
-    const pages = await ingestFile(selected);
-    await warmVisionModel();
-
-    // Process pages sequentially — WebGPU can't run concurrent inference sessions
-    const texts: string[] = [];
-    for (const page of pages) {
-      texts.push(await extractText(page));
-    }
-  };
+  const { file, handleChange } = useUpload();
 
   return (
     <>
