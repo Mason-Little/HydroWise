@@ -32,6 +32,8 @@ export const DocumentRouteUnroutableReasonSchema = z.enum([
 export const DocumentRouteSchema = z.discriminatedUnion("status", [
   z.object({
     status: z.literal("ready"),
+    title: z.string().min(1),
+    description: z.string().min(1),
     courseCode: z.string().min(1),
     chapter: DocumentRouteChapterPickSchema,
     topic: DocumentRouteTopicPickSchema,
