@@ -1,32 +1,39 @@
-import { getQueries, type Queries } from "@hydrowise/data";
-import { useEffect, useState } from "react";
-
-type CourseRow = Awaited<ReturnType<Queries["listCourses"]>>[number];
+import { useEffect } from "react";
+import { useDashboardContext } from "@/features/dashboard/Dashboard";
+import { useCourses } from "./hooks/useCourses";
 
 export const CourseSelector = () => {
-  const [courses, setCourses] = useState<CourseRow[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { activeCourse, setActiveCourse } = useDashboardContext();
+  const { courses, isLoading, isError } = useCourses();
 
   useEffect(() => {
-    getQueries()
-      .then((queries) => queries.listCourses())
-      .then(setCourses)
-      .catch((err) => setError(String(err?.message ?? err)))
-      .finally(() => setLoading(false));
-  }, []);
+    if (courses.length > 0 && !activeCourse) {
+      setActiveCourse(courses[0]);
+    }
+  }, [courses, activeCourse, setActiveCourse]);
 
-  if (loading)
+  if (isLoading)
     return <div className="text-muted-foreground">Loading courses…</div>;
-  if (error) return <div className="text-destructive">{error}</div>;
+  if (isError)
+    return <div className="text-destructive">Failed to load courses.</div>;
   if (courses.length === 0)
     return <div className="text-muted-foreground">No courses yet.</div>;
 
   return (
     <ul className="space-y-1">
       {courses.map((course) => (
-        <li key={course.id} className="text-sm">
-          {course.courseCode} — {course.courseName}
+        <li key={course.id}>
+          <button
+            type="button"
+            onClick={() => setActiveCourse(course)}
+            className={
+              activeCourse?.id === course.id
+                ? "w-full text-left text-sm font-medium"
+                : "w-full text-left text-sm text-muted-foreground hover:text-foreground"
+            }
+          >
+            {course.courseCode} — {course.courseName}
+          </button>
         </li>
       ))}
     </ul>
