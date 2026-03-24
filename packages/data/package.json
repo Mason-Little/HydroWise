@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@hydrowise/db": "workspace:*",
-    "@hydrowise/entities": "workspace:*"
+    "@hydrowise/entities": "workspace:*",
+    "drizzle-orm": "0.45.1"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
