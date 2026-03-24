@@ -14,17 +14,10 @@ import type {
 type ReadyDocumentRoute = Extract<DocumentRoute, { status: "ready" }>;
 
 type RoutedDocumentResult = {
-  status: "routed";
   courseId: string;
   chapterId: string;
   topicId: string;
-  createdChapter: Chapter | null;
-  createdTopic: Topic | null;
 };
-
-export type HandleDocumentResult =
-  | RoutedDocumentResult
-  | Extract<DocumentRoute, { status: "unroutable" }>;
 
 const normalize = (s: string) => s.trim().toLowerCase();
 
@@ -68,14 +61,14 @@ const resolveChapterTarget = async (
         `[upload] Router returned unknown chapter: ${chapterName}`,
       );
     }
-    return { chapterId: chapter.id, createdChapter: null };
+    return { chapterId: chapter.id };
   }
 
   const createdChapter = await queries.createChapter({
     ...route.chapter.chapter,
     courseId,
   });
-  return { chapterId: createdChapter.id, createdChapter };
+  return { chapterId: createdChapter.id };
 };
 
 const resolveTopicTarget = async (
@@ -93,19 +86,19 @@ const resolveTopicTarget = async (
     if (!topic) {
       throw new Error(`[upload] Router returned unknown topic: ${topicName}`);
     }
-    return { topicId: topic.id, createdTopic: null };
+    return { topicId: topic.id };
   }
 
   const createdTopic = await queries.createTopic({
     ...route.topic.topic,
     chapterId,
   });
-  return { topicId: createdTopic.id, createdTopic };
+  return { topicId: createdTopic.id };
 };
 
 export const handleDocument = async (
   pages: string[],
-): Promise<HandleDocumentResult> => {
+): Promise<RoutedDocumentResult> => {
   const queries = await getQueries();
   const pageInput = pages
     .map((page, index) => `Page ${index + 1}\n${page}`)
@@ -125,11 +118,12 @@ export const handleDocument = async (
       ?.map((p) => `Page ${p.pageNumber}: ${p.abstract}`)
       .join("\n") ?? "";
 
+  console.log("[upload] course tree", courseTree);
+  console.log("[upload] abstracts text", abstractsText);
   const route = await documentRouter(abstractsText, courseTree);
 
   if (route.status === "unroutable") {
-    console.log("[upload] document route", route);
-    return route;
+    throw new Error(`[upload] Document route is unroutable: ${route.reason}`);
   }
 
   const course = courses.find(
@@ -142,27 +136,33 @@ export const handleDocument = async (
     );
   }
 
-  const { chapterId, createdChapter } = await resolveChapterTarget(
+  const { chapterId } = await resolveChapterTarget(
     route,
     course.id,
     chapters,
     queries,
   );
-  const { topicId, createdTopic } = await resolveTopicTarget(
+  const { topicId } = await resolveTopicTarget(
     route,
     chapterId,
     topics,
     queries,
   );
 
-  const result: RoutedDocumentResult = {
-    status: "routed",
+  const document = await queries.createDocument({
+    name: route.title,
+    description: route.description,
     courseId: course.id,
     chapterId,
     topicId,
-    createdChapter,
-    createdTopic,
+  });
+
+  console.log("[upload] document created", document);
+
+  const result: RoutedDocumentResult = {
+    courseId: course.id,
+    chapterId,
+    topicId,
   };
-  console.log("[upload] document route", result);
   return result;
 };
