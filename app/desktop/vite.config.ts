@@ -2,16 +2,10 @@ import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { hydrowiseDbViewPlugin } from "../../packages/db-view/src/vite";
 import { hydrowiseFileIngestPlugin } from "../../packages/file-ingest/src/vite";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-    hydrowiseDbViewPlugin(),
-    hydrowiseFileIngestPlugin(),
-  ],
+  plugins: [react(), tailwindcss(), hydrowiseFileIngestPlugin()],
   optimizeDeps: {
     exclude: ["@electric-sql/pglite", "@electric-sql/pglite/vector"],
   },

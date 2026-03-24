@@ -4,11 +4,10 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 // Keep these sourced directly in local dev so Vite uses the latest plugin
 // changes instead of stale built package artifacts.
-import { hydrowiseDbViewPlugin } from "../../packages/db-view/src/vite";
 import { hydrowiseFileIngestPlugin } from "../../packages/file-ingest/src/vite";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), hydrowiseDbViewPlugin(), hydrowiseFileIngestPlugin()],
+  plugins: [react(), tailwindcss(), hydrowiseFileIngestPlugin()],
   optimizeDeps: {
     exclude: ["@electric-sql/pglite", "@electric-sql/pglite/vector"],
   },
