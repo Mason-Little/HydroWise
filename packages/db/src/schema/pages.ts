@@ -12,7 +12,7 @@ export const pages = pgTable(
     pageAbstract: text("page_abstract").notNull(),
     pageContent: text("page_content").notNull(),
     pageImage: bytea("page_image"),
-    pageEmbedding: vector("page_embedding", { dimensions: 768 }).notNull(),
+    pageEmbedding: vector("page_embedding", { dimensions: 384 }).notNull(),
   },
   (table) => [
     index("pages_embedding_cosine_idx").using(
