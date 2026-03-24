@@ -58,6 +58,7 @@ pub fn start_desktop_model_server(app: &AppHandle) -> Result<(), String> {
             "--parallel",
             PARALLEL,
             "--no-webui",
+            "--embeddings",
         ])
         .spawn()
         .map_err(|err| format!("failed to spawn llama server: {err}"))?;
