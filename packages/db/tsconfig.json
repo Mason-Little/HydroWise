@@ -6,7 +6,7 @@
     "lib": ["ES2022"],
     "strict": true,
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": ["node", "@proj-airi/unplugin-drizzle-orm-migrations/types"],
     "baseUrl": ".",
     "paths": { "@/*": ["./src/*"] },
     "noEmit": true
