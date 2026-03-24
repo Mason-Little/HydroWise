@@ -12,9 +12,13 @@ export function useCourseColor(courseCode: string) {
     inactive: {
       backgroundColor: `hsl(${hue}, 45%, 88%)`,
       color: `hsl(${hue}, 35%, 30%)`,
+      border: `1px solid hsl(${hue}, 45%, 80%)`,
+      boxShadow: `0 1px 3px hsl(${hue}, 30%, 70%, 0.25)`,
     },
     active: {
       backgroundColor: `hsl(${hue}, 55%, 72%)`,
+      border: `1px solid hsl(${hue}, 55%, 65%)`,
+      boxShadow: `0 1px 3px hsl(${hue}, 40%, 55%, 0.3)`,
     },
   };
 }
