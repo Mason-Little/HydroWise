@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
-import { useCourses } from "./hooks/useCourses";
+import { CoursePill } from "@/features/dashboard/selection/course-selector/components/CoursePill";
+import { useCourses } from "@/features/dashboard/selection/course-selector/hooks/useCourses";
 
 export const CourseSelector = () => {
   const { activeCourse, setActiveCourse } = useDashboardContext();
@@ -20,22 +21,15 @@ export const CourseSelector = () => {
     return <div className="text-muted-foreground">No courses yet.</div>;
 
   return (
-    <ul className="space-y-1">
+    <div className="flex w-full gap-2">
       {courses.map((course) => (
-        <li key={course.id}>
-          <button
-            type="button"
-            onClick={() => setActiveCourse(course)}
-            className={
-              activeCourse?.id === course.id
-                ? "w-full text-left text-sm font-medium"
-                : "w-full text-left text-sm text-muted-foreground hover:text-foreground"
-            }
-          >
-            {course.courseCode} — {course.courseName}
-          </button>
-        </li>
+        <CoursePill
+          key={course.id}
+          course={course}
+          isActive={activeCourse?.id === course.id}
+          onClick={() => setActiveCourse(course)}
+        />
       ))}
-    </ul>
+    </div>
   );
 };
