@@ -8,6 +8,7 @@ import { handleClassify } from "@/features/dashboard/selection/upload/helpers/ha
 import { handleDocument } from "@/features/dashboard/selection/upload/helpers/handleDocument";
 import { handleExtract } from "@/features/dashboard/selection/upload/helpers/handleExtract";
 import { handleSyllabus } from "@/features/dashboard/selection/upload/helpers/handleSyllabus";
+import { handlePages } from "../helpers/handlePage";
 
 export const useUpload = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -40,8 +41,15 @@ export const useUpload = () => {
 
       const pages = await ingestFile(selected);
       const ocrTexts = await handleExtract(pages);
-      await handleDocument(ocrTexts);
-      return;
+      const { documentId, abstracts } = await handleDocument(ocrTexts);
+
+      const pageDrafts = ocrTexts.map((ocrText, i) => ({
+        blob: pages[i],
+        ocrText,
+        abstract: abstracts[i] ?? "",
+      }));
+
+      await handlePages(documentId, pageDrafts);
     }
 
     throw new Error(`[upload] Unsupported file: ${selected.name}`);

@@ -14,9 +14,8 @@ import type {
 type ReadyDocumentRoute = Extract<DocumentRoute, { status: "ready" }>;
 
 type RoutedDocumentResult = {
-  courseId: string;
-  chapterId: string;
-  topicId: string;
+  documentId: string;
+  abstracts: string[];
 };
 
 const normalize = (s: string) => s.trim().toLowerCase();
@@ -160,9 +159,8 @@ export const handleDocument = async (
   console.log("[upload] document created", document);
 
   const result: RoutedDocumentResult = {
-    courseId: course.id,
-    chapterId,
-    topicId,
+    documentId: document.id,
+    abstracts: abstracts.pages?.map((p) => p.abstract) ?? [],
   };
   return result;
 };
