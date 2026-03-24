@@ -1,7 +1,10 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { PlatformProvider, type PlatformConfig } from "@/platform";
+import { type PlatformConfig, PlatformProvider } from "@/platform";
+
+const queryClient = new QueryClient();
 
 type AppProvidersProps = {
   platform: PlatformConfig;
@@ -10,10 +13,12 @@ type AppProvidersProps = {
 
 export const AppProviders = ({ platform, children }: AppProvidersProps) => {
   return (
-    <PlatformProvider platform={platform}>
-      <TooltipProvider>
-        <SidebarProvider defaultOpen={false}>{children}</SidebarProvider>
-      </TooltipProvider>
-    </PlatformProvider>
+    <QueryClientProvider client={queryClient}>
+      <PlatformProvider platform={platform}>
+        <TooltipProvider>
+          <SidebarProvider defaultOpen={false}>{children}</SidebarProvider>
+        </TooltipProvider>
+      </PlatformProvider>
+    </QueryClientProvider>
   );
 };
