@@ -1,23 +1,20 @@
 import { z } from "zod";
 
-const supportedFileTypes = z.enum(["pdf", "docx", "pptx", "md", "image"]);
-
-const supportedEmbeddingStatuses = z.enum(["pending", "completed", "failed"]);
-
 export const DocumentSchema = z.object({
   id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  courseId: z.string(),
   chapterId: z.string(),
   topicId: z.string().nullable(),
-  name: z.string(),
-  fileType: supportedFileTypes,
-  embeddingStatus: supportedEmbeddingStatuses,
 });
 
 export const CreateDocumentInputSchema = DocumentSchema.pick({
+  name: true,
+  description: true,
+  courseId: true,
   chapterId: true,
   topicId: true,
-  name: true,
-  fileType: true,
 });
 
 export type Document = z.infer<typeof DocumentSchema>;
