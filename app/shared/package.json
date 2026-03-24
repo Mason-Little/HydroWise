@@ -15,6 +15,7 @@
     "@fontsource/dm-sans": "^5.2.8",
     "@fontsource-variable/geist-mono": "^5.2.7",
     "@hydrowise/data": "workspace:*",
+    "@hydrowise/entities": "workspace:*",
     "@hydrowise/ai-runtime": "workspace:*",
     "@hydrowise/file-ingest": "workspace:*",
     "class-variance-authority": "^0.7.1",

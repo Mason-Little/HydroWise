@@ -48,6 +48,7 @@
         "@fontsource/dm-sans": "^5.2.8",
         "@hydrowise/ai-runtime": "workspace:*",
         "@hydrowise/data": "workspace:*",
+        "@hydrowise/entities": "workspace:*",
         "@hydrowise/file-ingest": "workspace:*",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
