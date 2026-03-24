@@ -1,9 +1,10 @@
 import { extractText } from "@hydrowise/ai-runtime";
-import { useModelStore } from "@/store/modelStore";
 
-export const handleExtract = async (pages: Blob[]) => {
-  const { warmVisionModel, coolVisionModel } = useModelStore.getState();
-
+export const handleExtract = async (
+  pages: Blob[],
+  warmVisionModel: () => Promise<void>,
+  coolVisionModel: () => Promise<void>,
+) => {
   await warmVisionModel();
 
   const texts: string[] = [];
