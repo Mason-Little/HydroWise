@@ -17,16 +17,19 @@ export const useUpload = () => {
   const queryClient = useQueryClient();
   const { warmVisionModel, coolVisionModel } = useModelStore();
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (!selected) return;
-
     setFile(selected);
+  };
 
-    const kind = classifyFile(selected);
+  const handleSubmit = async () => {
+    if (!file) return;
+
+    const kind = classifyFile(file);
 
     if (kind === "raster") {
-      const pages = await ingestFile(selected);
+      const pages = await ingestFile(file);
       const texts = await handleExtract(
         pages,
         warmVisionModel,
@@ -44,7 +47,7 @@ export const useUpload = () => {
     }
 
     if (kind === "office") {
-      const textPages = await extractTextPages(selected);
+      const textPages = await extractTextPages(file);
       const classification = await handleClassify(textPages);
 
       if (classification === "syllabus") {
@@ -53,7 +56,7 @@ export const useUpload = () => {
         return;
       }
 
-      const pages = await ingestFile(selected);
+      const pages = await ingestFile(file);
       const ocrTexts = await handleExtract(
         pages,
         warmVisionModel,
@@ -72,8 +75,10 @@ export const useUpload = () => {
       return;
     }
 
-    throw new Error(`[upload] Unsupported file: ${selected.name}`);
+    throw new Error(`[upload] Unsupported file: ${file.name}`);
   };
 
-  return { file, handleChange };
+  const clearFile = () => setFile(null);
+
+  return { file, handleChange, handleSubmit, clearFile };
 };

@@ -1,45 +1,53 @@
+import { FileIcon, SendIcon, UploadIcon, XIcon } from "lucide-react";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { useUpload } from "@/features/dashboard/selection/upload/hooks/useUpload";
-import { cn } from "@/lib/utils";
 
 export const Upload = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { file, handleChange } = useUpload();
+  const { file, handleChange, handleSubmit, clearFile } = useUpload();
 
   return (
-    <>
+    <div className="flex items-center gap-2">
       <input
         ref={inputRef}
         type="file"
         className="hidden"
         onChange={handleChange}
       />
-      <Button
-        variant="outline"
-        onClick={() => inputRef.current?.click()}
-        className={cn(
-          "h-auto w-full flex-col gap-1 border-dashed py-6",
-          file && "border-solid bg-muted/30",
-        )}
-      >
-        {file ? (
-          <>
-            <span className="font-medium">{file.name}</span>
-            <span className="text-[0.625rem] text-muted-foreground">
+      {file ? (
+        <div className="flex min-w-0 flex-1 items-center gap-3 rounded-lg border px-4 py-2.5 text-sm">
+          <FileIcon className="size-4 shrink-0 text-muted-foreground" />
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-medium text-foreground">{file.name}</p>
+            <p className="text-xs text-muted-foreground">
               {(file.size / 1024).toFixed(1)} KB
-              {" · click to change"}
-            </span>
-          </>
-        ) : (
-          <>
-            <span>Upload a file</span>
-            <span className="text-[0.625rem] text-muted-foreground">
-              Click to browse
-            </span>
-          </>
-        )}
-      </Button>
-    </>
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={clearFile}
+            className="shrink-0 rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <XIcon className="size-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="shrink-0 rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <SendIcon className="size-3.5" />
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          className="flex flex-1 cursor-pointer items-center gap-3 rounded-lg border border-dashed bg-muted/30 px-4 py-4 text-sm text-muted-foreground transition-colors hover:bg-muted/50"
+        >
+          <UploadIcon className="size-4 shrink-0" />
+          <span>Drop a syllabus or document to add to a course</span>
+        </button>
+      )}
+    </div>
   );
 };
