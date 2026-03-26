@@ -9,13 +9,13 @@ export const Info = () => {
   const [view, setView] = useState<"overview" | "chapter">("overview");
 
   return (
-    <div className="mt-3 rounded-md border border-border bg-card p-4">
-      <div className="mb-3 flex items-center justify-between gap-4">
+    <div className="mt-2.5 rounded-md border border-border bg-card p-3.5">
+      <div className="mb-2.5 flex items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs text-muted-foreground">{activeCourse?.courseCode ?? "—"}</p>
-          <p className="truncate text-base font-semibold">{activeCourse?.courseName ?? "—"}</p>
+          <p className="truncate text-sm font-semibold">{activeCourse?.courseName ?? "—"}</p>
         </div>
-        <div className="w-40 shrink-0">
+        <div className="w-36 shrink-0">
           <PillToggle
             options={[
               { value: "overview", label: "Overview" },

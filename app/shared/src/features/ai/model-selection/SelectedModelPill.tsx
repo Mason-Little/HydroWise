@@ -41,20 +41,20 @@ export const SelectedModelPill = () => {
       <button
         type="button"
         className={cn(
-          "text-foreground inline-flex h-9 items-center gap-2.5 rounded-xl border border-border px-3.5 shadow-sm transition-colors",
+          "text-foreground inline-flex h-8 items-center gap-2 rounded-lg border border-border px-3 shadow-sm transition-colors",
           open ? "bg-secondary" : "bg-card",
         )}
       >
-        <span className="flex items-center gap-2.5">
-          <span className={cn("flex size-3.5 items-center justify-center rounded-full", outer)}>
+        <span className="flex items-center gap-2">
+          <span className={cn("flex size-3 items-center justify-center rounded-full", outer)}>
             <span className={cn("size-2 rounded-full", inner)} />
           </span>
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-xs font-semibold text-foreground">
             {activeModelTier ?? "—"}
           </span>
         </span>
         <ChevronDownIcon
-          className={`size-3.5 text-muted-foreground transition-transform ${open ? "rotate-180" : "rotate-0"}`}
+          className={`size-3 text-muted-foreground transition-transform ${open ? "rotate-180" : "rotate-0"}`}
           strokeWidth={2.25}
         />
       </button>

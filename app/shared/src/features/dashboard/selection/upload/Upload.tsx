@@ -7,7 +7,7 @@ export const Upload = () => {
   const { file, handleChange, handleSubmit, clearFile } = useUpload();
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5">
       <input
         ref={inputRef}
         type="file"
@@ -15,7 +15,7 @@ export const Upload = () => {
         onChange={handleChange}
       />
       {file ? (
-        <div className="flex min-w-0 flex-1 items-center gap-3 rounded-lg border px-4 py-2.5 text-sm">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5 rounded-md border px-3 py-2 text-sm">
           <FileIcon className="size-4 shrink-0 text-muted-foreground" />
           <div className="min-w-0 flex-1">
             <p className="truncate font-medium text-foreground">{file.name}</p>
@@ -42,7 +42,7 @@ export const Upload = () => {
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="flex flex-1 cursor-pointer items-center gap-3 rounded-lg border border-dashed bg-muted/30 px-4 py-4 text-sm text-muted-foreground transition-colors hover:bg-muted/50"
+          className="flex flex-1 cursor-pointer items-center gap-2.5 rounded-md border border-dashed bg-muted/30 px-3 py-3 text-sm text-muted-foreground transition-colors hover:bg-muted/50"
         >
           <UploadIcon className="size-4 shrink-0" />
           <span>Drop a syllabus or document to add to a course</span>

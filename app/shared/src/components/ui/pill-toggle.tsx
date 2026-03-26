@@ -41,9 +41,9 @@ export const PillToggle = <T extends string = string>({
         onValueChange={handleValueChange}
         spacing={1}
         aria-label={ariaLabel}
-        indicatorClassName="inset-y-1 rounded-lg border border-border bg-card shadow-sm"
+        indicatorClassName="inset-y-1 rounded-md border border-border bg-card shadow-sm"
         className={cn(
-          "relative grid w-full rounded-xl border border-border bg-[var(--surface-toggle-track)] p-1 shadow-sm",
+          "relative grid w-full rounded-lg border border-border bg-[var(--surface-toggle-track)] p-0.5 shadow-sm",
           `grid-cols-${options.length}`,
           className,
         )}
@@ -53,11 +53,11 @@ export const PillToggle = <T extends string = string>({
             key={option.value}
             value={option.value}
             aria-label={typeof option.label === "string" ? option.label : option.value}
-            className="h-8 w-full overflow-hidden rounded-lg border border-transparent bg-transparent px-1 text-muted-foreground shadow-none transition-[color,border-color,transform] duration-200 hover:bg-transparent hover:text-secondary-foreground focus-visible:ring-1 focus-visible:ring-ring data-[state=on]:text-foreground"
+            className="h-7 w-full overflow-hidden rounded-md border border-transparent bg-transparent px-1 text-muted-foreground shadow-none transition-[color,border-color,transform] duration-200 hover:bg-transparent hover:text-secondary-foreground focus-visible:ring-1 focus-visible:ring-ring data-[state=on]:text-foreground"
           >
-            <span className="relative z-10 inline-flex h-full w-full items-center justify-center gap-1 rounded-md px-1.5">
+            <span className="relative z-10 inline-flex h-full w-full items-center justify-center gap-1 rounded-md px-1">
               {typeof option.label === "string" ? (
-                <span className="text-xs font-semibold tracking-normal">
+                <span className="text-[11px] font-semibold tracking-normal">
                   {option.label}
                 </span>
               ) : (

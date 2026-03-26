@@ -12,9 +12,9 @@ const toggleVariants = cva(
         outline: "border border-input bg-transparent hover:bg-muted",
       },
       size: {
-        default: "h-7 min-w-7 px-2",
-        sm: "h-6 min-w-6 rounded-[min(var(--radius-md),8px)] px-1.5 text-[0.625rem] [&_svg:not([class*='size-'])]:size-3",
-        lg: "h-8 min-w-8 px-2",
+        default: "h-[26px] min-w-[26px] px-2",
+        sm: "h-[22px] min-w-[22px] rounded-[min(var(--radius-md),8px)] px-1.5 text-[0.625rem] [&_svg:not([class*='size-'])]:size-3",
+        lg: "h-[30px] min-w-[30px] px-2",
       },
     },
     defaultVariants: {

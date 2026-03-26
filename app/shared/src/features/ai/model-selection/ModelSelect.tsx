@@ -28,7 +28,7 @@ export const ModelSelect = ({
       <PopoverContent
         align="end"
         sideOffset={8}
-        className="w-[var(--width-popover-panel)] max-w-[var(--max-width-popover)] rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-popover)]"
+        className="w-[var(--width-popover-panel)] max-w-[var(--max-width-popover)] rounded-xl border border-border bg-card p-2.5 shadow-[var(--shadow-popover)]"
       >
         {userBootstrapRequired && <ModelBootstrapBanner />}
         <ModelSelectToggleGroup />
