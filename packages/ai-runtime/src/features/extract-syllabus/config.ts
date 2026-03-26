@@ -10,16 +10,15 @@ FIELDS TO EXTRACT:
 
 courseCode — the course code (e.g. "BIOL 101"). null if absent.
 courseName — the full course name. null if absent.
-term — semester and year (e.g. "Fall 2024"). null if absent.
-credits — number of credit hours as a number. null if absent.
 
 professorInformation — object with professorName, professorEmail, professorOffice (room/location), professorOfficeHours (days and times). Set sub-fields to null individually if not stated or deferred (see DEFERRED VALUE RULE above).
 
-schedule — meeting days, times, and room when explicitly stated (e.g. "Mon/Wed 2:00–3:15pm, Room 204"). null if only workload or modality is described without a real timetable.
-
-prerequisites — exact wording from the syllabus. Use "None" only if the document says none. null if not mentioned.
-
-textbook — short citation: author lastname(s), short title, edition. Omit publisher and ISBN. Add "(open access)" if stated. null if no required text.
+courseDetails — object with the following sub-fields (set each to null individually if not stated or deferred):
+  term — semester and year (e.g. "Fall 2024").
+  schedule — meeting days, times, and room when explicitly stated (e.g. "Mon/Wed 2:00–3:15pm, Room 204"). null if only workload or modality is described without a real timetable.
+  prerequisites — exact wording from the syllabus. Use "None" only if the document says none. null if not mentioned.
+  textbook — short citation: author lastname(s), short title, edition. Omit publisher and ISBN. Add "(open access)" if stated. null if no required text.
+  credits — number of credit hours as a number. 0 if absent.
 
 gradeRubric — array of { category, weight } for every grading item listed. Weights should be integers summing to 100 when a complete breakdown is given (use midpoint for ranges; adjust the largest item if rounding breaks the total). Include partial breakdowns even if they do not sum to 100. null if no breakdown exists.
 
