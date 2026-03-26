@@ -3,6 +3,9 @@ export const extractSyllabusPrompt = () =>
 
 Extract every field listed below from the document. Always include every field in your response — set it to null if the information is not present. Do not omit fields. Do not invent facts.
 
+DEFERRED VALUE RULE:
+If a field's value is a redirect to an external system rather than the actual information — for example "posted on eLearn", "see Canvas", "available on Blackboard", "check the LMS", "refer to Moodle", "TBA", "to be announced", or any similar deferral — set that field to null. A null value signals to the user that they need to supply the information themselves.
+
 FIELDS TO EXTRACT:
 
 courseCode — the course code (e.g. "BIOL 101"). null if absent.
@@ -10,7 +13,7 @@ courseName — the full course name. null if absent.
 term — semester and year (e.g. "Fall 2024"). null if absent.
 credits — number of credit hours as a number. null if absent.
 
-professorInformation — object with professorName, professorEmail, professorOffice (room/location), professorOfficeHours (days and times). Set sub-fields to null individually if not stated. If office hours say "TBA" or "see LMS", set professorOfficeHours to null.
+professorInformation — object with professorName, professorEmail, professorOffice (room/location), professorOfficeHours (days and times). Set sub-fields to null individually if not stated or deferred (see DEFERRED VALUE RULE above).
 
 schedule — meeting days, times, and room when explicitly stated (e.g. "Mon/Wed 2:00–3:15pm, Room 204"). null if only workload or modality is described without a real timetable.
 
