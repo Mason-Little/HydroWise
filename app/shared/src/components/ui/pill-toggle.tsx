@@ -42,9 +42,9 @@ export const PillToggle = <T extends string = string>({
         spacing={1}
         aria-label={ariaLabel}
         indicatorClassName="inset-y-1 rounded-md border border-border bg-card shadow-sm"
+        style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}
         className={cn(
           "relative grid w-full rounded-lg border border-border bg-[var(--surface-toggle-track)] p-0.5 shadow-sm",
-          `grid-cols-${options.length}`,
           className,
         )}
       >
