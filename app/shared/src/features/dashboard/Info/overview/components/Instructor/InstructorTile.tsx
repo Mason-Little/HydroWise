@@ -1,7 +1,8 @@
 import type { CourseRow } from "@/features/dashboard/Dashboard";
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
-import { EditableField } from "@/features/dashboard/Info/overview/components/instructor/components/EditableField";
+import { EditableField } from "@/features/dashboard/Info/overview/components/EditableField";
 import { useUpdateProfessorInformation } from "@/features/dashboard/Info/overview/components/instructor/hooks/useUpdateProfessorInformation";
+import { OverviewSectionCard } from "@/features/dashboard/Info/overview/components/OverviewSectionCard";
 
 export const InstructorTile = () => {
   const { activeCourse } = useDashboardContext();
@@ -22,10 +23,7 @@ const InstructorTileContent = ({ course }: { course: CourseRow }) => {
   return (
     // TODO: Visual pass on this tile — spacing, hierarchy, and alignment with the rest of Overview
     // when we finish the Info UI polish.
-    <div className="rounded-md border border-[var(--border-solid)] px-3.5 py-3">
-      <p className="mb-1 text-[10px] font-semibold tracking-widest text-muted-foreground uppercase">
-        Instructor
-      </p>
+    <OverviewSectionCard title="Instructor">
       <h2 className="mb-1.5 text-lg font-bold leading-tight">
         {professorName}
       </h2>
@@ -46,6 +44,6 @@ const InstructorTileContent = ({ course }: { course: CourseRow }) => {
           onSave={(next) => mutate({ professorOfficeHours: next })}
         />
       </div>
-    </div>
+    </OverviewSectionCard>
   );
 };

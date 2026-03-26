@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // TODO: Polish interactive states — hover/focus/active on the display buttons and editing input
 // feel rough; refine so the click-to-edit affordance looks intentional and cohesive.
@@ -18,6 +18,11 @@ export const EditableField = ({
 }: EditableFieldProps) => {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(value ?? "");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (editing) inputRef.current?.select();
+  }, [editing]);
 
   const startEditing = () => {
     setDraft(value ?? "");
@@ -38,10 +43,10 @@ export const EditableField = ({
   if (editing) {
     return (
       <input
-        ref={(el) => el?.select()}
+        ref={inputRef}
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
-        onBlur={commit}
+        onBlur={cancel}
         onKeyDown={(e) => {
           if (e.key === "Enter") commit();
           if (e.key === "Escape") cancel();
