@@ -23,8 +23,8 @@ export const PolicySchema = z.object({
 export const ProfessorInformationSchema = z.object({
   professorName: z.string(),
   professorEmail: z.string(),
-  professorOffice: z.string(),
-  professorOfficeHours: z.string(),
+  professorOffice: z.string().nullable(),
+  professorOfficeHours: z.string().nullable(),
 });
 
 export const CourseSchema = z.object({

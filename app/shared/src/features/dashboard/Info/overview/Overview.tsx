@@ -1,5 +1,5 @@
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
-import { InstructorTile } from "@/features/dashboard/Info/overview/components/InstructorTile";
+import { InstructorTile } from "@/features/dashboard/Info/overview/components/instructor/InstructorTile";
 
 export const Overview = () => {
   const { activeCourse } = useDashboardContext();

@@ -4,14 +4,14 @@ import { CoursePill } from "@/features/dashboard/selection/course-selector/compo
 import { useCourses } from "@/features/dashboard/selection/course-selector/hooks/useCourses";
 
 export const CourseSelector = () => {
-  const { activeCourse, setActiveCourse } = useDashboardContext();
+  const { activeCourse, setActiveCourseId } = useDashboardContext();
   const { courses, isLoading, isError } = useCourses();
 
   useEffect(() => {
     if (courses.length > 0 && !activeCourse) {
-      setActiveCourse(courses[0]);
+      setActiveCourseId(courses[0].id);
     }
-  }, [courses, activeCourse, setActiveCourse]);
+  }, [courses, activeCourse, setActiveCourseId]);
 
   if (isLoading)
     return <div className="text-muted-foreground">Loading courses…</div>;
@@ -27,7 +27,7 @@ export const CourseSelector = () => {
           key={course.id}
           course={course}
           isActive={activeCourse?.id === course.id}
-          onClick={() => setActiveCourse(course)}
+          onClick={() => setActiveCourseId(course.id)}
         />
       ))}
     </div>
