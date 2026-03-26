@@ -1,4 +1,5 @@
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
+import { InstructorTile } from "@/features/dashboard/Info/overview/components/InstructorTile";
 
 export const Overview = () => {
   const { activeCourse } = useDashboardContext();
@@ -6,9 +7,8 @@ export const Overview = () => {
   if (!activeCourse) return null;
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold">{activeCourse.courseName}</h2>
-      <p className="text-sm text-muted-foreground">{activeCourse.courseCode}</p>
+    <div className="flex flex-col gap-2.5">
+      <InstructorTile />
     </div>
   );
 };
