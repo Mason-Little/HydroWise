@@ -12,10 +12,7 @@ export const Info = () => {
     <div className="mt-2.5 rounded-md border border-border bg-card p-3.5">
       <div className="mb-2.5 flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-xs text-muted-foreground">
-            {activeCourse?.courseCode ?? "—"}
-          </p>
-          <p className="truncate text-sm font-semibold">
+          <p className="truncate text-lg font-bold leading-tight tracking-tight text-foreground">
             {activeCourse?.courseName ?? "—"}
           </p>
         </div>

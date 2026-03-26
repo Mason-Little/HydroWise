@@ -24,7 +24,7 @@ const InstructorTileContent = ({ course }: { course: CourseRow }) => {
     // TODO: Visual pass on this tile — spacing, hierarchy, and alignment with the rest of Overview
     // when we finish the Info UI polish.
     <OverviewSectionCard title="Instructor">
-      <h2 className="mb-1.5 text-lg font-bold leading-tight">
+      <h2 className="mb-1.5 text-sm font-semibold leading-tight text-foreground">
         {professorName}
       </h2>
       <p className="text-xs text-muted-foreground">{professorEmail}</p>
