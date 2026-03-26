@@ -27,23 +27,30 @@ export const ProfessorInformationSchema = z.object({
   professorOfficeHours: z.string().nullable(),
 });
 
+export const CourseDetailsSchema = z.object({
+  term: z.string().nullable(),
+  schedule: z.string().nullable(),
+  prerequisites: z.string().nullable(),
+  textbook: z.string().nullable(),
+  credits: z.number().int(),
+});
+
 export const CourseSchema = z.object({
   id: z.string(),
   courseName: z.string().min(1),
   courseCode: z.string().min(1),
-  term: z.string(),
-  credits: z.number().int(),
-  prerequisites: z.string(),
-  textbook: z.string(),
-  schedule: z.string(),
   gradeRubric: z.array(GradeRubricItemSchema),
   gradeScale: z.array(GradeScaleItemSchema),
   testDates: z.array(TestDateSchema),
   professorInformation: ProfessorInformationSchema,
+  courseDetails: CourseDetailsSchema,
   policies: z.array(PolicySchema),
 });
 
 export const CreateCourseInputSchema = CourseSchema.omit({ id: true });
+
+export type CourseDetails = z.infer<typeof CourseDetailsSchema>;
+export type CourseDetailsPatch = Partial<CourseDetails>;
 
 export type GradeRubricItem = z.infer<typeof GradeRubricItemSchema>;
 export type GradeScaleItem = z.infer<typeof GradeScaleItemSchema>;
