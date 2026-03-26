@@ -1,7 +1,7 @@
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
-import { useChapters } from "@/features/dashboard/Info/chapters/hooks/useChapters";
+import { useChapters } from "@/features/dashboard/Info/material/hooks/useChapters";
 
-export const Chapter = () => {
+export const Material = () => {
   const { activeCourse } = useDashboardContext();
   const { chapters, isLoading } = useChapters(activeCourse?.id ?? "");
 
