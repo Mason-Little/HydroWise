@@ -1,6 +1,7 @@
 import type { Db } from "@hydrowise/db";
 import { courses } from "@hydrowise/db/schema";
 import type {
+  CourseDetails,
   CreateCourseInput,
   ProfessorInformation,
 } from "@hydrowise/entities";
@@ -31,6 +32,25 @@ export const makeCourseRepo = (db: Db) => {
       const [row] = await db
         .update(courses)
         .set({ professorInformation: updated })
+        .where(eq(courses.id, courseId))
+        .returning();
+      return row;
+    },
+
+    updateCourseDetails: async (
+      courseId: string,
+      patch: Partial<CourseDetails>,
+    ) => {
+      const [existing] = await db
+        .select()
+        .from(courses)
+        .where(eq(courses.id, courseId));
+      if (!existing) throw new Error(`Course not found: ${courseId}`);
+
+      const updated = { ...existing.courseDetails, ...patch };
+      const [row] = await db
+        .update(courses)
+        .set({ courseDetails: updated })
         .where(eq(courses.id, courseId))
         .returning();
       return row;
