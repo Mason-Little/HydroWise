@@ -27,6 +27,6 @@ gradeScale — array of { letter, min } for each letter grade row when a scale t
 
 testDates — array of { name, date } for explicitly scheduled assessments, labs, exams, or assignment deadlines. Use the date format stated in the syllabus (e.g. "Jan 19" or "Week 3"). null if no assessment schedule is given.
 
-policies — array of { label, text } for course-specific rules: late work, attendance, missed exams, AI/technology use, special passing requirements. One sentence per policy. Skip generic institutional boilerplate. null if none stated. Maximum 6 entries.
+policies — array of { label, summary } for course-specific rules: late work, attendance, missed exams, AI/technology use, special passing requirements. Both fields must be extremely terse — label is 1–3 words (e.g. "Late work", "AI tools", "Attendance"), summary is the consequence or rule distilled to the shortest possible phrase (e.g. "Grade of 0", "Prohibited", "Labs mandatory"). Do not copy sentences from the syllabus. Skip generic institutional boilerplate. null if none stated. Maximum 6 entries.
 
 chapters — array of { chapterName, chapterDescription } for each distinct topic unit in the course schedule. chapterName is the unit or topic title (e.g. "Evolution", "Cell Biology"). chapterDescription includes the week range and any reading/chapter references (e.g. "Weeks 1–5 · Ch. 19–23"). Create one entry per topic unit — do not merge unrelated topics into a single entry. null if the syllabus has no content outline.`;

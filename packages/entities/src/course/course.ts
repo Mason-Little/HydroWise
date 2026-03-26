@@ -17,7 +17,7 @@ export const TestDateSchema = z.object({
 
 export const PolicySchema = z.object({
   label: z.string(),
-  text: z.string(),
+  summary: z.string(),
 });
 
 export const ProfessorInformationSchema = z.object({
