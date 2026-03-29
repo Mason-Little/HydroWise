@@ -7,6 +7,14 @@ import { z } from "zod";
 import { getLanguageModel } from "@/runtime";
 import { extractSyllabusPrompt } from "./config";
 
+const ExtractedCourseInputSchema = CreateCourseInputSchema.omit({
+  gradePlannerState: true,
+});
+
+const ExtractedSyllabusSchema = ExtractedCourseInputSchema.extend({
+  chapters: z.array(CreateChapterInputSchema.omit({ courseId: true })),
+});
+
 export const extractSyllabus = async (input: string) => {
   const { output } = streamText({
     model: getLanguageModel(),
@@ -17,10 +25,11 @@ export const extractSyllabus = async (input: string) => {
     output: Output.object({
       name: "extract-syllabus",
       description: "extract the syllabus from the input",
-      schema: CreateCourseInputSchema.extend({
-        chapters: z.array(CreateChapterInputSchema.omit({ courseId: true })),
-      }),
+      schema: ExtractedSyllabusSchema,
     }),
   });
-  return output;
+
+  const extractedCourse = ExtractedSyllabusSchema.parse(await output);
+
+  return extractedCourse;
 };
