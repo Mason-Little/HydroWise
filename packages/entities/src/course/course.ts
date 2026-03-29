@@ -1,6 +1,24 @@
 import { z } from "zod";
 
+const GRADE_RUBRIC_BUCKET_KINDS = [
+  "assignment",
+  "exam",
+  "final_exam",
+  "lab",
+  "midterm_exam",
+  "other",
+  "paper",
+  "participation",
+  "presentation",
+  "project",
+  "quiz",
+] as const;
+
+export const GradeRubricBucketKindSchema = z.enum(GRADE_RUBRIC_BUCKET_KINDS);
+
 export const GradeRubricItemSchema = z.object({
+  assessmentCount: z.number(),
+  bucketKind: GradeRubricBucketKindSchema.optional(),
   category: z.string(),
   weight: z.number(),
 });
@@ -35,12 +53,29 @@ export const CourseDetailsSchema = z.object({
   credits: z.number().int(),
 });
 
+export const GradePlannerStateSchema = z.object({
+  selectedGoalLetter: z.string().nullable(),
+  scoresByRubricIndex: z
+    .record(z.string(), z.array(z.number().min(0).max(100)))
+    .default({}),
+});
+
+export const createDefaultGradePlannerState = (): z.infer<
+  typeof GradePlannerStateSchema
+> => ({
+  selectedGoalLetter: null,
+  scoresByRubricIndex: {},
+});
+
 export const CourseSchema = z.object({
   id: z.string(),
   courseName: z.string().min(1),
   courseCode: z.string().min(1),
   gradeRubric: z.array(GradeRubricItemSchema),
   gradeScale: z.array(GradeScaleItemSchema),
+  gradePlannerState: GradePlannerStateSchema.default(
+    createDefaultGradePlannerState,
+  ),
   testDates: z.array(TestDateSchema),
   professorInformation: ProfessorInformationSchema,
   courseDetails: CourseDetailsSchema,
@@ -52,10 +87,12 @@ export const CreateCourseInputSchema = CourseSchema.omit({ id: true });
 export type CourseDetails = z.infer<typeof CourseDetailsSchema>;
 export type CourseDetailsPatch = Partial<CourseDetails>;
 
+export type GradePlannerState = z.infer<typeof GradePlannerStateSchema>;
+export type GradeRubricBucketKind = z.infer<typeof GradeRubricBucketKindSchema>;
 export type GradeRubricItem = z.infer<typeof GradeRubricItemSchema>;
 export type GradeScaleItem = z.infer<typeof GradeScaleItemSchema>;
 export type TestDate = z.infer<typeof TestDateSchema>;
 export type Policy = z.infer<typeof PolicySchema>;
 export type ProfessorInformation = z.infer<typeof ProfessorInformationSchema>;
 export type Course = z.infer<typeof CourseSchema>;
-export type CreateCourseInput = z.infer<typeof CreateCourseInputSchema>;
+export type CreateCourseInput = z.input<typeof CreateCourseInputSchema>;
