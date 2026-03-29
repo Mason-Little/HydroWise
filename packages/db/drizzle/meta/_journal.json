@@ -29,6 +29,13 @@
       "when": 1774737482777,
       "tag": "0003_large_cloak",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1774749909143,
+      "tag": "0004_spicy_lady_bullseye",
+      "breakpoints": true
     }
   ]
 }

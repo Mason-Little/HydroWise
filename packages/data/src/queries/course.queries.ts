@@ -3,6 +3,8 @@ import { courses } from "@hydrowise/db/schema";
 import {
   type CourseDetails,
   CourseDetailsSchema,
+  type CourseTodoItem,
+  CourseTodoItemSchema,
   type CreateCourseInput,
   CreateCourseInputSchema,
   type GradePlannerState,
@@ -78,6 +80,18 @@ export const makeCourseRepo = (db: Db) => {
       const [row] = await db
         .update(courses)
         .set({ gradePlannerState: nextPlannerState })
+        .where(eq(courses.id, courseId))
+        .returning();
+      return row;
+    },
+
+    updateCourseTodos: async (courseId: string, courseTodos: CourseTodoItem[]) => {
+      await getCourseOrThrow(courseId);
+
+      const next = courseTodos.map((row) => CourseTodoItemSchema.parse(row));
+      const [row] = await db
+        .update(courses)
+        .set({ courseTodos: next })
         .where(eq(courses.id, courseId))
         .returning();
       return row;

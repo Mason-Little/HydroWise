@@ -3,6 +3,7 @@ import { CourseDetails } from "@/features/dashboard/Info/overview/components/cou
 import { Grades } from "@/features/dashboard/Info/overview/components/grades/Grades";
 import { InstructorTile } from "@/features/dashboard/Info/overview/components/instructor/InstructorTile";
 import { Policies } from "@/features/dashboard/Info/overview/components/policies/Policies";
+import { CourseTodos } from "@/features/dashboard/Info/overview/components/todo/CourseTodos";
 
 export const Overview = () => {
   const { activeCourse } = useDashboardContext();
@@ -19,7 +20,9 @@ export const Overview = () => {
       <div className="flex min-h-0 flex-col">
         <Grades />
       </div>
-      <div aria-hidden="true" className="hidden xl:block" />
+      <div className="flex min-h-0 flex-col">
+        <CourseTodos />
+      </div>
     </div>
   );
 };

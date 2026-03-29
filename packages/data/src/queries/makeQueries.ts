@@ -17,6 +17,7 @@ export const makeQueries = (db: Db) => {
     updateProfessorInformation: courses.updateProfessorInformation,
     updateCourseDetails: courses.updateCourseDetails,
     updateGradePlannerState: courses.updateGradePlannerState,
+    updateCourseTodos: courses.updateCourseTodos,
     listChapters: chapters.listChapters,
     listChaptersByCourse: chapters.listChaptersByCourse,
     createChapter: chapters.createChapter,

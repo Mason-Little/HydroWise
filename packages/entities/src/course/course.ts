@@ -67,6 +67,12 @@ export const createDefaultGradePlannerState = (): z.infer<
   scoresByRubricIndex: {},
 });
 
+export const CourseTodoItemSchema = z.object({
+  id: z.string(),
+  text: z.string(),
+  done: z.boolean(),
+});
+
 export const CourseSchema = z.object({
   id: z.string(),
   courseName: z.string().min(1),
@@ -80,6 +86,7 @@ export const CourseSchema = z.object({
   professorInformation: ProfessorInformationSchema,
   courseDetails: CourseDetailsSchema,
   policies: z.array(PolicySchema),
+  courseTodos: z.array(CourseTodoItemSchema).default([]),
 });
 
 export const CreateCourseInputSchema = CourseSchema.omit({ id: true });
@@ -94,5 +101,6 @@ export type GradeScaleItem = z.infer<typeof GradeScaleItemSchema>;
 export type TestDate = z.infer<typeof TestDateSchema>;
 export type Policy = z.infer<typeof PolicySchema>;
 export type ProfessorInformation = z.infer<typeof ProfessorInformationSchema>;
+export type CourseTodoItem = z.infer<typeof CourseTodoItemSchema>;
 export type Course = z.infer<typeof CourseSchema>;
 export type CreateCourseInput = z.input<typeof CreateCourseInputSchema>;

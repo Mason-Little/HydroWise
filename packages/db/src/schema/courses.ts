@@ -1,5 +1,6 @@
 import {
   type CourseDetails,
+  type CourseTodoItem,
   createDefaultGradePlannerState,
   type GradePlannerState,
   type GradeRubricItem,
@@ -32,4 +33,8 @@ export const courses = pgTable("courses", {
     .notNull(),
   courseDetails: jsonb("course_details").$type<CourseDetails>().notNull(),
   policies: jsonb("policies").$type<Policy[]>().notNull().default([]),
+  courseTodos: jsonb("course_todos")
+    .$type<CourseTodoItem[]>()
+    .notNull()
+    .default([]),
 });
