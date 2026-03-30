@@ -24,14 +24,14 @@
         min-height: 100%;
         min-height: 100dvh;
       }
-      /* —— Course workspace: off-white paper, soft gray-green structure, whisper of pastel —— */
+      /* —— Course workspace: paper white surfaces, soft gray-green structure, whisper of pastel —— */
       .mock-app {
-        --mock-chrome-bg: #f5f3ec;
-        --mock-sidebar: #f1efe6;
-        --mock-bg: #fcf6ee;
-        --mock-surface: #fff8f0;
-        --mock-surface-2: #f7f4ee;
-        --mock-border: #ddd8cd;
+        --mock-chrome-bg: #f2f1ef;
+        --mock-sidebar: #eeedeb;
+        --mock-bg: #f7f6f4;
+        --mock-surface: #fdfdfc;
+        --mock-surface-2: #f5f4f2;
+        --mock-border: #e8e7e4;
         --mock-text: #25323a;
         --mock-muted: #62707a;
         --mock-tertiary: #7d8891;
@@ -163,7 +163,7 @@
         border: 1px solid color-mix(in srgb, var(--mock-border) 54%, transparent);
         border-radius: var(--mock-r-workspace);
         box-shadow:
-          0 1px 0 rgba(255, 253, 248, 0.82) inset,
+          0 1px 0 rgba(255, 255, 255, 0.78) inset,
           0 10px 30px rgba(37, 50, 58, 0.042),
           0 2px 8px rgba(37, 50, 58, 0.028);
         z-index: 12;
@@ -368,19 +368,19 @@
         z-index: 1;
         background: linear-gradient(
           168deg,
-          color-mix(in srgb, var(--mock-surface) 82%, #f2e4d8) 0%,
-          color-mix(in srgb, var(--mock-surface) 92%, #faf0e6) 40%,
-          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+          color-mix(in srgb, var(--mock-surface) 92%, #f0efed) 0%,
+          color-mix(in srgb, var(--mock-surface) 97%, #f5f4f2) 40%,
+          color-mix(in srgb, var(--mock-surface) 94%, var(--mock-bg)) 100%
         );
         border: 1px solid color-mix(in srgb, var(--mock-border) 70%, transparent);
         border-top-color: color-mix(in srgb, var(--mock-border) 52%, transparent);
         border-radius: var(--mock-r-workspace);
         overflow: hidden;
         box-shadow:
-          0 1px 0 rgba(255, 253, 248, 0.88) inset,
+          0 1px 0 rgba(255, 255, 255, 0.85) inset,
           0 16px 42px rgba(37, 50, 58, 0.06),
           0 5px 16px rgba(37, 50, 58, 0.036),
-          0 0 0 1px rgba(255, 253, 248, 0.45);
+          0 0 0 1px rgba(255, 255, 255, 0.55);
       }
       .mock-course-rail {
         display: grid;
@@ -391,9 +391,9 @@
         border-bottom: 1px solid var(--mock-hairline);
         background: linear-gradient(
           180deg,
-          color-mix(in srgb, #e2ebd8 35%, var(--mock-surface)) 0%,
-          color-mix(in srgb, var(--mock-surface) 72%, #ead8f0) 52%,
-          color-mix(in srgb, var(--mock-surface) 70%, #d8e6f4) 100%
+          color-mix(in srgb, var(--mock-surface) 94%, #f1f2f0) 0%,
+          color-mix(in srgb, var(--mock-surface) 93%, #f3f2f4) 52%,
+          color-mix(in srgb, var(--mock-surface) 92%, #f1f3f5) 100%
         );
       }
       .mock-course-tab {
@@ -460,9 +460,9 @@
       .mock-canvas {
         background: linear-gradient(
           180deg,
-          color-mix(in srgb, var(--mock-bg) 55%, #edd9c8) 0%,
-          color-mix(in srgb, var(--mock-surface) 88%, #e8f0e4) 28%,
-          transparent 55%
+          color-mix(in srgb, var(--mock-surface) 55%, var(--mock-bg)) 0%,
+          color-mix(in srgb, var(--mock-surface) 92%, #fafaf8) 22%,
+          transparent 52%
         );
         border: 0;
         border-radius: 0;
@@ -478,7 +478,7 @@
         padding: 12px 20px 10px;
         border-bottom: 1px solid color-mix(in srgb, var(--mock-border) 42%, transparent);
         background:
-          linear-gradient(180deg, color-mix(in srgb, var(--mock-surface) 90%, #e8f0e8) 0%, color-mix(in srgb, var(--mock-surface) 86%, var(--mock-bg)) 100%);
+          linear-gradient(180deg, color-mix(in srgb, var(--mock-surface) 96%, #f2f1f0) 0%, color-mix(in srgb, var(--mock-surface) 92%, var(--mock-bg)) 100%);
       }
       .mock-course-header-top {
         display: grid;
@@ -636,45 +636,63 @@
         border: 1px solid color-mix(in srgb, var(--mock-border) 58%, transparent);
         background: var(--mock-surface);
         box-shadow:
-          0 1px 0 rgba(255, 253, 248, 0.75) inset,
+          0 1px 0 rgba(255, 255, 255, 0.72) inset,
           0 8px 24px rgba(37, 50, 58, 0.048),
           0 2px 10px rgba(37, 50, 58, 0.032);
         overflow: hidden;
       }
       .mock-grade-sticky {
         flex-shrink: 0;
-        padding: 24px 20px 12px;
+        padding: 16px 18px 8px;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
         background: var(--mock-surface);
         border-bottom: 1px solid var(--mock-hairline);
       }
+      /* Grade summary: hero + targets, then weighted bar as one composed block */
+      .mock-grade-head {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
       .mock-goal-bar {
         display: grid;
-        grid-template-columns: 240px minmax(0, 1fr) auto;
+        grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.18fr);
         align-items: center;
-        gap: 20px;
+        column-gap: 22px;
+        row-gap: 12px;
+        padding-bottom: 6px;
       }
+      .mock-grade-hero-stack,
       .mock-grade-summary {
-        display: contents;
-      }
-      .mock-grade-summary > div {
-        min-width: 0;
-      }
-      .mock-grade-summary > div:first-child {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        align-items: flex-start;
+        gap: 0;
+        min-width: 0;
+        max-width: min(19.5rem, 100%);
+        padding-right: 18px;
+        border-right: 1px solid color-mix(in srgb, var(--mock-hairline) 72%, transparent);
       }
-      .mock-grade-summary > div:nth-child(2) {
+      .mock-grade-target-block,
+      .mock-grade-secondary {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 6px;
         min-width: 0;
+        padding-top: 0;
       }
-      .mock-grade-summary > div:nth-child(2) .mock-goal-label {
+      .mock-grade-target-block .mock-goal-label,
+      .mock-grade-secondary .mock-goal-label {
         margin-bottom: 0;
+      }
+      .mock-grade-primary-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 0;
+        min-width: 0;
       }
       .mock-grade-primary-label {
         font-size: 11px;
@@ -686,26 +704,27 @@
       .mock-grade-primary-row {
         display: flex;
         align-items: baseline;
-        gap: 12px;
+        gap: 10px 14px;
         flex-wrap: wrap;
+      }
+      .mock-grade-primary-row .mock-status-badge {
+        flex-shrink: 0;
+        align-self: center;
       }
       .mock-grade-primary-letter {
         font-family: var(--mock-font-display);
-        font-size: clamp(2.1rem, 4vw, 2.65rem);
+        font-size: clamp(2.45rem, 5vw, 3.15rem);
         font-weight: 700;
         line-height: 1;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.045em;
         color: var(--mock-text);
       }
       .mock-grade-primary-pct {
-        font-size: calc(var(--mock-body-size) + 8px);
+        font-size: calc(var(--mock-body-size) + 10px);
         font-weight: 700;
         font-variant-numeric: tabular-nums;
         letter-spacing: -0.03em;
         color: #2f4a40;
-      }
-      .mock-grade-target-block {
-        min-width: 0;
       }
       .mock-goal-label {
         display: block;
@@ -713,19 +732,19 @@
         font-weight: 600;
         letter-spacing: 0;
         color: #5d6f79;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
       /* Target grade — mostly neutral pills; one soft ramp + selected accent */
       .mock-target-pills {
         display: flex;
         flex-wrap: wrap;
-        gap: 9px;
+        gap: 10px 11px;
         align-items: center;
       }
       .mock-goal-chip,
       .mock-target-pill {
-        background: #e8eee9;
-        border: 1px solid #bccbc0;
+        background: #f3f4f3;
+        border: 1px solid #d8dcd9;
         color: #48575f;
         padding: 0 10px;
         min-width: 3.2rem;
@@ -744,13 +763,13 @@
       .mock-target-pill:nth-child(4),
       .mock-target-pill:nth-child(5),
       .mock-target-pill:nth-child(6) {
-        background: #e3ece6;
-        border-color: #bfd0c4;
+        background: #eef1ef;
+        border-color: #cdd5d0;
       }
       .mock-target-pill:nth-child(7),
       .mock-target-pill:nth-child(8) {
-        background: #e2eceb;
-        border-color: #bfd0cf;
+        background: #ecf1f0;
+        border-color: #ccd5d4;
       }
       .mock-target-pill:hover {
         color: #32443c;
@@ -764,20 +783,16 @@
         font-weight: 600;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.62), 0 1px 3px rgba(37, 50, 58, 0.08);
       }
-      .mock-grade-secondary {
-        flex-shrink: 0;
-        align-self: start;
-        padding-top: 22px;
-      }
       .mock-status-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 0 12px;
-        height: 2.75rem;
+        gap: 5px;
+        padding: 0 10px;
+        height: 2.125rem;
         border-radius: var(--mock-r-ui);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
+        letter-spacing: 0.01em;
         color: #42584c;
         background: color-mix(in srgb, var(--mock-success-soft) 70%, #d6eadc);
         border: 1px solid color-mix(in srgb, var(--mock-success) 38%, var(--mock-border));
@@ -796,7 +811,7 @@
         border-radius: 6px;
         overflow: hidden;
         border: 1px solid color-mix(in srgb, var(--mock-border) 70%, transparent);
-        background: color-mix(in srgb, var(--mock-surface) 72%, #efe8d7);
+        background: color-mix(in srgb, var(--mock-surface) 78%, #ebeae8);
         gap: 1px;
         padding: 1px;
       }
@@ -805,7 +820,7 @@
         min-width: 0;
         border-radius: 3px;
         overflow: hidden;
-        background: color-mix(in srgb, var(--mock-surface) 50%, #e0dac8);
+        background: color-mix(in srgb, var(--mock-surface) 58%, #e2e1df);
       }
       .mock-wbar-seg[data-cat="0"] {
         --wbar: #5f8f7c;
@@ -838,12 +853,14 @@
         opacity: 1;
       }
       .mock-wbar-wrap {
-        padding-top: 2px;
+        border-top: 1px solid color-mix(in srgb, var(--mock-hairline) 78%, transparent);
+        padding-top: 6px;
+        margin-top: 0;
       }
       .mock-wbar-labels {
         display: flex;
         width: 100%;
-        margin-top: 6px;
+        margin-top: 5px;
         gap: 4px;
       }
       .mock-wbar-lbl {
@@ -857,6 +874,20 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+      @media (max-width: 640px) {
+        .mock-goal-bar {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          padding-bottom: 8px;
+          align-items: start;
+        }
+        .mock-grade-hero-stack,
+        .mock-grade-summary {
+          max-width: none;
+          padding-right: 0;
+          border-right: none;
+        }
       }
       .mock-cat-scroll {
         flex: 1 1 auto;
@@ -967,6 +998,59 @@
         text-align: right;
         font-variant-numeric: tabular-nums;
       }
+
+      /* Category summary badges (grade card): weight, average, single progress readout */
+      .mock-cat-badges {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 5px;
+        flex-shrink: 0;
+        max-width: min(100%, 22rem);
+      }
+
+      .mock-cat-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3px 9px;
+        border-radius: 999px;
+        font-size: var(--mock-label-size);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.2;
+        letter-spacing: -0.012em;
+        white-space: nowrap;
+        border: 1px solid color-mix(in srgb, var(--mock-border) 80%, transparent);
+        background: color-mix(in srgb, var(--mock-surface) 90%, var(--mock-chrome-bg));
+        color: color-mix(in srgb, var(--mock-muted) 22%, var(--mock-text));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+
+      .mock-cat-badge--avg {
+        color: color-mix(in srgb, var(--mock-text) 88%, var(--mock-muted));
+      }
+
+      .mock-cat-badge--prog {
+        border-color: color-mix(in srgb, var(--cat-accent) 22%, var(--mock-border));
+        background: color-mix(in srgb, var(--mock-surface) 82%, var(--cat-accent) 12%);
+        color: color-mix(in srgb, var(--cat-accent) 42%, var(--mock-text));
+      }
+
+      .mock-cat-badge--complete {
+        border-color: color-mix(in srgb, var(--mock-green) 24%, var(--mock-border));
+        background: color-mix(in srgb, var(--mock-surface) 78%, var(--mock-green-bg) 22%);
+        color: color-mix(in srgb, var(--mock-green) 35%, var(--mock-accent-strong));
+      }
+
+      .mock-cat-badge--empty {
+        border-style: dashed;
+        border-color: color-mix(in srgb, var(--mock-border) 92%, transparent);
+        background: color-mix(in srgb, var(--mock-surface) 94%, var(--mock-chrome-bg));
+        color: var(--mock-tertiary);
+        font-weight: 550;
+      }
       .mock-cat-body {
         display: flex;
         flex-direction: column;
@@ -977,7 +1061,7 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 6px;
+        gap: 7px;
       }
       .mock-score-record {
         min-width: 52px;
@@ -1086,7 +1170,7 @@
         border-radius: 14px;
         background: color-mix(in srgb, var(--mock-surface) 91%, var(--mock-bg));
         box-shadow:
-          0 1px 0 rgba(255, 253, 248, 0.7) inset,
+          0 1px 0 rgba(255, 255, 255, 0.68) inset,
           0 5px 16px rgba(37, 50, 58, 0.03);
       }
 
@@ -1179,9 +1263,9 @@
 
       .mock-todo-row {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 8px;
-        padding: 8px 0;
+        padding: 7px 0;
         border-bottom: 1px solid color-mix(in srgb, var(--mock-hairline) 60%, transparent);
         font-size: 12px;
       }
@@ -1195,17 +1279,40 @@
         height: 14px;
         accent-color: var(--mock-green);
         flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      .mock-todo-body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        line-height: 1.25;
       }
 
       .mock-todo-text {
-        flex: 1;
         line-height: 1.25;
         color: var(--mock-text);
+      }
+
+      .mock-todo-due {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: color-mix(in srgb, var(--mock-tertiary) 92%, var(--mock-text));
+        line-height: 1.2;
       }
 
       .mock-todo-row:has(input:checked) .mock-todo-text {
         text-decoration: line-through;
         color: var(--mock-tertiary);
+      }
+
+      .mock-todo-row:has(input:checked) .mock-todo-due {
+        color: color-mix(in srgb, var(--mock-tertiary) 55%, var(--mock-surface));
+        font-weight: 550;
       }
 
       .mock-todo-section-label {
@@ -1219,6 +1326,11 @@
       .mock-todo-row--completed .mock-todo-text {
         text-decoration: line-through;
         color: var(--mock-tertiary);
+      }
+
+      .mock-todo-row--completed .mock-todo-due {
+        color: color-mix(in srgb, var(--mock-tertiary) 52%, var(--mock-surface));
+        font-weight: 550;
       }
 
       .mock-todo-row--completed input {
@@ -1479,16 +1591,16 @@
 
       .mock-grade-card {
         background:
-          linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(255, 253, 248, 1)),
-          linear-gradient(180deg, #fffdf8 0%, #fbf8f4 100%);
+          linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(253, 253, 252, 1)),
+          linear-gradient(180deg, #fdfdfc 0%, #f4f3f1 100%);
       }
 
       .mock-grade-sticky {
         background:
-          radial-gradient(90% 120% at 0% 0%, rgba(214, 241, 223, 0.48) 0%, transparent 38%),
-          radial-gradient(86% 120% at 52% 0%, rgba(238, 223, 248, 0.42) 0%, transparent 34%),
-          radial-gradient(92% 120% at 100% 0%, rgba(220, 236, 249, 0.52) 0%, transparent 40%),
-          linear-gradient(180deg, #fffdf9 0%, #faf6f1 100%);
+          radial-gradient(90% 120% at 0% 0%, rgba(214, 241, 223, 0.4) 0%, transparent 38%),
+          radial-gradient(86% 120% at 52% 0%, rgba(238, 223, 248, 0.32) 0%, transparent 34%),
+          radial-gradient(92% 120% at 100% 0%, rgba(220, 236, 249, 0.44) 0%, transparent 40%),
+          linear-gradient(180deg, #fcfcfb 0%, #f6f5f3 100%);
       }
 
       .mock-grade-primary-label,
@@ -1554,7 +1666,7 @@
 
       .mock-wbar-track {
         background:
-          linear-gradient(90deg, #f8ece3 0%, #eef6ef 34%, #eaf1fb 69%, #f1eafb 100%);
+          linear-gradient(90deg, #f0efed 0%, #f2f5f3 34%, #eef3f8 69%, #f2f1f3 100%);
         border-color: color-mix(in srgb, var(--mock-border) 78%, transparent);
       }
 
@@ -1618,13 +1730,13 @@
       }
 
       .mock-score-record {
-        background: color-mix(in srgb, var(--cat-accent) 20%, #fffdf8);
+        background: color-mix(in srgb, var(--cat-accent) 20%, #fdfdfc);
         border-color: color-mix(in srgb, var(--cat-accent) 34%, var(--mock-border));
         color: color-mix(in srgb, var(--cat-accent) 44%, #233139);
       }
 
       .mock-score-ghost-pill {
-        background: color-mix(in srgb, var(--cat-accent) 9%, #fffdf8);
+        background: color-mix(in srgb, var(--cat-accent) 9%, #fdfdfc);
         border-color: color-mix(in srgb, var(--cat-accent) 26%, var(--mock-border));
       }
 
@@ -1642,9 +1754,9 @@
             #d2e8b6 20%,
             #e4d2ef 46%,
             #c8daf4 72%,
-            #f2d8c4 100%
+            #e2e3e1 100%
           ),
-          linear-gradient(180deg, #fff4e8 0%, #e2d2c2 46%, #f2e8d8 100%);
+          linear-gradient(180deg, #fdfdfc 0%, #ecebe9 40%, #f5f4f2 100%);
         background: var(--course-rail-bg);
       }
 
@@ -1665,21 +1777,21 @@
       .mock-grade-card {
         border: none;
         box-shadow:
-          0 1px 0 rgba(255, 253, 248, 0.92) inset,
+          0 1px 0 rgba(255, 255, 255, 0.88) inset,
           0 0 0 1px color-mix(in srgb, var(--mock-border) 44%, transparent),
           0 10px 32px rgba(37, 50, 58, 0.055),
           0 3px 12px rgba(37, 50, 58, 0.034);
-        background: linear-gradient(180deg, #fffdf8 0%, #fbf8f4 100%);
+        background: linear-gradient(180deg, #fdfdfc 0%, #f4f3f1 100%);
       }
 
       .mock-grade-sticky {
         position: relative;
         background:
-          radial-gradient(52% 120% at 0% 0%, rgba(217, 239, 222, 0.52) 0%, transparent 54%),
-          radial-gradient(48% 120% at 42% 0%, rgba(250, 231, 219, 0.5) 0%, transparent 46%),
-          radial-gradient(50% 120% at 74% 0%, rgba(224, 234, 248, 0.52) 0%, transparent 44%),
-          radial-gradient(44% 115% at 100% 0%, rgba(235, 225, 247, 0.52) 0%, transparent 46%),
-          linear-gradient(180deg, #fffdf9 0%, #faf6f1 72%, #f9f5ef 100%);
+          radial-gradient(52% 120% at 0% 0%, rgba(217, 239, 222, 0.45) 0%, transparent 54%),
+          radial-gradient(48% 120% at 42% 0%, rgba(240, 242, 245, 0.55) 0%, transparent 46%),
+          radial-gradient(50% 120% at 74% 0%, rgba(224, 234, 248, 0.45) 0%, transparent 44%),
+          radial-gradient(44% 115% at 100% 0%, rgba(235, 225, 247, 0.45) 0%, transparent 46%),
+          linear-gradient(180deg, #fcfcfb 0%, #f7f6f4 72%, #f3f2f0 100%);
         border-bottom: 1px solid color-mix(in srgb, var(--mock-border) 52%, transparent);
       }
 
@@ -1829,65 +1941,139 @@
         background: linear-gradient(
           180deg,
           color-mix(in srgb, #d8ebe0 46%, var(--mock-surface)) 0%,
-          color-mix(in srgb, #f6efe8 22%, var(--mock-surface)) 28%,
+          color-mix(in srgb, #f0efee 22%, var(--mock-surface)) 28%,
           color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
         );
         border-bottom-color: color-mix(in srgb, var(--mock-border) 34%, transparent);
       }
 
-      /* grade category rows: summary in meta; chips row = scores + ghost only */
+      /* grade category rows: title + badge summary; chips row = scores + add / suggested */
+      .mock-grade-card {
+        --assess-chip-h: 34px;
+        --assess-chip-minw: 3.25rem;
+        --assess-chip-pad-x: 0.65rem;
+        --assess-chip-r: 11px;
+        --assess-chip-fs: 13px;
+      }
+
+      .mock-grade-card .mock-cat-top {
+        flex-wrap: wrap;
+        row-gap: 6px;
+        column-gap: 10px;
+      }
+
       .mock-grade-card .mock-cat-row {
-        gap: 8px;
+        gap: 5px;
+        padding: 8px 10px 8px;
+        margin-inline: -6px;
+        border-radius: var(--mock-r-ui);
+        border-bottom: 1px solid color-mix(in srgb, var(--mock-hairline) 88%, transparent);
+        background: color-mix(in srgb, var(--mock-chrome-bg) 18%, transparent);
+      }
+
+      .mock-grade-card .mock-cat-row:last-child {
+        border-bottom: none;
+        padding-bottom: 4px;
       }
 
       .mock-grade-card .mock-cat-row .mock-cat-dot {
         background: color-mix(in srgb, var(--mock-tertiary) 38%, var(--mock-border)) !important;
       }
 
-      .mock-grade-card .mock-cat-meta {
-        font-size: 10px;
-        line-height: 1.35;
-        color: color-mix(in srgb, var(--mock-tertiary) 88%, var(--mock-text));
-        max-width: min(100%, 19rem);
+      .mock-grade-card .mock-cat-badges {
+        gap: 4px;
+        margin-left: auto;
+      }
+
+      .mock-grade-card .mock-cat-badge {
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: -0.015em;
       }
 
       .mock-grade-card .mock-cat-chips {
         align-items: center;
+        gap: 6px;
       }
 
       .mock-grade-card .mock-score-record {
-        background: color-mix(in srgb, var(--mock-surface) 86%, var(--mock-chrome-bg));
-        border: 1px solid color-mix(in srgb, var(--mock-border) 72%, transparent);
-        color: var(--mock-text);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        min-width: var(--assess-chip-minw);
+        height: var(--assess-chip-h);
+        padding: 0 var(--assess-chip-pad-x);
+        border-radius: var(--assess-chip-r);
+        font-size: var(--assess-chip-fs);
+        font-weight: 650;
+        color: color-mix(in srgb, var(--cat-accent) 36%, var(--mock-text));
+        border: 1px solid color-mix(in srgb, var(--cat-accent) 30%, var(--mock-border));
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 94%, var(--cat-accent) 6%) 0%,
+          color-mix(in srgb, var(--mock-surface) 84%, var(--cat-accent) 12%) 100%
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.78),
+          0 1px 2px rgba(37, 50, 58, 0.035);
       }
 
       .mock-grade-card .mock-score-ghost-pill {
-        border-color: color-mix(in srgb, var(--mock-border) 78%, transparent);
-        background: color-mix(in srgb, var(--mock-surface) 90%, var(--mock-chrome-bg));
-        color: var(--mock-muted);
+        height: var(--assess-chip-h);
+        border-radius: var(--assess-chip-r);
+        border-style: solid;
+        border-width: 1px;
+        border-color: color-mix(in srgb, var(--cat-accent) 28%, var(--mock-border));
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 95%, var(--cat-accent) 5%) 0%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--cat-accent) 9%) 100%
+        );
+        color: color-mix(in srgb, var(--cat-accent) 48%, var(--mock-text));
+        font-size: var(--assess-chip-fs);
+        font-weight: 650;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
       }
 
       .mock-grade-card .mock-score-ghost-pill:hover {
-        border-color: color-mix(in srgb, var(--mock-border) 92%, transparent);
-        background: color-mix(in srgb, var(--mock-surface) 82%, var(--mock-chrome-bg));
-        color: var(--mock-text);
+        border-color: color-mix(in srgb, var(--cat-accent) 42%, var(--mock-border));
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 90%, var(--cat-accent) 10%) 0%,
+          color-mix(in srgb, var(--mock-surface) 80%, var(--cat-accent) 16%) 100%
+        );
+        color: color-mix(in srgb, var(--cat-accent) 22%, var(--mock-text));
       }
 
       .mock-grade-card .mock-score-tail[data-score-hint] .mock-score-ghost-pill {
-        min-width: 44px;
-        font-size: 12px;
-        font-weight: 650;
-        color: color-mix(in srgb, var(--mock-muted) 55%, var(--mock-text));
+        min-width: 2.75rem;
+        padding: 0 var(--assess-chip-pad-x);
+        color: color-mix(in srgb, var(--mock-muted) 38%, var(--mock-text));
+      }
+
+      .mock-grade-card .mock-score-tail:not([data-score-hint]) .mock-score-ghost-pill {
+        min-width: var(--assess-chip-h);
+        width: var(--assess-chip-h);
+        padding: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0;
+        color: color-mix(in srgb, var(--cat-accent) 52%, var(--mock-accent-strong));
+        border-color: color-mix(in srgb, var(--cat-accent) 38%, var(--mock-border));
       }
 
       .mock-grade-card .mock-score-inline {
-        border-color: color-mix(in srgb, var(--mock-border) 65%, transparent);
+        min-width: 2.75rem;
+        height: var(--assess-chip-h);
+        border-radius: var(--assess-chip-r);
+        font-size: var(--assess-chip-fs);
+        border-style: solid;
+        border-color: color-mix(in srgb, var(--cat-accent) 32%, var(--mock-border));
+        background: var(--mock-surface);
       }
 
       .mock-grade-card .mock-score-inline:focus {
-        border-color: color-mix(in srgb, var(--mock-border) 88%, transparent);
-        box-shadow: 0 0 0 2px color-mix(in srgb, var(--mock-border) 35%, transparent);
+        border-color: color-mix(in srgb, var(--mock-accent) 28%, var(--mock-border));
+        box-shadow: 0 0 0 2px color-mix(in srgb, var(--mock-accent) 12%, transparent);
       }
     </style>
   </head>
@@ -2037,16 +2223,19 @@
                     <section class="mock-grade-card" aria-labelledby="grade-tracker-heading">
                       <div class="mock-grade-sticky">
                         <h2 class="sr-only" id="grade-tracker-heading">Grade tracker</h2>
-                        <div class="mock-goal-bar">
-                          <div class="mock-grade-summary">
-                            <div>
-                              <div class="mock-grade-primary-label">Projected grade</div>
-                              <div class="mock-grade-primary-row">
-                                <span class="mock-grade-primary-letter">A+</span>
-                                <span class="mock-grade-primary-pct">91.5%</span>
+                        <div class="mock-grade-head">
+                          <div class="mock-goal-bar">
+                            <div class="mock-grade-hero-stack mock-grade-summary">
+                              <div class="mock-grade-primary-block">
+                                <div class="mock-grade-primary-label">Current grade</div>
+                                <div class="mock-grade-primary-row">
+                                  <span class="mock-grade-primary-letter">A+</span>
+                                  <span class="mock-grade-primary-pct">91.5%</span>
+                                  <span class="mock-status-badge">Comfortable</span>
+                                </div>
                               </div>
                             </div>
-                            <div class="mock-grade-target-block">
+                            <div class="mock-grade-target-block mock-grade-secondary">
                               <span class="mock-goal-label">Set your target</span>
                               <div class="mock-target-pills" role="group" aria-label="Target grade">
                                 <button type="button" class="mock-target-pill" data-ramp="1">C−</button>
@@ -2061,11 +2250,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="mock-grade-secondary">
-                            <span class="mock-status-badge">Comfortable</span>
-                          </div>
-                        </div>
-                        <div class="mock-wbar-wrap">
+                          <div class="mock-wbar-wrap">
                           <div class="mock-wbar-track" role="img" aria-label="Weights by category">
                             <div class="mock-wbar-seg" data-cat="0" style="flex: 0 0 10%">
                               <div class="mock-wbar-tint"></div>
@@ -2100,17 +2285,26 @@
                             <span class="mock-wbar-lbl" style="flex: 0 0 20%">Midterm</span>
                             <span class="mock-wbar-lbl" style="flex: 0 0 20%">Final</span>
                           </div>
+                          </div>
                         </div>
                       </div>
                       <div class="mock-cat-scroll">
                         <div class="mock-cat-list">
-                          <div class="mock-cat-row" data-cat="0">
+                          <div class="mock-cat-row mock-assess-row" data-cat="0">
                             <div class="mock-cat-top">
                               <div class="mock-cat-left">
                                 <span class="mock-cat-dot" aria-hidden="true"></span>
                                 <span class="mock-cat-name">Activities</span>
                               </div>
-                              <span class="mock-cat-meta">10% · avg 97 · 2/3 · 1 left</span>
+                              <div
+                                class="mock-cat-badges"
+                                role="group"
+                                aria-label="Weight, average, and progress"
+                              >
+                                <span class="mock-cat-badge mock-cat-badge--wt">10%</span>
+                                <span class="mock-cat-badge mock-cat-badge--avg">avg 97</span>
+                                <span class="mock-cat-badge mock-cat-badge--prog">2 of 3</span>
+                              </div>
                             </div>
                             <div class="mock-cat-body">
                               <div class="mock-cat-chips" data-score-bucket>
@@ -2135,13 +2329,21 @@
                               </div>
                             </div>
                           </div>
-                          <div class="mock-cat-row" data-cat="1">
+                          <div class="mock-cat-row mock-assess-row" data-cat="1">
                             <div class="mock-cat-top">
                               <div class="mock-cat-left">
                                 <span class="mock-cat-dot" aria-hidden="true"></span>
                                 <span class="mock-cat-name">Written assignment</span>
                               </div>
-                              <span class="mock-cat-meta">20% · avg 89 · 2/2 · Done</span>
+                              <div
+                                class="mock-cat-badges"
+                                role="group"
+                                aria-label="Weight, average, and status"
+                              >
+                                <span class="mock-cat-badge mock-cat-badge--wt">20%</span>
+                                <span class="mock-cat-badge mock-cat-badge--avg">avg 89</span>
+                                <span class="mock-cat-badge mock-cat-badge--complete">Complete</span>
+                              </div>
                             </div>
                             <div class="mock-cat-body">
                               <div class="mock-cat-chips" data-score-bucket>
@@ -2155,13 +2357,21 @@
                               </div>
                             </div>
                           </div>
-                          <div class="mock-cat-row" data-cat="2">
+                          <div class="mock-cat-row mock-assess-row" data-cat="2">
                             <div class="mock-cat-top">
                               <div class="mock-cat-left">
                                 <span class="mock-cat-dot" aria-hidden="true"></span>
                                 <span class="mock-cat-name">Presentation</span>
                               </div>
-                              <span class="mock-cat-meta">15% · avg 95 · 1/1 · Done</span>
+                              <div
+                                class="mock-cat-badges"
+                                role="group"
+                                aria-label="Weight, average, and status"
+                              >
+                                <span class="mock-cat-badge mock-cat-badge--wt">15%</span>
+                                <span class="mock-cat-badge mock-cat-badge--avg">avg 95</span>
+                                <span class="mock-cat-badge mock-cat-badge--complete">Complete</span>
+                              </div>
                             </div>
                             <div class="mock-cat-body">
                               <div class="mock-cat-chips" data-score-bucket>
@@ -2174,13 +2384,21 @@
                               </div>
                             </div>
                           </div>
-                          <div class="mock-cat-row" data-cat="3">
+                          <div class="mock-cat-row mock-assess-row" data-cat="3">
                             <div class="mock-cat-top">
                               <div class="mock-cat-left">
                                 <span class="mock-cat-dot" aria-hidden="true"></span>
                                 <span class="mock-cat-name">Quizzes</span>
                               </div>
-                              <span class="mock-cat-meta">15% · avg 100 · 1/10 · 9 left</span>
+                              <div
+                                class="mock-cat-badges"
+                                role="group"
+                                aria-label="Weight, average, and progress"
+                              >
+                                <span class="mock-cat-badge mock-cat-badge--wt">15%</span>
+                                <span class="mock-cat-badge mock-cat-badge--avg">avg 100</span>
+                                <span class="mock-cat-badge mock-cat-badge--prog">1 of 10</span>
+                              </div>
                             </div>
                             <div class="mock-cat-body">
                               <div class="mock-cat-chips" data-score-bucket>
@@ -2204,13 +2422,21 @@
                               </div>
                             </div>
                           </div>
-                          <div class="mock-cat-row" data-cat="4">
+                          <div class="mock-cat-row mock-assess-row" data-cat="4">
                             <div class="mock-cat-top">
                               <div class="mock-cat-left">
                                 <span class="mock-cat-dot" aria-hidden="true"></span>
                                 <span class="mock-cat-name">Midterm exam</span>
                               </div>
-                              <span class="mock-cat-meta">20% · avg 85 · 1/1 · Done</span>
+                              <div
+                                class="mock-cat-badges"
+                                role="group"
+                                aria-label="Weight, average, and status"
+                              >
+                                <span class="mock-cat-badge mock-cat-badge--wt">20%</span>
+                                <span class="mock-cat-badge mock-cat-badge--avg">avg 85</span>
+                                <span class="mock-cat-badge mock-cat-badge--complete">Complete</span>
+                              </div>
                             </div>
                             <div class="mock-cat-body">
                               <div class="mock-cat-chips" data-score-bucket>
@@ -2223,13 +2449,20 @@
                               </div>
                             </div>
                           </div>
-                          <div class="mock-cat-row" data-cat="5">
+                          <div class="mock-cat-row mock-assess-row" data-cat="5">
                             <div class="mock-cat-top">
                               <div class="mock-cat-left">
                                 <span class="mock-cat-dot" aria-hidden="true"></span>
                                 <span class="mock-cat-name">Final exam</span>
                               </div>
-                              <span class="mock-cat-meta">20% · avg 85 · 0/1 · 1 left</span>
+                              <div
+                                class="mock-cat-badges"
+                                role="group"
+                                aria-label="Weight and status"
+                              >
+                                <span class="mock-cat-badge mock-cat-badge--wt">20%</span>
+                                <span class="mock-cat-badge mock-cat-badge--empty">No grades yet</span>
+                              </div>
                             </div>
                             <div class="mock-cat-body">
                               <div class="mock-cat-chips" data-score-bucket>
@@ -2271,28 +2504,41 @@
 
                       <div class="mock-side-panel-scroll mock-side-panel-scroll--tasks">
                         <div class="mock-todo-list">
-                          <div class="mock-todo-row">
+                          <div class="mock-todo-row mock-todo-row--dated">
                             <input type="checkbox" />
-                            <span class="mock-todo-text">Submit discussion post (Week 4)</span>
+                            <div class="mock-todo-body">
+                              <span class="mock-todo-text">Submit discussion post (Week 4)</span>
+                              <span class="mock-todo-due">Due Thu, Apr 4</span>
+                            </div>
                           </div>
                           <div class="mock-todo-row">
                             <input type="checkbox" />
-                            <span class="mock-todo-text">Book office hours re: midterm format</span>
+                            <div class="mock-todo-body">
+                              <span class="mock-todo-text">Book office hours re: midterm format</span>
+                            </div>
                           </div>
-                          <div class="mock-todo-row">
+                          <div class="mock-todo-row mock-todo-row--dated">
                             <input type="checkbox" />
-                            <span class="mock-todo-text">Review quiz mistakes — 9/10 remaining</span>
+                            <div class="mock-todo-body">
+                              <span class="mock-todo-text">Review quiz mistakes — 9/10 remaining</span>
+                              <span class="mock-todo-due">Due Sun, Apr 7</span>
+                            </div>
                           </div>
 
                           <div class="mock-todo-section-label">Completed</div>
 
                           <div class="mock-todo-row mock-todo-row--completed">
                             <input type="checkbox" checked />
-                            <span class="mock-todo-text">Read chapter 3 overview</span>
+                            <div class="mock-todo-body">
+                              <span class="mock-todo-text">Read chapter 3 overview</span>
+                            </div>
                           </div>
-                          <div class="mock-todo-row mock-todo-row--completed">
+                          <div class="mock-todo-row mock-todo-row--dated mock-todo-row--completed">
                             <input type="checkbox" checked />
-                            <span class="mock-todo-text">Upload lecture notes PDF</span>
+                            <div class="mock-todo-body">
+                              <span class="mock-todo-text">Upload lecture notes PDF</span>
+                              <span class="mock-todo-due">Due Mar 28</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2467,7 +2713,7 @@
             hueStops.push("hsl(" + v.h + " " + s + "% " + l + "%) " + pos + "%");
           });
           var base =
-            "linear-gradient(180deg, #fff4e8 0%, #e2d2c2 46%, #f2e8d8 100%)";
+            "linear-gradient(180deg, #fdfdfc 0%, #ecebe9 40%, #f5f4f2 100%)";
           var stack =
             n === 0
               ? base

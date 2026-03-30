@@ -28,12 +28,12 @@
         overscroll-behavior: none;
       }
       .mock-app {
-        --mock-chrome-bg: #f5f3ec;
-        --mock-sidebar: #f1efe6;
-        --mock-bg: #fcf6ee;
-        --mock-surface: #fff8f0;
-        --mock-surface-2: #f7f4ee;
-        --mock-border: #ddd8cd;
+        --mock-chrome-bg: #f2f1ef;
+        --mock-sidebar: #eeedeb;
+        --mock-bg: #f7f6f4;
+        --mock-surface: #fdfdfc;
+        --mock-surface-2: #f5f4f2;
+        --mock-border: #e8e7e4;
         --mock-text: #25323a;
         --mock-muted: #62707a;
         --mock-tertiary: #7d8891;
@@ -48,7 +48,7 @@
         --mock-r-surface: 14px;
         --mock-r-pill: 14px;
         --mock-r-workspace: 11px;
-        --mock-r-tab-top: 8px;
+        --mock-r-tab-top: 12px;
         --mock-shadow-soft: 0 1px 2px rgba(37, 50, 58, 0.05);
         --mock-shadow-lift: 0 12px 32px rgba(37, 50, 58, 0.08);
         --mock-rail-w: 74px;
@@ -62,6 +62,19 @@
         --course-view-accent-bg: var(--mock-accent-soft);
         --course-view-accent-fg: var(--mock-accent-strong);
         --course-view-accent-border: var(--mock-green-border);
+        /* Muted file-type identity (independent of course accent) */
+        --file-pdf-bg: #f9ecee;
+        --file-pdf-fg: #8f4a52;
+        --file-pdf-border: #e9cfd3;
+        --file-ppt-bg: #faf3e8;
+        --file-ppt-fg: #8a5f28;
+        --file-ppt-border: #ead9bf;
+        --file-doc-bg: #ecf2f9;
+        --file-doc-fg: #3d5a80;
+        --file-doc-border: #c9d6e8;
+        --file-md-bg: #eef4ec;
+        --file-md-fg: #4a6348;
+        --file-md-border: #c9d8c5;
         position: relative;
         isolation: isolate;
         display: flex;
@@ -162,7 +175,7 @@
         border: 1px solid color-mix(in srgb, var(--mock-border) 54%, transparent);
         border-radius: var(--mock-r-workspace);
         box-shadow:
-          0 1px 0 rgba(255, 253, 248, 0.82) inset,
+          0 1px 0 rgba(255, 255, 255, 0.78) inset,
           0 10px 30px rgba(37, 50, 58, 0.042),
           0 2px 8px rgba(37, 50, 58, 0.028);
         z-index: 12;
@@ -365,19 +378,19 @@
         z-index: 1;
         background: linear-gradient(
           168deg,
-          color-mix(in srgb, var(--mock-surface) 82%, #f2e4d8) 0%,
-          color-mix(in srgb, var(--mock-surface) 92%, #faf0e6) 40%,
-          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+          color-mix(in srgb, var(--mock-surface) 92%, #f0efed) 0%,
+          color-mix(in srgb, var(--mock-surface) 97%, #f5f4f2) 40%,
+          color-mix(in srgb, var(--mock-surface) 94%, var(--mock-bg)) 100%
         );
         border: 1px solid color-mix(in srgb, var(--mock-border) 70%, transparent);
         border-top-color: color-mix(in srgb, var(--mock-border) 52%, transparent);
         border-radius: var(--mock-r-workspace);
         overflow: hidden;
         box-shadow:
-          0 1px 0 rgba(255, 253, 248, 0.88) inset,
+          0 1px 0 rgba(255, 255, 255, 0.85) inset,
           0 16px 42px rgba(37, 50, 58, 0.06),
           0 5px 16px rgba(37, 50, 58, 0.036),
-          0 0 0 1px rgba(255, 253, 248, 0.45);
+          0 0 0 1px rgba(255, 255, 255, 0.55);
       }
       .mock-course-rail {
         flex-shrink: 0;
@@ -396,9 +409,9 @@
             #d2e8b6 20%,
             #e4d2ef 46%,
             #c8daf4 72%,
-            #f2d8c4 100%
+            #e2e3e1 100%
           ),
-          linear-gradient(180deg, #fff4e8 0%, #e2d2c2 46%, #f2e8d8 100%);
+          linear-gradient(180deg, #fdfdfc 0%, #ecebe9 40%, #f5f4f2 100%);
         background: var(--course-rail-bg);
       }
       .mock-course-tab {
@@ -470,9 +483,9 @@
       .mock-canvas {
         background: linear-gradient(
           180deg,
-          color-mix(in srgb, var(--mock-bg) 55%, #edd9c8) 0%,
-          color-mix(in srgb, var(--mock-surface) 88%, #e8f0e4) 28%,
-          transparent 55%
+          color-mix(in srgb, var(--mock-surface) 55%, var(--mock-bg)) 0%,
+          color-mix(in srgb, var(--mock-surface) 92%, #fafaf8) 22%,
+          transparent 52%
         );
         border: 0;
         border-radius: 0;
@@ -487,9 +500,13 @@
       .mock-course-header {
         flex-shrink: 0;
         padding: 12px 20px 10px;
-        border-bottom: 1px solid color-mix(in srgb, var(--mock-border) 42%, transparent);
-        background:
-          linear-gradient(180deg, color-mix(in srgb, var(--mock-surface) 90%, #e8f0e8) 0%, color-mix(in srgb, var(--mock-surface) 86%, var(--mock-bg)) 100%);
+        border-bottom: 1px solid color-mix(in srgb, var(--mock-border) 34%, transparent);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, #d8ebe0 46%, var(--mock-surface)) 0%,
+          color-mix(in srgb, #f0efee 22%, var(--mock-surface)) 28%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+        );
       }
       .mock-course-header-top {
         display: grid;
@@ -515,14 +532,19 @@
         font-weight: 700;
         letter-spacing: -0.04em;
         line-height: 1.08;
+        color: var(--mock-text);
       }
       .mock-toggle {
+        flex-shrink: 0;
         display: inline-flex;
+        align-items: stretch;
+        align-self: center;
         height: 36px;
         padding: 2px;
         border-radius: 10px;
         background: color-mix(in srgb, var(--mock-bg) 58%, var(--mock-surface));
         border: 1px solid var(--mock-hairline);
+        gap: 0;
       }
       .mock-toggle button {
         border: none;
@@ -534,6 +556,14 @@
         font-weight: 600;
         color: var(--mock-tertiary);
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .mock-course-tab:focus-visible,
+      .mock-toggle button:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--mock-accent) 42%, var(--mock-border));
+        outline-offset: 2px;
       }
       .mock-toggle button.on {
         background: var(--mock-surface);
@@ -548,25 +578,32 @@
         flex-direction: column;
         gap: 3px;
         font-size: 12px;
-        color: var(--mock-muted);
+        line-height: 1.35;
       }
+
       .mock-header-contact-row {
         display: flex;
         flex-wrap: wrap;
         align-items: baseline;
         gap: 0 4px;
+        color: var(--mock-muted);
       }
+
       .mock-header-label {
         font-weight: 600;
         color: var(--mock-text);
       }
+
       .mock-header-value {
         font-weight: 450;
         color: color-mix(in srgb, var(--mock-muted) 88%, var(--mock-text));
       }
+
       .mock-header-sep {
         color: color-mix(in srgb, var(--mock-muted) 45%, transparent);
+        user-select: none;
         margin: 0 3px;
+        font-weight: 400;
       }
       a.mock-header-link {
         color: var(--mock-accent-strong);
@@ -656,28 +693,75 @@
         overscroll-behavior: contain;
       }
       .mock-material-chapter {
+        position: relative;
+        box-sizing: border-box;
         width: 100%;
+        height: 5rem;
+        min-height: 5rem;
+        max-height: 5rem;
+        flex-shrink: 0;
         text-align: left;
         border: 1px solid transparent;
-        border-radius: 10px;
-        padding: 10px 11px;
+        border-radius: 12px;
+        padding: 10px 11px 10px 14px;
         background: transparent;
         font: inherit;
         cursor: pointer;
         display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 10px 12px;
-        align-items: start;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 0 12px;
+        align-items: center;
         color: inherit;
-        transition: background 0.15s ease, border-color 0.15s ease;
+        overflow: hidden;
+        transition:
+          background 0.14s ease,
+          border-color 0.14s ease,
+          box-shadow 0.14s ease;
       }
-      .mock-material-chapter:hover {
-        background: color-mix(in srgb, var(--mock-surface-2) 80%, transparent);
+      /* Hover: interactivity only — no fill; active keeps sole “selected” emphasis */
+      .mock-material-chapter:hover:not(.mock-material-chapter--active) {
+        background: transparent;
+        border-color: color-mix(in srgb, var(--mock-border) 32%, transparent);
+      }
+      .mock-material-chapter:hover:not(.mock-material-chapter--active) .mock-material-chapter-num {
+        color: color-mix(in srgb, var(--mock-muted) 78%, var(--mock-text));
+      }
+      .mock-material-chapter:hover:not(.mock-material-chapter--active) .mock-material-chapter-title {
+        color: color-mix(in srgb, var(--mock-text) 97%, var(--mock-muted));
+      }
+      .mock-material-chapter:hover:not(.mock-material-chapter--active) .mock-material-chapter-meta {
+        color: color-mix(in srgb, var(--mock-muted) 94%, var(--mock-text));
+      }
+      .mock-material-chapter-num,
+      .mock-material-chapter-title,
+      .mock-material-chapter-meta {
+        transition: color 0.14s ease;
+      }
+      .mock-material-chapter:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--course-view-accent-border) 65%, var(--mock-border));
+        outline-offset: 2px;
       }
       .mock-material-chapter--active {
-        background: color-mix(in srgb, var(--course-view-accent-bg) 58%, var(--mock-surface));
-        border-color: color-mix(in srgb, var(--course-view-accent-border) 28%, transparent);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        background: color-mix(in srgb, var(--course-view-accent-bg) 68%, var(--mock-surface));
+        border-color: color-mix(in srgb, var(--course-view-accent-border) 38%, transparent);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.65),
+          0 1px 3px color-mix(in srgb, var(--course-view-accent-fg) 8%, transparent);
+      }
+      .mock-material-chapter--active::before {
+        content: "";
+        position: absolute;
+        left: 5px;
+        top: 11px;
+        bottom: 11px;
+        width: 3px;
+        border-radius: 99px;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--course-view-accent-fg) 35%, var(--course-view-accent-border)),
+          color-mix(in srgb, var(--course-view-accent-border) 80%, var(--course-view-accent-fg))
+        );
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--mock-surface) 40%, transparent);
       }
       .mock-material-chapter-num {
         font-family: var(--mock-font-display);
@@ -685,8 +769,10 @@
         font-weight: 700;
         letter-spacing: -0.03em;
         color: var(--mock-tertiary);
-        line-height: 1.2;
-        padding-top: 1px;
+        line-height: 1;
+        min-width: 1.6rem;
+        text-align: left;
+        align-self: center;
       }
       .mock-material-chapter--active .mock-material-chapter-num {
         color: color-mix(in srgb, var(--course-view-accent-fg) 55%, var(--mock-tertiary));
@@ -694,8 +780,10 @@
       .mock-material-chapter-body {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         gap: 4px;
         min-width: 0;
+        min-height: 0;
       }
       .mock-material-chapter-title {
         font-size: 12px;
@@ -703,17 +791,27 @@
         line-height: 1.35;
         color: var(--mock-text);
         letter-spacing: -0.01em;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        overflow: hidden;
+        min-height: calc(1.35em * 2);
       }
       .mock-material-chapter-meta {
         font-size: 10px;
         font-weight: 500;
         color: var(--mock-muted);
-        line-height: 1.3;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex-shrink: 0;
       }
       .mock-material-detail {
         min-height: 0;
         min-width: 0;
-        padding: 22px 24px 28px;
+        padding: 24px 26px 32px;
         overflow-y: auto;
         overscroll-behavior: contain;
       }
@@ -725,7 +823,7 @@
         color: var(--mock-tertiary);
       }
       .mock-material-title {
-        margin: 0 0 8px;
+        margin: 0 0 6px;
         font-family: var(--mock-font-display);
         font-size: clamp(1.35rem, 2.4vw, 1.75rem);
         font-weight: 700;
@@ -734,16 +832,39 @@
         color: var(--mock-text);
       }
       .mock-material-span {
-        margin: 0 0 20px;
+        margin: 0 0 14px;
         font-size: 12px;
         font-weight: 500;
         color: var(--mock-muted);
+      }
+      .mock-material-stats {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 10px;
+        margin: 0 0 18px;
+        padding: 10px 14px;
+        border-radius: 11px;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--mock-muted);
+        background: color-mix(in srgb, var(--mock-bg) 45%, var(--mock-surface));
+        border: 1px solid color-mix(in srgb, var(--mock-border) 35%, transparent);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+      }
+      .mock-material-stats strong {
+        font-weight: 600;
+        color: var(--mock-text);
+      }
+      .mock-material-stats-sep {
+        color: color-mix(in srgb, var(--mock-tertiary) 55%, transparent);
+        font-weight: 400;
       }
       .mock-material-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
       .mock-material-action {
         border: 1px solid color-mix(in srgb, var(--mock-border) 55%, transparent);
@@ -753,59 +874,180 @@
         font-size: 11px;
         font-weight: 600;
         padding: 8px 14px;
-        border-radius: 999px;
+        border-radius: 10px;
         cursor: pointer;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
-        transition: border-color 0.15s ease, background 0.15s ease;
+        transition: border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
       }
       .mock-material-action:hover {
         border-color: color-mix(in srgb, var(--course-view-accent-border) 40%, var(--mock-border));
         background: color-mix(in srgb, var(--course-view-accent-bg) 52%, var(--mock-surface));
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.65),
+          0 1px 3px color-mix(in srgb, var(--course-view-accent-fg) 6%, transparent);
       }
-      .mock-material-section {
+      .mock-material-action:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--course-view-accent-border) 50%, var(--mock-border));
+        outline-offset: 2px;
+      }
+      .mock-material-topic {
+        margin-top: 20px;
+      }
+      .mock-material-topic:first-of-type {
         margin-top: 22px;
       }
-      .mock-material-section:first-of-type {
-        margin-top: 18px;
+      .mock-material-topic-card {
+        border-radius: 12px;
+        padding: 14px 14px 12px;
+        background: color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg));
+        border: 1px solid color-mix(in srgb, var(--mock-border) 28%, transparent);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.75) inset,
+          0 1px 2px rgba(37, 50, 58, 0.03);
       }
-      .mock-material-section-label {
+      .mock-material-topic-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid color-mix(in srgb, var(--course-view-accent-border) 12%, var(--mock-hairline));
+      }
+      .mock-material-topic-heading {
+        min-width: 0;
+        flex: 1;
+      }
+      .mock-material-topic-title {
+        margin: 0;
+        font-family: var(--mock-font-display);
+        font-size: 13px;
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        line-height: 1.3;
+        color: var(--mock-text);
+      }
+      .mock-material-topic-desc {
+        margin: 5px 0 0;
         font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.06em;
+        font-weight: 450;
+        line-height: 1.45;
+        color: var(--mock-muted);
+        max-width: 38rem;
+      }
+      .mock-material-topic-count {
+        flex-shrink: 0;
+        font-size: 10px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
         color: var(--mock-tertiary);
-        margin-bottom: 8px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--mock-bg) 55%, var(--mock-surface));
+        border: 1px solid color-mix(in srgb, var(--mock-border) 28%, transparent);
+      }
+      .mock-material-files {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
       }
       .mock-material-file {
-        display: flex;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
         align-items: center;
-        gap: 12px;
-        padding: 10px 12px;
-        border-radius: 10px;
-        border: 1px solid color-mix(in srgb, var(--mock-hairline) 85%, transparent);
-        background: color-mix(in srgb, var(--mock-surface) 92%, var(--mock-bg));
-        margin-bottom: 6px;
+        gap: 14px;
+        width: 100%;
+        margin: 0;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--mock-border) 28%, transparent);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 96%, white) 0%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+        );
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.75) inset,
+          0 1px 2px rgba(37, 50, 58, 0.04);
+        text-align: left;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        transition:
+          border-color 0.16s ease,
+          box-shadow 0.16s ease,
+          background 0.16s ease,
+          transform 0.14s ease;
       }
-      .mock-material-file:last-child {
-        margin-bottom: 0;
+      .mock-material-file:hover {
+        border-color: color-mix(in srgb, var(--course-view-accent-border) 32%, var(--mock-border));
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.85) inset,
+          0 2px 8px rgba(37, 50, 58, 0.055);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 92%, var(--course-view-accent-bg)) 0%,
+          color-mix(in srgb, var(--mock-surface) 85%, var(--mock-bg)) 100%
+        );
+      }
+      .mock-material-file:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--course-view-accent-border) 55%, var(--mock-border));
+        outline-offset: 2px;
+      }
+      .mock-material-file:active {
+        transform: translateY(0.5px);
       }
       .mock-material-file-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
+        width: 44px;
+        height: 48px;
+        border-radius: 11px;
         flex-shrink: 0;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-size: 10px;
+        gap: 4px;
+        padding: 6px 4px;
+        border: 1px solid var(--file-icon-border, var(--mock-hairline));
+        background: var(--file-icon-bg, color-mix(in srgb, var(--mock-bg) 40%, var(--mock-surface)));
+        color: var(--file-icon-fg, var(--mock-muted));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      }
+      .mock-material-file-icon svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+      .mock-material-file-kind {
+        font-size: 8px;
         font-weight: 700;
-        letter-spacing: 0.02em;
-        color: color-mix(in srgb, var(--course-view-accent-fg) 70%, var(--mock-muted));
-        background: color-mix(in srgb, var(--course-view-accent-bg) 50%, var(--mock-surface));
-        border: 1px solid color-mix(in srgb, var(--mock-hairline) 90%, transparent);
+        letter-spacing: 0.06em;
+        line-height: 1;
+        opacity: 0.92;
+      }
+      .mock-material-file-icon--pdf {
+        --file-icon-bg: var(--file-pdf-bg);
+        --file-icon-fg: var(--file-pdf-fg);
+        --file-icon-border: var(--file-pdf-border);
+      }
+      .mock-material-file-icon--ppt {
+        --file-icon-bg: var(--file-ppt-bg);
+        --file-icon-fg: var(--file-ppt-fg);
+        --file-icon-border: var(--file-ppt-border);
+      }
+      .mock-material-file-icon--doc {
+        --file-icon-bg: var(--file-doc-bg);
+        --file-icon-fg: var(--file-doc-fg);
+        --file-icon-border: var(--file-doc-border);
+      }
+      .mock-material-file-icon--md {
+        --file-icon-bg: var(--file-md-bg);
+        --file-icon-fg: var(--file-md-fg);
+        --file-icon-border: var(--file-md-border);
       }
       .mock-material-file-meta {
         min-width: 0;
-        flex: 1;
       }
       .mock-material-file-name {
         display: block;
@@ -813,12 +1055,37 @@
         font-weight: 600;
         letter-spacing: -0.02em;
         color: var(--mock-text);
-        margin-bottom: 2px;
+        margin-bottom: 3px;
       }
       .mock-material-file-desc {
         font-size: 11px;
         color: var(--mock-muted);
-        line-height: 1.35;
+        line-height: 1.4;
+      }
+      .mock-material-file-tail {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        flex-shrink: 0;
+        white-space: nowrap;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--mock-tertiary);
+      }
+      .mock-material-file:hover .mock-material-file-tail {
+        color: color-mix(in srgb, var(--course-view-accent-fg) 35%, var(--mock-tertiary));
+      }
+      .mock-material-file-chevron {
+        width: 16px;
+        height: 16px;
+        opacity: 0.55;
+        transition: opacity 0.16s ease, transform 0.16s ease;
+      }
+      .mock-material-file:hover .mock-material-file-chevron {
+        opacity: 0.85;
+        transform: translateX(2px);
       }
     </style>
   </head>
@@ -898,11 +1165,17 @@
               <div class="mock-launcher-panel" id="mock-launcher-panel" role="listbox" aria-label="Command palette">
                 <div class="mock-launcher-h">Recent</div>
                 <div class="mock-launcher-row" role="option">PSYC 100 — syllabus.pdf</div>
-                <div class="mock-launcher-row" role="option">Week 1 slides — Introducing psychological science</div>
+                <div class="mock-launcher-row" role="option">Midterm format notes</div>
+                <div class="mock-launcher-divider"></div>
+                <div class="mock-launcher-h">Jump to course</div>
+                <div class="mock-launcher-row" role="option">Open BIOL 111 <kbd>↵</kbd></div>
                 <div class="mock-launcher-divider"></div>
                 <div class="mock-launcher-h">Add to this course</div>
                 <div class="mock-launcher-row" role="option">Upload document…</div>
+                <div class="mock-launcher-row" role="option">Paste syllabus text</div>
+                <div class="mock-launcher-row" role="option">Paste URL</div>
                 <div class="mock-launcher-dropzone">Drop files here to add to <strong>PSYC 100</strong></div>
+                <div class="mock-launcher-row mock-launcher-row--hint">Tip: paste links or text without leaving this field.</div>
               </div>
             </div>
 
@@ -1070,46 +1343,182 @@
                             Course Overview: Introducing Psychological Science
                           </h2>
                           <p class="mock-material-span" id="mock-material-detail-span">Week 1 · Ch. 1</p>
+                          <p class="mock-material-stats" id="mock-material-stats" role="status">
+                            <strong id="mock-material-stats-count">5</strong> files
+                            <span class="mock-material-stats-sep" aria-hidden="true">·</span>
+                            <span id="mock-material-stats-cats">4 topic groups</span>
+                          </p>
                           <div class="mock-material-actions">
                             <button type="button" class="mock-material-action">Ask AI about chapter</button>
                             <button type="button" class="mock-material-action">Generate quiz</button>
                             <button type="button" class="mock-material-action">Make flashcards</button>
                           </div>
 
-                          <div class="mock-material-section" id="mock-material-sections">
-                            <div class="mock-material-section-label">General</div>
-                            <div class="mock-material-file">
-                              <div class="mock-material-file-icon" aria-hidden="true">PDF</div>
-                              <div class="mock-material-file-meta">
-                                <span class="mock-material-file-name">Syllabus.pdf</span>
-                                <span class="mock-material-file-desc">PSYC 100 outline, assessments, and policies</span>
+                          <div id="mock-material-sections">
+                            <section class="mock-material-topic" aria-labelledby="topic-ch1-essentials">
+                              <div class="mock-material-topic-card">
+                                <header class="mock-material-topic-header">
+                                  <div class="mock-material-topic-heading">
+                                    <h3 class="mock-material-topic-title" id="topic-ch1-essentials">Chapter essentials</h3>
+                                    <p class="mock-material-topic-desc">
+                                      Course-wide policies and the official outline—start here before diving into concepts.
+                                    </p>
+                                  </div>
+                                  <span class="mock-material-topic-count" aria-label="2 files">2</span>
+                                </header>
+                                <div class="mock-material-files">
+                                  <button type="button" class="mock-material-file">
+                                    <div class="mock-material-file-icon mock-material-file-icon--pdf" aria-hidden="true">
+                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <path d="M14 2v6h6" />
+                                        <path d="M8 13h8M8 17h5" />
+                                      </svg>
+                                      <span class="mock-material-file-kind">PDF</span>
+                                    </div>
+                                    <div class="mock-material-file-meta">
+                                      <span class="mock-material-file-name">Syllabus.pdf</span>
+                                      <span class="mock-material-file-desc">PSYC 100 outline, assessments, and policies</span>
+                                    </div>
+                                    <span class="mock-material-file-tail" aria-hidden="true">
+                                      Open
+                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m9 18 6-6-6-6" />
+                                      </svg>
+                                    </span>
+                                  </button>
+                                  <button type="button" class="mock-material-file">
+                                    <div class="mock-material-file-icon mock-material-file-icon--doc" aria-hidden="true">
+                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <path d="M14 2v6h6" />
+                                        <path d="M8 12h8M8 16h8M8 8h3" />
+                                      </svg>
+                                      <span class="mock-material-file-kind">DOCX</span>
+                                    </div>
+                                    <div class="mock-material-file-meta">
+                                      <span class="mock-material-file-name">Course policies.docx</span>
+                                      <span class="mock-material-file-desc">Academic integrity, grading, and attendance</span>
+                                    </div>
+                                    <span class="mock-material-file-tail" aria-hidden="true">
+                                      Open
+                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m9 18 6-6-6-6" />
+                                      </svg>
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
-                            </div>
+                            </section>
 
-                            <div class="mock-material-section-label">Lectures</div>
-                            <div class="mock-material-file">
-                              <div class="mock-material-file-icon" aria-hidden="true">PDF</div>
-                              <div class="mock-material-file-meta">
-                                <span class="mock-material-file-name">Week 1 slides.pdf</span>
-                                <span class="mock-material-file-desc">Introducing psychological science</span>
+                            <section class="mock-material-topic" aria-labelledby="topic-ch1-what">
+                              <div class="mock-material-topic-card">
+                                <header class="mock-material-topic-header">
+                                  <div class="mock-material-topic-heading">
+                                    <h3 class="mock-material-topic-title" id="topic-ch1-what">What is psychological science?</h3>
+                                    <p class="mock-material-topic-desc">
+                                      Definitions, goals of the field, and how psychologists approach behaviour and mental processes.
+                                    </p>
+                                  </div>
+                                  <span class="mock-material-topic-count" aria-label="1 file">1</span>
+                                </header>
+                                <div class="mock-material-files">
+                                  <button type="button" class="mock-material-file">
+                                    <div class="mock-material-file-icon mock-material-file-icon--ppt" aria-hidden="true">
+                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="15" rx="1.5" />
+                                        <path d="M7 9h10M7 13h7" />
+                                        <circle cx="17" cy="7" r="1" fill="currentColor" stroke="none" />
+                                      </svg>
+                                      <span class="mock-material-file-kind">PPTX</span>
+                                    </div>
+                                    <div class="mock-material-file-meta">
+                                      <span class="mock-material-file-name">Week 1 slides.pptx</span>
+                                      <span class="mock-material-file-desc">Lecture: introducing psychological science</span>
+                                    </div>
+                                    <span class="mock-material-file-tail" aria-hidden="true">
+                                      Open
+                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m9 18 6-6-6-6" />
+                                      </svg>
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
-                            </div>
+                            </section>
 
-                            <div class="mock-material-section-label">Readings</div>
-                            <div class="mock-material-file">
-                              <div class="mock-material-file-icon" aria-hidden="true">MD</div>
-                              <div class="mock-material-file-meta">
-                                <span class="mock-material-file-name">Ch. 1 reading guide.md</span>
-                                <span class="mock-material-file-desc">Key terms + discussion prompts</span>
+                            <section class="mock-material-topic" aria-labelledby="topic-ch1-science">
+                              <div class="mock-material-topic-card">
+                                <header class="mock-material-topic-header">
+                                  <div class="mock-material-topic-heading">
+                                    <h3 class="mock-material-topic-title" id="topic-ch1-science">Scientific thinking and evidence</h3>
+                                    <p class="mock-material-topic-desc">
+                                      How theories connect to data—hypotheses, methods, and what counts as support for a claim.
+                                    </p>
+                                  </div>
+                                  <span class="mock-material-topic-count" aria-label="1 file">1</span>
+                                </header>
+                                <div class="mock-material-files">
+                                  <button type="button" class="mock-material-file">
+                                    <div class="mock-material-file-icon mock-material-file-icon--md" aria-hidden="true">
+                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="6.5" cy="8" r="1.25" fill="currentColor" stroke="none" />
+                                        <circle cx="6.5" cy="12" r="1.25" fill="currentColor" stroke="none" />
+                                        <circle cx="6.5" cy="16" r="1.25" fill="currentColor" stroke="none" />
+                                        <path d="M10.5 8H19M10.5 12H17M10.5 16H19" />
+                                      </svg>
+                                      <span class="mock-material-file-kind">MD</span>
+                                    </div>
+                                    <div class="mock-material-file-meta">
+                                      <span class="mock-material-file-name">Ch. 1 reading guide.md</span>
+                                      <span class="mock-material-file-desc">Guided notes, key studies, and discussion prompts</span>
+                                    </div>
+                                    <span class="mock-material-file-tail" aria-hidden="true">
+                                      Open
+                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m9 18 6-6-6-6" />
+                                      </svg>
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                            <div class="mock-material-file">
-                              <div class="mock-material-file-icon" aria-hidden="true">PDF</div>
-                              <div class="mock-material-file-meta">
-                                <span class="mock-material-file-name">Section worksheet.pdf</span>
-                                <span class="mock-material-file-desc">In-class practice — Week 1</span>
+                            </section>
+
+                            <section class="mock-material-topic" aria-labelledby="topic-ch1-review">
+                              <div class="mock-material-topic-card">
+                                <header class="mock-material-topic-header">
+                                  <div class="mock-material-topic-heading">
+                                    <h3 class="mock-material-topic-title" id="topic-ch1-review">Key terms and review</h3>
+                                    <p class="mock-material-topic-desc">
+                                      Consolidate vocabulary and check understanding before section or the first quiz.
+                                    </p>
+                                  </div>
+                                  <span class="mock-material-topic-count" aria-label="1 file">1</span>
+                                </header>
+                                <div class="mock-material-files">
+                                  <button type="button" class="mock-material-file">
+                                    <div class="mock-material-file-icon mock-material-file-icon--pdf" aria-hidden="true">
+                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <path d="M14 2v6h6" />
+                                        <path d="M8 13h8M8 17h5" />
+                                      </svg>
+                                      <span class="mock-material-file-kind">PDF</span>
+                                    </div>
+                                    <div class="mock-material-file-meta">
+                                      <span class="mock-material-file-name">Section worksheet.pdf</span>
+                                      <span class="mock-material-file-desc">In-class practice — Week 1</span>
+                                    </div>
+                                    <span class="mock-material-file-tail" aria-hidden="true">
+                                      Open
+                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m9 18 6-6-6-6" />
+                                      </svg>
+                                    </span>
+                                  </button>
+                                </div>
                               </div>
-                            </div>
+                            </section>
                           </div>
                         </article>
                       </div>
@@ -1225,7 +1634,7 @@
             var l = clamp(v.bgL + 0.8, 86, 90);
             hueStops.push("hsl(" + v.h + " " + s + "% " + l + "%) " + pos + "%");
           });
-          var base = "linear-gradient(180deg, #fff4e8 0%, #e2d2c2 46%, #f2e8d8 100%)";
+          var base = "linear-gradient(180deg, #fdfdfc 0%, #ecebe9 40%, #f5f4f2 100%)";
           var stack =
             n === 0 ? base : "linear-gradient(96deg, " + hueStops.join(", ") + "), " + base;
           rail.style.setProperty("--course-rail-bg", stack);
@@ -1292,6 +1701,81 @@
           });
         }
 
+        var materialSectionsRoot = document.getElementById("mock-material-sections");
+        var materialTopicsHtmlChapter1 = materialSectionsRoot ? materialSectionsRoot.innerHTML : "";
+
+        function statsForChapter(id) {
+          if (id === "1") return { count: "5", cats: "4 topic groups" };
+          return { count: "4", cats: "3 topic groups" };
+        }
+
+        function genericMaterialTopicsHtml() {
+          return (
+            '<section class="mock-material-topic" aria-labelledby="topic-gen-essentials">' +
+            '<div class="mock-material-topic-card">' +
+            '<header class="mock-material-topic-header">' +
+            '<div class="mock-material-topic-heading">' +
+            '<h3 class="mock-material-topic-title" id="topic-gen-essentials">Chapter essentials</h3>' +
+            '<p class="mock-material-topic-desc">Policies, calendar snapshot, and anything that applies to the whole week.</p>' +
+            "</div>" +
+            '<span class="mock-material-topic-count" aria-label="1 file">1</span>' +
+            "</header>" +
+            '<div class="mock-material-files">' +
+            '<button type="button" class="mock-material-file">' +
+            '<div class="mock-material-file-icon mock-material-file-icon--pdf" aria-hidden="true">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>' +
+            '<span class="mock-material-file-kind">PDF</span></div>' +
+            '<div class="mock-material-file-meta"><span class="mock-material-file-name">Week at a glance.pdf</span>' +
+            '<span class="mock-material-file-desc">Deadlines, readings, and what to prepare</span></div>' +
+            '<span class="mock-material-file-tail" aria-hidden="true">Open<svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>' +
+            "</button></div></div></section>" +
+            '<section class="mock-material-topic" aria-labelledby="topic-gen-core">' +
+            '<div class="mock-material-topic-card">' +
+            '<header class="mock-material-topic-header">' +
+            '<div class="mock-material-topic-heading">' +
+            '<h3 class="mock-material-topic-title" id="topic-gen-core">Core ideas for this week</h3>' +
+            '<p class="mock-material-topic-desc">Lecture framing and readings that carry the main arguments.</p>' +
+            "</div>" +
+            '<span class="mock-material-topic-count" aria-label="2 files">2</span>' +
+            "</header>" +
+            '<div class="mock-material-files">' +
+            '<button type="button" class="mock-material-file">' +
+            '<div class="mock-material-file-icon mock-material-file-icon--ppt" aria-hidden="true">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="15" rx="1.5"/><path d="M7 9h10M7 13h7"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg>' +
+            '<span class="mock-material-file-kind">PPTX</span></div>' +
+            '<div class="mock-material-file-meta"><span class="mock-material-file-name">Lecture slides.pptx</span>' +
+            '<span class="mock-material-file-desc">In-class narrative and diagrams</span></div>' +
+            '<span class="mock-material-file-tail" aria-hidden="true">Open<svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>' +
+            "</button>" +
+            '<button type="button" class="mock-material-file">' +
+            '<div class="mock-material-file-icon mock-material-file-icon--md" aria-hidden="true">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="8" r="1.25" fill="currentColor" stroke="none"/><circle cx="6.5" cy="12" r="1.25" fill="currentColor" stroke="none"/><circle cx="6.5" cy="16" r="1.25" fill="currentColor" stroke="none"/><path d="M10.5 8H19M10.5 12H17M10.5 16H19"/></svg>' +
+            '<span class="mock-material-file-kind">MD</span></div>' +
+            '<div class="mock-material-file-meta"><span class="mock-material-file-name">Reading notes.md</span>' +
+            '<span class="mock-material-file-desc">Guided prompts while you read</span></div>' +
+            '<span class="mock-material-file-tail" aria-hidden="true">Open<svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>' +
+            "</button></div></div></section>" +
+            '<section class="mock-material-topic" aria-labelledby="topic-gen-review">' +
+            '<div class="mock-material-topic-card">' +
+            '<header class="mock-material-topic-header">' +
+            '<div class="mock-material-topic-heading">' +
+            '<h3 class="mock-material-topic-title" id="topic-gen-review">Apply & review</h3>' +
+            '<p class="mock-material-topic-desc">Short practice to solidify the week before moving on.</p>' +
+            "</div>" +
+            '<span class="mock-material-topic-count" aria-label="1 file">1</span>' +
+            "</header>" +
+            '<div class="mock-material-files">' +
+            '<button type="button" class="mock-material-file">' +
+            '<div class="mock-material-file-icon mock-material-file-icon--pdf" aria-hidden="true">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>' +
+            '<span class="mock-material-file-kind">PDF</span></div>' +
+            '<div class="mock-material-file-meta"><span class="mock-material-file-name">Practice set.pdf</span>' +
+            '<span class="mock-material-file-desc">Check understanding—bring questions to section</span></div>' +
+            '<span class="mock-material-file-tail" aria-hidden="true">Open<svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>' +
+            "</button></div></div></section>"
+          );
+        }
+
         var CHAPTERS = {
           1: { kicker: "WEEK 1 · CH. 1", title: "Course Overview: Introducing Psychological Science", span: "Week 1 · Ch. 1" },
           2: { kicker: "WEEK 2 · CH. 2", title: "Understanding Scientific Research Part I", span: "Week 2 · Ch. 2" },
@@ -1319,9 +1803,17 @@
             var k = document.querySelector(".mock-material-kicker");
             var t = document.querySelector("#mock-material-detail-title");
             var s = document.querySelector("#mock-material-detail-span");
+            var sc = document.querySelector("#mock-material-stats-count");
+            var sx = document.querySelector("#mock-material-stats-cats");
             if (k) k.textContent = d.kicker;
             if (t) t.textContent = d.title;
             if (s) s.textContent = d.span;
+            var st = statsForChapter(id);
+            if (sc) sc.textContent = st.count;
+            if (sx) sx.textContent = st.cats;
+            if (materialSectionsRoot) {
+              materialSectionsRoot.innerHTML = id === "1" ? materialTopicsHtmlChapter1 : genericMaterialTopicsHtml();
+            }
           });
         });
       })();
