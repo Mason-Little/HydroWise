@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HydroWise — Materials mock</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        height: 100%;
+        overflow: hidden;
+      }
+      body {
+        margin: 0;
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+      .mock-app {
+        --mock-chrome-bg: #f5f3ec;
+        --mock-sidebar: #f1efe6;
+        --mock-bg: #fcf6ee;
+        --mock-surface: #fff8f0;
+        --mock-surface-2: #f7f4ee;
+        --mock-border: #ddd8cd;
+        --mock-text: #25323a;
+        --mock-muted: #62707a;
+        --mock-tertiary: #7d8891;
+        --mock-accent: #5f766a;
+        --mock-accent-strong: #33443c;
+        --mock-accent-soft: #edf2ee;
+        --mock-green: #5f766a;
+        --mock-green-bg: #edf2ee;
+        --mock-green-border: #c7d1c9;
+        --mock-hairline: color-mix(in srgb, var(--mock-border) 52%, transparent);
+        --mock-r-ui: 8px;
+        --mock-r-surface: 14px;
+        --mock-r-pill: 14px;
+        --mock-r-workspace: 11px;
+        --mock-r-tab-top: 8px;
+        --mock-shadow-soft: 0 1px 2px rgba(37, 50, 58, 0.05);
+        --mock-shadow-lift: 0 12px 32px rgba(37, 50, 58, 0.08);
+        --mock-rail-w: 74px;
+        --mock-font: "Inter", system-ui, -apple-system, sans-serif;
+        --mock-font-display: "Inter Tight", "Inter", system-ui, sans-serif;
+        --mock-body-size: 13px;
+        --course-sage: #c5dcc0;
+        --course-moss: #cadecb;
+        --course-lavender: #ddd0ee;
+        --course-fog: #cddfef;
+        --course-view-accent-bg: var(--mock-accent-soft);
+        --course-view-accent-fg: var(--mock-accent-strong);
+        --course-view-accent-border: var(--mock-green-border);
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        width: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+        font-family: var(--mock-font);
+        font-size: var(--mock-body-size);
+        color: var(--mock-text);
+        background-color: var(--mock-chrome-bg);
+      }
+      .mock-app > * {
+        position: relative;
+        z-index: 1;
+      }
+      .mock-rail {
+        width: var(--mock-rail-w);
+        flex-shrink: 0;
+        background: var(--mock-sidebar);
+        border-right: 1px solid var(--mock-hairline);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 14px 0 18px;
+        gap: 7px;
+      }
+      .mock-rail-brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2px;
+        color: var(--mock-accent-strong);
+        filter: drop-shadow(0 1px 2px rgba(37, 50, 58, 0.06));
+      }
+      .mock-rail-brand svg {
+        display: block;
+        width: 30px;
+        height: 30px;
+        stroke-width: 1.75;
+      }
+      .mock-rail-btn {
+        width: 46px;
+        height: 46px;
+        border: none;
+        border-radius: 11px;
+        background: transparent;
+        color: color-mix(in srgb, var(--mock-muted) 78%, var(--mock-text));
+        cursor: default;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+      }
+      .mock-rail-btn svg {
+        width: 22px;
+        height: 22px;
+        stroke-width: 1.8;
+      }
+      .mock-rail-btn:hover:not(.active) {
+        color: color-mix(in srgb, var(--mock-text) 88%, var(--mock-muted));
+        background: color-mix(in srgb, var(--mock-surface) 22%, transparent);
+      }
+      .mock-rail-btn.active {
+        background: color-mix(in srgb, var(--mock-surface) 58%, var(--mock-sidebar));
+        color: var(--mock-text);
+        box-shadow:
+          inset 0 0 0 1px color-mix(in srgb, var(--mock-border) 44%, transparent),
+          0 2px 6px rgba(37, 50, 58, 0.07);
+      }
+      .mock-column {
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .mock-inset {
+        flex: 1;
+        padding: 10px 18px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .mock-topbar {
+        flex-shrink: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 200px) minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 16px;
+        background: color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg));
+        border: 1px solid color-mix(in srgb, var(--mock-border) 54%, transparent);
+        border-radius: var(--mock-r-workspace);
+        box-shadow:
+          0 1px 0 rgba(255, 253, 248, 0.82) inset,
+          0 10px 30px rgba(37, 50, 58, 0.042),
+          0 2px 8px rgba(37, 50, 58, 0.028);
+        z-index: 12;
+      }
+      .mock-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        min-width: 0;
+      }
+      .mock-topbar-crumb {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+      }
+      .mock-topbar-brand {
+        font-size: calc(var(--mock-body-size) - 1px);
+        font-weight: 600;
+        color: var(--mock-text);
+        letter-spacing: -0.02em;
+      }
+      .mock-topbar-breadcrumb {
+        font-size: calc(var(--mock-body-size) - 1px);
+        font-weight: 500;
+        color: var(--mock-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .mock-topbar-breadcrumb strong {
+        font-weight: 600;
+        color: var(--mock-text);
+      }
+      .mock-launcher {
+        position: relative;
+        justify-self: center;
+        width: 100%;
+        max-width: 760px;
+      }
+      .mock-launcher-input {
+        width: 100%;
+        height: 48px;
+        border-radius: 12px;
+        border: 1px solid var(--mock-hairline);
+        background: var(--mock-surface);
+        padding: 0 16px 0 42px;
+        font: inherit;
+        font-size: calc(var(--mock-body-size) - 1px);
+        color: var(--mock-text);
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      }
+      .mock-launcher-input::placeholder {
+        color: var(--mock-tertiary);
+      }
+      .mock-launcher-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: var(--mock-tertiary);
+        pointer-events: none;
+      }
+      .mock-launcher-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.75;
+      }
+      .mock-launcher:focus-within .mock-launcher-input {
+        border-color: color-mix(in srgb, var(--mock-accent) 38%, var(--mock-border));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--mock-accent) 12%, transparent);
+        background: var(--mock-surface);
+      }
+      .mock-launcher-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        max-height: min(420px, 70vh);
+        overflow-y: auto;
+        padding: 8px 0;
+        background: var(--mock-surface);
+        border: 1px solid var(--mock-hairline);
+        border-radius: var(--mock-r-pill);
+        box-shadow: var(--mock-shadow-lift);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-6px);
+        transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s;
+        z-index: 30;
+      }
+      .mock-launcher:focus-within .mock-launcher-panel {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .mock-launcher-h {
+        padding: 6px 14px 4px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: var(--mock-tertiary);
+      }
+      .mock-launcher-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        font-size: calc(var(--mock-body-size) - 1px);
+        color: var(--mock-text);
+        cursor: default;
+        transition: background 0.12s ease;
+      }
+      .mock-launcher-row:hover {
+        background: color-mix(in srgb, var(--mock-bg) 55%, var(--mock-surface));
+      }
+      .mock-launcher-row kbd {
+        margin-left: auto;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--mock-tertiary);
+        background: color-mix(in srgb, var(--mock-chrome-bg) 70%, var(--mock-surface));
+        padding: 2px 6px;
+        border-radius: var(--mock-r-ui);
+        border: 1px solid var(--mock-hairline);
+      }
+      .mock-launcher-row--hint {
+        color: var(--mock-muted);
+        font-size: calc(var(--mock-body-size) - 2px);
+      }
+      .mock-launcher-divider {
+        height: 1px;
+        margin: 8px 12px;
+        background: var(--mock-hairline);
+      }
+      .mock-launcher-dropzone {
+        margin: 6px 12px 4px;
+        padding: 14px;
+        border-radius: var(--mock-r-pill);
+        border: 1px dashed color-mix(in srgb, var(--mock-accent) 22%, var(--mock-border));
+        background: color-mix(in srgb, var(--mock-accent-soft) 55%, var(--mock-surface));
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 500;
+        color: var(--mock-muted);
+        text-align: center;
+      }
+      .mock-topbar-right {
+        justify-self: end;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .mock-model-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 40px;
+        padding: 0 14px;
+        border-radius: 12px;
+        border: 1px solid var(--mock-hairline);
+        background: color-mix(in srgb, var(--mock-bg) 58%, var(--mock-surface));
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 600;
+        color: var(--mock-text);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 1px 2px rgba(37, 50, 58, 0.07);
+      }
+      .mock-model-pill .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--mock-accent);
+      }
+      .mock-scroll {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--mock-r-workspace);
+        background: radial-gradient(
+          115% 95% at 50% 108%,
+          color-mix(in srgb, var(--mock-chrome-bg) 72%, var(--mock-bg)) 0%,
+          var(--mock-chrome-bg) 55%
+        );
+        box-shadow: inset 0 2px 6px rgba(37, 50, 58, 0.045);
+      }
+      .mock-course-shell {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        flex: 1;
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(
+          168deg,
+          color-mix(in srgb, var(--mock-surface) 82%, #f2e4d8) 0%,
+          color-mix(in srgb, var(--mock-surface) 92%, #faf0e6) 40%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+        );
+        border: 1px solid color-mix(in srgb, var(--mock-border) 70%, transparent);
+        border-top-color: color-mix(in srgb, var(--mock-border) 52%, transparent);
+        border-radius: var(--mock-r-workspace);
+        overflow: hidden;
+        box-shadow:
+          0 1px 0 rgba(255, 253, 248, 0.88) inset,
+          0 16px 42px rgba(37, 50, 58, 0.06),
+          0 5px 16px rgba(37, 50, 58, 0.036),
+          0 0 0 1px rgba(255, 253, 248, 0.45);
+      }
+      .mock-course-rail {
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        padding: 14px 16px 0;
+        margin-bottom: 0;
+        border-bottom: 1px solid var(--mock-hairline);
+        --course-rail-bg:
+          linear-gradient(
+            98deg,
+            #c5e0c8 0%,
+            #d2e8b6 20%,
+            #e4d2ef 46%,
+            #c8daf4 72%,
+            #f2d8c4 100%
+          ),
+          linear-gradient(180deg, #fff4e8 0%, #e2d2c2 46%, #f2e8d8 100%);
+        background: var(--course-rail-bg);
+      }
+      .mock-course-tab {
+        position: relative;
+        width: 100%;
+        max-width: none;
+        border: none;
+        background: var(--course-pill-bg, var(--course-sage));
+        font: inherit;
+        cursor: pointer;
+        padding: 14px 16px 13px;
+        min-height: 72px;
+        min-width: 0;
+        border-radius: var(--mock-r-tab-top) var(--mock-r-tab-top) 0 0;
+        color: var(--course-pill-fg, var(--mock-muted));
+        text-align: left;
+        transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.78),
+          0 0 0 1px color-mix(in srgb, var(--course-pill-border) 92%, transparent),
+          0 4px 14px rgba(37, 50, 58, 0.028);
+        --course-pill-bg: #b0daa0;
+        --course-pill-fg: #1a3824;
+        --course-pill-border: hsl(126 44% 48%);
+        --course-pill-active-bg: #9ccd88;
+        --course-pill-active-fg: #15301e;
+        --course-pill-active-border: hsl(124 46% 38%);
+      }
+      .mock-course-tab:hover {
+        transform: translateY(-1px);
+      }
+      .mock-course-tab .code {
+        display: block;
+        font-size: calc(var(--mock-body-size) + 1px);
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        color: var(--course-pill-fg, var(--mock-text));
+      }
+      .mock-course-tab .name {
+        display: block;
+        margin-top: 4px;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.25;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: color-mix(in srgb, var(--course-pill-fg, var(--mock-muted)) 86%, var(--course-pill-bg, var(--mock-surface)));
+        opacity: 0.98;
+      }
+      .mock-course-tab.mock-course-tab--active {
+        background: var(--course-pill-active-bg);
+        border: 1px solid var(--course-pill-active-border);
+        border-bottom-color: transparent;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        color: var(--course-pill-active-fg);
+        transform: none;
+        margin-bottom: -1px;
+        z-index: 1;
+      }
+      .mock-course-tab.mock-course-tab--active .code {
+        color: currentColor;
+      }
+      .mock-course-tab.mock-course-tab--active .name {
+        color: color-mix(in srgb, currentColor 70%, var(--course-pill-active-bg));
+        opacity: 0.96;
+      }
+      .mock-canvas {
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-bg) 55%, #edd9c8) 0%,
+          color-mix(in srgb, var(--mock-surface) 88%, #e8f0e4) 28%,
+          transparent 55%
+        );
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+        min-height: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .mock-course-header {
+        flex-shrink: 0;
+        padding: 12px 20px 10px;
+        border-bottom: 1px solid color-mix(in srgb, var(--mock-border) 42%, transparent);
+        background:
+          linear-gradient(180deg, color-mix(in srgb, var(--mock-surface) 90%, #e8f0e8) 0%, color-mix(in srgb, var(--mock-surface) 86%, var(--mock-bg)) 100%);
+      }
+      .mock-course-header-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 0;
+      }
+      .mock-course-title-block {
+        min-width: 0;
+      }
+      .mock-course-kicker {
+        margin: 0 0 4px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #5a6f68;
+        letter-spacing: 0.01em;
+      }
+      .mock-course-title {
+        margin: 0;
+        font-family: var(--mock-font-display);
+        font-size: clamp(1.5rem, 2.1vw, 2.05rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1.08;
+      }
+      .mock-toggle {
+        display: inline-flex;
+        height: 36px;
+        padding: 2px;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--mock-bg) 58%, var(--mock-surface));
+        border: 1px solid var(--mock-hairline);
+      }
+      .mock-toggle button {
+        border: none;
+        background: transparent;
+        padding: 0 16px;
+        border-radius: 9px;
+        font: inherit;
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 600;
+        color: var(--mock-tertiary);
+        cursor: pointer;
+      }
+      .mock-toggle button.on {
+        background: var(--mock-surface);
+        color: var(--mock-text);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 1px 2px rgba(37, 50, 58, 0.07);
+      }
+      .mock-header-contact {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid color-mix(in srgb, var(--mock-border) 32%, transparent);
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        font-size: 12px;
+        color: var(--mock-muted);
+      }
+      .mock-header-contact-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0 4px;
+      }
+      .mock-header-label {
+        font-weight: 600;
+        color: var(--mock-text);
+      }
+      .mock-header-value {
+        font-weight: 450;
+        color: color-mix(in srgb, var(--mock-muted) 88%, var(--mock-text));
+      }
+      .mock-header-sep {
+        color: color-mix(in srgb, var(--mock-muted) 45%, transparent);
+        margin: 0 3px;
+      }
+      a.mock-header-link {
+        color: var(--mock-accent-strong);
+        font-weight: 500;
+        text-decoration: none;
+      }
+      a.mock-header-link:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 720px) {
+        .mock-topbar {
+          grid-template-columns: 1fr;
+        }
+        .mock-scroll {
+          overflow: hidden;
+        }
+        .mock-topbar-right {
+          justify-self: stretch;
+          justify-content: flex-start;
+        }
+        .mock-launcher {
+          justify-self: stretch;
+          max-width: none;
+        }
+      }
+
+      /* —— Materials workspace —— */
+      .mock-material-shell {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .mock-notebook--material {
+        flex: 1;
+        min-height: 0;
+        padding: 14px 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        max-width: 100%;
+        overflow: hidden;
+      }
+      .mock-material-card {
+        border-radius: var(--mock-r-surface);
+        border: 1px solid color-mix(in srgb, var(--mock-border) 48%, transparent);
+        background: linear-gradient(180deg, var(--mock-surface) 0%, color-mix(in srgb, var(--mock-surface) 94%, var(--mock-bg)) 100%);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4) inset, var(--mock-shadow-soft);
+        overflow: hidden;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .mock-material-layout {
+        display: grid;
+        grid-template-columns: minmax(176px, 24vw) minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr);
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+      }
+      @media (max-width: 800px) {
+        .mock-material-layout {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto minmax(0, 1fr);
+        }
+        .mock-material-nav {
+          border-right: none !important;
+          border-bottom: 1px solid var(--mock-hairline);
+          max-height: min(280px, 42dvh);
+        }
+      }
+      .mock-material-nav {
+        min-height: 0;
+        align-self: stretch;
+        padding: 12px 10px;
+        border-right: 1px solid color-mix(in srgb, var(--mock-hairline) 70%, transparent);
+        background: color-mix(in srgb, var(--mock-bg) 35%, var(--mock-surface));
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-height: min(560px, 62dvh);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+      .mock-material-chapter {
+        width: 100%;
+        text-align: left;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        padding: 10px 11px;
+        background: transparent;
+        font: inherit;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px 12px;
+        align-items: start;
+        color: inherit;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      .mock-material-chapter:hover {
+        background: color-mix(in srgb, var(--mock-surface-2) 80%, transparent);
+      }
+      .mock-material-chapter--active {
+        background: color-mix(in srgb, var(--course-view-accent-bg) 58%, var(--mock-surface));
+        border-color: color-mix(in srgb, var(--course-view-accent-border) 28%, transparent);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      }
+      .mock-material-chapter-num {
+        font-family: var(--mock-font-display);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: var(--mock-tertiary);
+        line-height: 1.2;
+        padding-top: 1px;
+      }
+      .mock-material-chapter--active .mock-material-chapter-num {
+        color: color-mix(in srgb, var(--course-view-accent-fg) 55%, var(--mock-tertiary));
+      }
+      .mock-material-chapter-body {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+      }
+      .mock-material-chapter-title {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.35;
+        color: var(--mock-text);
+        letter-spacing: -0.01em;
+      }
+      .mock-material-chapter-meta {
+        font-size: 10px;
+        font-weight: 500;
+        color: var(--mock-muted);
+        line-height: 1.3;
+      }
+      .mock-material-detail {
+        min-height: 0;
+        min-width: 0;
+        padding: 22px 24px 28px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+      .mock-material-kicker {
+        margin: 0 0 8px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        color: var(--mock-tertiary);
+      }
+      .mock-material-title {
+        margin: 0 0 8px;
+        font-family: var(--mock-font-display);
+        font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1.12;
+        color: var(--mock-text);
+      }
+      .mock-material-span {
+        margin: 0 0 20px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--mock-muted);
+      }
+      .mock-material-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .mock-material-action {
+        border: 1px solid color-mix(in srgb, var(--mock-border) 55%, transparent);
+        background: color-mix(in srgb, var(--course-view-accent-bg) 35%, var(--mock-surface));
+        color: var(--mock-text);
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 8px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        transition: border-color 0.15s ease, background 0.15s ease;
+      }
+      .mock-material-action:hover {
+        border-color: color-mix(in srgb, var(--course-view-accent-border) 40%, var(--mock-border));
+        background: color-mix(in srgb, var(--course-view-accent-bg) 52%, var(--mock-surface));
+      }
+      .mock-material-section {
+        margin-top: 22px;
+      }
+      .mock-material-section:first-of-type {
+        margin-top: 18px;
+      }
+      .mock-material-section-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--mock-tertiary);
+        margin-bottom: 8px;
+      }
+      .mock-material-file {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid color-mix(in srgb, var(--mock-hairline) 85%, transparent);
+        background: color-mix(in srgb, var(--mock-surface) 92%, var(--mock-bg));
+        margin-bottom: 6px;
+      }
+      .mock-material-file:last-child {
+        margin-bottom: 0;
+      }
+      .mock-material-file-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: color-mix(in srgb, var(--course-view-accent-fg) 70%, var(--mock-muted));
+        background: color-mix(in srgb, var(--course-view-accent-bg) 50%, var(--mock-surface));
+        border: 1px solid color-mix(in srgb, var(--mock-hairline) 90%, transparent);
+      }
+      .mock-material-file-meta {
+        min-width: 0;
+        flex: 1;
+      }
+      .mock-material-file-name {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--mock-text);
+        margin-bottom: 2px;
+      }
+      .mock-material-file-desc {
+        font-size: 11px;
+        color: var(--mock-muted);
+        line-height: 1.35;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mock-app">
+      <aside class="mock-rail" aria-label="Feature sidebar">
+        <div class="mock-rail-brand" title="HydroWise">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2c-2 4-6 5-6 10a6 6 0 1 0 12 0c0-5-4-6-6-10z" />
+            <path d="M8 14h8" />
+          </svg>
+        </div>
+        <button type="button" class="mock-rail-btn active" aria-label="Dashboard" title="Dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="3" y="3" width="7" height="9" rx="1" />
+            <rect x="14" y="3" width="7" height="5" rx="1" />
+            <rect x="14" y="12" width="7" height="9" rx="1" />
+            <rect x="3" y="16" width="7" height="5" rx="1" />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn" aria-label="Chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+            />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn" aria-label="Quiz">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            <path d="M8 7h8M8 11h6" />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn" aria-label="Flash cards">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+            <polyline points="14 2 14 8 20 8" />
+            <path d="M10 12h4M10 16h4" />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn" aria-label="Notes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+          </svg>
+        </button>
+      </aside>
+
+      <div class="mock-column">
+        <div class="mock-inset">
+          <header class="mock-topbar">
+            <div class="mock-topbar-left">
+              <div class="mock-topbar-crumb">
+                <div class="mock-topbar-brand">HydroWise</div>
+                <div class="mock-topbar-breadcrumb"><strong>PSYC 100</strong> · Materials</div>
+              </div>
+            </div>
+
+            <div class="mock-launcher">
+              <span class="mock-launcher-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </span>
+              <input
+                class="mock-launcher-input"
+                type="search"
+                placeholder="Search, open, paste, or upload…"
+                aria-autocomplete="list"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-controls="mock-launcher-panel"
+                id="mock-launcher-input"
+              />
+              <div class="mock-launcher-panel" id="mock-launcher-panel" role="listbox" aria-label="Command palette">
+                <div class="mock-launcher-h">Recent</div>
+                <div class="mock-launcher-row" role="option">PSYC 100 — syllabus.pdf</div>
+                <div class="mock-launcher-row" role="option">Week 1 slides — Introducing psychological science</div>
+                <div class="mock-launcher-divider"></div>
+                <div class="mock-launcher-h">Add to this course</div>
+                <div class="mock-launcher-row" role="option">Upload document…</div>
+                <div class="mock-launcher-dropzone">Drop files here to add to <strong>PSYC 100</strong></div>
+              </div>
+            </div>
+
+            <div class="mock-topbar-right">
+              <div class="mock-model-pill"><span class="dot" aria-hidden="true"></span> Balanced</div>
+            </div>
+          </header>
+
+          <div class="mock-scroll">
+            <div class="mock-course-shell">
+              <nav class="mock-course-rail" aria-label="Courses" role="tablist">
+                <button type="button" class="mock-course-tab" role="tab" aria-selected="false">
+                  <span class="code">BADM 101</span><span class="name">Intro to Business</span>
+                </button>
+                <button type="button" class="mock-course-tab mock-course-tab--active" role="tab" aria-selected="true">
+                  <span class="code">PSYC 100</span><span class="name">Intro to Psychology I</span>
+                </button>
+                <button type="button" class="mock-course-tab" role="tab" aria-selected="false">
+                  <span class="code">ANTH 124</span><span class="name">Biological Anthropology</span>
+                </button>
+                <button type="button" class="mock-course-tab" role="tab" aria-selected="false">
+                  <span class="code">BIOL 111</span><span class="name">General Biology I</span>
+                </button>
+              </nav>
+
+              <div class="mock-canvas">
+                <header class="mock-course-header">
+                  <div class="mock-course-header-top">
+                    <div class="mock-course-title-block">
+                      <div class="mock-course-kicker">PSYC 100 · Spring 2026 · 3 credits</div>
+                      <h1 class="mock-course-title">Introduction to Psychology I</h1>
+                    </div>
+                    <div class="mock-toggle" role="group" aria-label="Course view">
+                      <button type="button" aria-pressed="false">Overview</button>
+                      <button type="button" class="on" aria-pressed="true">Material</button>
+                    </div>
+                  </div>
+                  <div class="mock-header-contact">
+                    <div class="mock-header-contact-row">
+                      <span class="mock-header-label">Instructor</span>
+                      <span class="mock-header-value">Dr. Hilary Duke</span>
+                      <span class="mock-header-sep" aria-hidden="true">·</span>
+                      <a class="mock-header-link" href="mailto:hilaryduke@capilanou.ca">hilaryduke@capilanou.ca</a>
+                    </div>
+                    <div class="mock-header-contact-row">
+                      <span class="mock-header-label">Office</span>
+                      <span class="mock-header-value">Fir 413</span>
+                      <span class="mock-header-sep" aria-hidden="true">·</span>
+                      <span class="mock-header-label">Office hours</span>
+                      <span class="mock-header-value">Wed 10:30–12:30</span>
+                      <span class="mock-header-sep" aria-hidden="true">·</span>
+                      <a class="mock-header-link" href="https://elearn.capu.ca">eLearn</a>
+                    </div>
+                  </div>
+                </header>
+
+                <div class="mock-material-shell">
+                  <div class="mock-notebook mock-notebook--material">
+                    <section class="mock-material-card" aria-label="Materials by chapter">
+                      <div class="mock-material-layout">
+                        <nav class="mock-material-nav" aria-label="Weeks and chapters">
+                          <button type="button" class="mock-material-chapter mock-material-chapter--active" data-chapter="1">
+                            <span class="mock-material-chapter-num">01</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Course Overview: Introducing Psychological Science</span>
+                              <span class="mock-material-chapter-meta">Week 1 · Ch. 1</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="2">
+                            <span class="mock-material-chapter-num">02</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Understanding Scientific Research Part I</span>
+                              <span class="mock-material-chapter-meta">Week 2 · Ch. 2</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="3">
+                            <span class="mock-material-chapter-num">03</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Understanding Scientific Research Part II</span>
+                              <span class="mock-material-chapter-meta">Week 3 · Ch. 2</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="4">
+                            <span class="mock-material-chapter-num">04</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Biological Psychology Part I</span>
+                              <span class="mock-material-chapter-meta">Week 3 · Ch. 3</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="5">
+                            <span class="mock-material-chapter-num">05</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Biological Psychology Part II</span>
+                              <span class="mock-material-chapter-meta">Week 4 · Ch. 3</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="6">
+                            <span class="mock-material-chapter-num">06</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Learning Part I</span>
+                              <span class="mock-material-chapter-meta">Week 4 · Ch. 6</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="7">
+                            <span class="mock-material-chapter-num">07</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Learning Part II</span>
+                              <span class="mock-material-chapter-meta">Week 5 · Ch. 6</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="8">
+                            <span class="mock-material-chapter-num">08</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Memory Part I</span>
+                              <span class="mock-material-chapter-meta">Week 5 · Ch. 7</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="9">
+                            <span class="mock-material-chapter-num">09</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Memory Part II</span>
+                              <span class="mock-material-chapter-meta">Week 6 · Ch. 7</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="10">
+                            <span class="mock-material-chapter-num">10</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Cognition, Intelligence and Language</span>
+                              <span class="mock-material-chapter-meta">Week 8 · Ch. 8</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="11">
+                            <span class="mock-material-chapter-num">11</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Lifespan Development</span>
+                              <span class="mock-material-chapter-meta">Week 9 · Ch. 9</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="12">
+                            <span class="mock-material-chapter-num">12</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Personality</span>
+                              <span class="mock-material-chapter-meta">Week 10 · Ch. 12</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="13">
+                            <span class="mock-material-chapter-num">13</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Social Psychology Part I</span>
+                              <span class="mock-material-chapter-meta">Week 11 · Ch. 13</span>
+                            </span>
+                          </button>
+                          <button type="button" class="mock-material-chapter" data-chapter="14">
+                            <span class="mock-material-chapter-num">14</span>
+                            <span class="mock-material-chapter-body">
+                              <span class="mock-material-chapter-title">Social Psychology Part II</span>
+                              <span class="mock-material-chapter-meta">Week 12 · Ch. 13</span>
+                            </span>
+                          </button>
+                        </nav>
+
+                        <article class="mock-material-detail" id="mock-material-detail">
+                          <p class="mock-material-kicker">WEEK 1 · CH. 1</p>
+                          <h2 class="mock-material-title" id="mock-material-detail-title">
+                            Course Overview: Introducing Psychological Science
+                          </h2>
+                          <p class="mock-material-span" id="mock-material-detail-span">Week 1 · Ch. 1</p>
+                          <div class="mock-material-actions">
+                            <button type="button" class="mock-material-action">Ask AI about chapter</button>
+                            <button type="button" class="mock-material-action">Generate quiz</button>
+                            <button type="button" class="mock-material-action">Make flashcards</button>
+                          </div>
+
+                          <div class="mock-material-section" id="mock-material-sections">
+                            <div class="mock-material-section-label">General</div>
+                            <div class="mock-material-file">
+                              <div class="mock-material-file-icon" aria-hidden="true">PDF</div>
+                              <div class="mock-material-file-meta">
+                                <span class="mock-material-file-name">Syllabus.pdf</span>
+                                <span class="mock-material-file-desc">PSYC 100 outline, assessments, and policies</span>
+                              </div>
+                            </div>
+
+                            <div class="mock-material-section-label">Lectures</div>
+                            <div class="mock-material-file">
+                              <div class="mock-material-file-icon" aria-hidden="true">PDF</div>
+                              <div class="mock-material-file-meta">
+                                <span class="mock-material-file-name">Week 1 slides.pdf</span>
+                                <span class="mock-material-file-desc">Introducing psychological science</span>
+                              </div>
+                            </div>
+
+                            <div class="mock-material-section-label">Readings</div>
+                            <div class="mock-material-file">
+                              <div class="mock-material-file-icon" aria-hidden="true">MD</div>
+                              <div class="mock-material-file-meta">
+                                <span class="mock-material-file-name">Ch. 1 reading guide.md</span>
+                                <span class="mock-material-file-desc">Key terms + discussion prompts</span>
+                              </div>
+                            </div>
+                            <div class="mock-material-file">
+                              <div class="mock-material-file-icon" aria-hidden="true">PDF</div>
+                              <div class="mock-material-file-meta">
+                                <span class="mock-material-file-name">Section worksheet.pdf</span>
+                                <span class="mock-material-file-desc">In-class practice — Week 1</span>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (() => {
+        var PASTEL_FAMILIES = [
+          { h: 154, bgS: 48, bgL: 87.5, fgS: 29, fgL: 27 },
+          { h: 138, bgS: 45, bgL: 87.5, fgS: 28, fgL: 26 },
+          { h: 275, bgS: 42, bgL: 89.5, fgS: 25, fgL: 31 },
+          { h: 208, bgS: 46, bgL: 88.5, fgS: 27, fgL: 28 },
+          { h: 26, bgS: 54, bgL: 89.5, fgS: 30, fgL: 30 },
+          { h: 46, bgS: 56, bgL: 89.5, fgS: 30, fgL: 28 },
+        ];
+
+        function hashCourseCode(s) {
+          var h = 5381;
+          for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+          return Math.abs(h);
+        }
+
+        function clamp(n, lo, hi) {
+          return Math.min(hi, Math.max(lo, n));
+        }
+
+        function courseVarsFromCode(code) {
+          var hash = hashCourseCode(code || "COURSE");
+          var f = PASTEL_FAMILIES[hash % PASTEL_FAMILIES.length];
+          var dH = ((hash >> 5) % 5 - 2) * 1.0;
+          var dS = ((hash >> 9) % 5 - 2) * 0.4;
+          var dL = ((hash >> 13) % 5 - 2) * 0.35;
+          var hue = f.h + dH;
+          var bgS = clamp(f.bgS + dS, 38, 58);
+          var bgL = clamp(f.bgL + dL, 84, 90.5);
+          var fgH = f.h + dH * 0.5;
+          var fgS = clamp(f.fgS + dS * 0.45, 22, 36);
+          var fgL = clamp(f.fgL + dL * 0.45, 22, 36);
+          var bg = "hsl(" + hue + " " + bgS + "% " + bgL + "%)";
+          var fg = "hsl(" + fgH + " " + fgS + "% " + fgL + "%)";
+          var border =
+            "hsl(" +
+            hue +
+            " " +
+            clamp(bgS + 8, 34, 52) +
+            "% " +
+            clamp(bgL - 22, 58, 74) +
+            "%)";
+          var activeBg =
+            "hsl(" +
+            hue +
+            " " +
+            clamp(bgS + 10, 32, 50) +
+            "% " +
+            clamp(bgL - 7.5, 78, 87) +
+            "%)";
+          var activeFg =
+            "hsl(" +
+            fgH +
+            " " +
+            clamp(fgS + 5, 22, 36) +
+            "% " +
+            clamp(fgL - 3.5, 20, 32) +
+            "%)";
+          var activeBorder =
+            "hsl(" +
+            hue +
+            " " +
+            clamp(bgS + 12, 34, 48) +
+            "% " +
+            clamp(bgL - 30, 46, 62) +
+            "%)";
+          return {
+            bg: bg,
+            fg: fg,
+            border: border,
+            activeBg: activeBg,
+            activeFg: activeFg,
+            activeBorder: activeBorder,
+            h: hue,
+            bgS: bgS,
+            bgL: bgL,
+          };
+        }
+
+        function applyProceduralCourseColors() {
+          var rail = document.querySelector(".mock-course-rail");
+          if (!rail) return;
+          var tabs = rail.querySelectorAll(".mock-course-tab");
+          var hueStops = [];
+          var n = tabs.length;
+          tabs.forEach((tab, i) => {
+            var codeEl = tab.querySelector(".code");
+            var raw = codeEl ? codeEl.textContent : "";
+            var code = String(raw || "").trim().toUpperCase();
+            var v = courseVarsFromCode(code);
+            tab.style.setProperty("--course-pill-bg", v.bg);
+            tab.style.setProperty("--course-pill-fg", v.fg);
+            tab.style.setProperty("--course-pill-border", v.border);
+            tab.style.setProperty("--course-pill-active-bg", v.activeBg);
+            tab.style.setProperty("--course-pill-active-fg", v.activeFg);
+            tab.style.setProperty("--course-pill-active-border", v.activeBorder);
+            var pos = n <= 1 ? 50 : (i / (n - 1)) * 100;
+            var s = clamp(Math.round(v.bgS * 0.62 + 4), 28, 42);
+            var l = clamp(v.bgL + 0.8, 86, 90);
+            hueStops.push("hsl(" + v.h + " " + s + "% " + l + "%) " + pos + "%");
+          });
+          var base = "linear-gradient(180deg, #fff4e8 0%, #e2d2c2 46%, #f2e8d8 100%)";
+          var stack =
+            n === 0 ? base : "linear-gradient(96deg, " + hueStops.join(", ") + "), " + base;
+          rail.style.setProperty("--course-rail-bg", stack);
+        }
+
+        function syncCourseAccentToCanvas() {
+          var rail = document.querySelector(".mock-course-rail");
+          var canvas = document.querySelector(".mock-canvas");
+          if (!rail || !canvas) return;
+          var active = rail.querySelector(".mock-course-tab--active");
+          if (!active) return;
+          var cs = getComputedStyle(active);
+          var bg = cs.getPropertyValue("--course-pill-active-bg").trim();
+          var fg = cs.getPropertyValue("--course-pill-active-fg").trim();
+          var bd = cs.getPropertyValue("--course-pill-active-border").trim();
+          if (bg) canvas.style.setProperty("--course-view-accent-bg", bg);
+          if (fg) canvas.style.setProperty("--course-view-accent-fg", fg);
+          if (bd) canvas.style.setProperty("--course-view-accent-border", bd);
+        }
+
+        function boot() {
+          applyProceduralCourseColors();
+          syncCourseAccentToCanvas();
+        }
+
+        if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+        else boot();
+
+        var rail = document.querySelector(".mock-course-rail");
+        if (rail) {
+          rail.addEventListener("click", (e) => {
+            var tab = e.target.closest(".mock-course-tab");
+            if (!tab || !rail.contains(tab)) return;
+            rail.querySelectorAll(".mock-course-tab").forEach((t) => {
+              t.classList.remove("mock-course-tab--active");
+              t.setAttribute("aria-selected", "false");
+            });
+            tab.classList.add("mock-course-tab--active");
+            tab.setAttribute("aria-selected", "true");
+            syncCourseAccentToCanvas();
+          });
+        }
+
+        var toggle = document.querySelector(".mock-toggle");
+        if (toggle) {
+          toggle.addEventListener("click", (e) => {
+            var btn = e.target.closest("button");
+            if (!btn || !toggle.contains(btn)) return;
+            toggle.querySelectorAll("button").forEach((b) => {
+              b.classList.remove("on");
+              b.setAttribute("aria-pressed", "false");
+            });
+            btn.classList.add("on");
+            btn.setAttribute("aria-pressed", "true");
+          });
+        }
+
+        var launcher = document.querySelector(".mock-launcher");
+        var input = document.querySelector("#mock-launcher-input");
+        if (launcher && input) {
+          launcher.addEventListener("focusin", () => input.setAttribute("aria-expanded", "true"));
+          launcher.addEventListener("focusout", (e) => {
+            if (!launcher.contains(e.relatedTarget)) input.setAttribute("aria-expanded", "false");
+          });
+        }
+
+        var CHAPTERS = {
+          1: { kicker: "WEEK 1 · CH. 1", title: "Course Overview: Introducing Psychological Science", span: "Week 1 · Ch. 1" },
+          2: { kicker: "WEEK 2 · CH. 2", title: "Understanding Scientific Research Part I", span: "Week 2 · Ch. 2" },
+          3: { kicker: "WEEK 3 · CH. 2", title: "Understanding Scientific Research Part II", span: "Week 3 · Ch. 2" },
+          4: { kicker: "WEEK 3 · CH. 3", title: "Biological Psychology Part I", span: "Week 3 · Ch. 3" },
+          5: { kicker: "WEEK 4 · CH. 3", title: "Biological Psychology Part II", span: "Week 4 · Ch. 3" },
+          6: { kicker: "WEEK 4 · CH. 6", title: "Learning Part I", span: "Week 4 · Ch. 6" },
+          7: { kicker: "WEEK 5 · CH. 6", title: "Learning Part II", span: "Week 5 · Ch. 6" },
+          8: { kicker: "WEEK 5 · CH. 7", title: "Memory Part I", span: "Week 5 · Ch. 7" },
+          9: { kicker: "WEEK 6 · CH. 7", title: "Memory Part II", span: "Week 6 · Ch. 7" },
+          10: { kicker: "WEEK 8 · CH. 8", title: "Cognition, Intelligence and Language", span: "Week 8 · Ch. 8" },
+          11: { kicker: "WEEK 9 · CH. 9", title: "Lifespan Development", span: "Week 9 · Ch. 9" },
+          12: { kicker: "WEEK 10 · CH. 12", title: "Personality", span: "Week 10 · Ch. 12" },
+          13: { kicker: "WEEK 11 · CH. 13", title: "Social Psychology Part I", span: "Week 11 · Ch. 13" },
+          14: { kicker: "WEEK 12 · CH. 13", title: "Social Psychology Part II", span: "Week 12 · Ch. 13" },
+        };
+
+        document.querySelectorAll(".mock-material-chapter").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".mock-material-chapter").forEach((b) => b.classList.remove("mock-material-chapter--active"));
+            btn.classList.add("mock-material-chapter--active");
+            var id = btn.getAttribute("data-chapter");
+            var d = CHAPTERS[id];
+            if (!d) return;
+            var k = document.querySelector(".mock-material-kicker");
+            var t = document.querySelector("#mock-material-detail-title");
+            var s = document.querySelector("#mock-material-detail-span");
+            if (k) k.textContent = d.kicker;
+            if (t) t.textContent = d.title;
+            if (s) s.textContent = d.span;
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
