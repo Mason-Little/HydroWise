@@ -1,6 +1,10 @@
 import type { Queries } from "@hydrowise/data";
 import { createContext, useContext, useState } from "react";
 import { Info } from "@/features/dashboard/Info/Info";
+import {
+  courseThemeWorkspaceStyle,
+  getCourseTheme,
+} from "@/features/dashboard/selection/course-selector/courseTheme";
 import { useCourses } from "@/features/dashboard/selection/course-selector/hooks/useCourses";
 import { Selection } from "@/features/dashboard/selection/Selection";
 
@@ -23,10 +27,13 @@ export const Dashboard = () => {
   const { courses } = useCourses();
 
   const activeCourse = courses.find((c) => c.id === activeCourseId) ?? null;
+  const courseWorkspaceStyle = activeCourse
+    ? courseThemeWorkspaceStyle(getCourseTheme(activeCourse.courseCode))
+    : undefined;
 
   return (
     <DashboardContext.Provider value={{ activeCourse, setActiveCourseId }}>
-      <div>
+      <div className="dashboard-workspace" style={courseWorkspaceStyle}>
         <Selection />
         <Info />
       </div>

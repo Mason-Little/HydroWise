@@ -8,9 +8,9 @@ import { useState } from "react";
 import { handleClassify } from "@/features/dashboard/selection/upload/helpers/handleClassify";
 import { handleDocument } from "@/features/dashboard/selection/upload/helpers/handleDocument";
 import { handleExtract } from "@/features/dashboard/selection/upload/helpers/handleExtract";
+import { handlePages } from "@/features/dashboard/selection/upload/helpers/handlePage";
 import { handleSyllabus } from "@/features/dashboard/selection/upload/helpers/handleSyllabus";
 import { useModelStore } from "@/store/modelStore";
-import { handlePages } from "../helpers/handlePage";
 
 export const useUpload = () => {
   const [file, setFile] = useState<File | null>(null);

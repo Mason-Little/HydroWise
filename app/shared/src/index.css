@@ -9,39 +9,50 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --bg: #f8f3ea;
-  --surface: #fffcf5;
-  --surface-alt: #f5f0e6;
-  --surface-hover: #faf6ee;
+  --bg: #f7f6f4;
+  --surface: #fdfdfc;
+  --surface-alt: #f5f4f2;
+  --surface-hover: #fafaf8;
 
-  --sidebar-bg: #efe8dc;
-  --sidebar-icon: #7a6750;
-  --sidebar-icon-hover: #5c3d2e;
-  --sidebar-active-bg: #ddd0be;
-  --sidebar-active-icon: #212833;
-  --sidebar-accent: #ddd0be;
-  --sidebar-border: #ddd4c7;
+  --hairline: color-mix(in srgb, var(--border-solid) 52%, transparent);
 
-  --border: rgba(140, 120, 90, 0.1);
-  --border-solid: #e8e0d0;
-  --border-focus: rgba(196, 168, 108, 0.3);
-  --ring-focus: rgba(196, 168, 108, 0.15);
+  --sidebar-bg: #eeedeb;
+  --sidebar-icon: #62707a;
+  --sidebar-icon-hover: #25323a;
+  --sidebar-active-bg: color-mix(
+    in srgb,
+    var(--surface) 58%,
+    var(--sidebar-bg)
+  );
+  --sidebar-active-icon: #25323a;
+  --sidebar-accent: #edf2ee;
+  --sidebar-border: #e8e7e4;
 
-  --text-primary: #3d2e1e;
-  --text-secondary: #6b5d4a;
-  --text-tertiary: #8c7a5a;
-  --text-muted: #9a8b74;
-  --text-disabled: #b8ad9a;
-  --text-inverse: #f5f0e8;
+  --border: rgba(37, 50, 58, 0.08);
+  --border-solid: #e8e7e4;
+  --border-focus: rgba(95, 118, 106, 0.28);
+  --ring-focus: rgba(95, 118, 106, 0.15);
 
-  --accent: #c4a46c;
-  --accent-warm: #d4a054;
-  --accent-warm-hover: #c4883c;
+  --text-primary: #25323a;
+  --text-secondary: #62707a;
+  --text-tertiary: #7d8891;
+  --text-muted: #7d8891;
+  --text-disabled: #a8b0b6;
+  --text-inverse: #fdfdfc;
 
-  --green: #4a7c59;
-  --green-bg: #e6f0e6;
-  --green-border: #c2dcc2;
-  --green-dot-ring: rgba(74, 124, 89, 0.2);
+  --accent: #5f766a;
+  --accent-warm: #7d6f5c;
+  --accent-warm-hover: #6a5e4e;
+
+  --course-accent-strong: #33443c;
+  --course-accent-soft: #edf2ee;
+  --course-accent-ring: rgba(51, 68, 60, 0.22);
+  --course-surface-tint: #f4f7f5;
+
+  --green: #5f766a;
+  --green-bg: #edf2ee;
+  --green-border: #c7d1c9;
+  --green-dot-ring: rgba(95, 118, 106, 0.22);
 
   --gold: #b8860b;
   --gold-bg: #f5ecd4;
@@ -54,26 +65,26 @@
   --badge-docx-bg: #c8dcc8;
   --badge-docx-text: #4a6a4a;
 
-  --btn-download-bg: #3d2e1e;
-  --btn-download-text: #f5f0e8;
-  --btn-warmup-bg: linear-gradient(135deg, #d4a054, #c4883c);
-  --btn-warmup-text: #ffffff;
-  --btn-warming-bg: #e8dcc8;
-  --btn-warming-text: #8c7a5a;
-  --btn-active-bg: #e6f0e6;
-  --btn-active-text: #4a7c59;
-  --btn-active-border: #c2dcc2;
-  --btn-locked-bg: #f0ece4;
-  --btn-locked-text: #b0a48e;
-  --btn-locked-border: #ddd5c5;
+  --btn-download-bg: #25323a;
+  --btn-download-text: #fdfdfc;
+  --btn-warmup-bg: linear-gradient(135deg, #8a7c6c, #6f6356);
+  --btn-warmup-text: #fdfdfc;
+  --btn-warming-bg: #ebe8e4;
+  --btn-warming-text: #62707a;
+  --btn-active-bg: #edf2ee;
+  --btn-active-text: #3d5a48;
+  --btn-active-border: #c7d1c9;
+  --btn-locked-bg: #f0eeec;
+  --btn-locked-text: #9aa3a9;
+  --btn-locked-border: #e0deda;
 
-  --progress-track: #ede6d8;
-  --progress-fill: linear-gradient(90deg, #c4a46c, #d4a054);
+  --progress-track: #ebeae8;
+  --progress-fill: linear-gradient(90deg, #5f766a, #7d8f84);
 
-  --toast-bg: #3d2e1e;
-  --toast-text: #f5f0e8;
+  --toast-bg: #25323a;
+  --toast-text: #fdfdfc;
 
-  --overlay: rgba(30, 25, 18, 0.3);
+  --overlay: rgba(37, 50, 58, 0.28);
   --overlay-blur: 4px;
 
   --width-popover-panel: 24rem;
@@ -89,14 +100,14 @@
   --hw-radius-xl: 12px;
   --hw-radius-2xl: 16px;
 
-  --shadow-sm: 0 1px 2px rgba(80, 60, 30, 0.06);
+  --shadow-sm: 0 1px 2px rgba(37, 50, 58, 0.05);
   --shadow-md:
-    0 1px 3px rgba(80, 60, 30, 0.08), 0 0 0 1px rgba(140, 120, 90, 0.07);
-  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.18);
+    0 1px 3px rgba(37, 50, 58, 0.07), 0 0 0 1px rgba(37, 50, 58, 0.05);
+  --shadow-lg: 0 4px 16px rgba(37, 50, 58, 0.12);
   --shadow-popover:
-    0 12px 40px rgba(30, 20, 10, 0.14), 0 0 0 1px rgba(140, 120, 90, 0.1);
+    0 12px 40px rgba(37, 50, 58, 0.1), 0 0 0 1px rgba(37, 50, 58, 0.06);
   --shadow-dialog:
-    0 16px 48px rgba(30, 20, 10, 0.2), 0 0 0 1px rgba(140, 120, 90, 0.1);
+    0 16px 48px rgba(37, 50, 58, 0.12), 0 0 0 1px rgba(37, 50, 58, 0.06);
 
   --font-family: "DM Sans", sans-serif;
   --font-size-xs: 9.5px;
@@ -227,5 +238,13 @@
   html,
   body {
     @apply font-sans bg-background text-foreground;
+  }
+
+  .dashboard-workspace {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--course-surface-tint) 40%, var(--bg)) 0%,
+      var(--bg) 28%
+    );
   }
 }
