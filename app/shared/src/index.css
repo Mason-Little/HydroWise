@@ -9,47 +9,114 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --bg: #f7f6f4;
-  --surface: #fdfdfc;
-  --surface-alt: #f5f4f2;
+  /**
+   * App-wide surface system (HTML mock): paper neutrals, hairlines, soft depth.
+   * Use these for new UI; legacy aliases below keep shadcn/Tailwind tokens in sync.
+   */
+  --app-frame-bg: #f2f1ef;
+  --app-frame-surface: #eeedeb;
+  --app-workspace-bg: #f7f6f4;
+  --app-surface-primary: #fdfdfc;
+  --app-surface-secondary: #f5f4f2;
+
+  --app-border-solid: #e8e7e4;
+  --app-hairline: color-mix(in srgb, var(--app-border-solid) 52%, transparent);
+  --app-border-shell: color-mix(
+    in srgb,
+    var(--app-border-solid) 70%,
+    transparent
+  );
+  --app-border-shell-top: color-mix(
+    in srgb,
+    var(--app-border-solid) 52%,
+    transparent
+  );
+
+  --app-text-primary: #25323a;
+  --app-text-muted: #62707a;
+  --app-text-tertiary: #7d8891;
+
+  --app-accent: #5f766a;
+  --app-accent-strong: #33443c;
+  --app-accent-soft: #edf2ee;
+
+  --app-course-sage: #c5dcc0;
+  --app-course-moss: #cadecb;
+  --app-course-lavender: #ddd0ee;
+  --app-course-fog: #cddfef;
+
+  --app-radius-workspace: 11px;
+  --app-radius-tab-top: 12px;
+
+  --app-shadow-soft: 0 1px 2px rgba(37, 50, 58, 0.05);
+  --app-shadow-lift: 0 12px 32px rgba(37, 50, 58, 0.08);
+  /* No bright white ring (it fringes on hairlines); inset uses paper not pure white */
+  --app-shadow-shell:
+    0 1px 0 color-mix(in srgb, var(--app-surface-primary) 72%, transparent)
+    inset,
+    0 14px 36px rgba(37, 50, 58, 0.052), 0 4px 14px rgba(37, 50, 58, 0.03),
+    0 0 0 1px color-mix(in srgb, var(--app-border-solid) 28%, transparent);
+
+  --app-course-rail-wash-default: linear-gradient(
+    180deg,
+    #fdfdfc 0%,
+    #ecebe9 40%,
+    #f5f4f2 100%
+  );
+  --course-rail-wash: var(--app-course-rail-wash-default);
+
+  --app-overview-shared-pane-h: min(520px, calc(100dvh - 320px));
+  --overview-notebook-rail-h: var(--app-overview-shared-pane-h);
+
+  --bg: var(--app-workspace-bg);
+  --surface: var(--app-surface-primary);
+  --surface-alt: var(--app-surface-secondary);
   --surface-hover: #fafaf8;
 
-  --hairline: color-mix(in srgb, var(--border-solid) 52%, transparent);
+  --hairline: var(--app-hairline);
 
-  --sidebar-bg: #eeedeb;
-  --sidebar-icon: #62707a;
-  --sidebar-icon-hover: #25323a;
+  --sidebar-bg: var(--app-frame-surface);
+  --sidebar-icon: var(--app-text-muted);
+  --sidebar-icon-hover: var(--app-text-primary);
   --sidebar-active-bg: color-mix(
     in srgb,
     var(--surface) 58%,
     var(--sidebar-bg)
   );
-  --sidebar-active-icon: #25323a;
-  --sidebar-accent: #edf2ee;
-  --sidebar-border: #e8e7e4;
+  --sidebar-active-icon: var(--app-text-primary);
+  --sidebar-accent: var(--app-accent-soft);
+  --sidebar-border: var(--app-border-solid);
 
   --border: rgba(37, 50, 58, 0.08);
-  --border-solid: #e8e7e4;
+  --border-solid: var(--app-border-solid);
   --border-focus: rgba(95, 118, 106, 0.28);
   --ring-focus: rgba(95, 118, 106, 0.15);
 
-  --text-primary: #25323a;
-  --text-secondary: #62707a;
-  --text-tertiary: #7d8891;
-  --text-muted: #7d8891;
+  --text-primary: var(--app-text-primary);
+  --text-secondary: var(--app-text-muted);
+  --text-tertiary: var(--app-text-tertiary);
+  --text-muted: var(--app-text-tertiary);
   --text-disabled: #a8b0b6;
   --text-inverse: #fdfdfc;
 
-  --accent: #5f766a;
+  --accent: var(--app-accent);
   --accent-warm: #7d6f5c;
   --accent-warm-hover: #6a5e4e;
 
-  --course-accent-strong: #33443c;
-  --course-accent-soft: #edf2ee;
+  --course-accent-strong: var(--app-accent-strong);
+  --course-accent-soft: var(--app-accent-soft);
   --course-accent-ring: rgba(51, 68, 60, 0.22);
   --course-surface-tint: #f4f7f5;
 
-  --green: #5f766a;
+  /* Course-tint wash inputs for .course-context (defaults here; dashboard overrides) */
+  --app-workspace-wash-a: color-mix(
+    in srgb,
+    var(--course-surface-tint) 11%,
+    var(--app-workspace-bg)
+  );
+  --app-workspace-wash-b: var(--app-workspace-bg);
+
+  --green: var(--app-accent);
   --green-bg: #edf2ee;
   --green-border: #c7d1c9;
   --green-dot-ring: rgba(95, 118, 106, 0.22);
@@ -100,9 +167,7 @@
   --hw-radius-xl: 12px;
   --hw-radius-2xl: 16px;
 
-  --overview-notebook-rail-h: min(520px, calc(100dvh - 320px));
-
-  --shadow-sm: 0 1px 2px rgba(37, 50, 58, 0.05);
+  --shadow-sm: var(--app-shadow-soft);
   --shadow-md:
     0 1px 3px rgba(37, 50, 58, 0.07), 0 0 0 1px rgba(37, 50, 58, 0.05);
   --shadow-lg: 0 4px 16px rgba(37, 50, 58, 0.12);
@@ -120,7 +185,8 @@
   --font-size-xl: 17px;
   --font-size-2xl: 19px;
 
-  --background: var(--bg);
+  /* Warm paper frame for the whole app; inner panels use --card / --surface */
+  --background: var(--app-frame-bg);
   --foreground: var(--text-primary);
   --card: var(--surface);
   --card-foreground: var(--text-primary);
@@ -242,11 +308,111 @@
     @apply font-sans bg-background text-foreground;
   }
 
-  .dashboard-workspace {
+  /**
+   * Course-aware root: tint wash + rail override (--course-* from
+   * courseThemeWorkspaceStyle). Site-wide tokens live on :root as --app-*.
+   */
+  .course-context {
+    isolation: isolate;
+    min-height: 0;
+    color: var(--app-text-primary);
+    background-color: var(--app-frame-bg);
+    /* Whisper of course tint only — avoid visible pastel bleed */
+    background-image:
+      radial-gradient(
+        118% 88% at 50% -6%,
+        color-mix(in srgb, var(--course-surface-tint) 5%, transparent) 0%,
+        transparent 46%
+      ),
+      linear-gradient(
+        180deg,
+        var(--app-workspace-wash-a) 0%,
+        var(--app-workspace-wash-b) 34%
+      );
+  }
+
+  /* Paper workspace shell (any feature) */
+  .app-workspace-shell {
+    border-radius: var(--app-radius-workspace);
+    border: 1px solid var(--app-border-shell);
+    border-top-color: var(--app-border-shell-top);
+    background: linear-gradient(
+      168deg,
+      color-mix(in srgb, var(--app-surface-primary) 92%, #f0efed) 0%,
+      color-mix(in srgb, var(--app-surface-primary) 97%, #f5f4f2) 40%,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 94%,
+          var(--app-workspace-bg)
+        )
+        100%
+    );
+    box-shadow: var(--app-shadow-shell);
+  }
+
+  .app-course-rail {
+    position: relative;
+    overflow: hidden;
+    padding: 14px 16px 0;
+    border-bottom: 1px solid var(--app-hairline);
+    background: var(--course-rail-wash);
+  }
+
+  /* Inactive course tabs: paint from theme vars so hover is smooth without React state. */
+  .app-course-rail .app-course-tab[aria-selected="false"] {
+    background-color: var(--course-tab-base-bg);
+    box-shadow: var(--course-tab-shadow-idle);
+    transition:
+      background-color 130ms ease,
+      box-shadow 130ms ease,
+      color 130ms ease,
+      border-color 130ms ease;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition-duration: 0ms;
+    }
+  }
+
+  .app-course-rail .app-course-tab[aria-selected="false"]:hover {
+    background-color: var(--course-tab-hover-bg);
+    box-shadow: var(--course-tab-shadow-hover);
+  }
+
+  .app-workspace-shell__canvas {
+    /* Solid base so subpixel seams never flash browser white */
+    background-color: var(--app-surface-primary);
+    background-image: linear-gradient(
+      180deg,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 55%,
+          var(--app-workspace-bg)
+        )
+        0%,
+      color-mix(in srgb, var(--app-surface-primary) 92%, #fafaf8) 22%,
+      transparent 52%
+    );
+  }
+
+  .app-workspace-shell__header {
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 42%, transparent);
     background: linear-gradient(
       180deg,
-      color-mix(in srgb, var(--course-surface-tint) 40%, var(--bg)) 0%,
-      var(--bg) 28%
+      color-mix(in srgb, var(--app-surface-primary) 96%, #f2f1f0) 0%,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 92%,
+          var(--app-workspace-bg)
+        )
+        100%
     );
+  }
+
+  /* Course rail only — avoids styling any future [role="tab"] elsewhere under .course-context */
+  .app-course-rail .app-course-tab:focus-visible {
+    outline: 2px solid
+      color-mix(in srgb, var(--app-accent) 42%, var(--app-border-solid));
+    outline-offset: 2px;
   }
 }

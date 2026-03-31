@@ -6,6 +6,7 @@ import {
   getCourseTheme,
 } from "@/features/dashboard/selection/course-selector/courseTheme";
 import { useCourses } from "@/features/dashboard/selection/course-selector/hooks/useCourses";
+
 export type CourseRow = Awaited<ReturnType<Queries["listCourses"]>>[number];
 
 type DashboardContextValue = {
@@ -25,13 +26,17 @@ export const Dashboard = () => {
   const { courses } = useCourses();
 
   const activeCourse = courses.find((c) => c.id === activeCourseId) ?? null;
-  const courseWorkspaceStyle = activeCourse
-    ? courseThemeWorkspaceStyle(getCourseTheme(activeCourse.courseCode))
-    : undefined;
 
   return (
     <DashboardContext.Provider value={{ activeCourse, setActiveCourseId }}>
-      <div className="dashboard-workspace" style={courseWorkspaceStyle}>
+      <div
+        className="course-context flex min-h-0 flex-1 flex-col"
+        style={
+          activeCourse
+            ? courseThemeWorkspaceStyle(getCourseTheme(activeCourse.courseCode))
+            : undefined
+        }
+      >
         <Info />
       </div>
     </DashboardContext.Provider>

@@ -10,7 +10,8 @@ export type CourseFamilyId =
   | "sand"
   | "rose";
 
-type CourseTabPaint = {
+/** One visual state of a course tab (inactive, active, or hover). */
+export type CourseTabPaint = {
   background: string;
   foreground: string;
   border: string;
@@ -18,168 +19,214 @@ type CourseTabPaint = {
 
 export type CourseTheme = {
   familyId: CourseFamilyId;
-  tab: CourseTabPaint;
+  /** Unselected tab: softened pastel blended into the neutral shell */
+  tabInactive: CourseTabPaint;
+  /** Selected tab: clearer identity, still pastel — not a saturated badge */
   tabActive: CourseTabPaint;
+  /** Optional hover overlay for inactive tabs (theme-level paint only) */
+  tabInactiveHover?: Partial<Pick<CourseTabPaint, "background">>;
   accent: {
     strong: string;
     soft: string;
     ring: string;
   };
+  /** Very light wash for workspace gradients */
   surfaceTint: string;
+  /** Course-aware rail background (mostly neutral + whisper of identity) */
+  railWash: string;
 };
+
+const RAIL_NEUTRAL_STACK =
+  "linear-gradient(180deg, #fdfdfc 0%, #ecebe9 40%, #f5f4f2 100%)";
+
+/** Mostly neutral rail; course identity is a very light wash (no strong diagonal bleed). */
+const railWashFromPastel = (pastel: string): string =>
+  `linear-gradient(108deg, color-mix(in srgb, ${pastel} 5%, transparent) 0%, transparent 42%), ${RAIL_NEUTRAL_STACK}`;
 
 const FAMILIES: readonly CourseTheme[] = [
   {
     familyId: "sage",
-    tab: {
-      background: "#c5dcc0",
-      foreground: "#2a3f33",
-      border: "#b0c8b4",
+    tabInactive: {
+      background: "color-mix(in srgb, #c5dcc0 72%, #f5f4f2)",
+      foreground: "#4e5c56",
+      border: "color-mix(in srgb, #c5dcc0 38%, #e8e7e4)",
+    },
+    tabInactiveHover: {
+      background: "color-mix(in srgb, #c5dcc0 78%, #f2f1ef)",
     },
     tabActive: {
-      background: "#aecfb0",
-      foreground: "#1e3228",
-      border: "#8aab92",
+      background: "color-mix(in srgb, #c5dcc0 90%, #f9f8f6)",
+      foreground: "#25323a",
+      border: "color-mix(in srgb, #5f766a 26%, #e8e7e4)",
     },
     accent: {
-      strong: "#3d5a48",
+      strong: "#33443c",
       soft: "#edf2ee",
-      ring: "rgba(61, 90, 72, 0.22)",
+      ring: "rgba(51, 68, 60, 0.22)",
     },
-    surfaceTint: "#f4f7f5",
+    surfaceTint: "#f2f5f3",
+    railWash: railWashFromPastel("#c5dcc0"),
   },
   {
     familyId: "moss",
-    tab: {
-      background: "#cadecb",
-      foreground: "#2a3a2e",
-      border: "#b5c9b6",
+    tabInactive: {
+      background: "color-mix(in srgb, #cadecb 72%, #f5f4f2)",
+      foreground: "#4d5a50",
+      border: "color-mix(in srgb, #cadecb 38%, #e8e7e4)",
+    },
+    tabInactiveHover: {
+      background: "color-mix(in srgb, #cadecb 78%, #f2f1ef)",
     },
     tabActive: {
-      background: "#b5d0b6",
-      foreground: "#1e2e22",
-      border: "#8aab8c",
+      background: "color-mix(in srgb, #cadecb 90%, #f9f8f6)",
+      foreground: "#25323a",
+      border: "color-mix(in srgb, #5f766a 24%, #e8e7e4)",
     },
     accent: {
-      strong: "#3d523e",
-      soft: "#eef4ee",
-      ring: "rgba(61, 82, 62, 0.22)",
+      strong: "#33443c",
+      soft: "#edf2ee",
+      ring: "rgba(55, 72, 58, 0.2)",
     },
-    surfaceTint: "#f5f7f4",
+    surfaceTint: "#f3f5f3",
+    railWash: railWashFromPastel("#cadecb"),
   },
   {
     familyId: "eucalyptus",
-    tab: {
-      background: "#c5ddd8",
-      foreground: "#2a3d3a",
-      border: "#aec9c4",
+    tabInactive: {
+      background: "color-mix(in srgb, #c5ddd8 72%, #f5f4f2)",
+      foreground: "#4d5a58",
+      border: "color-mix(in srgb, #c5ddd8 38%, #e8e7e4)",
+    },
+    tabInactiveHover: {
+      background: "color-mix(in srgb, #c5ddd8 78%, #f2f1ef)",
     },
     tabActive: {
-      background: "#adcfc8",
-      foreground: "#1e3330",
-      border: "#7aab9f",
+      background: "color-mix(in srgb, #c5ddd8 90%, #f9f8f6)",
+      foreground: "#25323a",
+      border: "color-mix(in srgb, #5f7a72 22%, #e8e7e4)",
     },
     accent: {
       strong: "#355c55",
       soft: "#edf4f2",
-      ring: "rgba(53, 92, 85, 0.22)",
+      ring: "rgba(53, 92, 85, 0.2)",
     },
-    surfaceTint: "#f3f7f6",
+    surfaceTint: "#f2f6f5",
+    railWash: railWashFromPastel("#c5ddd8"),
   },
   {
     familyId: "fog",
-    tab: {
-      background: "#cddfef",
-      foreground: "#2a3540",
-      border: "#b3cce3",
+    tabInactive: {
+      background: "color-mix(in srgb, #cddfef 70%, #f5f4f2)",
+      foreground: "#4f5a62",
+      border: "color-mix(in srgb, #cddfef 36%, #e8e7e4)",
+    },
+    tabInactiveHover: {
+      background: "color-mix(in srgb, #cddfef 76%, #f2f1ef)",
     },
     tabActive: {
-      background: "#b4d0ea",
-      foreground: "#1e2a38",
-      border: "#7fa3c4",
+      background: "color-mix(in srgb, #cddfef 88%, #f9f8f6)",
+      foreground: "#25323a",
+      border: "color-mix(in srgb, #6a8aad 20%, #e8e7e4)",
     },
     accent: {
       strong: "#3a5568",
       soft: "#edf3f8",
-      ring: "rgba(58, 85, 104, 0.22)",
+      ring: "rgba(58, 85, 104, 0.2)",
     },
-    surfaceTint: "#f3f6f9",
+    surfaceTint: "#f3f6f8",
+    railWash: railWashFromPastel("#cddfef"),
   },
   {
     familyId: "slate",
-    tab: {
-      background: "#d0d8e8",
-      foreground: "#2e3340",
-      border: "#bcc5d6",
+    tabInactive: {
+      background: "color-mix(in srgb, #d0d8e8 72%, #f5f4f2)",
+      foreground: "#505660",
+      border: "color-mix(in srgb, #d0d8e8 38%, #e8e7e4)",
+    },
+    tabInactiveHover: {
+      background: "color-mix(in srgb, #d0d8e8 78%, #f2f1ef)",
     },
     tabActive: {
-      background: "#b8c4dc",
-      foreground: "#222836",
-      border: "#8a96b4",
+      background: "color-mix(in srgb, #d0d8e8 90%, #f9f8f6)",
+      foreground: "#25323a",
+      border: "color-mix(in srgb, #6a7a94 22%, #e8e7e4)",
     },
     accent: {
       strong: "#3d4658",
       soft: "#eef1f6",
-      ring: "rgba(61, 70, 88, 0.22)",
+      ring: "rgba(61, 70, 88, 0.2)",
     },
-    surfaceTint: "#f4f5f8",
+    surfaceTint: "#f4f5f7",
+    railWash: railWashFromPastel("#d0d8e8"),
   },
   {
     familyId: "lavender",
-    tab: {
-      background: "#ddd0ee",
-      foreground: "#3a3248",
-      border: "#ccc0dc",
+    tabInactive: {
+      background: "color-mix(in srgb, #ddd0ee 70%, #f5f4f2)",
+      foreground: "#56525f",
+      border: "color-mix(in srgb, #ddd0ee 36%, #e8e7e4)",
+    },
+    tabInactiveHover: {
+      background: "color-mix(in srgb, #ddd0ee 76%, #f2f1ef)",
     },
     tabActive: {
-      background: "#cbb8e0",
-      foreground: "#2e2840",
-      border: "#9d8ab8",
+      background: "color-mix(in srgb, #ddd0ee 88%, #f9f8f6)",
+      foreground: "#25323a",
+      border: "color-mix(in srgb, #8f82a8 18%, #e8e7e4)",
     },
     accent: {
       strong: "#4a4260",
       soft: "#f2eef8",
-      ring: "rgba(74, 66, 96, 0.22)",
+      ring: "rgba(74, 66, 96, 0.2)",
     },
-    surfaceTint: "#f6f4f9",
+    surfaceTint: "#f5f3f8",
+    railWash: railWashFromPastel("#ddd0ee"),
   },
   {
     familyId: "sand",
-    tab: {
-      background: "#ebe4d6",
-      foreground: "#3f3a32",
-      border: "#dcd3c4",
+    tabInactive: {
+      background: "color-mix(in srgb, #ebe4d6 74%, #f5f4f2)",
+      foreground: "#5c574f",
+      border: "color-mix(in srgb, #ebe4d6 40%, #e8e7e4)",
+    },
+    tabInactiveHover: {
+      background: "color-mix(in srgb, #ebe4d6 80%, #f2f1ef)",
     },
     tabActive: {
-      background: "#dfd3be",
-      foreground: "#322d26",
-      border: "#c4b49a",
+      background: "color-mix(in srgb, #ebe4d6 92%, #f9f8f6)",
+      foreground: "#25323a",
+      border: "color-mix(in srgb, #9a8f7a 22%, #e8e7e4)",
     },
     accent: {
       strong: "#5a5246",
       soft: "#f5f1ea",
       ring: "rgba(90, 82, 70, 0.2)",
     },
-    surfaceTint: "#f8f6f2",
+    surfaceTint: "#f7f5f1",
+    railWash: railWashFromPastel("#ebe4d6"),
   },
   {
     familyId: "rose",
-    tab: {
-      background: "#ead8d5",
-      foreground: "#403438",
-      border: "#dbc8c4",
+    tabInactive: {
+      background: "color-mix(in srgb, #ead8d5 74%, #f5f4f2)",
+      foreground: "#5d5355",
+      border: "color-mix(in srgb, #ead8d5 40%, #e8e7e4)",
+    },
+    tabInactiveHover: {
+      background: "color-mix(in srgb, #ead8d5 80%, #f2f1ef)",
     },
     tabActive: {
-      background: "#dcc4c0",
-      foreground: "#362a2e",
-      border: "#c0a39e",
+      background: "color-mix(in srgb, #ead8d5 92%, #f9f8f6)",
+      foreground: "#25323a",
+      border: "color-mix(in srgb, #a88f8c 20%, #e8e7e4)",
     },
     accent: {
       strong: "#5c4548",
       soft: "#f6f0ef",
       ring: "rgba(92, 69, 72, 0.2)",
     },
-    surfaceTint: "#f8f5f4",
+    surfaceTint: "#f7f4f3",
+    railWash: railWashFromPastel("#ead8d5"),
   },
 ];
 
@@ -201,25 +248,56 @@ export const hashCourseCode = (code: string): number => {
 
 export const getCourseTheme = (courseCode: string): CourseTheme => {
   const i = hashCourseCode(courseCode.toUpperCase()) % FAMILIES.length;
-  return FAMILIES.at(i) ?? FAMILIES[0];
+  return FAMILIES[i] ?? FAMILIES[0];
 };
 
-const COURSE_TAB_BORDER_BOTTOM = "transparent";
-const COURSE_TAB_SHADOW_INACTIVE = "0 1px 2px rgba(37, 50, 58, 0.06)";
-const COURSE_TAB_SHADOW_ACTIVE = "inset 0 1px 0 rgba(255, 255, 255, 0.5)";
+/** Opaque-enough outline so semi-transparent borders don’t fringe white at corners. */
+const tabHairlineShadow = (borderColor: string) =>
+  `0 0 0 1px color-mix(in srgb, ${borderColor} 26%, #e8e7e4)`;
 
+/** Inactive tab paint: base/hover backgrounds live in CSS (vars) for smooth hover without React state. */
 export const courseTabSurfaceStyle = (
   theme: CourseTheme,
   isActive: boolean,
 ): CSSProperties => {
-  const tab = isActive ? theme.tabActive : theme.tab;
+  const tab = isActive ? theme.tabActive : theme.tabInactive;
+  const hoverBg =
+    theme.tabInactiveHover?.background ?? theme.tabInactive.background;
+
+  if (isActive) {
+    return {
+      backgroundColor: tab.background,
+      color: tab.foreground,
+      border: `1px solid ${tab.border}`,
+      borderBottomColor: "transparent",
+      /* 1px “foot” same as fill to kill hairline gaps above canvas — no inset top highlight (reads as a seam on light fills). */
+      boxShadow: `0 1px 0 0 ${tab.background}`,
+    };
+  }
+
+  /* Soft hairline + very light depth; hover bumps shadow slightly in CSS (no inset sheen). */
+  const shadowIdle = `${tabHairlineShadow(tab.border)}, 0 2px 8px rgba(37, 50, 58, 0.014)`;
+  const shadowHover = `${tabHairlineShadow(tab.border)}, 0 3px 10px rgba(37, 50, 58, 0.019)`;
+
   return {
-    backgroundColor: tab.background,
     color: tab.foreground,
-    border: `1px solid ${tab.border}`,
-    borderBottomColor: COURSE_TAB_BORDER_BOTTOM,
-    boxShadow: isActive ? COURSE_TAB_SHADOW_ACTIVE : COURSE_TAB_SHADOW_INACTIVE,
-  };
+    border: "1px solid transparent",
+    borderBottomColor: "transparent",
+    "--course-tab-base-bg": tab.background,
+    "--course-tab-hover-bg": hoverBg,
+    "--course-tab-shadow-idle": shadowIdle,
+    "--course-tab-shadow-hover": shadowHover,
+  } as CSSProperties;
+};
+
+export const courseTabSubtitleColor = (
+  theme: CourseTheme,
+  isActive: boolean,
+): string => {
+  if (isActive) {
+    return `color-mix(in srgb, ${theme.tabActive.foreground} 70%, ${theme.tabActive.background})`;
+  }
+  return `color-mix(in srgb, ${theme.tabInactive.foreground} 86%, ${theme.tabInactive.background})`;
 };
 
 export const compareCoursesByThemeFamilyThenCode = (
@@ -235,13 +313,11 @@ export const compareCoursesByThemeFamilyThenCode = (
   });
 };
 
-export const courseThemeWorkspaceStyle = (
-  theme: CourseTheme,
-): CSSProperties => {
-  return {
+export const courseThemeWorkspaceStyle = (theme: CourseTheme): CSSProperties =>
+  ({
     "--course-accent-strong": theme.accent.strong,
     "--course-accent-soft": theme.accent.soft,
     "--course-accent-ring": theme.accent.ring,
     "--course-surface-tint": theme.surfaceTint,
-  } as CSSProperties;
-};
+    "--course-rail-wash": theme.railWash,
+  }) as CSSProperties;

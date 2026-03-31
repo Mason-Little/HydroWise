@@ -56,6 +56,23 @@ function getIndicatorBounds(
   };
 }
 
+type PillIndicatorMotionTarget =
+  | { opacity: 0 }
+  | { opacity: 1; width: number; x: number }
+  | { height: number; opacity: 1; y: number };
+
+function pillIndicatorMotionAnimate(
+  bounds: IndicatorBounds | undefined,
+): PillIndicatorMotionTarget {
+  if (!bounds) {
+    return { opacity: 0 };
+  }
+  if ("width" in bounds) {
+    return { opacity: 1, width: bounds.width, x: bounds.left };
+  }
+  return { height: bounds.height, opacity: 1, y: bounds.top };
+}
+
 function assignRef<T>(ref: React.Ref<T> | undefined, value: T) {
   if (typeof ref === "function") {
     ref(value);
@@ -101,17 +118,13 @@ function ToggleGroup({
   );
 
   const updateIndicatorBounds = React.useCallback(() => {
-    if (!selectedValue) {
-      setIndicatorBounds(undefined);
-      return;
-    }
-
-    const selectedItem = itemRefs.current.get(selectedValue);
+    const selectedItem = selectedValue
+      ? itemRefs.current.get(selectedValue)
+      : undefined;
     if (!selectedItem) {
       setIndicatorBounds(undefined);
       return;
     }
-
     setIndicatorBounds(getIndicatorBounds(selectedItem, orientation));
   }, [orientation, selectedValue]);
 
@@ -160,27 +173,12 @@ function ToggleGroup({
               orientation === "vertical" ? "inset-x-0" : "inset-y-0",
               indicatorClassName,
             )}
-            animate={
-              indicatorBounds
-                ? "width" in indicatorBounds
-                  ? {
-                      opacity: 1,
-                      width: indicatorBounds.width,
-                      x: indicatorBounds.left,
-                    }
-                  : {
-                      height: indicatorBounds.height,
-                      opacity: 1,
-                      y: indicatorBounds.top,
-                    }
-                : { opacity: 0 }
-            }
+            animate={pillIndicatorMotionAnimate(indicatorBounds)}
             initial={false}
             transition={{
-              type: "spring",
-              stiffness: 420,
-              damping: 34,
-              mass: 0.7,
+              type: "tween",
+              duration: 0.16,
+              ease: [0.22, 1, 0.36, 1],
             }}
           />
         ) : null}

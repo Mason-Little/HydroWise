@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
+import type { ReactNode } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 
 export type PillToggleOption<T extends string = string> = {
   value: T;
-  label: React.ReactNode;
+  label: ReactNode;
 };
 
 type PillToggleProps<T extends string = string> = {
@@ -29,44 +29,43 @@ export const PillToggle = <T extends string = string>({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -4 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
-      className="w-full"
+    <ToggleGroup
+      orientation="horizontal"
+      value={[value]}
+      onValueChange={handleValueChange}
+      spacing={1}
+      aria-label={ariaLabel}
+      indicatorClassName="inset-y-1 rounded-md border border-border/45 bg-card shadow-[var(--app-shadow-soft)]"
+      style={{
+        gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))`,
+      }}
+      className={cn(
+        "relative grid w-full rounded-[10px] border border-border/40 bg-[var(--surface-toggle-track)] p-0.5 shadow-[var(--app-shadow-soft)]",
+        className,
+      )}
     >
-      <ToggleGroup
-        orientation="horizontal"
-        value={[value]}
-        onValueChange={handleValueChange}
-        spacing={1}
-        aria-label={ariaLabel}
-        indicatorClassName="inset-y-1 rounded-md border border-border bg-card shadow-sm"
-        style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}
-        className={cn(
-          "relative grid w-full rounded-lg border border-border bg-[var(--surface-toggle-track)] p-0.5 shadow-sm",
-          className,
-        )}
-      >
-        {options.map((option) => (
+      {options.map((option) => {
+        const textLabel =
+          typeof option.label === "string" ? option.label : null;
+        return (
           <ToggleGroupItem
             key={option.value}
             value={option.value}
-            aria-label={typeof option.label === "string" ? option.label : option.value}
-            className="h-7 w-full overflow-hidden rounded-md border border-transparent bg-transparent px-1 text-muted-foreground shadow-none transition-[color,border-color,transform] duration-200 hover:bg-transparent hover:text-secondary-foreground focus-visible:ring-1 focus-visible:ring-ring data-[state=on]:text-foreground"
+            aria-label={textLabel ?? option.value}
+            className="h-7 w-full overflow-hidden rounded-md border border-transparent bg-transparent px-1 text-muted-foreground shadow-none transition-colors duration-150 ease-out hover:bg-transparent hover:text-secondary-foreground focus-visible:ring-1 focus-visible:ring-ring data-[state=on]:text-foreground"
           >
             <span className="relative z-10 inline-flex h-full w-full items-center justify-center gap-1 rounded-md px-1">
-              {typeof option.label === "string" ? (
+              {textLabel !== null ? (
                 <span className="text-[11px] font-semibold tracking-normal">
-                  {option.label}
+                  {textLabel}
                 </span>
               ) : (
                 option.label
               )}
             </span>
           </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
-    </motion.div>
+        );
+      })}
+    </ToggleGroup>
   );
 };
