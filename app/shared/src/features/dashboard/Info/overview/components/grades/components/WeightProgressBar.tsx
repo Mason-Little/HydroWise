@@ -4,25 +4,27 @@ type WeightProgressBarProps = {
   rows: GradeTrackerRow[];
 };
 
+const earnedFillFraction = (row: GradeTrackerRow): number =>
+  row.averagePct === null ? 0 : Math.min(1, row.averagePct / 100);
+
 export const WeightProgressBar = ({ rows }: WeightProgressBarProps) => (
   <div className="w-full min-w-0">
     <div
-      className="flex h-2 w-full overflow-hidden rounded-full border border-[var(--border-solid)]/70 bg-[var(--surface-alt)]/70"
+      className="flex h-3 w-full gap-px overflow-hidden rounded-md border border-[color-mix(in_srgb,var(--border-solid)_70%,transparent)] bg-[color-mix(in_srgb,var(--surface)_78%,#ebeae8)] p-px"
       role="img"
       aria-label="Course weight distribution and entered grade progress by category"
     >
       {rows.map((row) => {
-        const earnedFraction =
-          row.averagePct === null ? 0 : Math.min(1, row.averagePct / 100);
+        const earnedFraction = earnedFillFraction(row);
 
         return (
           <div
             key={row.rubricIndex}
-            className="relative h-full border-r border-white/65 last:border-r-0"
+            className="relative min-w-0 overflow-hidden rounded-none bg-[color-mix(in_srgb,var(--surface)_58%,#e2e1df)]"
             style={{ flex: `0 0 ${row.weightPct}%` }}
           >
             <div
-              className="absolute inset-0 opacity-28"
+              className="pointer-events-none absolute inset-0 opacity-[0.32]"
               style={{ backgroundColor: row.fill }}
             />
             <div
@@ -30,21 +32,22 @@ export const WeightProgressBar = ({ rows }: WeightProgressBarProps) => (
               style={{
                 width: `${earnedFraction * 100}%`,
                 backgroundColor: row.fill,
+                opacity: 1,
               }}
             />
           </div>
         );
       })}
     </div>
-    <div className="mt-1 flex w-full">
+    <div className="mt-1.5 flex w-full gap-1">
       {rows.map((row) => (
         <div
           key={row.rubricIndex}
-          className="min-w-0 truncate px-0.5 text-center text-[9px] font-medium uppercase tracking-wide text-[var(--text-muted)]"
+          className="min-w-0 text-center text-[11px] leading-snug font-semibold tracking-[-0.015em] text-[#6f7c85]"
           style={{ flex: `0 0 ${row.weightPct}%` }}
           title={row.category}
         >
-          {row.category}
+          <span className="block truncate">{row.category}</span>
         </div>
       ))}
     </div>

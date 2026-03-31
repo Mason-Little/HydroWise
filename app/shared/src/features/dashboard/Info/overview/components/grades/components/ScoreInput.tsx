@@ -1,31 +1,60 @@
-import { useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { normalizeScoreInput } from "@/features/dashboard/Info/overview/components/grades/lib/format";
 import { cn } from "@/lib/utils";
 
 type ScoreInputProps = {
+  accent: string;
   ariaLabel: string;
+  autoFocus?: boolean;
   onCommit: (score: number) => void;
-  placeholder: string;
+  onDismiss: () => void;
+  placeholder?: string;
 };
 
 export const ScoreInput = ({
+  accent,
   ariaLabel,
+  autoFocus = false,
   onCommit,
-  placeholder,
+  onDismiss,
+  placeholder = "",
 }: ScoreInputProps) => {
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const commit = () => {
+  useEffect(() => {
+    if (!autoFocus) return;
+
+    const frame = requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [autoFocus]);
+
+  const tryCommit = (): boolean => {
     const normalizedScore = normalizeScoreInput(draft);
     if (normalizedScore === null) {
-      setDraft("");
-      return;
+      return false;
     }
 
     onCommit(normalizedScore);
     setDraft("");
+    return true;
   };
+
+  const handleBlur = () => {
+    if (tryCommit()) {
+      return;
+    }
+
+    setDraft("");
+    onDismiss();
+  };
+
+  const chipStyle = {
+    "--chip-accent": accent,
+  } as CSSProperties;
 
   return (
     <input
@@ -35,7 +64,8 @@ export const ScoreInput = ({
       aria-label={ariaLabel}
       placeholder={placeholder}
       value={draft}
-      onBlur={commit}
+      style={chipStyle}
+      onBlur={handleBlur}
       onChange={(event) => {
         const nextValue = event.target.value;
         if (nextValue === "" || /^\d*\.?\d*$/.test(nextValue)) {
@@ -45,18 +75,21 @@ export const ScoreInput = ({
       onKeyDown={(event) => {
         if (event.key === "Enter") {
           event.preventDefault();
-          commit();
+          tryCommit();
         }
 
         if (event.key === "Escape") {
+          event.preventDefault();
           setDraft("");
-          inputRef.current?.blur();
+          onDismiss();
         }
       }}
       className={cn(
-        "inline-flex h-[1.625rem] w-[4.5rem] items-center justify-center rounded-[var(--hw-radius)] border border-dashed border-[var(--border-solid)]/60 bg-transparent px-1.5 text-center shadow-[var(--shadow-sm)] outline-none transition-colors",
-        "text-[length:var(--font-size-sm)] text-[var(--text-muted)] placeholder:text-[var(--text-muted)]/70",
-        "focus:border-[var(--border-focus)] focus:bg-[var(--surface)]/90 focus:text-[var(--text-secondary)] focus:ring-1 focus:ring-[var(--ring-focus)]",
+        "box-border h-[var(--assess-chip-h)] w-[var(--assess-chip-minw)] min-w-[var(--assess-chip-minw)] max-w-[var(--assess-chip-minw)] shrink-0 rounded-[var(--assess-chip-r)] border border-solid px-[var(--assess-chip-pad-x)] text-center text-[length:var(--assess-chip-fs)] font-semibold tabular-nums leading-none outline-none transition-[border-color,box-shadow,background]",
+        "border-[color-mix(in_srgb,var(--chip-accent)_30%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_94%,var(--chip-accent)_5%)_0%,color-mix(in_srgb,var(--surface)_88%,var(--chip-accent)_9%)_100%)] text-[color-mix(in_srgb,var(--chip-accent)_12%,var(--text-primary))]",
+        "placeholder:font-medium placeholder:text-[color-mix(in_srgb,var(--chip-accent)_18%,var(--text-tertiary))]",
+        "focus:border-[color-mix(in_srgb,var(--chip-accent)_42%,var(--border-solid))] focus:shadow-[0_0_0_2px_color-mix(in_srgb,var(--chip-accent)_16%,transparent)]",
+        "[box-shadow:inset_0_1px_0_rgba(255,255,255,0.8),0_1px_2px_rgba(37,50,58,0.038)]",
       )}
     />
   );

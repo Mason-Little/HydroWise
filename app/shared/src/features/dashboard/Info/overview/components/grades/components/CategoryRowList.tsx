@@ -15,10 +15,11 @@ export const CategoryRowList = ({
   plannerState,
   rows,
 }: CategoryRowListProps) => (
-  <div className="flex flex-col gap-2.5">
-    {rows.map((row) => (
+  <div className="flex flex-col gap-0">
+    {rows.map((row, index) => (
       <CompactCategoryRow
         key={row.rubricIndex}
+        categoryIndex={index}
         row={row}
         plannerState={plannerState}
         onAddScore={onAddScore}

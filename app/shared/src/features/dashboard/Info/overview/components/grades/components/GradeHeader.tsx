@@ -1,4 +1,5 @@
-import { getWeightStatus } from "@/features/dashboard/Info/overview/components/grades/lib/copy";
+import { formatPercent } from "@/features/dashboard/Info/overview/components/grades/lib/format";
+import { pillRampForGoalTile } from "@/features/dashboard/Info/overview/components/grades/lib/targetGradePillRamp";
 import type {
   GoalGradeTile,
   GradeTrackerPlan,
@@ -12,18 +13,18 @@ type GradeHeaderProps = {
   tiles: GoalGradeTile[];
 };
 
-const STATUS_DOT_COLOR: Record<Exclude<GradeTrackerStatus, "idle">, string> = {
-  comfortable: "var(--green)",
-  stretch: "#d97706",
-  aggressive: "#ea580c",
-  impossible: "#dc2626",
-};
-
 const STATUS_LABEL: Record<Exclude<GradeTrackerStatus, "idle">, string> = {
   comfortable: "Comfortable",
   stretch: "Stretch",
   aggressive: "Aggressive",
   impossible: "Impossible",
+};
+
+const STATUS_DOT: Record<Exclude<GradeTrackerStatus, "idle">, string> = {
+  comfortable: "var(--green)",
+  stretch: "#d97706",
+  aggressive: "#ea580c",
+  impossible: "#dc2626",
 };
 
 export const GradeHeader = ({
@@ -32,71 +33,76 @@ export const GradeHeader = ({
   selectedLetter,
   tiles,
 }: GradeHeaderProps) => {
-  const currentGradeLabel = getWeightStatus(plan);
-  const statusDotColor =
-    plan.status !== "idle" ? STATUS_DOT_COLOR[plan.status] : null;
-  const statusLabel =
-    plan.status !== "idle" ? STATUS_LABEL[plan.status] : null;
+  const statusLabel = plan.status !== "idle" ? STATUS_LABEL[plan.status] : null;
+  const statusDot = plan.status !== "idle" ? STATUS_DOT[plan.status] : null;
+  const letterDisplay = plan.currentLetter ?? "—";
+  const pctDisplay =
+    plan.currentGradePct !== null ? formatPercent(plan.currentGradePct) : "—";
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 rounded-[var(--hw-radius-xl)] bg-[var(--surface-alt)]/60 px-3 py-2">
-      <div className="flex min-w-0 flex-wrap items-center gap-1.5">
-        <span className="shrink-0 text-[10px] font-semibold tracking-[0.18em] text-[var(--text-tertiary)] uppercase">
-          Goal
-        </span>
-        <fieldset className="m-0 flex flex-wrap gap-1 border-0 p-0">
-          <legend className="sr-only">Goal letter grade</legend>
-          {tiles.map((tile) => {
-            const isSelected = selectedLetter === tile.letter;
-            const activeBg = `color-mix(in srgb, ${tile.backgroundColor} 88%, black)`;
-
-            return (
-              <button
-                key={`${tile.letter}-${tile.min}`}
-                type="button"
-                aria-pressed={isSelected}
-                title={`${tile.letter} · ${tile.min}% minimum`}
-                onClick={() => onSelectLetter(tile.letter)}
-                className="flex h-5 min-w-[1.75rem] items-center justify-center rounded-full px-1.5 text-[9.5px] font-semibold text-[var(--text-primary)] transition-[background-color,border-color,box-shadow] hover:brightness-[0.97]"
-                style={
-                  isSelected
-                    ? {
-                        backgroundColor: activeBg,
-                        border: `1px solid color-mix(in srgb, ${tile.backgroundColor} 68%, black)`,
-                        boxShadow: "0 1px 3px rgb(0 0 0 / 0.2)",
-                      }
-                    : {
-                        backgroundColor: tile.backgroundColor,
-                        border: `1px solid color-mix(in srgb, ${tile.backgroundColor} 82%, black)`,
-                        boxShadow: "0 1px 3px rgb(0 0 0 / 0.1)",
-                      }
-                }
-              >
-                {tile.letter}
-              </button>
-            );
-          })}
-        </fieldset>
-      </div>
-
-      <div className="flex shrink-0 items-center gap-2">
-        {statusDotColor && statusLabel ? (
-          <div className="flex items-center gap-1.5">
-            <span
-              className="size-1.5 rounded-full"
-              style={{ backgroundColor: statusDotColor }}
-              aria-hidden
-            />
-            <span className="text-[10px] font-semibold text-[var(--text-secondary)]">
-              {statusLabel}
-            </span>
+    <div className="relative">
+      <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-1 gap-y-3 pb-1.5 min-[640px]:grid-cols-[minmax(0,auto)_minmax(0,1fr)] min-[640px]:items-center min-[640px]:gap-x-[22px] min-[640px]:gap-y-3">
+          <div className="flex w-full max-w-[min(19.5rem,100%)] flex-col items-start gap-0 border-[color-mix(in_srgb,var(--hairline)_72%,transparent)] pr-0 min-[640px]:w-max min-[640px]:max-w-[min(19.5rem,100%)] min-[640px]:shrink-0 min-[640px]:border-r min-[640px]:pr-[18px]">
+            <div className="flex min-w-0 flex-col gap-0">
+              <span className="mb-1 text-[11px] font-semibold text-[#5d6f79]">
+                Current grade
+              </span>
+              <div className="flex flex-wrap items-baseline gap-x-3.5 gap-y-1">
+                <span className="text-[clamp(2.45rem,5vw,3.15rem)] font-bold leading-none tracking-[-0.045em] text-[var(--text-primary)]">
+                  {letterDisplay}
+                </span>
+                <span className="text-[calc(var(--font-size-sm)+10px)] font-bold tracking-[-0.03em] text-[#2f4a40] tabular-nums">
+                  {pctDisplay}
+                </span>
+                {statusLabel && statusDot ? (
+                  <span className="inline-flex h-[2.125rem] shrink-0 items-center gap-1.5 self-center rounded-[var(--hw-radius-lg)] border border-[#bfd5c4] bg-[linear-gradient(180deg,#edf6ef_0%,#dff0e4_100%)] px-2.5 text-[11px] font-semibold tracking-[0.01em] text-[#42584c]">
+                    <span
+                      className="size-1.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: statusDot }}
+                      aria-hidden
+                    />
+                    {statusLabel}
+                  </span>
+                ) : null}
+              </div>
+            </div>
           </div>
-        ) : null}
-        {currentGradeLabel ? (
-          <span className="rounded-full border border-[var(--green-border)] bg-[var(--green-bg)] px-2 py-0.5 text-[10px] font-semibold tracking-[0.12em] text-[var(--green)] uppercase">
-            {currentGradeLabel}
-          </span>
-        ) : null}
+
+          <div className="flex min-w-0 flex-col items-end gap-1.5 min-[640px]:pt-0">
+            <span className="mb-0 block w-full text-right text-[11px] font-semibold text-[#5d6f79]">
+              Set your target
+            </span>
+            <fieldset className="m-0 w-full min-w-0 border-0 p-0">
+              <legend className="sr-only">Target letter grade</legend>
+              <div className="flex min-w-0 flex-wrap items-center justify-end gap-x-[11px] gap-y-2.5 min-[640px]:flex-nowrap min-[640px]:gap-y-0">
+                {tiles.map((tile, index) => {
+                  const isSelected = selectedLetter === tile.letter;
+                  const ramp = pillRampForGoalTile(index, tiles.length);
+                  const palette = isSelected ? ramp.active : ramp.idle;
+
+                  return (
+                    <button
+                      key={`${tile.letter}-${tile.min}`}
+                      type="button"
+                      aria-pressed={isSelected}
+                      title={`${tile.letter} · ${tile.min}% minimum`}
+                      onClick={() => onSelectLetter(tile.letter)}
+                      className="inline-flex h-[2.4rem] w-[3.2rem] shrink-0 items-center justify-center rounded-[var(--hw-radius-lg)] border border-solid text-xs font-semibold tabular-nums transition-[background-color,border-color,color,box-shadow] duration-150 ease-out [box-shadow:inset_0_1px_0_rgba(255,255,255,0.62)] hover:[box-shadow:inset_0_1px_0_rgba(255,255,255,0.72),0_1px_3px_rgba(37,50,58,0.05)]"
+                      style={{
+                        backgroundColor: palette.backgroundColor,
+                        borderColor: palette.borderColor,
+                        color: palette.color,
+                      }}
+                    >
+                      {tile.letter}
+                    </button>
+                  );
+                })}
+              </div>
+            </fieldset>
+          </div>
+        </div>
       </div>
     </div>
   );
