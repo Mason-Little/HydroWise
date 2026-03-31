@@ -3,18 +3,14 @@ import { cn } from "@/lib/utils";
 
 type DashboardWorkspaceShellProps = {
   courseTabs: ReactNode;
-  title: string;
-  kicker?: string | null;
-  headerRight: ReactNode;
+  header: ReactNode;
   children: ReactNode;
   className?: string;
 };
 
 export const DashboardWorkspaceShell = ({
   courseTabs,
-  title,
-  kicker,
-  headerRight,
+  header,
   children,
   className,
 }: DashboardWorkspaceShellProps) => {
@@ -33,19 +29,7 @@ export const DashboardWorkspaceShell = ({
       </nav>
       <div className="flex min-h-0 flex-1 flex-col bg-gradient-to-b from-card via-card to-background/25">
         <header className="shrink-0 border-b border-border/50 bg-gradient-to-b from-card to-muted/15 px-5 py-3">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="min-w-0">
-              {kicker ? (
-                <p className="mb-1 truncate text-[11px] font-semibold tracking-wide text-muted-foreground">
-                  {kicker}
-                </p>
-              ) : null}
-              <p className="truncate text-lg font-bold leading-tight tracking-tight text-foreground">
-                {title}
-              </p>
-            </div>
-            {headerRight}
-          </div>
+          {header}
         </header>
         <div className="min-h-0 flex-1 overflow-auto p-3.5">{children}</div>
       </div>
