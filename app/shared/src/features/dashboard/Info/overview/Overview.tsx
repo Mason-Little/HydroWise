@@ -1,6 +1,6 @@
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
-import { OverviewNotebook } from "@/features/dashboard/Info/overview/layout/OverviewNotebook";
-import { OverviewRail } from "@/features/dashboard/Info/overview/layout/OverviewRail";
+import { OverviewNotebook } from "@/features/dashboard/Info/overview/OverviewNotebook";
+import { OverviewRail } from "@/features/dashboard/Info/overview/OverviewRail";
 
 export const Overview = () => {
   const { activeCourse } = useDashboardContext();

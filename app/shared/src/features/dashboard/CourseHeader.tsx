@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import type { CourseRow } from "@/features/dashboard/Dashboard";
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
+import { useUpdateProfessorInformation } from "@/features/dashboard/hooks/useUpdateProfessorInformation";
 import { EditableField } from "@/features/dashboard/Info/overview/components/EditableField";
-import { useUpdateProfessorInformation } from "@/features/dashboard/Info/overview/components/Instructor/hooks/useUpdateProfessorInformation";
 
-/** Design mock parity; `CourseDetails` has no LMS URL field yet. extract from syllabus later on */
+/** Design mock parity; no dedicated LMS URL field yet — extract from syllabus later on */
 const ELEARN_HREF = "https://elearn.capu.ca";
 
 type CourseHeaderProps = {
