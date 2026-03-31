@@ -27,7 +27,7 @@ const EmptyGradeState = ({ course }: GradeCardProps) => {
   return (
     <OverviewSectionCard
       title="Grade tracker"
-      className="flex h-full flex-col justify-center"
+      className="flex h-full min-h-0 flex-col justify-center overflow-y-auto"
     >
       <div className="rounded-[var(--hw-radius-xl)] border border-dashed border-[var(--border-solid)] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface-alt)_86%,white),var(--surface))] p-4">
         <p className="text-sm font-semibold text-[var(--text-primary)]">
@@ -99,29 +99,35 @@ export const GradeCard = ({ course }: GradeCardProps) => {
   return (
     <OverviewSectionCard
       title="Grade tracker"
-      className="flex h-full flex-col gap-2.5"
+      className="flex h-full min-h-0 flex-col gap-2.5"
     >
-      <GradeHeader
-        tiles={plan.tiles}
-        selectedLetter={plan.targetGrade.letter}
-        plan={plan}
-        onSelectLetter={(letter) =>
-          persistPlannerState(setPlannerTargetLetter(plannerState, letter))
-        }
-      />
-      <WeightProgressBar rows={plan.rows} />
-      <CategoryRowList
-        rows={plan.rows}
-        plannerState={plannerState}
-        onAddScore={(rubricIndex, score) =>
-          persistPlannerState(addPlannerScore(plannerState, rubricIndex, score))
-        }
-        onRemoveScore={(rubricIndex, scoreIndex) =>
-          persistPlannerState(
-            removePlannerScore(plannerState, rubricIndex, scoreIndex),
-          )
-        }
-      />
+      <div className="shrink-0 space-y-2.5">
+        <GradeHeader
+          tiles={plan.tiles}
+          selectedLetter={plan.targetGrade.letter}
+          plan={plan}
+          onSelectLetter={(letter) =>
+            persistPlannerState(setPlannerTargetLetter(plannerState, letter))
+          }
+        />
+        <WeightProgressBar rows={plan.rows} />
+      </div>
+      <div className="min-h-0 flex-1 overflow-y-auto pr-0.5">
+        <CategoryRowList
+          rows={plan.rows}
+          plannerState={plannerState}
+          onAddScore={(rubricIndex, score) =>
+            persistPlannerState(
+              addPlannerScore(plannerState, rubricIndex, score),
+            )
+          }
+          onRemoveScore={(rubricIndex, scoreIndex) =>
+            persistPlannerState(
+              removePlannerScore(plannerState, rubricIndex, scoreIndex),
+            )
+          }
+        />
+      </div>
     </OverviewSectionCard>
   );
 };

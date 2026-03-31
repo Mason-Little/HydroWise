@@ -8,7 +8,7 @@ export const Overview = () => {
   if (!activeCourse) return null;
 
   return (
-    <div className="flex min-h-0 flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-5">
+    <div className="flex min-h-0 flex-col gap-4 lg:flex-row lg:items-start lg:gap-5">
       <OverviewNotebook />
       <OverviewRail />
     </div>

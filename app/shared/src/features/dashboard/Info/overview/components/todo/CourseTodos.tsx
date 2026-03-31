@@ -85,11 +85,14 @@ const CourseTodosContent = ({ course }: CourseTodosContentProps) => {
   }, []);
 
   return (
-    <OverviewSectionCard title="Course tasks">
-      <p className="mb-2.5 text-xs text-muted-foreground">
+    <OverviewSectionCard
+      title="Course tasks"
+      className="flex h-full min-h-0 flex-col"
+    >
+      <p className="mb-2.5 shrink-0 text-xs text-muted-foreground">
         Tasks for this course. Press Enter for a new line.
       </p>
-      <ul className="flex flex-col gap-1.5">
+      <ul className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto pr-0.5">
         {items.map((item, index) => (
           <TodoRow
             key={item.id}
