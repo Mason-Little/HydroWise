@@ -65,8 +65,19 @@
   );
   --course-rail-wash: var(--app-course-rail-wash-default);
 
-  --app-overview-shared-pane-h: min(520px, calc(100dvh - 320px));
-  --overview-notebook-rail-h: var(--app-overview-shared-pane-h);
+  /* Dashboard: one height token for overview pane + notebook rail */
+  --app-dashboard-overview-pane-h: min(520px, calc(100dvh - 320px));
+  --app-overview-shared-pane-h: var(--app-dashboard-overview-pane-h);
+  --overview-notebook-rail-h: var(--app-dashboard-overview-pane-h);
+
+  /* Workspace shell — rail, fixed header, scroll body */
+  --app-dashboard-shell-rail-pt: 12px;
+  --app-dashboard-shell-rail-px: 16px;
+  --app-dashboard-shell-rail-pb: 0;
+  --app-dashboard-shell-header-px: 20px;
+  --app-dashboard-shell-header-pt: 11px;
+  --app-dashboard-shell-header-pb: 10px;
+  --app-dashboard-shell-body-pad: 14px;
 
   --bg: var(--app-workspace-bg);
   --surface: var(--app-surface-primary);
@@ -331,10 +342,11 @@
       );
   }
 
-  /* Paper workspace shell (any feature) */
+  /* Paper shell: one surface; softer chrome than nested inner cards */
   .app-workspace-shell {
     border-radius: var(--app-radius-workspace);
-    border: 1px solid var(--app-border-shell);
+    border: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 58%, transparent);
     border-top-color: var(--app-border-shell-top);
     background: linear-gradient(
       168deg,
@@ -347,18 +359,38 @@
         )
         100%
     );
-    box-shadow: var(--app-shadow-shell);
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--app-surface-primary) 72%, transparent)
+        inset,
+      0 10px 28px rgba(37, 50, 58, 0.04),
+      0 3px 10px rgba(37, 50, 58, 0.024),
+      0 0 0 1px color-mix(in srgb, var(--app-border-solid) 22%, transparent);
   }
 
   .app-course-rail {
     position: relative;
-    overflow: hidden;
-    padding: 14px 16px 0;
-    border-bottom: 1px solid var(--app-hairline);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--app-dashboard-shell-rail-pt) var(--app-dashboard-shell-rail-px)
+      var(--app-dashboard-shell-rail-pb);
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 30%, transparent);
     background: var(--course-rail-wash);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--app-border-solid) 65%, transparent)
+      transparent;
   }
 
-  /* Inactive course tabs: paint from theme vars so hover is smooth without React state. */
+  .app-course-rail::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .app-course-rail::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--app-border-solid) 55%, transparent);
+  }
+
+  /* Inactive tabs: theme vars keep hover smooth without React state */
   .app-course-rail .app-course-tab[aria-selected="false"] {
     background-color: var(--course-tab-base-bg);
     box-shadow: var(--course-tab-shadow-idle);
@@ -378,38 +410,50 @@
     box-shadow: var(--course-tab-shadow-hover);
   }
 
+  /* Canvas under header + body — quiet paper, continuous with rail */
   .app-workspace-shell__canvas {
-    /* Solid base so subpixel seams never flash browser white */
     background-color: var(--app-surface-primary);
     background-image: linear-gradient(
       180deg,
-      color-mix(
-          in srgb,
-          var(--app-surface-primary) 55%,
-          var(--app-workspace-bg)
-        )
+      color-mix(in srgb, var(--app-surface-primary) 82%, var(--app-workspace-bg))
         0%,
-      color-mix(in srgb, var(--app-surface-primary) 92%, #fafaf8) 22%,
-      transparent 52%
+      color-mix(in srgb, var(--app-surface-primary) 93%, var(--app-workspace-bg))
+        24%,
+      color-mix(in srgb, var(--app-surface-primary) 97%, var(--app-workspace-bg))
+        52%,
+      var(--app-surface-primary) 100%
     );
   }
 
   .app-workspace-shell__header {
+    padding: var(--app-dashboard-shell-header-pt)
+      var(--app-dashboard-shell-header-px) var(--app-dashboard-shell-header-pb);
     border-bottom: 1px solid
-      color-mix(in srgb, var(--app-border-solid) 42%, transparent);
+      color-mix(in srgb, var(--app-border-solid) 26%, transparent);
     background: linear-gradient(
       180deg,
       color-mix(in srgb, var(--app-surface-primary) 96%, #f2f1f0) 0%,
       color-mix(
           in srgb,
-          var(--app-surface-primary) 92%,
+          var(--app-surface-primary) 90%,
           var(--app-workspace-bg)
         )
         100%
     );
   }
 
-  /* Course rail only — avoids styling any future [role="tab"] elsewhere under .course-context */
+  /* Only vertical scroll in the shell; reads as workspace paper */
+  .app-workspace-shell__body {
+    padding: var(--app-dashboard-shell-body-pad);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--app-surface-primary) 92%, var(--app-workspace-bg))
+        0%,
+        transparent 36%
+    );
+  }
+
+  /* Scope focus ring to rail tabs only */
   .app-course-rail .app-course-tab:focus-visible {
     outline: 2px solid
       color-mix(in srgb, var(--app-accent) 42%, var(--app-border-solid));

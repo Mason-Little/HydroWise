@@ -1,4 +1,5 @@
 import type { Queries } from "@hydrowise/data";
+import type { ReactElement } from "react";
 import { createContext, useContext, useState } from "react";
 import { Info } from "@/features/dashboard/Info/Info";
 import {
@@ -21,21 +22,20 @@ const DashboardContext = createContext<DashboardContextValue>({
 
 export const useDashboardContext = () => useContext(DashboardContext);
 
-export const Dashboard = () => {
+export const Dashboard = (): ReactElement => {
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
   const { courses } = useCourses();
 
   const activeCourse = courses.find((c) => c.id === activeCourseId) ?? null;
+  const courseWorkspaceStyle = activeCourse
+    ? courseThemeWorkspaceStyle(getCourseTheme(activeCourse.courseCode))
+    : undefined;
 
   return (
     <DashboardContext.Provider value={{ activeCourse, setActiveCourseId }}>
       <div
-        className="course-context flex min-h-0 flex-1 flex-col"
-        style={
-          activeCourse
-            ? courseThemeWorkspaceStyle(getCourseTheme(activeCourse.courseCode))
-            : undefined
-        }
+        className="course-context flex min-h-0 flex-1 flex-col overflow-hidden"
+        style={courseWorkspaceStyle}
       >
         <Info />
       </div>
