@@ -6,8 +6,6 @@ import {
   getCourseTheme,
 } from "@/features/dashboard/selection/course-selector/courseTheme";
 import { useCourses } from "@/features/dashboard/selection/course-selector/hooks/useCourses";
-import { Selection } from "@/features/dashboard/selection/Selection";
-
 export type CourseRow = Awaited<ReturnType<Queries["listCourses"]>>[number];
 
 type DashboardContextValue = {
@@ -34,7 +32,6 @@ export const Dashboard = () => {
   return (
     <DashboardContext.Provider value={{ activeCourse, setActiveCourseId }}>
       <div className="dashboard-workspace" style={courseWorkspaceStyle}>
-        <Selection />
         <Info />
       </div>
     </DashboardContext.Provider>
