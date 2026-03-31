@@ -71,6 +71,8 @@ export const CourseTodoItemSchema = z.object({
   id: z.string(),
   text: z.string(),
   done: z.boolean(),
+  /** ISO date string; optional — shown as compact “Due …” when set. */
+  dueAt: z.string().nullable().optional(),
 });
 
 export const CourseSchema = z.object({

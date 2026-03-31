@@ -1,100 +1,62 @@
 import type { CourseTodoItem } from "@hydrowise/entities";
 import { XIcon } from "lucide-react";
-import { type KeyboardEvent, useEffect, useRef } from "react";
+import { formatDueRowLabel } from "@/features/dashboard/Info/overview/components/todo/todo-helpers";
 import { cn } from "@/lib/utils";
 
 type TodoRowProps = {
-  item: CourseTodoItem;
-  pendingFocusId: string | null;
-  onBackspaceEmpty: () => void;
-  onEnter: () => void;
-  onFocusConsumed: () => void;
+  todo: CourseTodoItem;
+  onToggle: () => void;
   onRemove: () => void;
-  onTextChange: (text: string) => void;
-  onToggleDone: () => void;
-  placeholder?: string;
 };
 
-const DEFAULT_PLACEHOLDER = "Add a task…";
-
-const onTaskKeyDown = (
-  event: KeyboardEvent<HTMLInputElement>,
-  text: string,
-  handlers: Pick<TodoRowProps, "onBackspaceEmpty" | "onEnter">,
-) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    handlers.onEnter();
-    return;
-  }
-  if (event.key === "Backspace" && text === "") {
-    event.preventDefault();
-    handlers.onBackspaceEmpty();
-  }
-};
-
-const taskTextInputClassName = cn(
-  "-mx-1 min-w-0 flex-1 rounded bg-transparent py-0.5 pr-6 pl-1 text-xs text-foreground outline-none",
-  "placeholder:text-muted-foreground/50",
-  "ring-1 ring-transparent focus:bg-muted/50 focus:ring-ring",
-);
-
-const removeTaskButtonClassName = cn(
-  "absolute right-0 top-1/2 -translate-y-1/2 rounded p-0.5 text-muted-foreground opacity-0 transition-opacity",
-  "hover:bg-muted/60 hover:text-foreground",
-  "group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-);
-
-export const TodoRow = ({
-  item,
-  pendingFocusId,
-  onBackspaceEmpty,
-  onEnter,
-  onFocusConsumed,
-  onRemove,
-  onTextChange,
-  onToggleDone,
-  placeholder = DEFAULT_PLACEHOLDER,
-}: TodoRowProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (pendingFocusId !== item.id) return;
-    inputRef.current?.focus();
-    onFocusConsumed();
-  }, [pendingFocusId, item.id, onFocusConsumed]);
+export const TodoRow = ({ todo, onToggle, onRemove }: TodoRowProps) => {
+  const isDone = todo.done;
+  const due = todo.dueAt ? formatDueRowLabel(todo.dueAt) : null;
 
   return (
-    <li className="group relative flex items-center gap-2">
+    <div
+      className={cn(
+        "group flex items-start gap-2 py-[6px] pr-0.5 pl-0",
+        isDone && "opacity-[0.92]",
+      )}
+    >
       <input
         type="checkbox"
-        checked={item.done}
-        onChange={onToggleDone}
-        className="size-4 shrink-0 cursor-pointer rounded border border-input accent-foreground"
-        aria-label={item.done ? "Mark task not done" : "Mark task done"}
+        checked={isDone}
+        onChange={onToggle}
+        className="mt-[2px] size-[14px] shrink-0 rounded border-border/80 text-primary accent-primary"
+        aria-label={isDone ? "Mark incomplete" : "Mark complete"}
       />
-      <input
-        ref={inputRef}
-        type="text"
-        value={item.text}
-        onChange={(e) => onTextChange(e.target.value)}
-        onKeyDown={(e) =>
-          onTaskKeyDown(e, item.text, { onBackspaceEmpty, onEnter })
-        }
-        placeholder={placeholder}
-        className={taskTextInputClassName}
-      />
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-px leading-tight">
+        <p
+          className={cn(
+            "text-[length:var(--type-dashboard-body)] font-medium leading-[1.3] tracking-[-0.012em] text-[var(--text-primary)]",
+            isDone &&
+              "text-[color-mix(in_srgb,var(--text-tertiary)_88%,var(--text-primary))] line-through",
+          )}
+        >
+          {todo.text}
+        </p>
+        {due ? (
+          <p
+            className={cn(
+              "text-[10px] leading-[1.2] font-medium tracking-[0.04em] text-[color-mix(in_srgb,var(--text-tertiary)_90%,var(--text-primary))]",
+              isDone &&
+                "font-[520] text-[color-mix(in_srgb,var(--text-tertiary)_52%,var(--surface))]",
+            )}
+          >
+            {due}
+          </p>
+        ) : null}
+      </div>
       <button
         type="button"
+        className="mt-[1px] shrink-0 rounded-md p-0.5 text-muted-foreground/55 opacity-0 transition-[opacity,colors] group-hover:opacity-100 hover:bg-muted/35 hover:text-foreground/80"
+        onClick={onRemove}
         aria-label="Remove task"
-        onClick={(e) => {
-          e.preventDefault();
-          onRemove();
-        }}
-        className={removeTaskButtonClassName}
       >
-        <XIcon className="size-3.5" aria-hidden />
+        <XIcon className="size-2.5" strokeWidth={2.25} />
       </button>
-    </li>
+    </div>
   );
 };

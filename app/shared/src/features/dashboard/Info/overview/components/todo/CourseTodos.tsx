@@ -1,112 +1,118 @@
-import type { CourseTodoItem } from "@hydrowise/entities";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { CourseRow } from "@/features/dashboard/Dashboard";
+import { useState } from "react";
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
-import { OverviewSectionCard } from "@/features/dashboard/Info/overview/components/OverviewSectionCard";
-import { useUpdateCourseTodos } from "@/features/dashboard/Info/overview/components/todo/hooks/useUpdateCourseTodos";
-import {
-  ensureEditableRows,
-  focusTargetAfterRemove,
-  insertAfter,
-  normalizeTodosForPersist,
-  removeAt,
-} from "@/features/dashboard/Info/overview/components/todo/lib/todo-helpers";
+import { TodoComposer } from "@/features/dashboard/Info/overview/components/todo/TodoComposer";
 import { TodoRow } from "@/features/dashboard/Info/overview/components/todo/TodoRow";
+import { useUpdateCourseTodos } from "@/features/dashboard/Info/overview/components/todo/useUpdateCourseTodos";
 
-type CourseTodosContentProps = {
-  course: CourseRow;
+type CourseTodosProps = {
+  onComposingChange?: (composing: boolean) => void;
 };
 
-const SAVE_DEBOUNCE_MS = 300;
+const TASK_LIST_CLASS_NAME =
+  "divide-y divide-[color-mix(in_srgb,var(--hairline)_60%,transparent)]";
 
-const patchItemAt = (
-  items: CourseTodoItem[],
-  index: number,
-  patch: Partial<CourseTodoItem>,
-): CourseTodoItem[] => {
-  const row = items[index];
-  if (!row) return items;
-  const next = [...items];
-  next[index] = { ...row, ...patch };
-  return next;
-};
-
-export const CourseTodos = () => {
+export const CourseTodos = ({ onComposingChange }: CourseTodosProps) => {
   const { activeCourse } = useDashboardContext();
+  const [composing, setComposing] = useState(false);
+
+  const courseId = activeCourse?.id ?? "";
+  const { mutate, isPending } = useUpdateCourseTodos(courseId);
+
+  const setComposingOpen = (open: boolean) => {
+    setComposing(open);
+    onComposingChange?.(open);
+  };
+
   if (!activeCourse) return null;
-  return <CourseTodosContent key={activeCourse.id} course={activeCourse} />;
-};
 
-const CourseTodosContent = ({ course }: CourseTodosContentProps) => {
-  const [items, setItems] = useState<CourseTodoItem[]>(() =>
-    ensureEditableRows(course.courseTodos ?? []),
-  );
-  const [pendingFocusId, setPendingFocusId] = useState<string | null>(null);
-  const itemsRef = useRef(items);
-  itemsRef.current = items;
+  const todos = activeCourse.courseTodos ?? [];
+  const open = todos.filter((t) => !t.done);
+  const done = todos.filter((t) => t.done);
 
-  const { mutate } = useUpdateCourseTodos(course.id);
+  const toggleTodo = (id: string) =>
+    mutate(todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
+  const removeTodo = (id: string) => mutate(todos.filter((t) => t.id !== id));
 
-  const clearPendingFocus = useCallback(() => {
-    setPendingFocusId(null);
-  }, []);
-
-  useEffect(() => {
-    const toSave = normalizeTodosForPersist(items);
-    const timeoutId = setTimeout(() => {
-      mutate(toSave);
-    }, SAVE_DEBOUNCE_MS);
-    return () => clearTimeout(timeoutId);
-  }, [items, mutate]);
-
-  const updateText = useCallback((index: number, text: string) => {
-    setItems((prev) => patchItemAt(prev, index, { text }));
-  }, []);
-
-  const toggleDone = useCallback((index: number) => {
-    setItems((prev) => {
-      const row = prev[index];
-      if (!row) return prev;
-      return patchItemAt(prev, index, { done: !row.done });
-    });
-  }, []);
-
-  const insertRowBelow = useCallback((index: number) => {
-    const { next, newId } = insertAfter(itemsRef.current, index);
-    setItems(next);
-    setPendingFocusId(newId);
-  }, []);
-
-  const removeRowAt = useCallback((index: number) => {
-    const snapshot = itemsRef.current;
-    const focusId = focusTargetAfterRemove(snapshot, index);
-    setItems(removeAt(snapshot, index));
-    if (focusId) setPendingFocusId(focusId);
-  }, []);
+  const addTask = (text: string, dueAt: string | null) => {
+    mutate([...todos, { id: crypto.randomUUID(), text, done: false, dueAt }]);
+    setComposingOpen(false);
+  };
 
   return (
-    <OverviewSectionCard
-      title="Course tasks"
-      className="flex h-full min-h-0 flex-col"
+    <section
+      className="flex h-full min-h-0 flex-col overflow-hidden rounded-[13px] border border-border/30 bg-[color-mix(in_srgb,var(--surface)_93%,var(--bg))] shadow-[0_1px_0_color-mix(in_srgb,var(--surface)_78%,transparent)_inset,0_4px_14px_rgba(37,50,58,0.022)]"
+      aria-labelledby="overview-tasks-heading"
     >
-      <p className="mb-2.5 shrink-0 text-xs text-muted-foreground">
-        Tasks for this course. Press Enter for a new line.
-      </p>
-      <ul className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto pr-0.5">
-        {items.map((item, index) => (
-          <TodoRow
-            key={item.id}
-            item={item}
-            pendingFocusId={pendingFocusId}
-            onFocusConsumed={clearPendingFocus}
-            onTextChange={(text) => updateText(index, text)}
-            onToggleDone={() => toggleDone(index)}
-            onEnter={() => insertRowBelow(index)}
-            onBackspaceEmpty={() => removeRowAt(index)}
-            onRemove={() => removeRowAt(index)}
+      <header className="shrink-0 border-border/28 border-b px-3.5 pt-[11px] pb-[9px]">
+        <div className="flex min-w-0 items-center justify-between gap-2">
+          <h2
+            id="overview-tasks-heading"
+            className="font-display min-w-0 text-[length:var(--type-dashboard-body)] leading-[1.15] font-bold tracking-[-0.025em] text-[var(--text-primary)]"
+          >
+            Tasks{" "}
+            <span className="text-[length:var(--type-dashboard-micro)] font-semibold tracking-normal text-[#5d6f79] tabular-nums">
+              · {open.length} open
+            </span>
+          </h2>
+          {!composing ? (
+            <button
+              type="button"
+              className="inline-flex shrink-0 items-baseline gap-0.5 rounded-md border border-dashed border-border/45 bg-[color-mix(in_srgb,var(--bg)_32%,transparent)] px-2 py-1 text-[var(--text-tertiary)] transition-colors hover:border-primary/28 hover:text-[var(--text-primary)]"
+              onClick={() => setComposingOpen(true)}
+            >
+              <span className="translate-y-px text-[11px] leading-none font-bold">
+                +
+              </span>
+              <span className="text-[10px] leading-none font-bold tracking-[0.04em]">
+                Add
+              </span>
+            </button>
+          ) : null}
+        </div>
+      </header>
+
+      <div className="min-h-0 flex-1 overflow-y-auto px-3.5 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <ul className={TASK_LIST_CLASS_NAME}>
+          {open.map((todo) => (
+            <li key={todo.id}>
+              <TodoRow
+                todo={todo}
+                onToggle={() => toggleTodo(todo.id)}
+                onRemove={() => removeTodo(todo.id)}
+              />
+            </li>
+          ))}
+        </ul>
+
+        {done.length > 0 ? (
+          <div className="mt-2.5 border-border/22 border-t pt-2">
+            <p className="mb-1.5 text-[length:var(--type-dashboard-micro)] leading-none font-semibold tracking-normal text-[#5d6f79]">
+              Completed
+            </p>
+            <ul className={TASK_LIST_CLASS_NAME}>
+              {done.map((todo) => (
+                <li key={todo.id}>
+                  <TodoRow
+                    todo={todo}
+                    onToggle={() => toggleTodo(todo.id)}
+                    onRemove={() => removeTodo(todo.id)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </div>
+
+      {composing ? (
+        <div className="shrink-0 border-border/22 border-t bg-[color-mix(in_srgb,var(--bg)_22%,var(--surface))] px-3 py-2 pb-2.5">
+          <TodoComposer
+            onSave={addTask}
+            onCancel={() => setComposingOpen(false)}
+            isSaving={isPending}
           />
-        ))}
-      </ul>
-    </OverviewSectionCard>
+        </div>
+      ) : null}
+    </section>
   );
 };

@@ -3,13 +3,11 @@ import type { CourseTodoItem } from "@hydrowise/entities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CourseRow } from "@/features/dashboard/Dashboard";
 
-type CourseTodosMutationContext = {
+type MutationContext = {
   previousCourses: CourseRow[];
 };
 
-const coursesQueryKey = ["courses"] as const;
-
-const withCourseTodos = (
+const replaceCourseTodos = (
   courses: CourseRow[],
   courseId: string,
   courseTodos: CourseTodoItem[],
@@ -21,32 +19,27 @@ const withCourseTodos = (
 export const useUpdateCourseTodos = (courseId: string) => {
   const queryClient = useQueryClient();
 
-  return useMutation<
-    CourseRow,
-    Error,
-    CourseTodoItem[],
-    CourseTodosMutationContext
-  >({
+  return useMutation<CourseRow, Error, CourseTodoItem[], MutationContext>({
     mutationFn: (courseTodos) =>
       getQueries().then((queries) =>
         queries.updateCourseTodos(courseId, courseTodos),
       ),
     onMutate: async (courseTodos) => {
-      await queryClient.cancelQueries({ queryKey: coursesQueryKey });
+      await queryClient.cancelQueries({ queryKey: ["courses"] });
 
       const previousCourses =
-        queryClient.getQueryData<CourseRow[]>(coursesQueryKey) ?? [];
-      queryClient.setQueryData<CourseRow[]>(coursesQueryKey, (courses = []) =>
-        withCourseTodos(courses, courseId, courseTodos),
+        queryClient.getQueryData<CourseRow[]>(["courses"]) ?? [];
+      queryClient.setQueryData<CourseRow[]>(["courses"], (courses = []) =>
+        replaceCourseTodos(courses, courseId, courseTodos),
       );
 
       return { previousCourses };
     },
-    onError: (_error, _courseTodos, context) => {
-      queryClient.setQueryData(coursesQueryKey, context?.previousCourses ?? []);
+    onError: (_error, _todos, context) => {
+      queryClient.setQueryData(["courses"], context?.previousCourses ?? []);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: coursesQueryKey });
+      queryClient.invalidateQueries({ queryKey: ["courses"] });
     },
   });
 };
