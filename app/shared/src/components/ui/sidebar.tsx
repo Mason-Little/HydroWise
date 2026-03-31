@@ -26,7 +26,7 @@ const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "15rem";
 const SIDEBAR_WIDTH_MOBILE = "16.5rem";
-const SIDEBAR_WIDTH_ICON = "3.5rem";
+const SIDEBAR_WIDTH_ICON = "74px";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
 type SidebarContextProps = {
@@ -231,7 +231,7 @@ function Sidebar({
           // Adjust the padding for floating and inset variants.
           variant === "floating" || variant === "inset"
             ? "p-1.5 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(3))+2px)]"
-            : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",
+            : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=left]:[border-right-color:var(--app-hairline)] group-data-[side=right]:border-l group-data-[side=right]:[border-left-color:var(--app-hairline)]",
           className,
         )}
         {...props}
@@ -387,7 +387,10 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-group"
       data-sidebar="group"
-      className={cn("relative flex w-full min-w-0 flex-col px-2 py-1", className)}
+      className={cn(
+        "relative flex w-full min-w-0 flex-col px-2 py-1",
+        className,
+      )}
       {...props}
     />
   );
@@ -478,7 +481,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-1.5 text-left text-xs ring-sidebar-ring outline-hidden transition-[width,height,padding] transition-colors group-has-data-[sidebar=menu-action]/menu-item:pr-8 bg-transparent text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-foreground data-active:font-medium data-active:shadow-sm group-data-[collapsible=icon]:!h-10 group-data-[collapsible=icon]:!w-full group-data-[collapsible=icon]:!p-0 group-data-[collapsible=icon]:justify-center group-data-[state=expanded]:justify-start group-data-[state=expanded]:px-2.5 focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent/60 data-open:hover:text-sidebar-accent-foreground [&_svg]:size-4 [&_svg]:shrink-0 group-data-[collapsible=icon]:[&_svg]:size-5 [&>span:last-child]:truncate",
+  "peer/menu-button group/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-1.5 text-left text-xs ring-sidebar-ring outline-hidden transition-[width,height,padding] transition-colors group-has-data-[sidebar=menu-action]/menu-item:pr-8 bg-transparent text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-foreground data-active:font-medium data-active:shadow-sm group-data-[collapsible=icon]:!h-[46px] group-data-[collapsible=icon]:!w-[46px] group-data-[collapsible=icon]:!rounded-[11px] group-data-[collapsible=icon]:!p-0 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:text-[color-mix(in_srgb,var(--app-text-muted)_78%,var(--app-text-primary))] group-data-[collapsible=icon]:hover:!bg-[color-mix(in_srgb,var(--app-surface-primary)_18%,transparent)] group-data-[collapsible=icon]:hover:!text-[var(--app-text-primary)] group-data-[collapsible=icon]:data-active:!bg-[var(--sidebar-active-bg)] group-data-[collapsible=icon]:data-active:!text-[var(--sidebar-active-icon)] group-data-[collapsible=icon]:data-active:!font-normal group-data-[collapsible=icon]:data-active:!shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--app-border-solid)_26%,transparent)] group-data-[collapsible=icon]:data-active:!ring-0 group-data-[state=expanded]:justify-start group-data-[state=expanded]:px-2.5 focus-visible:ring-2 group-data-[collapsible=icon]:active:!bg-[color-mix(in_srgb,var(--app-surface-primary)_28%,transparent)] group-data-[collapsible=icon]:active:!text-[var(--app-text-primary)] active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent/60 data-open:hover:text-sidebar-accent-foreground [&_svg]:size-4 [&_svg]:shrink-0 group-data-[collapsible=icon]:[&_svg]:size-[22px] [&>span:last-child]:truncate",
   {
     variants: {
       variant: {

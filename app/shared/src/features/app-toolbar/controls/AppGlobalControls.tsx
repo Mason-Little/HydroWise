@@ -1,7 +1,7 @@
 import { SelectedModelPill } from "@/features/app-toolbar/controls/model-selection/SelectedModelPill";
 
 export const AppGlobalControls = () => (
-  <div className="relative z-10 shrink-0">
+  <div className="flex shrink-0 items-center justify-end gap-2.5">
     <SelectedModelPill />
   </div>
 );

@@ -11,7 +11,7 @@ export const Workspace = () => {
   return (
     <>
       <Sidebar />
-      <SidebarInset className="p-5">
+      <SidebarInset className="min-h-0 flex-1 gap-2.5 py-2.5 px-[18px]">
         <Topbar />
         <Component />
       </SidebarInset>
