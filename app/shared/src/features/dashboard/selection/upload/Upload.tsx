@@ -1,6 +1,6 @@
 import { FileIcon, SendIcon, UploadIcon, XIcon } from "lucide-react";
 import { useRef } from "react";
-import { useUpload } from "@/features/dashboard/selection/upload/hooks/useUpload";
+import { useUpload } from "@/features/ingest/upload/hooks/useUpload";
 
 export const Upload = () => {
   const inputRef = useRef<HTMLInputElement>(null);

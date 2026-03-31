@@ -5,11 +5,11 @@ import {
 } from "@hydrowise/file-ingest";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { handleClassify } from "@/features/dashboard/selection/upload/helpers/handleClassify";
-import { handleDocument } from "@/features/dashboard/selection/upload/helpers/handleDocument";
-import { handleExtract } from "@/features/dashboard/selection/upload/helpers/handleExtract";
-import { handlePages } from "@/features/dashboard/selection/upload/helpers/handlePage";
-import { handleSyllabus } from "@/features/dashboard/selection/upload/helpers/handleSyllabus";
+import { handleClassify } from "@/features/ingest/upload/helpers/handleClassify";
+import { handleDocument } from "@/features/ingest/upload/helpers/handleDocument";
+import { handleExtract } from "@/features/ingest/upload/helpers/handleExtract";
+import { handlePages } from "@/features/ingest/upload/helpers/handlePage";
+import { handleSyllabus } from "@/features/ingest/upload/helpers/handleSyllabus";
 import { useModelStore } from "@/store/modelStore";
 
 export const useUpload = () => {
