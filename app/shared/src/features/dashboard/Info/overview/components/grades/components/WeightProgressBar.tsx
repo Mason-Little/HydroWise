@@ -43,7 +43,7 @@ export const WeightProgressBar = ({ rows }: WeightProgressBarProps) => (
       {rows.map((row) => (
         <div
           key={row.rubricIndex}
-          className="min-w-0 text-center text-[11px] leading-snug font-semibold tracking-[-0.015em] text-[#6f7c85]"
+          className="min-w-0 text-center text-[length:var(--type-dashboard-micro)] font-semibold leading-[1.3] text-[#6f7c85]"
           style={{ flex: `0 0 ${row.weightPct}%` }}
           title={row.category}
         >

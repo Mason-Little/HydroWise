@@ -38,49 +38,68 @@ const ProfessorContactBlock = ({ course }: ProfessorContactBlockProps) => {
   } = course.professorInformation;
 
   return (
-    <div className="mt-2.5 space-y-1 border-t border-border/40 pt-2.5">
-      <p className="text-xs leading-snug text-muted-foreground">
-        <span className="font-medium text-foreground/80">Instructor</span>{" "}
-        {professorName.trim() || "—"}
+    <div className="mt-2 space-y-[3px] border-t border-border/40 pt-2">
+      <p className="text-[12px] leading-[1.35] text-[var(--app-text-muted)]">
+        <span className="font-semibold text-[var(--app-text-primary)]">
+          Instructor
+        </span>{" "}
+        <span className="font-[450] text-[color-mix(in_srgb,var(--app-text-muted)_88%,var(--app-text-primary))]">
+          {professorName.trim() || "—"}
+        </span>
         {professorEmail.trim() ? (
           <>
-            <span className="select-none text-muted-foreground/45" aria-hidden>
+            <span
+              className="select-none text-[color-mix(in_srgb,var(--app-text-muted)_45%,transparent)]"
+              aria-hidden
+            >
               {" "}
               ·{" "}
             </span>
             <a
               href={`mailto:${professorEmail}`}
-              className="font-medium text-foreground/80 underline-offset-2 hover:text-foreground hover:underline"
+              className="font-medium text-[var(--app-accent-strong)] no-underline underline-offset-2 hover:underline"
             >
               {professorEmail}
             </a>
           </>
         ) : null}
       </p>
-      <div className="flex flex-wrap items-baseline gap-x-1 gap-y-0.5 text-xs leading-snug text-muted-foreground">
-        <span className="font-medium text-foreground/80">Office</span>
+      <div className="flex flex-wrap items-baseline gap-x-1 gap-y-0.5 text-[12px] leading-[1.35] text-[var(--app-text-muted)]">
+        <span className="font-semibold text-[var(--app-text-primary)]">
+          Office
+        </span>
         <EditableField
           value={professorOffice}
           placeholder="Add office"
+          className="!text-[12px] font-[450] text-[color-mix(in_srgb,var(--app-text-muted)_88%,var(--app-text-primary))]"
           onSave={(next) => mutate({ professorOffice: next })}
         />
-        <span className="select-none text-muted-foreground/45" aria-hidden>
+        <span
+          className="mx-[3px] select-none text-[color-mix(in_srgb,var(--app-text-muted)_45%,transparent)] font-normal"
+          aria-hidden
+        >
           ·
         </span>
-        <span className="font-medium text-foreground/80">Office hours</span>
+        <span className="font-semibold text-[var(--app-text-primary)]">
+          Office hours
+        </span>
         <EditableField
           value={professorOfficeHours}
           placeholder="Add hours"
+          className="!text-[12px] font-[450] text-[color-mix(in_srgb,var(--app-text-muted)_88%,var(--app-text-primary))]"
           onSave={(next) => mutate({ professorOfficeHours: next })}
         />
-        <span className="select-none text-muted-foreground/45" aria-hidden>
+        <span
+          className="mx-[3px] select-none text-[color-mix(in_srgb,var(--app-text-muted)_45%,transparent)] font-normal"
+          aria-hidden
+        >
           ·
         </span>
         <a
           href={ELEARN_HREF}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-foreground/80 underline-offset-2 hover:text-foreground hover:underline"
+          className="font-medium text-[var(--app-accent-strong)] no-underline underline-offset-2 hover:underline"
         >
           eLearn
         </a>
@@ -95,15 +114,15 @@ export const CourseHeader = ({ headerRight }: CourseHeaderProps) => {
   const title = activeCourse?.courseName ?? "—";
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1">
       {metaLine ? (
-        <p className="truncate text-[11px] font-semibold tracking-wide text-muted-foreground">
+        <p className="truncate text-[length:var(--type-dashboard-micro)] font-semibold tracking-[0.01em] text-[#5a6f68]">
           {metaLine}
         </p>
       ) : null}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-xl font-bold leading-tight tracking-tight text-foreground">
+          <p className="font-display truncate text-[clamp(1.5rem,2.1vw,2.05rem)] font-bold leading-[1.08] tracking-[-0.04em] text-foreground">
             {title}
           </p>
         </div>

@@ -37,12 +37,12 @@ export const CoursePill = ({ course, isActive, onClick }: CoursePillProps) => {
         active ? ACTIVE_TAB_CLASS : INACTIVE_TAB_CLASS,
       )}
     >
-      <p className="truncate text-sm font-semibold leading-tight tracking-tight">
+      <p className="truncate text-[length:calc(var(--type-dashboard-body)+1px)] font-[650] leading-tight tracking-[-0.02em]">
         {course.courseCode}
       </p>
       <p
         className={cn(
-          "mt-1 truncate text-[11px] font-medium leading-snug",
+          "mt-1 truncate text-[length:var(--type-dashboard-micro)] font-medium leading-[1.25]",
           active ? "opacity-[0.96]" : "opacity-[0.98]",
         )}
         style={{ color: courseTabSubtitleColor(theme, active) }}

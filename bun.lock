@@ -45,7 +45,8 @@
       "dependencies": {
         "@base-ui/react": "^1.2.0",
         "@fontsource-variable/geist-mono": "^5.2.7",
-        "@fontsource/dm-sans": "^5.2.8",
+        "@fontsource-variable/inter": "^5.2.8",
+        "@fontsource/inter-tight": "^5.2.7",
         "@hydrowise/ai-runtime": "workspace:*",
         "@hydrowise/data": "workspace:*",
         "@hydrowise/entities": "workspace:*",
@@ -349,7 +350,9 @@
 
     "@fontsource-variable/geist-mono": ["@fontsource-variable/geist-mono@5.2.7", "", {}, "sha512-ZKlZ5sjtalb2TwXKs400mAGDlt/+2ENLNySPx0wTz3bP3mWARCsUW+rpxzZc7e05d2qGch70pItt3K4qttbIYA=="],
 
-    "@fontsource/dm-sans": ["@fontsource/dm-sans@5.2.8", "", {}, "sha512-tlovG42m9ESG28WiHpLq3F5umAlm64rv0RkqTbYowRn70e9OlRr5a3yTJhrhrY+k5lftR/OFJjPzOLQzk8EfCA=="],
+    "@fontsource-variable/inter": ["@fontsource-variable/inter@5.2.8", "", {}, "sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ=="],
+
+    "@fontsource/inter-tight": ["@fontsource/inter-tight@5.2.7", "", {}, "sha512-44TmSfHdNQus/3MWOMIonUEnbxwQhiaFo2sfBJEGIE4c7TN+GO6kfLzsTH4Nu52BC9HDZFl9fPQ6Cwzp9vYTtQ=="],
 
     "@guiiai/logg": ["@guiiai/logg@1.2.11", "", { "dependencies": { "error-stack-parser": "^2.1.4", "pathe": "^2.0.3" } }, "sha512-OE4tpTa3NCw/A0YC6TcRD09fLeatpyQ22625syiW7amygCAnHpswIjQRMDLkZnxFTHvleKomBpaXyIsk0qDk3g=="],
 

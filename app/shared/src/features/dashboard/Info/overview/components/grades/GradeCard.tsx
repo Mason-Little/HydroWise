@@ -50,13 +50,13 @@ const EmptyGradeState = ({ course }: GradeCardProps) => {
     >
       <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-3">
         <div className="rounded-[var(--hw-radius-xl)] border border-dashed border-[var(--border-solid)] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface-alt)_86%,white),var(--surface))] p-4">
-          <p className="text-sm font-semibold text-[var(--text-primary)]">
+          <p className="text-[length:var(--type-dashboard-body)] font-semibold text-[var(--text-primary)]">
             Grade planner needs a fuller syllabus breakdown.
           </p>
-          <p className="mt-2 text-[length:var(--font-size-sm)] leading-relaxed text-[var(--text-secondary)]">
+          <p className="mt-2 text-[length:var(--type-dashboard-label)] leading-relaxed text-[var(--text-secondary)]">
             {emptySyllabusDetail(hasRubric, hasScale)}
           </p>
-          <p className="mt-2 text-[length:var(--font-size-sm)] leading-relaxed text-[var(--text-secondary)]">
+          <p className="mt-2 text-[length:var(--type-dashboard-label)] leading-relaxed text-[var(--text-secondary)]">
             Once those fields are extracted, this card will save score history
             and show the averages you need in each bucket.
           </p>
@@ -120,7 +120,7 @@ export const GradeCard = ({ course }: GradeCardProps) => {
       )}
     >
       <div
-        className="flex min-h-0 flex-1 flex-col [--assess-chip-fs:13px] [--assess-chip-h:34px] [--assess-chip-minw:3.25rem] [--assess-chip-pad-x:0.65rem] [--assess-chip-r:11px]"
+        className="flex min-h-0 flex-1 flex-col [--assess-chip-fs:var(--type-dashboard-label)] [--assess-chip-h:34px] [--assess-chip-minw:3.25rem] [--assess-chip-pad-x:0.65rem] [--assess-chip-r:11px]"
         style={
           {
             "--cat-accent": "var(--accent)",

@@ -73,8 +73,8 @@ export const CompactCategoryRow = ({
 
   const progressBadgeClassName =
     progressLabel === "Complete"
-      ? "inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--green)_28%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_82%,var(--green-bg)_18%)_0%,color-mix(in_srgb,var(--surface)_74%,var(--green-bg)_26%)_100%)] px-2 py-0.5 text-[11px] font-semibold tracking-[-0.012em] text-[color-mix(in_srgb,var(--green)_32%,var(--course-accent-strong))] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.75)]"
-      : "inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--cat-accent)_30%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_80%,var(--cat-accent)_14%)_0%,color-mix(in_srgb,var(--surface)_72%,var(--cat-accent)_18%)_100%)] px-2 py-0.5 text-[11px] font-semibold tracking-[-0.012em] text-[color-mix(in_srgb,var(--cat-accent)_38%,var(--text-primary))] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.72)]";
+      ? "inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--green)_28%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_82%,var(--green-bg)_18%)_0%,color-mix(in_srgb,var(--surface)_74%,var(--green-bg)_26%)_100%)] px-2 py-0.5 text-[length:var(--type-dashboard-label)] font-semibold tracking-[-0.012em] text-[color-mix(in_srgb,var(--green)_32%,var(--course-accent-strong))] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.75)]"
+      : "inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--cat-accent)_30%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_80%,var(--cat-accent)_14%)_0%,color-mix(in_srgb,var(--surface)_72%,var(--cat-accent)_18%)_100%)] px-2 py-0.5 text-[length:var(--type-dashboard-label)] font-semibold tracking-[-0.012em] text-[color-mix(in_srgb,var(--cat-accent)_38%,var(--text-primary))] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.72)]";
 
   return (
     <div
@@ -92,26 +92,24 @@ export const CompactCategoryRow = ({
             className="size-2 shrink-0 rounded-full bg-[color-mix(in_srgb,var(--text-tertiary)_38%,var(--border-solid))]"
             aria-hidden
           />
-          <span className="min-w-0 truncate text-[length:var(--font-size-sm)] font-semibold text-[var(--text-primary)]">
+          <span className="min-w-0 truncate text-[length:var(--type-dashboard-body)] font-[650] text-[var(--text-primary)]">
             {row.category}
           </span>
         </div>
         <fieldset className="m-0 flex max-w-[min(100%,22rem)] shrink-0 flex-wrap items-center justify-end gap-1 border-0 p-0">
           <legend className="sr-only">Weight, average, and progress</legend>
-          <span className="inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--cat-accent)_14%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_94%,var(--cat-accent)_5%)_0%,color-mix(in_srgb,var(--surface-alt)_90%,var(--cat-accent)_4%)_100%)] px-2 py-0.5 text-[11px] font-semibold tracking-[-0.012em] text-[color-mix(in_srgb,var(--text-tertiary)_16%,var(--text-primary))] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.78)]">
+          <span className="inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--cat-accent)_14%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_94%,var(--cat-accent)_5%)_0%,color-mix(in_srgb,var(--surface-alt)_90%,var(--cat-accent)_4%)_100%)] px-2 py-0.5 text-[length:var(--type-dashboard-label)] font-semibold tracking-[-0.012em] text-[color-mix(in_srgb,var(--text-tertiary)_16%,var(--text-primary))] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.78)]">
             {formatPercent(row.weightPct)}
           </span>
           {row.averagePct !== null ? (
             <>
-              <span className="inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--accent)_10%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_93%,var(--course-accent-soft)_14%)_0%,color-mix(in_srgb,var(--surface)_88%,var(--course-accent-soft)_10%)_100%)] px-2 py-0.5 text-[11px] font-semibold tracking-[-0.012em] text-[color-mix(in_srgb,var(--text-primary)_92%,var(--accent)_6%)] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.82)]">
+              <span className="inline-flex items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--accent)_10%,var(--border-solid))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--surface)_93%,var(--course-accent-soft)_14%)_0%,color-mix(in_srgb,var(--surface)_88%,var(--course-accent-soft)_10%)_100%)] px-2 py-0.5 text-[length:var(--type-dashboard-label)] font-semibold tracking-[-0.012em] text-[color-mix(in_srgb,var(--text-primary)_92%,var(--accent)_6%)] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.82)]">
                 {`avg ${Math.round(row.averagePct)}`}
               </span>
-              <span className={progressBadgeClassName}>
-                {progressLabel}
-              </span>
+              <span className={progressBadgeClassName}>{progressLabel}</span>
             </>
           ) : (
-            <span className="inline-flex items-center justify-center rounded-full border border-dashed border-[color-mix(in_srgb,var(--cat-accent)_12%,var(--border-solid))] bg-[color-mix(in_srgb,var(--surface)_95%,var(--cat-accent)_3%)] px-2 py-0.5 text-[11px] font-semibold text-[color-mix(in_srgb,var(--cat-accent)_10%,var(--text-tertiary))] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.65)]">
+            <span className="inline-flex items-center justify-center rounded-full border border-dashed border-[color-mix(in_srgb,var(--cat-accent)_12%,var(--border-solid))] bg-[color-mix(in_srgb,var(--surface)_95%,var(--cat-accent)_3%)] px-2 py-0.5 text-[length:var(--type-dashboard-label)] font-[550] text-[color-mix(in_srgb,var(--cat-accent)_10%,var(--text-tertiary))] tabular-nums [box-shadow:inset_0_1px_0_rgba(255,255,255,0.65)]">
               No grades yet
             </span>
           )}

@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource/dm-sans";
+@import "@fontsource-variable/inter";
+@import "@fontsource/inter-tight/500.css";
+@import "@fontsource/inter-tight/600.css";
+@import "@fontsource/inter-tight/700.css";
 @import "@fontsource-variable/geist-mono";
 
 @source "./**/*.{ts,tsx}";
@@ -187,11 +190,26 @@
   --shadow-dialog:
     0 16px 48px rgba(37, 50, 58, 0.12), 0 0 0 1px rgba(37, 50, 58, 0.06);
 
-  --font-family: "DM Sans", sans-serif;
+  /**
+   * Typography — mirrors design/Dashboard.html mock:
+   * Inter for UI/body, Inter Tight for display (course title, hero letter grade).
+   * --type-dashboard-* = explicit px scale; --font-size-* kept for legacy call sites.
+   */
+  --font-family:
+    "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
+  --font-family-display:
+    "Inter Tight", "Inter Variable", "Inter", system-ui, sans-serif;
+
+  --type-dashboard-body: 13px;
+  --type-dashboard-label: 12px;
+  --type-dashboard-micro: 11px;
+  --type-dashboard-topbar: 12px;
+  --type-dashboard-grade-pct: calc(var(--type-dashboard-body) + 10px);
+
   --font-size-xs: 9.5px;
   --font-size-sm: 11px;
-  --font-size-base: 12px;
-  --font-size-md: 12.5px;
+  --font-size-base: var(--type-dashboard-body);
+  --font-size-md: 12px;
   --font-size-lg: 14px;
   --font-size-xl: 17px;
   --font-size-2xl: 19px;
@@ -236,6 +254,7 @@
 
 @theme inline {
   --font-sans: var(--font-family);
+  --font-display: var(--font-family-display);
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Core */
@@ -326,6 +345,8 @@
   .course-context {
     isolation: isolate;
     min-height: 0;
+    font-family: var(--font-family);
+    font-size: var(--type-dashboard-body);
     color: var(--app-text-primary);
     background-color: var(--app-frame-bg);
     /* Whisper of course tint only — avoid visible pastel bleed */
@@ -361,7 +382,7 @@
     );
     box-shadow:
       0 1px 0 color-mix(in srgb, var(--app-surface-primary) 72%, transparent)
-        inset,
+      inset,
       0 10px 28px rgba(37, 50, 58, 0.04),
       0 3px 10px rgba(37, 50, 58, 0.024),
       0 0 0 1px color-mix(in srgb, var(--app-border-solid) 22%, transparent);
@@ -371,13 +392,17 @@
     position: relative;
     overflow-x: auto;
     overflow-y: hidden;
-    padding: var(--app-dashboard-shell-rail-pt) var(--app-dashboard-shell-rail-px)
-      var(--app-dashboard-shell-rail-pb);
+    padding: var(--app-dashboard-shell-rail-pt)
+      var(--app-dashboard-shell-rail-px) var(--app-dashboard-shell-rail-pb);
     border-bottom: 1px solid
       color-mix(in srgb, var(--app-border-solid) 30%, transparent);
     background: var(--course-rail-wash);
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--app-border-solid) 65%, transparent)
+    scrollbar-color: color-mix(
+        in srgb,
+        var(--app-border-solid) 65%,
+        transparent
+      )
       transparent;
   }
 
@@ -415,11 +440,23 @@
     background-color: var(--app-surface-primary);
     background-image: linear-gradient(
       180deg,
-      color-mix(in srgb, var(--app-surface-primary) 82%, var(--app-workspace-bg))
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 82%,
+          var(--app-workspace-bg)
+        )
         0%,
-      color-mix(in srgb, var(--app-surface-primary) 93%, var(--app-workspace-bg))
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 93%,
+          var(--app-workspace-bg)
+        )
         24%,
-      color-mix(in srgb, var(--app-surface-primary) 97%, var(--app-workspace-bg))
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 97%,
+          var(--app-workspace-bg)
+        )
         52%,
       var(--app-surface-primary) 100%
     );
@@ -447,9 +484,13 @@
     padding: var(--app-dashboard-shell-body-pad);
     background: linear-gradient(
       180deg,
-      color-mix(in srgb, var(--app-surface-primary) 92%, var(--app-workspace-bg))
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 92%,
+          var(--app-workspace-bg)
+        )
         0%,
-        transparent 36%
+      transparent 36%
     );
   }
 
