@@ -183,25 +183,65 @@ const FAMILIES: readonly CourseTheme[] = [
   },
 ];
 
-export function hashCourseCode(code: string): number {
+export const COURSE_THEME_FAMILY_ORDER: readonly CourseFamilyId[] =
+  FAMILIES.map((f) => f.familyId);
+
+const FAMILY_ORDER_INDEX = Object.fromEntries(
+  COURSE_THEME_FAMILY_ORDER.map((id, i) => [id, i]),
+) as Record<CourseFamilyId, number>;
+
+export const hashCourseCode = (code: string): number => {
   const s = code.trim() || "COURSE";
   let h = 5381;
   for (let i = 0; i < s.length; i++) {
     h = (h * 33 + s.charCodeAt(i)) | 0;
   }
   return Math.abs(h);
-}
+};
 
-export function getCourseTheme(courseCode: string): CourseTheme {
-  const idx = hashCourseCode(courseCode.toUpperCase()) % FAMILIES.length;
-  return FAMILIES.at(idx) ?? FAMILIES[0];
-}
+export const getCourseTheme = (courseCode: string): CourseTheme => {
+  const i = hashCourseCode(courseCode.toUpperCase()) % FAMILIES.length;
+  return FAMILIES.at(i) ?? FAMILIES[0];
+};
 
-export function courseThemeWorkspaceStyle(theme: CourseTheme): CSSProperties {
+const COURSE_TAB_BORDER_BOTTOM = "transparent";
+const COURSE_TAB_SHADOW_INACTIVE = "0 1px 2px rgba(37, 50, 58, 0.06)";
+const COURSE_TAB_SHADOW_ACTIVE = "inset 0 1px 0 rgba(255, 255, 255, 0.5)";
+
+export const courseTabSurfaceStyle = (
+  theme: CourseTheme,
+  isActive: boolean,
+): CSSProperties => {
+  const tab = isActive ? theme.tabActive : theme.tab;
+  return {
+    backgroundColor: tab.background,
+    color: tab.foreground,
+    border: `1px solid ${tab.border}`,
+    borderBottomColor: COURSE_TAB_BORDER_BOTTOM,
+    boxShadow: isActive ? COURSE_TAB_SHADOW_ACTIVE : COURSE_TAB_SHADOW_INACTIVE,
+  };
+};
+
+export const compareCoursesByThemeFamilyThenCode = (
+  a: { courseCode: string },
+  b: { courseCode: string },
+): number => {
+  const ia = FAMILY_ORDER_INDEX[getCourseTheme(a.courseCode).familyId];
+  const ib = FAMILY_ORDER_INDEX[getCourseTheme(b.courseCode).familyId];
+  if (ia !== ib) return ia - ib;
+  return a.courseCode.localeCompare(b.courseCode, undefined, {
+    numeric: true,
+    sensitivity: "base",
+  });
+};
+
+export const courseThemeWorkspaceStyle = (
+  theme: CourseTheme,
+): CSSProperties => {
   return {
     "--course-accent-strong": theme.accent.strong,
     "--course-accent-soft": theme.accent.soft,
     "--course-accent-ring": theme.accent.ring,
     "--course-surface-tint": theme.surfaceTint,
   } as CSSProperties;
-}
+};
