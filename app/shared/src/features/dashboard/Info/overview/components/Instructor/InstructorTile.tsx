@@ -1,7 +1,7 @@
 import type { CourseRow } from "@/features/dashboard/Dashboard";
 import { useDashboardContext } from "@/features/dashboard/Dashboard";
 import { EditableField } from "@/features/dashboard/Info/overview/components/EditableField";
-import { useUpdateProfessorInformation } from "@/features/dashboard/Info/overview/components/instructor/hooks/useUpdateProfessorInformation";
+import { useUpdateProfessorInformation } from "@/features/dashboard/Info/overview/components/Instructor/hooks/useUpdateProfessorInformation";
 import { OverviewSectionCard } from "@/features/dashboard/Info/overview/components/OverviewSectionCard";
 
 export const InstructorTile = () => {

@@ -32,7 +32,8 @@ export const createWebVisionAdapter = (
       );
     }
 
-    const blob = new Blob([filePart.data], { type: "image/png" });
+    const pngBytes = new Uint8Array(filePart.data);
+    const blob = new Blob([pngBytes], { type: "image/png" });
     const text = await runWebOcr(model, processor, blob);
 
     return {
