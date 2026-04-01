@@ -62,19 +62,6 @@
         --course-view-accent-bg: var(--mock-accent-soft);
         --course-view-accent-fg: var(--mock-accent-strong);
         --course-view-accent-border: var(--mock-green-border);
-        /* Muted file-type identity (independent of course accent) */
-        --file-pdf-bg: #f9ecee;
-        --file-pdf-fg: #8f4a52;
-        --file-pdf-border: #e9cfd3;
-        --file-ppt-bg: #faf3e8;
-        --file-ppt-fg: #8a5f28;
-        --file-ppt-border: #ead9bf;
-        --file-doc-bg: #ecf2f9;
-        --file-doc-fg: #3d5a80;
-        --file-doc-border: #c9d6e8;
-        --file-md-bg: #eef4ec;
-        --file-md-fg: #4a6348;
-        --file-md-border: #c9d8c5;
         position: relative;
         isolation: isolate;
         display: flex;
@@ -139,6 +126,13 @@
       .mock-rail-btn:hover:not(.active) {
         color: color-mix(in srgb, var(--mock-text) 88%, var(--mock-muted));
         background: color-mix(in srgb, var(--mock-surface) 22%, transparent);
+      }
+      .mock-rail-btn--notes:not(.active) {
+        color: color-mix(in srgb, var(--course-view-accent-fg) 42%, var(--mock-muted));
+      }
+      .mock-rail-btn--notes:hover:not(.active) {
+        color: color-mix(in srgb, var(--course-view-accent-fg) 72%, var(--mock-text));
+        background: color-mix(in srgb, var(--course-view-accent-bg) 28%, transparent);
       }
       .mock-rail-btn.active {
         background: color-mix(in srgb, var(--mock-surface) 58%, var(--mock-sidebar));
@@ -905,6 +899,38 @@
           0 1px 0 rgba(255, 255, 255, 0.75) inset,
           0 1px 2px rgba(37, 50, 58, 0.03);
       }
+      .mock-material-topic-card[data-section-tone="essentials"] {
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 91%, #f3efe9) 0%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+        );
+        border-color: color-mix(in srgb, var(--mock-border) 32%, #e0d9d0);
+      }
+      .mock-material-topic-card[data-section-tone="core"] {
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 92%, var(--course-view-accent-bg)) 0%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+        );
+        border-color: color-mix(in srgb, var(--course-view-accent-border) 14%, var(--mock-border));
+      }
+      .mock-material-topic-card[data-section-tone="reading"] {
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 92%, var(--course-fog)) 0%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+        );
+        border-color: color-mix(in srgb, var(--mock-border) 30%, #d2dde8);
+      }
+      .mock-material-topic-card[data-section-tone="review"] {
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 92%, #f5f0e8) 0%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+        );
+        border-color: color-mix(in srgb, var(--mock-border) 30%, #e8dfd0);
+      }
       .mock-material-topic-header {
         display: flex;
         align-items: flex-start;
@@ -953,23 +979,25 @@
         gap: 8px;
       }
       .mock-material-file {
+        position: relative;
         display: grid;
         grid-template-columns: auto minmax(0, 1fr) auto;
         align-items: center;
         gap: 14px;
         width: 100%;
+        min-height: 80px;
         margin: 0;
         padding: 12px 14px;
         border-radius: 12px;
         border: 1px solid color-mix(in srgb, var(--mock-border) 28%, transparent);
         background: linear-gradient(
           180deg,
-          color-mix(in srgb, var(--mock-surface) 96%, white) 0%,
-          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+          color-mix(in srgb, var(--mock-surface) 96%, white),
+          color-mix(in srgb, var(--mock-surface) 90%, var(--mock-bg))
         );
         box-shadow:
           0 1px 0 rgba(255, 255, 255, 0.75) inset,
-          0 1px 2px rgba(37, 50, 58, 0.04);
+          0 1px 3px rgba(37, 50, 58, 0.04);
         text-align: left;
         font: inherit;
         color: inherit;
@@ -980,15 +1008,32 @@
           background 0.16s ease,
           transform 0.14s ease;
       }
+      .mock-material-file::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 12px;
+        bottom: 12px;
+        width: 3px;
+        border-radius: 0 4px 4px 0;
+        background: color-mix(in srgb, var(--course-view-accent-fg) 28%, transparent);
+        opacity: 0;
+        transition: opacity 0.16s ease;
+        pointer-events: none;
+      }
+      .mock-material-file:hover::before {
+        opacity: 1;
+      }
       .mock-material-file:hover {
-        border-color: color-mix(in srgb, var(--course-view-accent-border) 32%, var(--mock-border));
+        border-color: color-mix(in srgb, var(--course-view-accent-border) 35%, var(--mock-border));
         box-shadow:
           0 1px 0 rgba(255, 255, 255, 0.85) inset,
-          0 2px 8px rgba(37, 50, 58, 0.055);
+          0 2px 8px rgba(37, 50, 58, 0.055),
+          0 1px 3px rgba(37, 50, 58, 0.04);
         background: linear-gradient(
           180deg,
           color-mix(in srgb, var(--mock-surface) 92%, var(--course-view-accent-bg)) 0%,
-          color-mix(in srgb, var(--mock-surface) 85%, var(--mock-bg)) 100%
+          color-mix(in srgb, var(--mock-surface) 86%, var(--mock-bg)) 100%
         );
       }
       .mock-material-file:focus-visible {
@@ -998,94 +1043,99 @@
       .mock-material-file:active {
         transform: translateY(0.5px);
       }
-      .mock-material-file-icon {
-        width: 44px;
-        height: 48px;
-        border-radius: 11px;
+      .mock-material-file-preview {
+        position: relative;
+        width: 46px;
+        height: 56px;
         flex-shrink: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        padding: 6px 4px;
-        border: 1px solid var(--file-icon-border, var(--mock-hairline));
-        background: var(--file-icon-bg, color-mix(in srgb, var(--mock-bg) 40%, var(--mock-surface)));
-        color: var(--file-icon-fg, var(--mock-muted));
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--mock-border) 38%, transparent);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 94%, white),
+          color-mix(in srgb, var(--mock-bg) 38%, var(--mock-surface))
+        );
+        overflow: hidden;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.7),
+          0 2px 4px rgba(37, 50, 58, 0.04);
       }
-      .mock-material-file-icon svg {
-        width: 18px;
-        height: 18px;
-        flex-shrink: 0;
+      .mock-material-file-preview::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 12px;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.75);
+        clip-path: polygon(0 0, 100% 0, 100% 100%);
       }
-      .mock-material-file-kind {
-        font-size: 8px;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        line-height: 1;
-        opacity: 0.92;
+      .mock-material-file-lines {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        top: 14px;
+        display: grid;
+        gap: 6px;
       }
-      .mock-material-file-icon--pdf {
-        --file-icon-bg: var(--file-pdf-bg);
-        --file-icon-fg: var(--file-pdf-fg);
-        --file-icon-border: var(--file-pdf-border);
+      .mock-material-file-lines i {
+        display: block;
+        height: 2px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--course-view-accent-fg) 24%, transparent);
       }
-      .mock-material-file-icon--ppt {
-        --file-icon-bg: var(--file-ppt-bg);
-        --file-icon-fg: var(--file-ppt-fg);
-        --file-icon-border: var(--file-ppt-border);
-      }
-      .mock-material-file-icon--doc {
-        --file-icon-bg: var(--file-doc-bg);
-        --file-icon-fg: var(--file-doc-fg);
-        --file-icon-border: var(--file-doc-border);
-      }
-      .mock-material-file-icon--md {
-        --file-icon-bg: var(--file-md-bg);
-        --file-icon-fg: var(--file-md-fg);
-        --file-icon-border: var(--file-md-border);
+      .mock-material-file-lines i.short {
+        width: 65%;
       }
       .mock-material-file-meta {
         min-width: 0;
       }
-      .mock-material-file-name {
+      .mock-material-file-label {
         display: block;
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: -0.02em;
-        color: var(--mock-text);
-        margin-bottom: 3px;
-      }
-      .mock-material-file-desc {
-        font-size: 11px;
-        color: var(--mock-muted);
-        line-height: 1.4;
-      }
-      .mock-material-file-tail {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        flex-shrink: 0;
-        white-space: nowrap;
+        margin-bottom: 4px;
         font-size: 10px;
-        font-weight: 600;
-        letter-spacing: 0.04em;
+        font-weight: 700;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--mock-tertiary);
       }
-      .mock-material-file:hover .mock-material-file-tail {
-        color: color-mix(in srgb, var(--course-view-accent-fg) 35%, var(--mock-tertiary));
+      .mock-material-file-name {
+        display: block;
+        font-size: 13px;
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        color: var(--mock-text);
       }
-      .mock-material-file-chevron {
-        width: 16px;
-        height: 16px;
+      .mock-material-file-desc {
+        display: block;
+        margin-top: 3px;
+        font-size: 11px;
+        line-height: 1.4;
+        color: var(--mock-muted);
+      }
+      .mock-material-file-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+        margin: 0;
+        padding: 0;
+        border: 1px solid color-mix(in srgb, var(--mock-border) 40%, transparent);
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--mock-surface) 55%, transparent);
+        font-size: 15px;
+        line-height: 1;
+        color: var(--mock-tertiary);
         opacity: 0.55;
-        transition: opacity 0.16s ease, transform 0.16s ease;
+        transition: transform 0.16s ease, opacity 0.16s ease, border-color 0.16s ease, background 0.16s ease;
       }
-      .mock-material-file:hover .mock-material-file-chevron {
-        opacity: 0.85;
+      .mock-material-file:hover .mock-material-file-arrow {
+        opacity: 0.92;
         transform: translateX(2px);
+        border-color: color-mix(in srgb, var(--course-view-accent-border) 35%, var(--mock-border));
+        background: color-mix(in srgb, var(--course-view-accent-bg) 35%, var(--mock-surface));
       }
     </style>
   </head>
@@ -1127,7 +1177,7 @@
             <path d="M10 12h4M10 16h4" />
           </svg>
         </button>
-        <button type="button" class="mock-rail-btn" aria-label="Notes">
+        <button type="button" class="mock-rail-btn mock-rail-btn--notes" aria-label="Notes">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M12 20h9" />
             <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
@@ -1356,7 +1406,7 @@
 
                           <div id="mock-material-sections">
                             <section class="mock-material-topic" aria-labelledby="topic-ch1-essentials">
-                              <div class="mock-material-topic-card">
+                              <div class="mock-material-topic-card" data-section-tone="essentials">
                                 <header class="mock-material-topic-header">
                                   <div class="mock-material-topic-heading">
                                     <h3 class="mock-material-topic-title" id="topic-ch1-essentials">Chapter essentials</h3>
@@ -1368,51 +1418,41 @@
                                 </header>
                                 <div class="mock-material-files">
                                   <button type="button" class="mock-material-file">
-                                    <div class="mock-material-file-icon mock-material-file-icon--pdf" aria-hidden="true">
-                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        <path d="M14 2v6h6" />
-                                        <path d="M8 13h8M8 17h5" />
-                                      </svg>
-                                      <span class="mock-material-file-kind">PDF</span>
+                                    <div class="mock-material-file-preview" aria-hidden="true">
+                                      <span class="mock-material-file-lines">
+                                        <i></i>
+                                        <i></i>
+                                        <i class="short"></i>
+                                      </span>
                                     </div>
                                     <div class="mock-material-file-meta">
-                                      <span class="mock-material-file-name">Syllabus.pdf</span>
+                                      <span class="mock-material-file-label">Course outline</span>
+                                      <span class="mock-material-file-name">Syllabus</span>
                                       <span class="mock-material-file-desc">PSYC 100 outline, assessments, and policies</span>
                                     </div>
-                                    <span class="mock-material-file-tail" aria-hidden="true">
-                                      Open
-                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m9 18 6-6-6-6" />
-                                      </svg>
-                                    </span>
+                                    <span class="mock-material-file-arrow" aria-hidden="true">→</span>
                                   </button>
                                   <button type="button" class="mock-material-file">
-                                    <div class="mock-material-file-icon mock-material-file-icon--doc" aria-hidden="true">
-                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        <path d="M14 2v6h6" />
-                                        <path d="M8 12h8M8 16h8M8 8h3" />
-                                      </svg>
-                                      <span class="mock-material-file-kind">DOCX</span>
+                                    <div class="mock-material-file-preview" aria-hidden="true">
+                                      <span class="mock-material-file-lines">
+                                        <i></i>
+                                        <i></i>
+                                        <i class="short"></i>
+                                      </span>
                                     </div>
                                     <div class="mock-material-file-meta">
-                                      <span class="mock-material-file-name">Course policies.docx</span>
+                                      <span class="mock-material-file-label">Policies</span>
+                                      <span class="mock-material-file-name">Course policies</span>
                                       <span class="mock-material-file-desc">Academic integrity, grading, and attendance</span>
                                     </div>
-                                    <span class="mock-material-file-tail" aria-hidden="true">
-                                      Open
-                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m9 18 6-6-6-6" />
-                                      </svg>
-                                    </span>
+                                    <span class="mock-material-file-arrow" aria-hidden="true">→</span>
                                   </button>
                                 </div>
                               </div>
                             </section>
 
                             <section class="mock-material-topic" aria-labelledby="topic-ch1-what">
-                              <div class="mock-material-topic-card">
+                              <div class="mock-material-topic-card" data-section-tone="core">
                                 <header class="mock-material-topic-header">
                                   <div class="mock-material-topic-heading">
                                     <h3 class="mock-material-topic-title" id="topic-ch1-what">What is psychological science?</h3>
@@ -1424,31 +1464,26 @@
                                 </header>
                                 <div class="mock-material-files">
                                   <button type="button" class="mock-material-file">
-                                    <div class="mock-material-file-icon mock-material-file-icon--ppt" aria-hidden="true">
-                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="4" width="18" height="15" rx="1.5" />
-                                        <path d="M7 9h10M7 13h7" />
-                                        <circle cx="17" cy="7" r="1" fill="currentColor" stroke="none" />
-                                      </svg>
-                                      <span class="mock-material-file-kind">PPTX</span>
+                                    <div class="mock-material-file-preview" aria-hidden="true">
+                                      <span class="mock-material-file-lines">
+                                        <i></i>
+                                        <i></i>
+                                        <i class="short"></i>
+                                      </span>
                                     </div>
                                     <div class="mock-material-file-meta">
-                                      <span class="mock-material-file-name">Week 1 slides.pptx</span>
+                                      <span class="mock-material-file-label">Slides</span>
+                                      <span class="mock-material-file-name">Week 1 slides</span>
                                       <span class="mock-material-file-desc">Lecture: introducing psychological science</span>
                                     </div>
-                                    <span class="mock-material-file-tail" aria-hidden="true">
-                                      Open
-                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m9 18 6-6-6-6" />
-                                      </svg>
-                                    </span>
+                                    <span class="mock-material-file-arrow" aria-hidden="true">→</span>
                                   </button>
                                 </div>
                               </div>
                             </section>
 
                             <section class="mock-material-topic" aria-labelledby="topic-ch1-science">
-                              <div class="mock-material-topic-card">
+                              <div class="mock-material-topic-card" data-section-tone="reading">
                                 <header class="mock-material-topic-header">
                                   <div class="mock-material-topic-heading">
                                     <h3 class="mock-material-topic-title" id="topic-ch1-science">Scientific thinking and evidence</h3>
@@ -1460,32 +1495,26 @@
                                 </header>
                                 <div class="mock-material-files">
                                   <button type="button" class="mock-material-file">
-                                    <div class="mock-material-file-icon mock-material-file-icon--md" aria-hidden="true">
-                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="6.5" cy="8" r="1.25" fill="currentColor" stroke="none" />
-                                        <circle cx="6.5" cy="12" r="1.25" fill="currentColor" stroke="none" />
-                                        <circle cx="6.5" cy="16" r="1.25" fill="currentColor" stroke="none" />
-                                        <path d="M10.5 8H19M10.5 12H17M10.5 16H19" />
-                                      </svg>
-                                      <span class="mock-material-file-kind">MD</span>
+                                    <div class="mock-material-file-preview" aria-hidden="true">
+                                      <span class="mock-material-file-lines">
+                                        <i></i>
+                                        <i></i>
+                                        <i class="short"></i>
+                                      </span>
                                     </div>
                                     <div class="mock-material-file-meta">
-                                      <span class="mock-material-file-name">Ch. 1 reading guide.md</span>
+                                      <span class="mock-material-file-label">Reading</span>
+                                      <span class="mock-material-file-name">Ch. 1 reading guide</span>
                                       <span class="mock-material-file-desc">Guided notes, key studies, and discussion prompts</span>
                                     </div>
-                                    <span class="mock-material-file-tail" aria-hidden="true">
-                                      Open
-                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m9 18 6-6-6-6" />
-                                      </svg>
-                                    </span>
+                                    <span class="mock-material-file-arrow" aria-hidden="true">→</span>
                                   </button>
                                 </div>
                               </div>
                             </section>
 
                             <section class="mock-material-topic" aria-labelledby="topic-ch1-review">
-                              <div class="mock-material-topic-card">
+                              <div class="mock-material-topic-card" data-section-tone="review">
                                 <header class="mock-material-topic-header">
                                   <div class="mock-material-topic-heading">
                                     <h3 class="mock-material-topic-title" id="topic-ch1-review">Key terms and review</h3>
@@ -1497,24 +1526,19 @@
                                 </header>
                                 <div class="mock-material-files">
                                   <button type="button" class="mock-material-file">
-                                    <div class="mock-material-file-icon mock-material-file-icon--pdf" aria-hidden="true">
-                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        <path d="M14 2v6h6" />
-                                        <path d="M8 13h8M8 17h5" />
-                                      </svg>
-                                      <span class="mock-material-file-kind">PDF</span>
+                                    <div class="mock-material-file-preview" aria-hidden="true">
+                                      <span class="mock-material-file-lines">
+                                        <i></i>
+                                        <i></i>
+                                        <i class="short"></i>
+                                      </span>
                                     </div>
                                     <div class="mock-material-file-meta">
-                                      <span class="mock-material-file-name">Section worksheet.pdf</span>
+                                      <span class="mock-material-file-label">Practice sheet</span>
+                                      <span class="mock-material-file-name">Section worksheet</span>
                                       <span class="mock-material-file-desc">In-class practice — Week 1</span>
                                     </div>
-                                    <span class="mock-material-file-tail" aria-hidden="true">
-                                      Open
-                                      <svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m9 18 6-6-6-6" />
-                                      </svg>
-                                    </span>
+                                    <span class="mock-material-file-arrow" aria-hidden="true">→</span>
                                   </button>
                                 </div>
                               </div>
@@ -1643,6 +1667,7 @@
         function syncCourseAccentToCanvas() {
           var rail = document.querySelector(".mock-course-rail");
           var canvas = document.querySelector(".mock-canvas");
+          var app = document.querySelector(".mock-app");
           if (!rail || !canvas) return;
           var active = rail.querySelector(".mock-course-tab--active");
           if (!active) return;
@@ -1653,6 +1678,11 @@
           if (bg) canvas.style.setProperty("--course-view-accent-bg", bg);
           if (fg) canvas.style.setProperty("--course-view-accent-fg", fg);
           if (bd) canvas.style.setProperty("--course-view-accent-border", bd);
+          if (app) {
+            if (bg) app.style.setProperty("--course-view-accent-bg", bg);
+            if (fg) app.style.setProperty("--course-view-accent-fg", fg);
+            if (bd) app.style.setProperty("--course-view-accent-border", bd);
+          }
         }
 
         function boot() {
@@ -1710,9 +1740,12 @@
         }
 
         function genericMaterialTopicsHtml() {
+          var prev =
+            '<div class="mock-material-file-preview" aria-hidden="true"><span class="mock-material-file-lines"><i></i><i></i><i class="short"></i></span></div>';
+          var arrow = '<span class="mock-material-file-arrow" aria-hidden="true">→</span>';
           return (
             '<section class="mock-material-topic" aria-labelledby="topic-gen-essentials">' +
-            '<div class="mock-material-topic-card">' +
+            '<div class="mock-material-topic-card" data-section-tone="essentials">' +
             '<header class="mock-material-topic-header">' +
             '<div class="mock-material-topic-heading">' +
             '<h3 class="mock-material-topic-title" id="topic-gen-essentials">Chapter essentials</h3>' +
@@ -1722,15 +1755,14 @@
             "</header>" +
             '<div class="mock-material-files">' +
             '<button type="button" class="mock-material-file">' +
-            '<div class="mock-material-file-icon mock-material-file-icon--pdf" aria-hidden="true">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>' +
-            '<span class="mock-material-file-kind">PDF</span></div>' +
-            '<div class="mock-material-file-meta"><span class="mock-material-file-name">Week at a glance.pdf</span>' +
+            prev +
+            '<div class="mock-material-file-meta"><span class="mock-material-file-label">Overview</span>' +
+            '<span class="mock-material-file-name">Week at a glance</span>' +
             '<span class="mock-material-file-desc">Deadlines, readings, and what to prepare</span></div>' +
-            '<span class="mock-material-file-tail" aria-hidden="true">Open<svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>' +
+            arrow +
             "</button></div></div></section>" +
             '<section class="mock-material-topic" aria-labelledby="topic-gen-core">' +
-            '<div class="mock-material-topic-card">' +
+            '<div class="mock-material-topic-card" data-section-tone="core">' +
             '<header class="mock-material-topic-header">' +
             '<div class="mock-material-topic-heading">' +
             '<h3 class="mock-material-topic-title" id="topic-gen-core">Core ideas for this week</h3>' +
@@ -1740,23 +1772,21 @@
             "</header>" +
             '<div class="mock-material-files">' +
             '<button type="button" class="mock-material-file">' +
-            '<div class="mock-material-file-icon mock-material-file-icon--ppt" aria-hidden="true">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="15" rx="1.5"/><path d="M7 9h10M7 13h7"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg>' +
-            '<span class="mock-material-file-kind">PPTX</span></div>' +
-            '<div class="mock-material-file-meta"><span class="mock-material-file-name">Lecture slides.pptx</span>' +
+            prev +
+            '<div class="mock-material-file-meta"><span class="mock-material-file-label">Slides</span>' +
+            '<span class="mock-material-file-name">Lecture slides</span>' +
             '<span class="mock-material-file-desc">In-class narrative and diagrams</span></div>' +
-            '<span class="mock-material-file-tail" aria-hidden="true">Open<svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>' +
+            arrow +
             "</button>" +
             '<button type="button" class="mock-material-file">' +
-            '<div class="mock-material-file-icon mock-material-file-icon--md" aria-hidden="true">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="8" r="1.25" fill="currentColor" stroke="none"/><circle cx="6.5" cy="12" r="1.25" fill="currentColor" stroke="none"/><circle cx="6.5" cy="16" r="1.25" fill="currentColor" stroke="none"/><path d="M10.5 8H19M10.5 12H17M10.5 16H19"/></svg>' +
-            '<span class="mock-material-file-kind">MD</span></div>' +
-            '<div class="mock-material-file-meta"><span class="mock-material-file-name">Reading notes.md</span>' +
+            prev +
+            '<div class="mock-material-file-meta"><span class="mock-material-file-label">Reading</span>' +
+            '<span class="mock-material-file-name">Reading notes</span>' +
             '<span class="mock-material-file-desc">Guided prompts while you read</span></div>' +
-            '<span class="mock-material-file-tail" aria-hidden="true">Open<svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>' +
+            arrow +
             "</button></div></div></section>" +
             '<section class="mock-material-topic" aria-labelledby="topic-gen-review">' +
-            '<div class="mock-material-topic-card">' +
+            '<div class="mock-material-topic-card" data-section-tone="review">' +
             '<header class="mock-material-topic-header">' +
             '<div class="mock-material-topic-heading">' +
             '<h3 class="mock-material-topic-title" id="topic-gen-review">Apply & review</h3>' +
@@ -1766,12 +1796,11 @@
             "</header>" +
             '<div class="mock-material-files">' +
             '<button type="button" class="mock-material-file">' +
-            '<div class="mock-material-file-icon mock-material-file-icon--pdf" aria-hidden="true">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg>' +
-            '<span class="mock-material-file-kind">PDF</span></div>' +
-            '<div class="mock-material-file-meta"><span class="mock-material-file-name">Practice set.pdf</span>' +
+            prev +
+            '<div class="mock-material-file-meta"><span class="mock-material-file-label">Practice sheet</span>' +
+            '<span class="mock-material-file-name">Practice set</span>' +
             '<span class="mock-material-file-desc">Check understanding—bring questions to section</span></div>' +
-            '<span class="mock-material-file-tail" aria-hidden="true">Open<svg class="mock-material-file-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>' +
+            arrow +
             "</button></div></div></section>"
           );
         }
