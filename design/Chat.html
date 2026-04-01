@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HydroWise — Ask (prototype)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        height: 100%;
+        overflow: hidden;
+      }
+      body {
+        margin: 0;
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+
+      .mock-app {
+        --mock-chrome-bg: #f2f1ef;
+        --mock-sidebar: #eeedeb;
+        --mock-bg: #f7f6f4;
+        --mock-surface: #fdfdfc;
+        --mock-surface-2: #f5f4f2;
+        --mock-border: #e8e7e4;
+        --mock-text: #25323a;
+        --mock-muted: #62707a;
+        --mock-tertiary: #7d8891;
+        --mock-accent: #5f766a;
+        --mock-accent-strong: #33443c;
+        --mock-accent-soft: #edf2ee;
+        --mock-hairline: color-mix(in srgb, var(--mock-border) 52%, transparent);
+        --mock-r-ui: 8px;
+        --mock-r-pill: 14px;
+        --mock-r-workspace: 11px;
+        --mock-shadow-soft: 0 1px 2px rgba(37, 50, 58, 0.05);
+        --mock-shadow-lift: 0 12px 32px rgba(37, 50, 58, 0.08);
+        --mock-rail-w: 74px;
+        --mock-font: "Inter", system-ui, -apple-system, sans-serif;
+        --mock-font-display: "Inter Tight", "Inter", system-ui, sans-serif;
+        --mock-body-size: 13px;
+        --thread-max: min(1450px, calc(100vw - 33px));
+        --course-sage: #c5dcc0;
+        --course-fog: #cddfef;
+        --atmosphere-sage: color-mix(in srgb, var(--course-sage) 22%, transparent);
+        --atmosphere-fog: color-mix(in srgb, var(--course-fog) 18%, transparent);
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
+        --depth-ambient: 0 8px 28px rgba(37, 50, 58, 0.07);
+        --depth-lift: 0 14px 40px rgba(37, 50, 58, 0.09);
+        --inset-paper: inset 0 1px 0 rgba(255, 255, 255, 0.82), inset 0 -1px 0 rgba(37, 50, 58, 0.04);
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        width: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+        min-height: 0;
+        overflow: hidden;
+        font-family: var(--mock-font);
+        font-size: var(--mock-body-size);
+        color: var(--mock-text);
+        background-color: var(--mock-chrome-bg);
+      }
+
+      .mock-rail {
+        width: var(--mock-rail-w);
+        flex-shrink: 0;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-sidebar) 88%, var(--mock-accent-soft)) 0%,
+          var(--mock-sidebar) 100%
+        );
+        border-right: 1px solid var(--mock-hairline);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 14px 0 18px;
+        gap: 7px;
+      }
+      .mock-rail-brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2px;
+        color: var(--mock-accent-strong);
+      }
+      .mock-rail-brand svg {
+        display: block;
+        width: 30px;
+        height: 30px;
+        stroke-width: 1.75;
+      }
+      .mock-rail-btn {
+        width: 46px;
+        height: 46px;
+        border: none;
+        border-radius: 11px;
+        background: transparent;
+        color: color-mix(in srgb, var(--mock-muted) 78%, var(--mock-text));
+        cursor: default;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+      .mock-rail-btn svg {
+        width: 22px;
+        height: 22px;
+        stroke-width: 1.8;
+      }
+      .mock-rail-btn.active {
+        background: color-mix(in srgb, var(--mock-surface) 58%, var(--mock-sidebar));
+        color: var(--mock-text);
+        box-shadow:
+          inset 0 0 0 1px color-mix(in srgb, var(--mock-border) 44%, transparent),
+          0 2px 6px rgba(37, 50, 58, 0.07);
+      }
+
+      .mock-column {
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .mock-inset {
+        flex: 1;
+        padding: 10px 18px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      /* —— Command bar (match design/Dashboard.html) —— */
+      .mock-topbar {
+        flex-shrink: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 200px) minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 16px;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--mock-surface) 92%, var(--mock-accent-soft)) 0%,
+          color-mix(in srgb, var(--mock-surface) 88%, var(--mock-bg)) 100%
+        );
+        border: 1px solid color-mix(in srgb, var(--mock-border) 54%, transparent);
+        border-radius: var(--mock-r-workspace);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.78) inset,
+          0 10px 30px rgba(37, 50, 58, 0.042),
+          0 2px 8px rgba(37, 50, 58, 0.028);
+        z-index: 40;
+        overflow: visible;
+      }
+      .mock-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        min-width: 0;
+      }
+      .mock-topbar-crumb {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+      }
+      .mock-topbar-brand {
+        font-size: calc(var(--mock-body-size) - 1px);
+        font-weight: 600;
+        color: var(--mock-text);
+        letter-spacing: -0.02em;
+      }
+      .mock-topbar-breadcrumb {
+        font-size: calc(var(--mock-body-size) - 1px);
+        font-weight: 500;
+        color: var(--mock-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .mock-topbar-breadcrumb strong {
+        font-weight: 600;
+        color: var(--mock-text);
+      }
+
+      .mock-launcher {
+        position: relative;
+        justify-self: center;
+        width: 100%;
+        max-width: 760px;
+      }
+      .mock-launcher-input {
+        width: 100%;
+        height: 48px;
+        border-radius: 12px;
+        border: 1px solid var(--mock-hairline);
+        background: var(--mock-surface);
+        padding: 0 16px 0 42px;
+        font: inherit;
+        font-size: calc(var(--mock-body-size) - 1px);
+        color: var(--mock-text);
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      }
+      .mock-launcher-input::placeholder {
+        color: var(--mock-tertiary);
+      }
+      .mock-launcher-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: var(--mock-tertiary);
+        pointer-events: none;
+      }
+      .mock-launcher-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.75;
+      }
+      .mock-launcher:focus-within .mock-launcher-input {
+        border-color: color-mix(in srgb, var(--mock-accent) 38%, var(--mock-border));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--mock-accent) 12%, transparent);
+        background: var(--mock-surface);
+      }
+      .mock-launcher-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        max-height: min(520px, 78vh);
+        overflow-y: auto;
+        padding: 8px 0;
+        background: var(--mock-surface);
+        border: 1px solid var(--mock-hairline);
+        border-radius: var(--mock-r-pill);
+        box-shadow: var(--mock-shadow-lift);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-6px);
+        transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s;
+        z-index: 30;
+      }
+      .mock-launcher:focus-within .mock-launcher-panel {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .mock-launcher-h {
+        padding: 6px 14px 4px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: var(--mock-tertiary);
+      }
+      .mock-launcher-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        font-size: calc(var(--mock-body-size) - 1px);
+        color: var(--mock-text);
+        cursor: default;
+        transition: background 0.12s ease;
+      }
+      .mock-launcher-row:hover {
+        background: color-mix(in srgb, var(--mock-bg) 55%, var(--mock-surface));
+      }
+      .mock-launcher-row kbd {
+        margin-left: auto;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--mock-tertiary);
+        background: color-mix(in srgb, var(--mock-chrome-bg) 70%, var(--mock-surface));
+        padding: 2px 6px;
+        border-radius: var(--mock-r-ui);
+        border: 1px solid var(--mock-hairline);
+      }
+      .mock-launcher-row--hint {
+        color: var(--mock-muted);
+        font-size: calc(var(--mock-body-size) - 2px);
+      }
+      .mock-launcher-divider {
+        height: 1px;
+        margin: 8px 12px;
+        background: var(--mock-hairline);
+      }
+      .mock-launcher-dropzone {
+        margin: 6px 12px 4px;
+        padding: 14px;
+        border-radius: var(--mock-r-pill);
+        border: 1px dashed color-mix(in srgb, var(--mock-accent) 22%, var(--mock-border));
+        background: color-mix(in srgb, var(--mock-accent-soft) 55%, var(--mock-surface));
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 500;
+        color: var(--mock-muted);
+        text-align: center;
+      }
+
+      .mock-topbar-right {
+        justify-self: end;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 41;
+      }
+      .mock-model-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 40px;
+        padding: 0 14px;
+        border-radius: 12px;
+        border: 1px solid var(--mock-hairline);
+        background: color-mix(in srgb, var(--mock-bg) 58%, var(--mock-surface));
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 600;
+        color: var(--mock-text);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 1px 2px rgba(37, 50, 58, 0.07);
+      }
+      .mock-model-pill .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--mock-accent);
+      }
+
+      @media (max-width: 720px) {
+        .mock-topbar {
+          grid-template-columns: 1fr;
+        }
+        .mock-topbar-right {
+          justify-self: stretch;
+          justify-content: flex-start;
+        }
+        .mock-launcher {
+          justify-self: stretch;
+          max-width: none;
+        }
+      }
+
+      /* Workspace: sage + cool fog atmosphere (dashboard / material kin) */
+      .chat-workspace {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--mock-r-workspace);
+        border: 1px solid color-mix(in srgb, var(--mock-border) 70%, transparent);
+        background-color: color-mix(in srgb, var(--mock-surface) 94%, var(--mock-accent-soft));
+        background-image:
+          radial-gradient(ellipse 100% 70% at 12% 0%, var(--atmosphere-sage) 0%, transparent 55%),
+          radial-gradient(ellipse 90% 55% at 88% 8%, var(--atmosphere-fog) 0%, transparent 50%),
+          radial-gradient(
+            ellipse 110% 80% at 50% -15%,
+            color-mix(in srgb, var(--mock-accent-soft) 65%, transparent) 0%,
+            transparent 52%
+          ),
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--mock-surface) 96%, #e8ebe8) 0%,
+            color-mix(in srgb, var(--mock-bg) 28%, var(--mock-surface)) 45%,
+            color-mix(in srgb, var(--mock-surface) 95%, var(--mock-bg)) 100%
+          );
+        box-shadow:
+          var(--inset-paper),
+          0 1px 0 rgba(255, 255, 255, 0.55) inset,
+          var(--depth-ambient);
+        overflow: hidden;
+        position: relative;
+      }
+      .chat-workspace > .chat-header,
+      .chat-workspace > .thread-outer,
+      .chat-workspace > .composer-outer {
+        position: relative;
+        z-index: 1;
+      }
+      .chat-workspace > .composer-outer {
+        z-index: 2;
+      }
+      .chat-workspace::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        opacity: 0.35;
+        background-image: repeating-linear-gradient(
+          -12deg,
+          transparent,
+          transparent 3px,
+          color-mix(in srgb, var(--mock-text) 2.5%, transparent) 3px,
+          color-mix(in srgb, var(--mock-text) 2.5%, transparent) 4px
+        );
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0%, transparent 42%, transparent 100%);
+      }
+
+      .chat-header {
+        flex-shrink: 0;
+        padding: 8px 22px 10px;
+        position: relative;
+        border-bottom: 1px solid color-mix(in srgb, var(--mock-hairline) 88%, transparent);
+        background: linear-gradient(
+            125deg,
+            color-mix(in srgb, var(--mock-surface) 88%, var(--mock-accent-soft)) 0%,
+            color-mix(in srgb, var(--mock-surface) 92%, var(--course-fog)) 38%,
+            color-mix(in srgb, var(--mock-surface) 96%, var(--mock-bg)) 100%
+          ),
+          color-mix(in srgb, var(--mock-surface) 96%, var(--mock-bg));
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+      }
+      .chat-header::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, transparent 55%);
+        pointer-events: none;
+      }
+      .chat-header-text {
+        min-width: 0;
+        position: relative;
+        z-index: 1;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .chat-header {
+          animation: chatReveal 0.72s var(--ease-out) both;
+        }
+      }
+      .chat-page-kicker {
+        margin: 0 0 2px;
+        font-size: 8px;
+        font-weight: 650;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: color-mix(in srgb, var(--mock-tertiary) 72%, var(--mock-accent));
+        opacity: 0.92;
+      }
+      .chat-page-title {
+        font-family: var(--mock-font-display);
+        font-size: clamp(1.05rem, 1.65vw, 1.28rem);
+        font-weight: 650;
+        letter-spacing: -0.03em;
+        line-height: 1.2;
+        margin: 0;
+        color: var(--mock-accent-strong);
+      }
+
+      /* Chat history lives inside the launcher action panel (focus search field) */
+      .launcher-chats {
+        padding-bottom: 4px;
+        border-bottom: 1px solid var(--mock-hairline);
+        margin-bottom: 4px;
+        background: color-mix(in srgb, var(--mock-accent-soft) 22%, transparent);
+      }
+      .launcher-chats .mock-launcher-h {
+        padding-top: 8px;
+      }
+      .history-search {
+        display: block;
+        width: calc(100% - 24px);
+        margin: 0 12px 8px;
+        height: 36px;
+        border-radius: 9px;
+        border: 1px solid var(--mock-hairline);
+        padding: 0 12px;
+        font: inherit;
+        font-size: calc(var(--mock-body-size) - 1px);
+        background: color-mix(in srgb, var(--mock-bg) 65%, var(--mock-surface));
+        box-shadow: inset 0 1px 2px rgba(37, 50, 58, 0.04);
+        transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+      }
+      .history-search:hover {
+        border-color: color-mix(in srgb, var(--mock-border) 85%, var(--mock-text));
+      }
+      .history-search:focus {
+        outline: none;
+        border-color: color-mix(in srgb, var(--mock-accent) 38%, var(--mock-border));
+        box-shadow:
+          inset 0 1px 2px rgba(37, 50, 58, 0.04),
+          0 0 0 3px color-mix(in srgb, var(--mock-accent) 11%, transparent);
+      }
+      .history-scroll--launcher {
+        max-height: min(220px, 32vh);
+        overflow-y: auto;
+        padding: 2px 8px 10px;
+      }
+      .history-row {
+        width: 100%;
+        text-align: left;
+        padding: 11px 12px;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        font: inherit;
+        cursor: pointer;
+        transition: background 0.18s var(--ease-out);
+      }
+      .history-row:hover {
+        background: color-mix(in srgb, var(--mock-accent-soft) 35%, var(--mock-bg));
+      }
+      .history-row-title {
+        display: block;
+        font-weight: 600;
+        font-size: calc(var(--mock-body-size));
+        letter-spacing: -0.02em;
+        color: var(--mock-text);
+        margin-bottom: 5px;
+        line-height: 1.35;
+      }
+      .history-row-meta {
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 500;
+        color: var(--mock-tertiary);
+        letter-spacing: 0.01em;
+      }
+
+      .thread-outer {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: flex;
+        justify-content: center;
+        padding: 18px 11px 16px;
+      }
+      .thread-stack {
+        width: 100%;
+        max-width: var(--thread-max);
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding-bottom: 100px;
+      }
+
+      @keyframes chatReveal {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .msg-row {
+        display: flex;
+        width: 100%;
+        margin-bottom: 18px;
+      }
+      .msg-row:last-child {
+        margin-bottom: 0;
+      }
+      .msg-row--user {
+        justify-content: flex-end;
+      }
+      .msg-row--assistant {
+        justify-content: flex-start;
+      }
+      .msg-cluster {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+      }
+      .msg-cluster--user {
+        align-items: flex-end;
+        gap: 6px;
+      }
+      .msg-cluster--assistant {
+        align-items: flex-start;
+        gap: 9px;
+      }
+      .msg-meta {
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--mock-tertiary);
+        padding: 0 4px;
+      }
+      .msg-cluster--user .msg-meta {
+        text-align: right;
+      }
+      .bubble {
+        border-radius: 18px;
+        padding: 11px 16px 12px;
+        line-height: 1.52;
+        font-size: calc(var(--mock-body-size) + 1px);
+        color: var(--mock-text);
+      }
+      .bubble p {
+        margin: 0;
+      }
+      .bubble p + p {
+        margin-top: 9px;
+      }
+      .bubble ul {
+        margin: 8px 0 0;
+        padding-left: 1.1rem;
+      }
+      .bubble li {
+        margin-bottom: 3px;
+      }
+      .bubble li:last-child {
+        margin-bottom: 0;
+      }
+      .bubble-break {
+        display: block;
+        height: 1px;
+        margin: 12px 0 11px;
+        border: 0;
+        border-radius: 1px;
+        background: color-mix(in srgb, var(--mock-accent) 14%, var(--mock-hairline));
+        opacity: 0.9;
+      }
+      .bubble-exam {
+        margin: 0;
+        padding: 9px 12px 10px;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--mock-surface) 68%, var(--mock-accent-soft));
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 11%, var(--mock-hairline));
+        font-size: calc(var(--mock-body-size));
+        line-height: 1.5;
+        color: color-mix(in srgb, var(--mock-text) 96%, var(--mock-muted));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+      }
+      .bubble-exam strong {
+        color: var(--mock-accent-strong);
+        font-weight: 650;
+      }
+      .bubble-mnemonic {
+        margin: 10px 0 0;
+        font-size: calc(var(--mock-body-size));
+        line-height: 1.48;
+        color: color-mix(in srgb, var(--mock-muted) 88%, var(--mock-text));
+      }
+      .thread-mention {
+        display: inline;
+        padding: 1px 6px 2px;
+        margin: 0 1px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: calc(var(--mock-body-size));
+        color: color-mix(in srgb, var(--mock-accent-strong) 88%, var(--mock-text));
+        background: color-mix(in srgb, var(--mock-accent-soft) 55%, var(--mock-surface));
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 14%, var(--mock-hairline));
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset;
+        white-space: nowrap;
+      }
+      .action-thread-wrap {
+        max-width: min(99ch, var(--thread-max));
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .action-thread-card {
+        padding: 12px 14px 13px;
+        border-radius: 16px;
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 16%, var(--mock-border));
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, var(--mock-surface) 92%, var(--mock-accent-soft)) 0%,
+          color-mix(in srgb, var(--mock-surface) 96%, var(--course-fog)) 100%
+        );
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.78) inset,
+          0 4px 18px rgba(37, 50, 58, 0.05);
+      }
+      .action-thread-kicker {
+        margin: 0;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--mock-tertiary);
+      }
+      .action-thread-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 4px 0 2px;
+        font-size: calc(var(--mock-body-size) + 2px);
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        color: var(--mock-accent-strong);
+      }
+      .action-thread-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--mock-accent) 72%, #2d4a38);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--mock-accent) 18%, transparent);
+      }
+      .action-thread-meta {
+        margin: 0 0 12px;
+        font-size: calc(var(--mock-body-size) - 1px);
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--mock-muted);
+      }
+      .action-thread-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 34px;
+        padding: 0 16px;
+        border-radius: 9px;
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 32%, var(--mock-border));
+        background: var(--mock-accent-strong);
+        color: #f4f7f5;
+        font: inherit;
+        font-size: calc(var(--mock-body-size));
+        font-weight: 650;
+        cursor: pointer;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+        transition:
+          filter 0.2s var(--ease-out),
+          transform 0.15s var(--ease-out);
+      }
+      .action-thread-cta:hover {
+        filter: brightness(1.06);
+      }
+      .action-thread-cta:active {
+        transform: scale(0.98);
+      }
+      .bubble--user {
+        background: linear-gradient(
+          185deg,
+          #fff 0%,
+          color-mix(in srgb, var(--mock-surface) 94%, var(--mock-bg)) 100%
+        );
+        border: 1px solid color-mix(in srgb, var(--mock-border) 65%, transparent);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.95) inset,
+          0 2px 10px rgba(37, 50, 58, 0.04);
+      }
+      .bubble--assistant {
+        background: linear-gradient(
+          168deg,
+          color-mix(in srgb, var(--mock-accent-soft) 52%, var(--mock-surface)) 0%,
+          color-mix(in srgb, var(--mock-surface) 92%, var(--course-fog)) 55%,
+          color-mix(in srgb, var(--mock-surface) 96%, var(--mock-accent-soft)) 100%
+        );
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 18%, var(--mock-border));
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.72) inset,
+          0 3px 14px rgba(37, 50, 58, 0.045);
+      }
+      .bubble--w-sm {
+        max-width: min(62ch, var(--thread-max));
+      }
+      .bubble--w-md {
+        max-width: min(84ch, var(--thread-max));
+      }
+      .bubble--w-lg {
+        max-width: min(99ch, var(--thread-max));
+      }
+      .msg-sources {
+        width: 100%;
+        max-width: min(99ch, var(--thread-max));
+        margin-top: 2px;
+      }
+      .source-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        align-items: stretch;
+      }
+      .source-chip {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        text-align: left;
+        max-width: min(220px, 100%);
+        padding: 8px 11px 9px;
+        border-radius: 11px;
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 16%, var(--mock-border));
+        background: color-mix(in srgb, var(--course-sage) 26%, var(--mock-surface));
+        font: inherit;
+        cursor: pointer;
+        transition:
+          background 0.18s var(--ease-out),
+          border-color 0.18s var(--ease-out),
+          box-shadow 0.18s var(--ease-out),
+          transform 0.12s var(--ease-out);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset;
+      }
+      .source-chip:hover {
+        background: color-mix(in srgb, var(--course-sage) 36%, var(--mock-surface));
+        border-color: color-mix(in srgb, var(--mock-accent) 26%, var(--mock-border));
+      }
+      .source-chip.is-open {
+        border-color: color-mix(in srgb, var(--mock-accent) 38%, var(--mock-border));
+        background: color-mix(in srgb, var(--mock-accent-soft) 48%, var(--mock-surface));
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.6) inset,
+          0 0 0 1px color-mix(in srgb, var(--mock-accent) 12%, transparent);
+      }
+      .source-chip:active {
+        transform: scale(0.99);
+      }
+      .source-chip-title {
+        font-size: calc(var(--mock-body-size));
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        color: var(--mock-text);
+        line-height: 1.28;
+      }
+      .source-chip-meta {
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 500;
+        color: var(--mock-tertiary);
+        line-height: 1.32;
+      }
+      .source-chip-tag {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: color-mix(in srgb, var(--mock-accent-strong) 90%, #1a3824);
+        margin-top: 3px;
+      }
+
+      .source-peek-tray {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .source-peek-host {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s var(--ease-out);
+      }
+      .source-peek-host.is-visible {
+        grid-template-rows: 1fr;
+      }
+      .source-peek-measure {
+        overflow: hidden;
+        min-height: 0;
+      }
+      .source-preview-card {
+        margin: 0 0 8px;
+        padding: 12px 13px 12px 14px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--mock-border) 58%, transparent);
+        background: color-mix(in srgb, var(--mock-surface) 96%, var(--mock-accent-soft));
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.88) inset,
+          0 6px 22px rgba(37, 50, 58, 0.06);
+        opacity: 0;
+        transform: translateY(-5px);
+        transition:
+          opacity 0.28s var(--ease-out),
+          transform 0.36s var(--ease-spring);
+      }
+      .source-peek-host.is-visible .source-preview-card {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .source-preview-inner {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+      .source-thumb {
+        width: 48px;
+        height: 60px;
+        border-radius: 6px;
+        border: 1px solid color-mix(in srgb, var(--mock-hairline) 88%, transparent);
+        background: linear-gradient(150deg, var(--mock-surface-2), var(--mock-bg));
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .source-thumb::after {
+        content: "";
+        position: absolute;
+        inset: 7px 6px;
+        border-radius: 2px;
+        background: color-mix(in srgb, var(--mock-accent-soft) 75%, var(--mock-surface));
+      }
+      .source-preview-title {
+        font-weight: 650;
+        font-size: calc(var(--mock-body-size) + 1px);
+        margin: 0 0 3px;
+        letter-spacing: -0.02em;
+        color: var(--mock-accent-strong);
+      }
+      .source-preview-meta {
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 500;
+        color: var(--mock-tertiary);
+        margin: 0 0 8px;
+        line-height: 1.35;
+      }
+      .source-preview-excerpt {
+        font-size: calc(var(--mock-body-size) - 1px);
+        line-height: 1.48;
+        color: color-mix(in srgb, var(--mock-text) 93%, var(--mock-muted));
+        margin: 0 0 10px;
+      }
+      .source-preview-open {
+        display: inline-flex;
+        align-items: center;
+        height: 30px;
+        padding: 0 11px;
+        border-radius: 8px;
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 22%, var(--mock-hairline));
+        background: color-mix(in srgb, var(--mock-surface) 90%, var(--mock-accent-soft));
+        font: inherit;
+        font-size: calc(var(--mock-body-size) - 1px);
+        font-weight: 650;
+        color: var(--mock-accent-strong);
+        cursor: pointer;
+        transition:
+          background 0.2s var(--ease-out),
+          border-color 0.2s var(--ease-out),
+          transform 0.15s var(--ease-out);
+      }
+      .source-preview-open:hover {
+        background: var(--mock-accent-soft);
+        border-color: color-mix(in srgb, var(--mock-accent) 35%, var(--mock-border));
+      }
+      .source-preview-open:active {
+        transform: scale(0.98);
+      }
+
+      .composer-outer {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        padding: 0 16px 14px;
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          color-mix(in srgb, var(--mock-accent-soft) 22%, var(--mock-bg)) 40%,
+          color-mix(in srgb, var(--mock-surface) 45%, var(--mock-bg)) 100%
+        );
+        border-top: 1px solid color-mix(in srgb, var(--mock-hairline) 88%, transparent);
+        box-shadow: 0 -10px 28px rgba(37, 50, 58, 0.04);
+      }
+      .composer-inner {
+        position: relative;
+        width: 100%;
+        max-width: var(--thread-max);
+        padding: 10px 20px 0;
+        box-sizing: border-box;
+      }
+      .composer-mention-popover {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: calc(100% - 2px);
+        margin-bottom: 6px;
+        padding: 8px 10px 9px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--mock-hairline) 92%, var(--mock-accent));
+        background: color-mix(in srgb, var(--mock-surface) 96%, var(--mock-accent-soft));
+        box-shadow: 0 8px 28px rgba(37, 50, 58, 0.08);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(4px);
+        transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+        pointer-events: none;
+        z-index: 5;
+      }
+      .composer-outer:focus-within .composer-mention-popover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      .composer-mention-popover-h {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--mock-tertiary);
+        margin-bottom: 6px;
+      }
+      .composer-mention-popover-rows {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .mention-suggest {
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 12%, var(--mock-hairline));
+        background: color-mix(in srgb, var(--mock-surface) 88%, var(--mock-accent-soft));
+        border-radius: 8px;
+        padding: 5px 10px;
+        font: inherit;
+        font-size: calc(var(--mock-body-size) - 1px);
+        font-weight: 600;
+        color: var(--mock-text);
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      .mention-suggest:hover {
+        background: color-mix(in srgb, var(--mock-accent-soft) 45%, var(--mock-surface));
+        border-color: color-mix(in srgb, var(--mock-accent) 22%, var(--mock-border));
+      }
+      .composer-mention-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 10px;
+        margin-bottom: 8px;
+        padding: 0 2px;
+      }
+      .composer-mention-bar > span:first-child {
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--mock-tertiary);
+        margin-right: 2px;
+      }
+      .mention-insert {
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 10%, var(--mock-hairline));
+        border-radius: 8px;
+        padding: 4px 9px;
+        font: inherit;
+        font-size: calc(var(--mock-body-size) - 2px);
+        font-weight: 600;
+        color: color-mix(in srgb, var(--mock-accent-strong) 92%, var(--mock-text));
+        background: color-mix(in srgb, var(--mock-accent-soft) 40%, var(--mock-surface));
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      .mention-insert:hover {
+        background: color-mix(in srgb, var(--mock-accent-soft) 62%, var(--mock-surface));
+      }
+      .composer {
+        border-radius: 14px;
+        border: 1px solid color-mix(in srgb, var(--mock-border) 48%, transparent);
+        background: linear-gradient(
+          185deg,
+          color-mix(in srgb, var(--mock-surface) 100%, #fff) 0%,
+          color-mix(in srgb, var(--mock-surface) 92%, var(--mock-accent-soft)) 100%
+        );
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.96) inset,
+          0 8px 28px rgba(37, 50, 58, 0.07),
+          0 1px 4px rgba(37, 50, 58, 0.03);
+        padding: 9px 11px 8px;
+        transition:
+          border-color 0.22s var(--ease-out),
+          box-shadow 0.28s var(--ease-out);
+      }
+      .composer:hover {
+        border-color: color-mix(in srgb, var(--mock-border) 72%, var(--mock-text));
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.94) inset,
+          0 10px 32px rgba(37, 50, 58, 0.078),
+          0 2px 6px rgba(37, 50, 58, 0.04);
+      }
+      .composer:focus-within {
+        border-color: color-mix(in srgb, var(--mock-accent) 32%, var(--mock-border));
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.94) inset,
+          0 10px 30px rgba(37, 50, 58, 0.07),
+          0 0 0 3px color-mix(in srgb, var(--mock-accent) 10%, transparent);
+      }
+      .composer-editable {
+        width: 100%;
+        min-height: 44px;
+        max-height: 132px;
+        overflow-y: auto;
+        border: none;
+        resize: none;
+        font: inherit;
+        font-size: calc(var(--mock-body-size) + 1px);
+        line-height: 1.46;
+        color: var(--mock-text);
+        background: transparent;
+        outline: none;
+        padding: 5px 7px 3px;
+        word-break: break-word;
+      }
+      .composer-editable.is-empty::before {
+        content: attr(data-placeholder);
+        color: var(--mock-tertiary);
+        pointer-events: none;
+      }
+      .composer-editable .mention-token {
+        display: inline;
+        padding: 1px 5px 2px;
+        margin: 0 1px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: calc(var(--mock-body-size));
+        color: color-mix(in srgb, var(--mock-accent-strong) 88%, var(--mock-text));
+        background: color-mix(in srgb, var(--course-sage) 22%, var(--mock-accent-soft));
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 12%, var(--mock-hairline));
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset;
+        white-space: nowrap;
+      }
+      .composer-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 0;
+        padding-top: 8px;
+        border-top: 1px solid color-mix(in srgb, var(--mock-hairline) 94%, transparent);
+      }
+      .composer-send {
+        height: 36px;
+        padding: 0 18px;
+        border-radius: 9px;
+        border: 1px solid color-mix(in srgb, var(--mock-accent) 38%, var(--mock-border));
+        background: var(--mock-accent-strong);
+        color: #f4f7f5;
+        font: inherit;
+        font-size: calc(var(--mock-body-size));
+        font-weight: 650;
+        cursor: pointer;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+        transition:
+          filter 0.2s var(--ease-out),
+          transform 0.15s var(--ease-out),
+          box-shadow 0.2s var(--ease-out);
+      }
+      .composer-send:hover {
+        filter: brightness(1.07);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.14) inset,
+          0 4px 14px color-mix(in srgb, var(--mock-accent-strong) 28%, transparent);
+      }
+      .composer-send:active {
+        transform: scale(0.98);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .chat-header {
+          animation: none;
+        }
+      }
+
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .history-row.is-hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mock-app">
+      <aside class="mock-rail" aria-label="Primary navigation (mock)">
+        <div class="mock-rail-brand" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor">
+            <path d="M6 10c0-2 1.5-3.5 4-3.5h12c2.5 0 4 1.5 4 3.5v12c0 2-1.5 3.5-4 3.5H10c-2.5 0-4-1.5-4-3.5V10Z" />
+            <path d="M11 14h10M11 18h7" />
+          </svg>
+        </div>
+        <button type="button" class="mock-rail-btn" title="Home" aria-label="Home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn" title="Materials" aria-label="Materials">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M7 4h10a2 2 0 0 1 2 2v14l-7-4-7 4V6a2 2 0 0 1 2-2Z" />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn active" title="Ask" aria-label="Ask">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 3a6 6 0 0 0-6 6c0 3.5 3 6 6 9 3-3 6-5.5 6-9a6 6 0 0 0-6-6Z" />
+            <circle cx="12" cy="9" r="2" />
+          </svg>
+        </button>
+      </aside>
+
+      <div class="mock-column">
+        <div class="mock-inset">
+          <header class="mock-topbar">
+            <div class="mock-topbar-left">
+              <div class="mock-topbar-crumb">
+                <div class="mock-topbar-brand">HydroWise</div>
+                <div class="mock-topbar-breadcrumb"><strong>Ask</strong> · Workspace</div>
+              </div>
+            </div>
+
+            <div class="mock-launcher">
+              <span class="mock-launcher-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </span>
+              <input
+                class="mock-launcher-input"
+                type="search"
+                placeholder="Search chats and materials…"
+                aria-autocomplete="list"
+                aria-expanded="false"
+                aria-haspopup="dialog"
+                aria-controls="mock-launcher-panel"
+                id="mock-launcher-input"
+              />
+              <div
+                class="mock-launcher-panel"
+                id="mock-launcher-panel"
+                role="group"
+                aria-label="Workspace actions"
+              >
+                <div class="launcher-chats">
+                  <div class="mock-launcher-h">Chats</div>
+                  <label class="visually-hidden" for="historyFilter">Filter past chats</label>
+                  <input
+                    class="history-search"
+                    id="historyFilter"
+                    type="search"
+                    placeholder="Filter past chats…"
+                    autocomplete="off"
+                  />
+                  <div class="history-scroll--launcher" id="historyList">
+                    <button type="button" class="history-row" data-filter-text="diffusion osmosis facilitated transport exam">
+                      <span class="history-row-title">Diffusion, osmosis &amp; facilitated diffusion</span>
+                      <span class="history-row-meta">BIO 101 · Yesterday</span>
+                    </button>
+                    <button type="button" class="history-row" data-filter-text="enzymes activation energy catalysis">
+                      <span class="history-row-title">Enzymes &amp; activation energy</span>
+                      <span class="history-row-meta">BIO 101 · Mar 28</span>
+                    </button>
+                    <button type="button" class="history-row" data-filter-text="photosynthesis cellular respiration atp">
+                      <span class="history-row-title">Photosynthesis vs. cellular respiration</span>
+                      <span class="history-row-meta">BIO 101 · Mar 22</span>
+                    </button>
+                    <button type="button" class="history-row" data-filter-text="mitosis meiosis crossing over haploid">
+                      <span class="history-row-title">Mitosis vs. meiosis · exam sheet</span>
+                      <span class="history-row-meta">BIO 101 · Mar 18</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="mock-launcher-h">Recent</div>
+                <div class="mock-launcher-row" role="option">BIO 101 — Unit 3 membrane transport.pdf</div>
+                <div class="mock-launcher-row" role="option">Lab 4 — osmosis worksheet</div>
+                <div class="mock-launcher-divider"></div>
+                <div class="mock-launcher-h">Jump to course</div>
+                <div class="mock-launcher-row" role="option">Open BIO 101 <kbd>↵</kbd></div>
+                <div class="mock-launcher-divider"></div>
+                <div class="mock-launcher-h">Add to this course</div>
+                <div class="mock-launcher-row" role="option">Upload document…</div>
+                <div class="mock-launcher-row" role="option">Paste syllabus text</div>
+                <div class="mock-launcher-row" role="option">Paste URL</div>
+                <div class="mock-launcher-dropzone">Drop files here to add to <strong>BIO 101</strong></div>
+                <div class="mock-launcher-row mock-launcher-row--hint">Tip: paste links or text without leaving this field.</div>
+              </div>
+            </div>
+
+            <div class="mock-topbar-right">
+              <div class="mock-model-pill"><span class="dot" aria-hidden="true"></span> Balanced</div>
+            </div>
+          </header>
+
+          <section class="chat-workspace" aria-label="Chat workspace">
+            <div class="chat-header">
+              <div class="chat-header-text">
+                <p class="chat-page-kicker">Workspace tutor</p>
+                <h1 class="chat-page-title">Ask HydroWise</h1>
+              </div>
+            </div>
+
+            <div class="thread-outer" id="threadScroll">
+              <div class="thread-stack">
+                <div class="msg-row msg-row--user">
+                  <div class="msg-cluster msg-cluster--user">
+                    <div class="msg-meta">You</div>
+                    <div class="bubble bubble--user bubble--w-md">
+                      <p>
+                        What’s the simplest way to understand photosynthesis vs cellular respiration? I get the words
+                        mixed up.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="msg-row msg-row--assistant">
+                  <div class="msg-cluster msg-cluster--assistant">
+                    <div class="msg-meta">HydroWise</div>
+                    <div class="bubble bubble--assistant bubble--w-md">
+                      <p>
+                        Think of them as <strong>opposite bookkeeping</strong> for energy. Photosynthesis
+                        <strong>stores</strong> energy by building sugars from sunlight + CO<sub>2</sub>. Respiration
+                        <strong>releases</strong> that energy by breaking sugars down with O<sub>2</sub> → CO<sub>2</sub>.
+                      </p>
+                      <p>
+                        Quick contrast: <strong>photo</strong> = makes fuel (glucose). <strong>Respiration</strong> =
+                        burns fuel to make ATP you can spend. They’re linked in a loop, not the same process.
+                      </p>
+                    </div>
+                    <div class="msg-sources" aria-label="Grounding for this reply">
+                      <div class="source-chips">
+                        <button type="button" class="source-chip" data-preview-target="pv-1" aria-expanded="false">
+                          <span class="source-chip-title">Unit 2 — Energy &amp; metabolism</span>
+                          <span class="source-chip-meta">Slides 4–9 · Overview</span>
+                          <span class="source-chip-tag">BIO 101</span>
+                        </button>
+                        <button type="button" class="source-chip" data-preview-target="pv-2" aria-expanded="false">
+                          <span class="source-chip-title">Campbell — Ch. 8–9</span>
+                          <span class="source-chip-meta">PDF · Photosynthesis &amp; respiration</span>
+                          <span class="source-chip-tag">BIO 101</span>
+                        </button>
+                      </div>
+                      <div class="source-peek-tray" aria-live="polite">
+                        <div class="source-peek-host" id="pv-1-host">
+                          <div class="source-peek-measure">
+                            <div class="source-preview-card" id="pv-1" hidden>
+                              <div class="source-preview-inner">
+                                <div class="source-thumb" aria-hidden="true"></div>
+                                <div>
+                                  <p class="source-preview-title">Unit 2 — Energy &amp; metabolism</p>
+                                  <p class="source-preview-meta">Slides 4–9 · BIO 101</p>
+                                  <p class="source-preview-excerpt">
+                                    “Cellular respiration and photosynthesis are complementary processes: photosynthesis
+                                    converts light energy to chemical energy stored in glucose; cellular respiration
+                                    converts that chemical energy to ATP.”
+                                  </p>
+                                  <button type="button" class="source-preview-open">Open material</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="source-peek-host" id="pv-2-host">
+                          <div class="source-peek-measure">
+                            <div class="source-preview-card" id="pv-2" hidden>
+                              <div class="source-preview-inner">
+                                <div class="source-thumb" aria-hidden="true"></div>
+                                <div>
+                                  <p class="source-preview-title">Campbell — Photosynthesis &amp; respiration</p>
+                                  <p class="source-preview-meta">Ch. 8–9 · BIO 101</p>
+                                  <p class="source-preview-excerpt">
+                                    “The equation for photosynthesis is essentially the reverse of the equation for
+                                    cellular respiration, although each process involves many steps not reflected in these
+                                    simplified equations.”
+                                  </p>
+                                  <button type="button" class="source-preview-open">Open material</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="msg-row msg-row--user">
+                  <div class="msg-cluster msg-cluster--user">
+                    <div class="msg-meta">You</div>
+                    <div class="bubble bubble--user bubble--w-lg">
+                      <p>
+                        Make me a 5-question quiz on
+                        <span class="thread-mention">@BIOL 101</span>
+                        <span class="thread-mention">@Unit 3</span>
+                        <span class="thread-mention">@Membrane transport</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="msg-row msg-row--assistant">
+                  <div class="msg-cluster msg-cluster--assistant">
+                    <div class="msg-meta">HydroWise</div>
+                    <div class="action-thread-wrap">
+                      <div class="action-thread-card" role="status" aria-live="polite">
+                        <p class="action-thread-kicker">Study action</p>
+                        <div class="action-thread-status">
+                          <span class="action-thread-dot" aria-hidden="true"></span>
+                          Quiz ready
+                        </div>
+                        <p class="action-thread-meta">
+                          5 questions · BIOL 101 · Unit 3 · Membrane transport
+                        </p>
+                        <button type="button" class="action-thread-cta">Open quiz</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="composer-outer">
+              <div class="composer-inner">
+                <div class="composer-mention-popover" id="mentionPopover" aria-label="Mention suggestions (mock)">
+                  <div class="composer-mention-popover-h">Mention</div>
+                  <div class="composer-mention-popover-rows">
+                    <button type="button" class="mention-suggest" data-mention="@BIOL 101">
+                      Course · BIOL 101
+                    </button>
+                    <button type="button" class="mention-suggest" data-mention="@Chapter 4">
+                      Chapter 4
+                    </button>
+                    <button type="button" class="mention-suggest" data-mention="@Membrane transport">
+                      Membrane transport
+                    </button>
+                  </div>
+                </div>
+                <div class="composer-mention-bar">
+                  <span>Scope</span>
+                  <button type="button" class="mention-insert" data-mention="@BIOL 101">@BIOL 101</button>
+                  <button type="button" class="mention-insert" data-mention="@Chapter 4">@Chapter 4</button>
+                  <button type="button" class="mention-insert" data-mention="@Membrane transport">
+                    @Membrane transport
+                  </button>
+                </div>
+                <div class="composer">
+                  <div
+                    id="composerInput"
+                    class="composer-editable is-empty"
+                    contenteditable="true"
+                    role="textbox"
+                    aria-multiline="true"
+                    aria-label="Message to HydroWise"
+                    data-placeholder="Ask anything, or scope with @course @chapter @topic…"
+                  ></div>
+                  <div class="composer-bar">
+                    <button type="button" class="composer-send" id="sendBtn">Send</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var historyFilter = document.getElementById("historyFilter");
+        var historyList = document.getElementById("historyList");
+        var composer = document.getElementById("composerInput");
+
+        function composerTextTrim(el) {
+          return (el && el.textContent ? el.textContent : "").replace(/\u00a0/g, " ").trim();
+        }
+
+        function syncComposerEmptyClass() {
+          if (!composer) return;
+          composer.classList.toggle("is-empty", composerTextTrim(composer) === "");
+        }
+
+        function insertMention(text) {
+          if (!composer) return;
+          composer.focus();
+          var span = document.createElement("span");
+          span.className = "mention-token";
+          span.setAttribute("contenteditable", "false");
+          span.textContent = text;
+          var sel = window.getSelection();
+          var range = null;
+          if (sel.rangeCount && composer.contains(sel.anchorNode)) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+            range.insertNode(span);
+            range.setStartAfter(span);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          } else {
+            composer.appendChild(span);
+          }
+          composer.appendChild(document.createTextNode(" "));
+          syncComposerEmptyClass();
+        }
+
+        if (composer) {
+          composer.addEventListener("input", syncComposerEmptyClass);
+          composer.addEventListener("blur", syncComposerEmptyClass);
+        }
+
+        document.querySelectorAll("[data-mention]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var m = btn.getAttribute("data-mention");
+            if (m) insertMention(m);
+          });
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key !== "Escape") return;
+          var launcher = document.querySelector(".mock-launcher");
+          var active = document.activeElement;
+          if (!launcher || !active || !launcher.contains(active)) return;
+          e.preventDefault();
+          if (active.blur) active.blur();
+        });
+
+        function filterHistory(q) {
+          if (!historyList) return;
+          var term = (q || "").trim().toLowerCase();
+          historyList.querySelectorAll(".history-row").forEach(function (row) {
+            var hay = (row.getAttribute("data-filter-text") || "").toLowerCase();
+            row.classList.toggle("is-hidden", !!(term && hay.indexOf(term) === -1));
+          });
+        }
+        if (historyFilter) {
+          historyFilter.addEventListener("input", function () {
+            filterHistory(historyFilter.value);
+          });
+        }
+
+        function collapseAllSourcePreviews() {
+          document.querySelectorAll(".source-peek-host.is-visible").forEach(function (host) {
+            host.classList.remove("is-visible");
+            var card = host.querySelector(".source-preview-card");
+            if (card) card.setAttribute("hidden", "");
+          });
+          document.querySelectorAll(".source-chip.is-open").forEach(function (chip) {
+            chip.classList.remove("is-open");
+            chip.setAttribute("aria-expanded", "false");
+          });
+        }
+
+        document.querySelectorAll(".source-chip").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var id = btn.getAttribute("data-preview-target");
+            var card = document.getElementById(id);
+            var host = document.getElementById(id + "-host");
+            if (!card || !host) return;
+
+            if (btn.classList.contains("is-open")) {
+              btn.classList.remove("is-open");
+              btn.setAttribute("aria-expanded", "false");
+              host.classList.remove("is-visible");
+              card.setAttribute("hidden", "");
+              return;
+            }
+
+            collapseAllSourcePreviews();
+            btn.classList.add("is-open");
+            btn.setAttribute("aria-expanded", "true");
+            card.removeAttribute("hidden");
+            host.classList.add("is-visible");
+          });
+        });
+
+        var sendBtn = document.getElementById("sendBtn");
+        if (sendBtn && composer) {
+          sendBtn.addEventListener("click", function () {
+            if (composerTextTrim(composer) === "") return;
+            composer.textContent = "";
+            syncComposerEmptyClass();
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
