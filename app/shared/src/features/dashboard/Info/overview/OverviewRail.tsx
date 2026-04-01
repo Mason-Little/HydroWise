@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDashboardContext } from "@/features/dashboard/Dashboard";
+import { useDashboardContext } from "@/features/dashboard/dashboard-context";
 import { Policies } from "@/features/dashboard/Info/overview/components/policies/Policies";
 import { CourseTodos } from "@/features/dashboard/Info/overview/components/todo/CourseTodos";
 import { cn } from "@/lib/utils";
@@ -26,8 +26,8 @@ export const OverviewRail = () => {
   return (
     <aside
       className={cn(
-        "hidden min-h-0 w-[min(100%,272px)] shrink-0 border-[color:var(--hairline)] border-l bg-[color-mix(in_srgb,var(--bg)_22%,var(--surface))] px-3 py-2.5 shadow-[inset_3px_0_12px_rgba(37,50,58,0.018)]",
-        "lg:grid lg:h-[var(--overview-notebook-rail-h)] lg:max-h-[var(--overview-notebook-rail-h)] lg:min-h-0 lg:gap-2.5 lg:overflow-hidden",
+        "app-overview-rail hidden min-h-0 w-[min(100%,340px)] shrink-0 px-3 py-2.5",
+        "lg:grid lg:h-[var(--overview-notebook-rail-h)] lg:max-h-[var(--overview-notebook-rail-h)] lg:min-h-0 lg:gap-2 lg:overflow-hidden",
         lgGridRows,
       )}
       aria-label="Course tasks and policies"

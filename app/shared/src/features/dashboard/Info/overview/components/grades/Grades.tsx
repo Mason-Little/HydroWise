@@ -1,4 +1,4 @@
-import { useDashboardContext } from "@/features/dashboard/Dashboard";
+import { useDashboardContext } from "@/features/dashboard/dashboard-context";
 import { GradeCard } from "@/features/dashboard/Info/overview/components/grades/GradeCard";
 
 export const Grades = () => {

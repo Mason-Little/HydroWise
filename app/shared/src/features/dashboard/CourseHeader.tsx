@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import type { CourseRow } from "@/features/dashboard/Dashboard";
-import { useDashboardContext } from "@/features/dashboard/Dashboard";
+import type { CourseRow } from "@/features/dashboard/dashboard-context";
+import { useDashboardContext } from "@/features/dashboard/dashboard-context";
 import { useUpdateProfessorInformation } from "@/features/dashboard/hooks/useUpdateProfessorInformation";
 import { EditableField } from "@/features/dashboard/Info/overview/components/EditableField";
 
@@ -38,7 +38,7 @@ const ProfessorContactBlock = ({ course }: ProfessorContactBlockProps) => {
   } = course.professorInformation;
 
   return (
-    <div className="mt-2 space-y-[3px] border-t border-border/40 pt-2">
+    <div className="space-y-[3px]">
       <p className="text-[12px] leading-[1.35] text-[var(--app-text-muted)]">
         <span className="font-semibold text-[var(--app-text-primary)]">
           Instructor
@@ -128,7 +128,11 @@ export const CourseHeader = ({ headerRight }: CourseHeaderProps) => {
         </div>
         {headerRight}
       </div>
-      {activeCourse ? <ProfessorContactBlock course={activeCourse} /> : null}
+      {activeCourse ? (
+        <div className="app-course-header__meta mt-2">
+          <ProfessorContactBlock course={activeCourse} />
+        </div>
+      ) : null}
     </div>
   );
 };

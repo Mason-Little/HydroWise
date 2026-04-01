@@ -15,7 +15,7 @@ export const Info = () => {
       header={
         <CourseHeader
           headerRight={
-            <div className="w-36 shrink-0">
+            <div className="shrink-0">
               <PillToggle
                 options={[
                   { value: "overview", label: "Overview" },

@@ -1,241 +1,25 @@
 import type { CSSProperties } from "react";
 
-export type CourseFamilyId =
-  | "sage"
-  | "moss"
-  | "eucalyptus"
-  | "fog"
-  | "slate"
-  | "lavender"
-  | "sand"
-  | "rose";
-
-/** One visual state of a course tab (inactive, active, or hover). */
-export type CourseTabPaint = {
-  background: string;
-  foreground: string;
-  border: string;
+/** Curated pastel families + micro drift — ported from design/Dashboard.html */
+type PastelFamily = {
+  h: number;
+  bgS: number;
+  bgL: number;
+  fgS: number;
+  fgL: number;
 };
 
-export type CourseTheme = {
-  familyId: CourseFamilyId;
-  /** Unselected tab: softened pastel blended into the neutral shell */
-  tabInactive: CourseTabPaint;
-  /** Selected tab: clearer identity, still pastel — not a saturated badge */
-  tabActive: CourseTabPaint;
-  /** Optional hover overlay for inactive tabs (theme-level paint only) */
-  tabInactiveHover?: Partial<Pick<CourseTabPaint, "background">>;
-  accent: {
-    strong: string;
-    soft: string;
-    ring: string;
-  };
-  /** Very light wash for workspace gradients */
-  surfaceTint: string;
-  /** Course-aware rail background (mostly neutral + whisper of identity) */
-  railWash: string;
-};
-
-const RAIL_NEUTRAL_STACK =
-  "linear-gradient(180deg, #fdfdfc 0%, #ecebe9 40%, #f5f4f2 100%)";
-
-/** Mostly neutral rail; course identity is a very light wash (no strong diagonal bleed). */
-const railWashFromPastel = (pastel: string): string =>
-  `linear-gradient(108deg, color-mix(in srgb, ${pastel} 5%, transparent) 0%, transparent 42%), ${RAIL_NEUTRAL_STACK}`;
-
-const FAMILIES: readonly CourseTheme[] = [
-  {
-    familyId: "sage",
-    tabInactive: {
-      background: "color-mix(in srgb, #c5dcc0 72%, #f5f4f2)",
-      foreground: "#4e5c56",
-      border: "color-mix(in srgb, #c5dcc0 38%, #e8e7e4)",
-    },
-    tabInactiveHover: {
-      background: "color-mix(in srgb, #c5dcc0 78%, #f2f1ef)",
-    },
-    tabActive: {
-      background: "color-mix(in srgb, #c5dcc0 90%, #f9f8f6)",
-      foreground: "#25323a",
-      border: "color-mix(in srgb, #5f766a 26%, #e8e7e4)",
-    },
-    accent: {
-      strong: "#33443c",
-      soft: "#edf2ee",
-      ring: "rgba(51, 68, 60, 0.22)",
-    },
-    surfaceTint: "#f2f5f3",
-    railWash: railWashFromPastel("#c5dcc0"),
-  },
-  {
-    familyId: "moss",
-    tabInactive: {
-      background: "color-mix(in srgb, #cadecb 72%, #f5f4f2)",
-      foreground: "#4d5a50",
-      border: "color-mix(in srgb, #cadecb 38%, #e8e7e4)",
-    },
-    tabInactiveHover: {
-      background: "color-mix(in srgb, #cadecb 78%, #f2f1ef)",
-    },
-    tabActive: {
-      background: "color-mix(in srgb, #cadecb 90%, #f9f8f6)",
-      foreground: "#25323a",
-      border: "color-mix(in srgb, #5f766a 24%, #e8e7e4)",
-    },
-    accent: {
-      strong: "#33443c",
-      soft: "#edf2ee",
-      ring: "rgba(55, 72, 58, 0.2)",
-    },
-    surfaceTint: "#f3f5f3",
-    railWash: railWashFromPastel("#cadecb"),
-  },
-  {
-    familyId: "eucalyptus",
-    tabInactive: {
-      background: "color-mix(in srgb, #c5ddd8 72%, #f5f4f2)",
-      foreground: "#4d5a58",
-      border: "color-mix(in srgb, #c5ddd8 38%, #e8e7e4)",
-    },
-    tabInactiveHover: {
-      background: "color-mix(in srgb, #c5ddd8 78%, #f2f1ef)",
-    },
-    tabActive: {
-      background: "color-mix(in srgb, #c5ddd8 90%, #f9f8f6)",
-      foreground: "#25323a",
-      border: "color-mix(in srgb, #5f7a72 22%, #e8e7e4)",
-    },
-    accent: {
-      strong: "#355c55",
-      soft: "#edf4f2",
-      ring: "rgba(53, 92, 85, 0.2)",
-    },
-    surfaceTint: "#f2f6f5",
-    railWash: railWashFromPastel("#c5ddd8"),
-  },
-  {
-    familyId: "fog",
-    tabInactive: {
-      background: "color-mix(in srgb, #cddfef 70%, #f5f4f2)",
-      foreground: "#4f5a62",
-      border: "color-mix(in srgb, #cddfef 36%, #e8e7e4)",
-    },
-    tabInactiveHover: {
-      background: "color-mix(in srgb, #cddfef 76%, #f2f1ef)",
-    },
-    tabActive: {
-      background: "color-mix(in srgb, #cddfef 88%, #f9f8f6)",
-      foreground: "#25323a",
-      border: "color-mix(in srgb, #6a8aad 20%, #e8e7e4)",
-    },
-    accent: {
-      strong: "#3a5568",
-      soft: "#edf3f8",
-      ring: "rgba(58, 85, 104, 0.2)",
-    },
-    surfaceTint: "#f3f6f8",
-    railWash: railWashFromPastel("#cddfef"),
-  },
-  {
-    familyId: "slate",
-    tabInactive: {
-      background: "color-mix(in srgb, #d0d8e8 72%, #f5f4f2)",
-      foreground: "#505660",
-      border: "color-mix(in srgb, #d0d8e8 38%, #e8e7e4)",
-    },
-    tabInactiveHover: {
-      background: "color-mix(in srgb, #d0d8e8 78%, #f2f1ef)",
-    },
-    tabActive: {
-      background: "color-mix(in srgb, #d0d8e8 90%, #f9f8f6)",
-      foreground: "#25323a",
-      border: "color-mix(in srgb, #6a7a94 22%, #e8e7e4)",
-    },
-    accent: {
-      strong: "#3d4658",
-      soft: "#eef1f6",
-      ring: "rgba(61, 70, 88, 0.2)",
-    },
-    surfaceTint: "#f4f5f7",
-    railWash: railWashFromPastel("#d0d8e8"),
-  },
-  {
-    familyId: "lavender",
-    tabInactive: {
-      background: "color-mix(in srgb, #ddd0ee 70%, #f5f4f2)",
-      foreground: "#56525f",
-      border: "color-mix(in srgb, #ddd0ee 36%, #e8e7e4)",
-    },
-    tabInactiveHover: {
-      background: "color-mix(in srgb, #ddd0ee 76%, #f2f1ef)",
-    },
-    tabActive: {
-      background: "color-mix(in srgb, #ddd0ee 88%, #f9f8f6)",
-      foreground: "#25323a",
-      border: "color-mix(in srgb, #8f82a8 18%, #e8e7e4)",
-    },
-    accent: {
-      strong: "#4a4260",
-      soft: "#f2eef8",
-      ring: "rgba(74, 66, 96, 0.2)",
-    },
-    surfaceTint: "#f5f3f8",
-    railWash: railWashFromPastel("#ddd0ee"),
-  },
-  {
-    familyId: "sand",
-    tabInactive: {
-      background: "color-mix(in srgb, #ebe4d6 74%, #f5f4f2)",
-      foreground: "#5c574f",
-      border: "color-mix(in srgb, #ebe4d6 40%, #e8e7e4)",
-    },
-    tabInactiveHover: {
-      background: "color-mix(in srgb, #ebe4d6 80%, #f2f1ef)",
-    },
-    tabActive: {
-      background: "color-mix(in srgb, #ebe4d6 92%, #f9f8f6)",
-      foreground: "#25323a",
-      border: "color-mix(in srgb, #9a8f7a 22%, #e8e7e4)",
-    },
-    accent: {
-      strong: "#5a5246",
-      soft: "#f5f1ea",
-      ring: "rgba(90, 82, 70, 0.2)",
-    },
-    surfaceTint: "#f7f5f1",
-    railWash: railWashFromPastel("#ebe4d6"),
-  },
-  {
-    familyId: "rose",
-    tabInactive: {
-      background: "color-mix(in srgb, #ead8d5 74%, #f5f4f2)",
-      foreground: "#5d5355",
-      border: "color-mix(in srgb, #ead8d5 40%, #e8e7e4)",
-    },
-    tabInactiveHover: {
-      background: "color-mix(in srgb, #ead8d5 80%, #f2f1ef)",
-    },
-    tabActive: {
-      background: "color-mix(in srgb, #ead8d5 92%, #f9f8f6)",
-      foreground: "#25323a",
-      border: "color-mix(in srgb, #a88f8c 20%, #e8e7e4)",
-    },
-    accent: {
-      strong: "#5c4548",
-      soft: "#f6f0ef",
-      ring: "rgba(92, 69, 72, 0.2)",
-    },
-    surfaceTint: "#f7f4f3",
-    railWash: railWashFromPastel("#ead8d5"),
-  },
+const PASTEL_FAMILIES: readonly PastelFamily[] = [
+  { h: 154, bgS: 48, bgL: 87.5, fgS: 29, fgL: 27 },
+  { h: 138, bgS: 45, bgL: 87.5, fgS: 28, fgL: 26 },
+  { h: 275, bgS: 42, bgL: 89.5, fgS: 25, fgL: 31 },
+  { h: 208, bgS: 46, bgL: 88.5, fgS: 27, fgL: 28 },
+  { h: 26, bgS: 54, bgL: 89.5, fgS: 30, fgL: 30 },
+  { h: 46, bgS: 56, bgL: 89.5, fgS: 30, fgL: 28 },
 ];
 
-export const COURSE_THEME_FAMILY_ORDER: readonly CourseFamilyId[] =
-  FAMILIES.map((f) => f.familyId);
-
-const FAMILY_ORDER_INDEX = Object.fromEntries(
-  COURSE_THEME_FAMILY_ORDER.map((id, i) => [id, i]),
-) as Record<CourseFamilyId, number>;
+const clamp = (n: number, lo: number, hi: number): number =>
+  Math.min(hi, Math.max(lo, n));
 
 export const hashCourseCode = (code: string): number => {
   const s = code.trim() || "COURSE";
@@ -246,78 +30,104 @@ export const hashCourseCode = (code: string): number => {
   return Math.abs(h);
 };
 
-export const getCourseTheme = (courseCode: string): CourseTheme => {
-  const i = hashCourseCode(courseCode.toUpperCase()) % FAMILIES.length;
-  return FAMILIES[i] ?? FAMILIES[0];
+export type CourseProceduralPaint = {
+  bg: string;
+  fg: string;
+  border: string;
+  activeBg: string;
+  activeFg: string;
+  activeBorder: string;
+  h: number;
+  bgS: number;
+  bgL: number;
 };
 
-/** Opaque-enough outline so semi-transparent borders don’t fringe white at corners. */
-const tabHairlineShadow = (borderColor: string) =>
-  `0 0 0 1px color-mix(in srgb, ${borderColor} 26%, #e8e7e4)`;
-
-/** Inactive tab paint: base/hover backgrounds live in CSS (vars) for smooth hover without React state. */
-export const courseTabSurfaceStyle = (
-  theme: CourseTheme,
-  isActive: boolean,
-): CSSProperties => {
-  const tab = isActive ? theme.tabActive : theme.tabInactive;
-  const hoverBg =
-    theme.tabInactiveHover?.background ?? theme.tabInactive.background;
-
-  if (isActive) {
-    return {
-      backgroundColor: tab.background,
-      color: tab.foreground,
-      border: `1px solid ${tab.border}`,
-      borderBottomColor: "transparent",
-      /* 1px “foot” same as fill to kill hairline gaps above canvas — no inset top highlight (reads as a seam on light fills). */
-      boxShadow: `0 1px 0 0 ${tab.background}`,
-    };
-  }
-
-  /* Soft hairline + very light depth; hover bumps shadow slightly in CSS (no inset sheen). */
-  const shadowIdle = `${tabHairlineShadow(tab.border)}, 0 2px 8px rgba(37, 50, 58, 0.014)`;
-  const shadowHover = `${tabHairlineShadow(tab.border)}, 0 3px 10px rgba(37, 50, 58, 0.019)`;
-
+/** Deterministic HSL tab + rail paint from course code (HTML mock parity). */
+export const coursePaintFromCode = (rawCode: string): CourseProceduralPaint => {
+  const code = rawCode.trim().toUpperCase() || "COURSE";
+  const hash = hashCourseCode(code);
+  const f = PASTEL_FAMILIES[hash % PASTEL_FAMILIES.length];
+  const dH = (((hash >> 5) % 5) - 2) * 1.0;
+  const dS = (((hash >> 9) % 5) - 2) * 0.4;
+  const dL = (((hash >> 13) % 5) - 2) * 0.35;
+  const hue = f.h + dH;
+  const bgS = clamp(f.bgS + dS, 38, 58);
+  const bgL = clamp(f.bgL + dL, 84, 90.5);
+  const fgH = f.h + dH * 0.5;
+  const fgS = clamp(f.fgS + dS * 0.45, 22, 36);
+  const fgL = clamp(f.fgL + dL * 0.45, 22, 36);
+  const bg = `hsl(${hue} ${bgS}% ${bgL}%)`;
+  const fg = `hsl(${fgH} ${fgS}% ${fgL}%)`;
+  const border = `hsl(${hue} ${clamp(bgS + 8, 34, 52)}% ${clamp(bgL - 22, 58, 74)}%)`;
+  const activeBg = `hsl(${hue} ${clamp(bgS + 10, 32, 50)}% ${clamp(bgL - 7.5, 78, 87)}%)`;
+  const activeFg = `hsl(${fgH} ${clamp(fgS + 5, 22, 36)}% ${clamp(fgL - 3.5, 20, 32)}%)`;
+  const activeBorder = `hsl(${hue} ${clamp(bgS + 12, 34, 48)}% ${clamp(bgL - 30, 46, 62)}%)`;
   return {
-    color: tab.foreground,
-    border: "1px solid transparent",
-    borderBottomColor: "transparent",
-    "--course-tab-base-bg": tab.background,
-    "--course-tab-hover-bg": hoverBg,
-    "--course-tab-shadow-idle": shadowIdle,
-    "--course-tab-shadow-hover": shadowHover,
+    bg,
+    fg,
+    border,
+    activeBg,
+    activeFg,
+    activeBorder,
+    h: hue,
+    bgS,
+    bgL,
+  };
+};
+
+/** Per-tab custom properties consumed by `index.css` (`.app-course-tab`). */
+export const courseTabCssVariables = (courseCode: string): CSSProperties => {
+  const v = coursePaintFromCode(courseCode);
+  return {
+    "--course-pill-bg": v.bg,
+    "--course-pill-fg": v.fg,
+    "--course-pill-border": v.border,
+    "--course-pill-active-bg": v.activeBg,
+    "--course-pill-active-fg": v.activeFg,
+    "--course-pill-active-border": v.activeBorder,
   } as CSSProperties;
 };
 
-export const courseTabSubtitleColor = (
-  theme: CourseTheme,
-  isActive: boolean,
-): string => {
-  if (isActive) {
-    return `color-mix(in srgb, ${theme.tabActive.foreground} 70%, ${theme.tabActive.background})`;
+/** Multi-stop wash behind the course rail tabs (mock `applyProceduralCourseColors`). */
+export const buildCourseRailWash = (codes: readonly string[]): string => {
+  const base = "linear-gradient(180deg, #fdfdfc 0%, #ecebe9 40%, #f5f4f2 100%)";
+  const n = codes.length;
+  if (n === 0) return base;
+  const hueStops: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const v = coursePaintFromCode(codes[i] ?? "");
+    const pos = n <= 1 ? 50 : (i / (n - 1)) * 100;
+    const s = clamp(Math.round(v.bgS * 0.62 + 4), 28, 42);
+    const l = clamp(v.bgL + 0.8, 86, 90);
+    hueStops.push(`hsl(${v.h} ${s}% ${l}%) ${pos}%`);
   }
-  return `color-mix(in srgb, ${theme.tabInactive.foreground} 86%, ${theme.tabInactive.background})`;
+  return `linear-gradient(96deg, ${hueStops.join(", ")}), ${base}`;
 };
 
-export const compareCoursesByThemeFamilyThenCode = (
+/**
+ * Course-aware workspace tint + accents on `.app-workspace-shell` (wash layer + accents).
+ * Recomputes wash tokens so `--app-workspace-wash-a` matches the active course.
+ */
+export const courseWorkspaceCssVariables = (
+  courseCode: string,
+): CSSProperties => {
+  const v = coursePaintFromCode(courseCode);
+  const surfaceTint = `hsl(${v.h} ${clamp(v.bgS * 0.35, 14, 32)}% 96%)`;
+  const accentSoft = `color-mix(in srgb, ${v.activeBg} 28%, var(--app-surface-primary))`;
+  return {
+    "--course-surface-tint": surfaceTint,
+    "--app-workspace-wash-a": `color-mix(in srgb, ${surfaceTint} 11%, var(--app-workspace-bg))`,
+    "--course-accent-strong": v.activeFg,
+    "--course-accent-soft": accentSoft,
+    "--course-accent-ring": `color-mix(in srgb, ${v.border} 35%, transparent)`,
+  } as CSSProperties;
+};
+
+export const compareCoursesByCode = (
   a: { courseCode: string },
   b: { courseCode: string },
-): number => {
-  const ia = FAMILY_ORDER_INDEX[getCourseTheme(a.courseCode).familyId];
-  const ib = FAMILY_ORDER_INDEX[getCourseTheme(b.courseCode).familyId];
-  if (ia !== ib) return ia - ib;
-  return a.courseCode.localeCompare(b.courseCode, undefined, {
+): number =>
+  a.courseCode.localeCompare(b.courseCode, undefined, {
     numeric: true,
     sensitivity: "base",
   });
-};
-
-export const courseThemeWorkspaceStyle = (theme: CourseTheme): CSSProperties =>
-  ({
-    "--course-accent-strong": theme.accent.strong,
-    "--course-accent-soft": theme.accent.soft,
-    "--course-accent-ring": theme.accent.ring,
-    "--course-surface-tint": theme.surfaceTint,
-    "--course-rail-wash": theme.railWash,
-  }) as CSSProperties;

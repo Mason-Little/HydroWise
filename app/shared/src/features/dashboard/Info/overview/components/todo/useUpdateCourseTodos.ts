@@ -1,7 +1,7 @@
 import { getQueries } from "@hydrowise/data";
 import type { CourseTodoItem } from "@hydrowise/entities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { CourseRow } from "@/features/dashboard/Dashboard";
+import type { CourseRow } from "@/features/dashboard/dashboard-context";
 
 type MutationContext = {
   previousCourses: CourseRow[];

@@ -11,39 +11,36 @@ export const Policies = ({ policies, compressed }: PoliciesProps) => {
 
   return (
     <section
-      className="flex h-full min-h-0 flex-col overflow-hidden rounded-[13px] border border-border/30 bg-[color-mix(in_srgb,var(--surface)_93%,var(--bg))] shadow-[0_1px_0_color-mix(in_srgb,var(--surface)_78%,transparent)_inset,0_4px_14px_rgba(37,50,58,0.022)]"
+      className="app-overview-rail-panel h-full min-h-0 overflow-hidden"
       aria-labelledby="overview-policies-heading"
     >
       <header
         className={cn(
-          "shrink-0 px-3.5 pt-[11px] pb-2",
+          "app-overview-rail-panel__head app-overview-policies__head shrink-0 px-3.5 pt-3 pb-2.5",
           compressed
-            ? "flex h-full min-h-0 items-center border-transparent py-0 pr-3.5 pl-3.5"
-            : "border-border/28 border-b pb-[9px]",
+            ? "app-overview-rail-panel__head--flush flex h-full min-h-0 items-center py-0 pr-3.5 pl-3.5"
+            : "pb-2",
         )}
       >
-        <h2
-          id="overview-policies-heading"
-          className="font-display truncate text-[length:var(--type-dashboard-body)] leading-[1.15] font-bold tracking-[-0.025em] text-[var(--text-primary)]"
-        >
+        <h2 id="overview-policies-heading" className="app-overview-policies__title">
           Policies
         </h2>
+        {!compressed ? (
+          <p className="app-overview-policies__subtitle">
+            Course rules and expectations
+          </p>
+        ) : null}
       </header>
       {!compressed ? (
-        <div className="min-h-0 flex-1 overflow-y-auto py-2 pr-2 pb-4 pl-3.5 [scrollbar-width:thin] [scrollbar-color:color-mix(in_srgb,var(--hairline)_78%,transparent)_transparent]">
+        <div className="app-overview-policies__scroll min-h-0 flex-1 overflow-y-auto">
           {policies.map((p) => (
-            <p
-              key={`${p.label}:${p.summary}`}
-              className="mb-[11px] text-[length:var(--type-dashboard-micro)] leading-[1.45] last:mb-0"
+            <article
+              key={`${p.label}::${p.summary}`}
+              className="app-overview-policies__row"
             >
-              <strong className="mr-1 font-bold tracking-[-0.012em] text-[#5f6d77]">
-                {p.label}
-              </strong>
-              <span className="font-normal text-[color-mix(in_srgb,var(--text-secondary)_68%,var(--text-tertiary))]">
-                {" "}
-                — {p.summary}
-              </span>
-            </p>
+              <h3 className="app-overview-policies__label">{p.label}</h3>
+              <p className="app-overview-policies__summary">{p.summary}</p>
+            </article>
           ))}
         </div>
       ) : null}
