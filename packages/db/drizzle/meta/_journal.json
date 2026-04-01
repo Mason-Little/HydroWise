@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1774337709486,
+      "tag": "0000_even_retro_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1774385302716,
+      "tag": "0001_round_rafael_vega",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1774564938382,
+      "tag": "0002_modern_blob",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1774737482777,
+      "tag": "0003_large_cloak",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1774749909143,
+      "tag": "0004_spicy_lady_bullseye",
+      "breakpoints": true
+    }
+  ]
+}

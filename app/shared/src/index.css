@@ -1,0 +1,1120 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+@import "@fontsource/inter-tight/500.css";
+@import "@fontsource/inter-tight/600.css";
+@import "@fontsource/inter-tight/700.css";
+@import "@fontsource-variable/geist-mono";
+
+@source "./**/*.{ts,tsx}";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /**
+   * App-wide surface system (HTML mock): paper neutrals, hairlines, soft depth.
+   * Use these for new UI; legacy aliases below keep shadcn/Tailwind tokens in sync.
+   */
+  --app-frame-bg: #f2f1ef;
+  --app-frame-surface: #eeedeb;
+  --app-workspace-bg: #f7f6f4;
+  --app-surface-primary: #fdfdfc;
+  --app-surface-secondary: #f5f4f2;
+
+  --app-border-solid: #e8e7e4;
+  --app-hairline: color-mix(in srgb, var(--app-border-solid) 52%, transparent);
+  --app-text-primary: #25323a;
+  --app-text-muted: #62707a;
+  --app-text-tertiary: #7d8891;
+
+  --app-accent: #5f766a;
+  --app-accent-strong: #33443c;
+  --app-accent-soft: #edf2ee;
+
+  --app-course-sage: #c5dcc0;
+  --app-course-moss: #cadecb;
+  --app-course-lavender: #ddd0ee;
+  --app-course-fog: #cddfef;
+
+  --app-radius-workspace: 11px;
+  --app-radius-tab-top: 12px;
+
+  --app-shadow-soft: 0 1px 2px rgba(37, 50, 58, 0.05);
+  --app-shadow-lift: 0 12px 32px rgba(37, 50, 58, 0.08);
+  /* No bright white ring (it fringes on hairlines); inset uses paper not pure white */
+  --app-shadow-shell:
+    0 1px 0 color-mix(in srgb, var(--app-surface-primary) 72%, transparent)
+    inset,
+    0 14px 36px rgba(37, 50, 58, 0.052), 0 4px 14px rgba(37, 50, 58, 0.03),
+    0 0 0 1px color-mix(in srgb, var(--app-border-solid) 28%, transparent);
+
+  --app-course-rail-wash-default: linear-gradient(
+    180deg,
+    #fdfdfc 0%,
+    #ecebe9 40%,
+    #f5f4f2 100%
+  );
+  --course-rail-wash: var(--app-course-rail-wash-default);
+
+  /* Dashboard: one height token for overview pane + notebook rail */
+  --app-dashboard-overview-pane-h: min(520px, calc(100dvh - 320px));
+  --app-overview-shared-pane-h: var(--app-dashboard-overview-pane-h);
+  --overview-notebook-rail-h: var(--app-dashboard-overview-pane-h);
+
+  /* Workspace shell — rail, header, body (shell clips; inner panels scroll) */
+  --app-dashboard-shell-rail-pt: 14px;
+  --app-dashboard-shell-rail-px: 16px;
+  --app-dashboard-shell-rail-pb: 0;
+  --app-dashboard-shell-rail-gap: 12px;
+  --app-dashboard-shell-header-px: 20px;
+  --app-dashboard-shell-header-pt: 12px;
+  --app-dashboard-shell-header-pb: 10px;
+  --app-dashboard-shell-body-pad: 14px;
+
+  --bg: var(--app-workspace-bg);
+  --surface: var(--app-surface-primary);
+  --surface-alt: var(--app-surface-secondary);
+  --surface-hover: #fafaf8;
+
+  --hairline: var(--app-hairline);
+
+  --sidebar-bg: var(--app-frame-surface);
+  --sidebar-icon: var(--app-text-muted);
+  --sidebar-icon-hover: var(--app-text-primary);
+  --sidebar-active-bg: color-mix(
+    in srgb,
+    var(--surface) 58%,
+    var(--sidebar-bg)
+  );
+  --sidebar-active-icon: var(--app-text-primary);
+  --sidebar-accent: var(--app-accent-soft);
+  --sidebar-border: var(--app-border-solid);
+
+  --border: rgba(37, 50, 58, 0.08);
+  --border-solid: var(--app-border-solid);
+  --border-focus: rgba(95, 118, 106, 0.28);
+  --ring-focus: rgba(95, 118, 106, 0.15);
+
+  --text-primary: var(--app-text-primary);
+  --text-secondary: var(--app-text-muted);
+  --text-tertiary: var(--app-text-tertiary);
+  --text-muted: var(--app-text-tertiary);
+  --text-disabled: #a8b0b6;
+  --text-inverse: #fdfdfc;
+
+  --accent: var(--app-accent);
+  --accent-warm: #7d6f5c;
+  --accent-warm-hover: #6a5e4e;
+
+  --course-accent-strong: var(--app-accent-strong);
+  --course-accent-soft: var(--app-accent-soft);
+  --course-accent-ring: rgba(51, 68, 60, 0.22);
+  --course-surface-tint: #f4f7f5;
+
+  /* Course-tint wash for `.app-workspace-shell::before` (defaults; dashboard overrides via inline vars) */
+  --app-workspace-wash-a: color-mix(
+    in srgb,
+    var(--course-surface-tint) 11%,
+    var(--app-workspace-bg)
+  );
+  --app-workspace-wash-b: var(--app-workspace-bg);
+
+  --green: var(--app-accent);
+  --green-bg: #edf2ee;
+  --green-border: #c7d1c9;
+  --green-dot-ring: rgba(95, 118, 106, 0.22);
+
+  --gold: #b8860b;
+  --gold-bg: #f5ecd4;
+
+  --olive: #7a8c5a;
+  --olive-bg: #eaf0e0;
+
+  --badge-pdf-bg: #e8d8c4;
+  --badge-pdf-text: #8a7050;
+  --badge-docx-bg: #c8dcc8;
+  --badge-docx-text: #4a6a4a;
+
+  --btn-download-bg: #25323a;
+  --btn-download-text: #fdfdfc;
+  --btn-warmup-bg: linear-gradient(135deg, #8a7c6c, #6f6356);
+  --btn-warmup-text: #fdfdfc;
+  --btn-warming-bg: #ebe8e4;
+  --btn-warming-text: #62707a;
+  --btn-active-bg: #edf2ee;
+  --btn-active-text: #3d5a48;
+  --btn-active-border: #c7d1c9;
+  --btn-locked-bg: #f0eeec;
+  --btn-locked-text: #9aa3a9;
+  --btn-locked-border: #e0deda;
+
+  --progress-track: #ebeae8;
+  --progress-fill: linear-gradient(90deg, #5f766a, #7d8f84);
+
+  --toast-bg: #25323a;
+  --toast-text: #fdfdfc;
+
+  --overlay: rgba(37, 50, 58, 0.28);
+  --overlay-blur: 4px;
+
+  --width-popover-panel: 24rem;
+  --max-width-popover: min(24rem, calc(100vw - 1.5rem));
+  --height-progress-track: 4px;
+  --size-icon-sm: 12px;
+  --surface-toggle-track: color-mix(in srgb, var(--surface-alt) 82%, white);
+
+  --hw-radius-xs: 3px;
+  --hw-radius-sm: 5px;
+  --hw-radius-md: 7px;
+  --hw-radius-lg: 9px;
+  --hw-radius-xl: 12px;
+  --hw-radius-2xl: 16px;
+
+  --shadow-sm: var(--app-shadow-soft);
+  --shadow-md:
+    0 1px 3px rgba(37, 50, 58, 0.07), 0 0 0 1px rgba(37, 50, 58, 0.05);
+  --shadow-lg: 0 4px 16px rgba(37, 50, 58, 0.12);
+  --shadow-popover:
+    0 12px 40px rgba(37, 50, 58, 0.1), 0 0 0 1px rgba(37, 50, 58, 0.06);
+  --shadow-dialog:
+    0 16px 48px rgba(37, 50, 58, 0.12), 0 0 0 1px rgba(37, 50, 58, 0.06);
+
+  /**
+   * Typography — mirrors design/Dashboard.html mock:
+   * Inter for UI/body, Inter Tight for display (course title, hero letter grade).
+   * --type-dashboard-* = explicit px scale; --font-size-* kept for legacy call sites.
+   */
+  --font-family:
+    "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
+  --font-family-display:
+    "Inter Tight", "Inter Variable", "Inter", system-ui, sans-serif;
+
+  --type-dashboard-body: 13px;
+  --type-dashboard-label: 12px;
+  --type-dashboard-micro: 11px;
+  --type-dashboard-topbar: 12px;
+  --type-dashboard-grade-pct: calc(var(--type-dashboard-body) + 10px);
+
+  --font-size-xs: 9.5px;
+  --font-size-sm: 11px;
+  --font-size-base: var(--type-dashboard-body);
+  --font-size-md: 12px;
+  --font-size-lg: 14px;
+  --font-size-xl: 17px;
+  --font-size-2xl: 19px;
+
+  /* Warm paper frame for the whole app; inner panels use --card / --surface */
+  --background: var(--app-frame-bg);
+  --foreground: var(--text-primary);
+  --card: var(--surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface);
+  --popover-foreground: var(--text-primary);
+  --primary: var(--accent);
+  --primary-foreground: var(--text-inverse);
+  --cta: var(--accent-warm);
+  --cta-foreground: var(--text-primary);
+  --cta-border: var(--border-solid);
+  --secondary: var(--surface-alt);
+  --secondary-foreground: var(--text-secondary);
+  --secondary-border: var(--border-solid);
+  --muted: var(--surface-alt);
+  --muted-foreground: var(--text-secondary);
+  --muted-2: var(--text-tertiary);
+  --accent-foreground: var(--text-primary);
+  --accent-border: var(--green-border);
+  --destructive: #dc2626;
+  --input: var(--border-solid);
+  --ring: var(--border-focus);
+  --label: var(--text-tertiary);
+  --chart-1: var(--accent);
+  --chart-2: var(--accent-warm);
+  --chart-3: var(--green);
+  --chart-4: var(--gold);
+  --chart-5: var(--text-tertiary);
+  --radius: var(--hw-radius-lg);
+  --sidebar: var(--sidebar-bg);
+  --sidebar-foreground: var(--sidebar-icon);
+  --sidebar-primary: var(--sidebar-accent);
+  --sidebar-primary-foreground: var(--sidebar-active-icon);
+  --sidebar-accent-foreground: var(--sidebar-icon-hover);
+  --sidebar-ring: var(--border-focus);
+}
+
+@theme inline {
+  --font-sans: var(--font-family);
+  --font-display: var(--font-family-display);
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Core */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  /* Primary */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  /* CTA */
+  --color-cta: var(--cta);
+  --color-cta-foreground: var(--cta-foreground);
+  --color-cta-border: var(--cta-border);
+
+  /* Secondary */
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-border: var(--secondary-border);
+
+  /* Muted */
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted-2: var(--muted-2);
+
+  /* Accent */
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-border: var(--accent-border);
+
+  /* Destructive */
+  --color-destructive: var(--destructive);
+
+  /* Borders & inputs */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Label */
+  --color-label: var(--label);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Radius */
+  --radius-xs: var(--hw-radius-xs);
+  --radius-sm: var(--hw-radius-sm);
+  --radius-md: var(--hw-radius-md);
+  --radius-lg: var(--hw-radius-lg);
+  --radius-xl: var(--hw-radius-xl);
+  --radius-2xl: var(--hw-radius-2xl);
+  --radius-3xl: calc(var(--hw-radius-2xl) + 4px);
+  --radius-4xl: calc(var(--hw-radius-2xl) + 8px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    height: 100%;
+  }
+
+  body {
+    @apply font-sans bg-background text-foreground;
+    margin: 0;
+    min-height: 100%;
+    height: 100%;
+  }
+
+  #root {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /**
+   * Dashboard workspace shell: paper surface + course wash on `::before` (--course-* /
+   * wash tokens from `courseWorkspaceCssVariables` on the same element). Rail chrome:
+   * `.app-course-rail` (inline gradient from TS).
+   */
+  .app-workspace-shell {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 0;
+    font-family: var(--font-family);
+    font-size: var(--type-dashboard-body);
+    color: var(--app-text-primary);
+    border-radius: var(--app-radius-workspace);
+    border: 1px solid var(--app-hairline);
+    background: linear-gradient(
+      168deg,
+      color-mix(in srgb, var(--app-surface-primary) 92%, #f0efed) 0%,
+      color-mix(in srgb, var(--app-surface-primary) 97%, #f5f4f2) 40%,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 94%,
+          var(--app-workspace-bg)
+        )
+        100%
+    );
+    box-shadow:
+      0 1px 0 color-mix(in srgb, var(--app-surface-primary) 85%, transparent)
+      inset,
+      0 16px 42px rgba(37, 50, 58, 0.06),
+      0 5px 16px rgba(37, 50, 58, 0.036);
+  }
+
+  .app-workspace-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(
+        118% 88% at 50% -6%,
+        color-mix(in srgb, var(--course-surface-tint) 5%, transparent) 0%,
+        transparent 46%
+      ),
+      linear-gradient(
+        180deg,
+        var(--app-workspace-wash-a) 0%,
+        var(--app-workspace-wash-b) 34%
+      );
+  }
+
+  /* Course rail: horizontal scroll on the nav when the tab row overflows; tablist stays a flex row only */
+  .app-course-rail {
+    position: relative;
+    flex-shrink: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--app-dashboard-shell-rail-pt)
+      var(--app-dashboard-shell-rail-px) var(--app-dashboard-shell-rail-pb);
+    border-bottom: 1px solid var(--app-hairline);
+    background: var(--course-rail-wash);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(
+        in srgb,
+        var(--app-border-solid) 65%,
+        transparent
+      )
+      transparent;
+    overscroll-behavior-x: contain;
+  }
+
+  .app-course-rail::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .app-course-rail::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--app-border-solid) 55%, transparent);
+  }
+
+  .app-course-rail__tablist {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: var(--app-dashboard-shell-rail-gap);
+  }
+
+  .app-course-tab {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 72px;
+    margin: 0;
+    padding: 14px 16px 13px;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    border-radius: var(--app-radius-tab-top) var(--app-radius-tab-top) 0 0;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      box-shadow 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .app-course-rail__tablist .app-course-tab {
+    flex: 1 1 0;
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: none;
+    width: auto;
+  }
+
+  .app-course-rail .app-course-tab[aria-selected="false"] {
+    border: none;
+    color: var(--course-pill-fg);
+    background-color: var(--course-pill-bg);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.78),
+      0 0 0 1px color-mix(in srgb, var(--course-pill-border) 92%, transparent),
+      0 4px 14px rgba(37, 50, 58, 0.028);
+  }
+
+  .app-course-rail .app-course-tab[aria-selected="false"]:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.82),
+      0 0 0 1px color-mix(in srgb, var(--course-pill-border) 94%, transparent),
+      0 5px 18px rgba(37, 50, 58, 0.038);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .app-course-tab {
+      transition-duration: 0ms;
+    }
+  }
+
+  .app-course-rail .app-course-tab[aria-selected="true"] {
+    cursor: default;
+    margin-bottom: -1px;
+    z-index: 1;
+    color: var(--course-pill-active-fg);
+    background-color: var(--course-pill-active-bg);
+    border: 1px solid var(--course-pill-active-border);
+    border-bottom-color: transparent;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 1px 0 0 var(--course-pill-active-bg);
+  }
+
+  .app-course-tab__code {
+    display: block;
+    font-size: calc(var(--type-dashboard-body) + 1px);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--course-pill-fg);
+  }
+
+  .app-course-rail .app-course-tab[aria-selected="true"] .app-course-tab__code {
+    color: currentColor;
+  }
+
+  .app-course-tab__name {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.25;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: color-mix(in srgb, var(--course-pill-fg) 86%, var(--course-pill-bg));
+    opacity: 0.98;
+  }
+
+  .app-course-rail .app-course-tab[aria-selected="true"] .app-course-tab__name {
+    color: color-mix(in srgb, currentColor 70%, var(--course-pill-active-bg));
+    opacity: 0.96;
+  }
+
+  /* Overview / Material segmented control — track + sliding pill */
+  .app-dashboard-view-toggle {
+    --app-dashboard-view-toggle-pad: 3px;
+    width: max-content;
+    min-width: 168px;
+    height: 34px;
+    padding: var(--app-dashboard-view-toggle-pad);
+    border-radius: 10px;
+    border: 1px solid var(--app-hairline);
+    background: color-mix(
+      in srgb,
+      var(--app-workspace-bg) 58%,
+      var(--app-surface-primary)
+    );
+    box-shadow: none;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .app-dashboard-view-toggle .app-dashboard-view-toggle__indicator {
+    border: none;
+    border-radius: 7px;
+    background: var(--app-surface-primary);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 1px 2px rgba(37, 50, 58, 0.055);
+  }
+
+  .app-dashboard-view-toggle .app-dashboard-view-toggle__item {
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    border-radius: 7px;
+    padding: 0 11px;
+    font: inherit;
+    font-weight: 600;
+    line-height: 1.2;
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 78%,
+      var(--app-text-primary)
+    );
+  }
+
+  /* Base UI Toggle uses aria-pressed / data-pressed — not Radix data-state=on */
+  .app-dashboard-view-toggle
+  .app-dashboard-view-toggle__item[aria-pressed="true"] {
+    color: color-mix(in srgb, var(--app-text-primary) 58%, #0c1014);
+  }
+
+  .app-dashboard-view-toggle .app-dashboard-view-toggle__label {
+    font-size: calc(var(--type-dashboard-body) - 2px);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+  }
+
+  /* Canvas under header + body — quiet paper, continuous with rail */
+  .app-workspace-shell__canvas {
+    overflow: hidden;
+    min-height: 0;
+    background-color: var(--app-surface-primary);
+    background-image: linear-gradient(
+      180deg,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 82%,
+          var(--app-workspace-bg)
+        )
+        0%,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 93%,
+          var(--app-workspace-bg)
+        )
+        24%,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 97%,
+          var(--app-workspace-bg)
+        )
+        52%,
+      var(--app-surface-primary) 100%
+    );
+  }
+
+  /* Direct shell children only — sit above the ::before wash */
+  .app-workspace-shell > .app-course-rail,
+  .app-workspace-shell > .app-workspace-shell__canvas {
+    position: relative;
+    z-index: 1;
+  }
+
+  .app-workspace-shell__header {
+    padding: var(--app-dashboard-shell-header-pt)
+      var(--app-dashboard-shell-header-px) var(--app-dashboard-shell-header-pb);
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 42%, transparent);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--app-surface-primary) 96%, #f2f1f0) 0%,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 90%,
+          var(--app-workspace-bg)
+        )
+        100%
+    );
+  }
+
+  .app-course-header__meta {
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 3rem;
+    border-top: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 40%, transparent);
+    padding-top: 0.5rem;
+  }
+
+  /* Body clips to shell; inner panes (e.g. panel scroll) own vertical scroll */
+  .app-workspace-shell__body {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: var(--app-dashboard-shell-body-pad);
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 92%,
+          var(--app-workspace-bg)
+        )
+        0%,
+      transparent 36%
+    );
+  }
+
+  .app-workspace-panel-scroll {
+    min-height: 0;
+  }
+
+  /* Dashboard overview — one notebook surface + margin rail (avoid stacked card chrome) */
+  .app-overview-grade-pane {
+    border-radius: var(--hw-radius-xl);
+    border: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 36%, transparent);
+    background: linear-gradient(180deg, #fdfdfc 0%, #f4f3f1 100%);
+    box-shadow: 0 1px 0
+      color-mix(in srgb, var(--app-surface-primary) 72%, transparent) inset;
+  }
+
+  .app-overview-grade-empty-hint {
+    border-radius: var(--hw-radius-xl);
+    border: 1px dashed
+      color-mix(in srgb, var(--app-border-solid) 38%, transparent);
+    background: linear-gradient(
+      180deg,
+      color-mix(
+        in srgb,
+        var(--app-surface-secondary) 50%,
+        var(--app-surface-primary)
+      ),
+      var(--app-surface-primary)
+    );
+    padding: 1rem;
+  }
+
+  /* Column split only — panels carry their own faint edge */
+  .app-overview-rail {
+    border-left: 1px solid var(--app-hairline);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .app-overview-rail-panel {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--hw-radius-lg);
+    border: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 22%, transparent);
+    background: color-mix(in srgb, var(--app-surface-primary) 32%, transparent);
+    box-shadow: none;
+  }
+
+  .app-overview-rail-panel__head {
+    flex-shrink: 0;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 16%, transparent);
+  }
+
+  .app-overview-rail-panel__head--flush {
+    border-bottom: none;
+  }
+
+  .app-overview-rail-panel__foot {
+    flex-shrink: 0;
+    border-top: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 16%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--app-workspace-bg) 14%,
+      var(--app-surface-primary)
+    );
+  }
+
+  /* Tasks panel — typography, rows, due pill (no extra outer chrome) */
+  .app-overview-tasks__title {
+    font-family: var(--font-family-display);
+    font-size: var(--type-dashboard-body);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--app-text-primary);
+  }
+
+  .app-overview-tasks__meta {
+    margin-top: 0.1875rem;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 88%,
+      var(--app-text-primary)
+    );
+    font-variant-numeric: tabular-nums;
+  }
+
+  .app-overview-tasks__add {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.125rem;
+    padding: 0.3125rem 0.5rem;
+    border-radius: var(--hw-radius-md);
+    border: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 38%, transparent);
+    background: color-mix(in srgb, var(--app-surface-primary) 64%, transparent);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 70%,
+      var(--app-text-primary)
+    );
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .app-overview-tasks__add:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--app-accent) 32%,
+      var(--app-border-solid)
+    );
+    color: var(--app-text-primary);
+    background: color-mix(
+      in srgb,
+      var(--app-accent-soft) 28%,
+      var(--app-surface-primary)
+    );
+  }
+
+  .app-overview-tasks__add-icon {
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 600;
+    translate: 0 0.5px;
+  }
+
+  .app-overview-tasks__add-label {
+    line-height: 1;
+  }
+
+  .app-overview-tasks__scroll {
+    padding-top: 0.125rem;
+    scrollbar-width: none;
+  }
+
+  .app-overview-tasks__scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app-overview-tasks__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .app-overview-tasks__list > li + li {
+    border-top: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 11%, transparent);
+  }
+
+  .app-overview-tasks__list--done > li + li {
+    border-top-color: color-mix(
+      in srgb,
+      var(--app-border-solid) 8%,
+      transparent
+    );
+  }
+
+  .app-overview-tasks__row {
+    display: grid;
+    grid-template-columns: 0.875rem 1fr auto;
+    column-gap: 0.625rem;
+    align-items: start;
+    padding: 0.5rem 0;
+  }
+
+  .app-overview-tasks__row.is-done {
+    padding-top: 0.4375rem;
+    padding-bottom: 0.4375rem;
+  }
+
+  .app-overview-tasks__check {
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+    border-radius: 4px;
+    border: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 58%, transparent);
+    accent-color: var(--app-accent);
+    cursor: pointer;
+  }
+
+  .app-overview-tasks__check:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--app-accent) 35%, transparent);
+    outline-offset: 2px;
+  }
+
+  .app-overview-tasks__body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3125rem;
+  }
+
+  .app-overview-tasks__text {
+    margin: 0;
+    font-size: var(--type-dashboard-body);
+    font-weight: 500;
+    line-height: 1.38;
+    letter-spacing: -0.011em;
+    color: var(--app-text-primary);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .app-overview-tasks__text--done {
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 58%,
+      var(--app-text-primary)
+    );
+    font-weight: 450;
+    text-decoration: line-through;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--app-text-muted) 50%,
+      transparent
+    );
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  .app-overview-tasks__due {
+    display: inline-block;
+    max-width: 100%;
+    padding: 0.15rem 0.4rem;
+    border-radius: 999px;
+    font-size: 9px;
+    font-weight: 650;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.25;
+    background: color-mix(in srgb, var(--app-accent-soft) 42%, transparent);
+    color: color-mix(
+      in srgb,
+      var(--app-accent-strong) 72%,
+      var(--app-text-muted)
+    );
+    border: 1px solid color-mix(in srgb, var(--app-accent) 14%, transparent);
+  }
+
+  .app-overview-tasks__due--done {
+    text-transform: none;
+    letter-spacing: 0.025em;
+    font-weight: 600;
+    background: color-mix(in srgb, var(--app-border-solid) 16%, transparent);
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 94%,
+      var(--app-text-primary)
+    );
+    border-color: color-mix(in srgb, var(--app-border-solid) 35%, transparent);
+  }
+
+  .app-overview-tasks__remove {
+    margin-top: 0.125rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.1875rem;
+    border-radius: var(--hw-radius-md);
+    color: color-mix(in srgb, var(--app-text-muted) 55%, transparent);
+    opacity: 0;
+    transition:
+      opacity 0.12s ease,
+      color 0.12s ease,
+      background-color 0.12s ease;
+  }
+
+  .app-overview-tasks__row:hover .app-overview-tasks__remove,
+  .app-overview-tasks__remove:focus-visible {
+    opacity: 1;
+  }
+
+  .app-overview-tasks__remove:hover {
+    color: var(--app-text-primary);
+    background: color-mix(in srgb, var(--app-border-solid) 18%, transparent);
+  }
+
+  .app-overview-tasks__remove:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--app-accent) 30%, transparent);
+    outline-offset: 1px;
+  }
+
+  .app-overview-tasks__completed-wrap {
+    margin-top: 0.625rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 14%, transparent);
+  }
+
+  .app-overview-tasks__completed-label {
+    margin: 0 0 0.375rem;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 82%,
+      var(--app-text-primary)
+    );
+  }
+
+  .app-overview-tasks__empty {
+    margin: 0 0 0.75rem;
+    padding: 0.375rem 0 0.25rem;
+    font-size: 11px;
+    line-height: 1.45;
+    font-style: italic;
+    font-weight: 450;
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 85%,
+      var(--app-text-primary)
+    );
+  }
+
+  .app-overview-tasks__open-zero {
+    margin: 0 0 0.5rem;
+    font-size: 11px;
+    line-height: 1.4;
+    font-weight: 500;
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 75%,
+      var(--app-text-primary)
+    );
+  }
+
+  /* Policies — editorial rows, soft separators */
+  .app-overview-policies__title {
+    font-family: var(--font-family-display);
+    font-size: var(--type-dashboard-body);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--app-text-primary);
+  }
+
+  .app-overview-policies__subtitle {
+    margin: 0.25rem 0 0;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 90%,
+      var(--app-text-primary)
+    );
+  }
+
+  .app-overview-policies__scroll {
+    padding: 0.25rem 0.75rem 1rem 0.875rem;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--app-hairline) 78%, transparent)
+      transparent;
+  }
+
+  .app-overview-policies__row {
+    padding: 0.6875rem 0;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--app-border-solid) 10%, transparent);
+  }
+
+  .app-overview-policies__row:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0.25rem;
+  }
+
+  .app-overview-policies__label {
+    margin: 0 0 0.3125rem;
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: -0.018em;
+    line-height: 1.25;
+    color: var(--app-text-primary);
+  }
+
+  .app-overview-policies__summary {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 450;
+    line-height: 1.48;
+    letter-spacing: -0.01em;
+    color: color-mix(
+      in srgb,
+      var(--app-text-muted) 72%,
+      var(--app-text-primary)
+    );
+  }
+
+  /* Scope focus ring to rail tabs only */
+  .app-course-rail .app-course-tab:focus-visible {
+    outline: 2px solid
+      color-mix(in srgb, var(--app-accent) 42%, var(--app-border-solid));
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * Pill toggle: ToggleGroupItem reuses toggleVariants (hover:bg-muted, hover:text-foreground,
+ * fixed h-[26px]). Unlayered rules beat @layer utilities so hover is a no-op and segments
+ * fill the track height.
+ *
+ * Sliding indicator: ToggleGroup’s motion.span uses `inset-y-0` (utilities layer), which
+ * beat @layer base and stretched the pill to the full track height. Horizontal position
+ * comes from segment bounds (inside padded content), so the pill looked tight left/right
+ * but wrong top/bottom. Pin top/bottom to the same inset as track padding.
+ */
+.app-dashboard-view-toggle .app-dashboard-view-toggle__indicator {
+  top: var(--app-dashboard-view-toggle-pad);
+  bottom: var(--app-dashboard-view-toggle-pad);
+  height: auto;
+}
+
+.app-dashboard-view-toggle .app-dashboard-view-toggle__item {
+  height: 100%;
+  min-width: 0;
+}
+
+.app-dashboard-view-toggle .app-dashboard-view-toggle__item:hover {
+  background-color: transparent;
+}
+
+.app-dashboard-view-toggle
+  .app-dashboard-view-toggle__item[aria-pressed="true"]:hover {
+  color: color-mix(in srgb, var(--app-text-primary) 58%, #0c1014);
+}
+
+.app-dashboard-view-toggle
+  .app-dashboard-view-toggle__item[aria-pressed="false"]:hover {
+  color: color-mix(
+    in srgb,
+    var(--app-text-muted) 52%,
+    var(--app-text-primary)
+  );
+}

@@ -1,0 +1,32 @@
+import type { Db } from "@hydrowise/db";
+import { makeChapterRepo } from "@/queries/chapter.queries";
+import { makeCourseRepo } from "@/queries/course.queries";
+import { makeDocumentRepo } from "@/queries/document.queries";
+import { makePageRepo } from "@/queries/page.queries";
+import { makeTopicRepo } from "@/queries/topic.queries";
+
+export const makeQueries = (db: Db) => {
+  const courses = makeCourseRepo(db);
+  const chapters = makeChapterRepo(db);
+  const topics = makeTopicRepo(db);
+  const documents = makeDocumentRepo(db);
+  const pages = makePageRepo(db);
+  return {
+    listCourses: courses.listCourses,
+    createCourse: courses.createCourse,
+    updateProfessorInformation: courses.updateProfessorInformation,
+    updateCourseDetails: courses.updateCourseDetails,
+    updateGradePlannerState: courses.updateGradePlannerState,
+    updateCourseTodos: courses.updateCourseTodos,
+    listChapters: chapters.listChapters,
+    listChaptersByCourse: chapters.listChaptersByCourse,
+    createChapter: chapters.createChapter,
+    listTopics: topics.listTopics,
+    listTopicsByChapter: topics.listTopicsByChapter,
+    createTopic: topics.createTopic,
+    listDocuments: documents.listDocuments,
+    listDocumentsByTopic: documents.listDocumentsByTopic,
+    createDocument: documents.createDocument,
+    createPage: pages.createPage,
+  };
+};

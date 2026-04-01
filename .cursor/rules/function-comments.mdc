@@ -1,0 +1,30 @@
+---
+description: Single-line comment above every function and const-arrow
+globs: ["**/*.ts", "**/*.tsx", "**/*.rs"]
+alwaysApply: false
+---
+
+# Function and const-arrow comments
+
+- Every **function** and every **const name = (...) => ...** (including async) must have exactly **one line** above it describing what it does. Place the comment immediately above the declaration.
+- Use a single short sentence. Focus on intent or effect, not restating the code.
+- Avoid inline comments that merely restate the code or feel generic (e.g. do not write "Gets the value of x" for `getX()`).
+
+**Good:**
+
+```typescript
+// Polls the desktop server until it responds or attempts are exhausted.
+export const ensureDesktopServerReady = async (): Promise<void> => { ... }
+```
+
+```rust
+// Spawns the llama sidecar and registers it in app state.
+pub fn start_desktop_model_server(app: &AppHandle) -> Result<(), String> { ... }
+```
+
+**Bad:**
+
+```typescript
+// Gets the desktop server ready.  (too vague / restates name)
+// This function waits for the server by polling every 500ms up to 30 times.  (inline-style; keep one line above only)
+```

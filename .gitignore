@@ -25,22 +25,17 @@ dist-ssr
 
 **/**/.env
 
-/tools
-
 # Monorepo / Tooling
 .turbo
 *.tsbuildinfo
 coverage
 .cache
-
-# Migrations
-packages/db/drizzle
-
-# Rust / Tauri
-src-tauri/target
-target
+**/src-tauri/target/
 
 # Database
 *.db
 *.sqlite
-hydrowise.db/
+packages/db/studio-db/
+
+# Models
+/models

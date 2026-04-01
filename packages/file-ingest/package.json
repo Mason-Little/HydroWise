@@ -1,0 +1,31 @@
+{
+  "name": "@hydrowise/file-ingest",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "clean": "rm -rf dist",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@matbee/libreoffice-converter": "^2.6.0",
+    "fflate": "^0.8.2",
+    "heic-to": "^1.4.2",
+    "pdfjs-dist": "^4.10.38",
+    "uint8-to-base64": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4",
+    "vite-plugin-dts": "^4.5.4"
+  }
+}

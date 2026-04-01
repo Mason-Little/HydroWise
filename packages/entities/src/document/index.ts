@@ -1,3 +1,2 @@
-export * from "./document.input";
-export * from "./document.response";
-export * from "./document.schema";
+export * from "./document";
+export * from "./document-route";

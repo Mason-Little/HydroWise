@@ -1,0 +1,1 @@
+ALTER TABLE "pages" ALTER COLUMN "page_embedding" SET DATA TYPE vector(384);

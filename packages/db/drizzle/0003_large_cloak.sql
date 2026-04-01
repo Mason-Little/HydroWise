@@ -1,0 +1,1 @@
+ALTER TABLE "courses" ADD COLUMN "grade_planner_state" jsonb DEFAULT '{"selectedGoalLetter":null,"scoresByRubricIndex":{}}'::jsonb NOT NULL;
