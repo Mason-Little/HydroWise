@@ -1,11 +1,11 @@
 import { type CSSProperties, useEffect, useMemo } from "react";
 import { useDashboardContext } from "@/features/dashboard/dashboard-context";
-import { CoursePill } from "@/features/dashboard/selection/course-selector/components/CoursePill";
+import { CoursePill } from "@/features/dashboard/selection/components/CoursePill";
 import {
   buildCourseRailWash,
   compareCoursesByCode,
-} from "@/features/dashboard/selection/course-selector/courseTheme";
-import { useCourses } from "@/features/dashboard/selection/course-selector/hooks/useCourses";
+} from "@/features/dashboard/selection/courseTheme";
+import { useCourses } from "@/features/dashboard/selection/hooks/useCourses";
 
 export const CourseSelector = () => {
   const { activeCourse, setActiveCourseId } = useDashboardContext();

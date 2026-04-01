@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 import { useDashboardContext } from "@/features/dashboard/dashboard-context";
-import { courseWorkspaceCssVariables } from "@/features/dashboard/selection/course-selector/courseTheme";
+import { courseWorkspaceCssVariables } from "@/features/dashboard/selection/courseTheme";
 import { cn } from "@/lib/utils";
 
 type DashboardWorkspaceShellProps = {

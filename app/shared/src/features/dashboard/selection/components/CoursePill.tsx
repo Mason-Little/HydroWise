@@ -1,5 +1,5 @@
 import type { Course } from "@hydrowise/entities";
-import { courseTabCssVariables } from "@/features/dashboard/selection/course-selector/courseTheme";
+import { courseTabCssVariables } from "@/features/dashboard/selection/courseTheme";
 
 type CoursePillProps = {
   course: Course;

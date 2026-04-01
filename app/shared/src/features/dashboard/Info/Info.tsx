@@ -4,7 +4,7 @@ import { CourseHeader } from "@/features/dashboard/CourseHeader";
 import { DashboardWorkspaceShell } from "@/features/dashboard/DashboardWorkspaceShell";
 import { Material } from "@/features/dashboard/Info/material/Material";
 import { Overview } from "@/features/dashboard/Info/overview/Overview";
-import { CourseSelector } from "@/features/dashboard/selection/course-selector/CourseSelector";
+import { CourseSelector } from "@/features/dashboard/selection/CourseSelector";
 
 export const Info = () => {
   const [view, setView] = useState<"overview" | "material">("overview");
