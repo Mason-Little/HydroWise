@@ -22,9 +22,10 @@ export const makeQueries = (db: Db) => {
     listChaptersByCourse: chapters.listChaptersByCourse,
     createChapter: chapters.createChapter,
     listTopics: topics.listTopics,
+    listTopicsByChapter: topics.listTopicsByChapter,
     createTopic: topics.createTopic,
     listDocuments: documents.listDocuments,
-    listDocumentsByChapter: documents.listDocumentsByChapter,
+    listDocumentsByTopic: documents.listDocumentsByTopic,
     createDocument: documents.createDocument,
     createPage: pages.createPage,
   };

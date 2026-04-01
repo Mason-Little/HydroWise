@@ -8,11 +8,8 @@ export const makeDocumentRepo = (db: Db) => {
     listDocuments: async () => {
       return db.select().from(documents);
     },
-    listDocumentsByChapter: async (chapterId: string) => {
-      return db
-        .select()
-        .from(documents)
-        .where(eq(documents.chapterId, chapterId));
+    listDocumentsByTopic: async (topicId: string) => {
+      return db.select().from(documents).where(eq(documents.topicId, topicId));
     },
     createDocument: async (input: CreateDocumentInput) => {
       const [row] = await db.insert(documents).values(input).returning();
