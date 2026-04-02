@@ -22,7 +22,7 @@ export async function officeToPngPages(file: File): Promise<Blob[]> {
     return Promise.all(
       Array.from({ length: pageCount }, (_, i) =>
         c
-          .renderPageViaConvert(input, { inputFormat }, i, 512)
+          .renderPageViaConvert(input, { inputFormat }, i, 1024)
           .then(
             (page) =>
               new Blob([new Uint8Array(page.data)], { type: "image/png" }),

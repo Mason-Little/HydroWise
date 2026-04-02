@@ -1,10 +1,10 @@
-import type {
-  Message,
-  PreTrainedModel,
-  Processor,
-  Tensor,
+import {
+  type Message,
+  type PreTrainedModel,
+  type Processor,
+  RawImage,
+  type Tensor,
 } from "@huggingface/transformers";
-import { RawImage } from "@huggingface/transformers";
 
 type CallableProcessor = Processor &
   ((
@@ -13,21 +13,12 @@ type CallableProcessor = Processor &
     options: { return_tensors: "pt" },
   ) => Promise<Record<string, Tensor>>);
 
-const MAX_OCR_WIDTH = 512;
-
 export const runWebOcr = async (
   model: PreTrainedModel,
   processor: Processor,
   imageBlob: Blob,
 ): Promise<string> => {
-  const raw = await RawImage.fromBlob(imageBlob);
-  const image =
-    raw.width > MAX_OCR_WIDTH
-      ? await raw.resize(
-          MAX_OCR_WIDTH,
-          Math.round(MAX_OCR_WIDTH * (raw.height / raw.width)),
-        )
-      : raw;
+  const image = await RawImage.fromBlob(imageBlob);
 
   const conversation: Message[] = [
     {
