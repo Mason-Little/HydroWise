@@ -7,6 +7,7 @@ export const DocumentSchema = z.object({
   courseId: z.string(),
   chapterId: z.string(),
   topicId: z.string().nullable(),
+  totalPages: z.number(),
 });
 
 export const CreateDocumentInputSchema = DocumentSchema.pick({
@@ -15,6 +16,7 @@ export const CreateDocumentInputSchema = DocumentSchema.pick({
   courseId: true,
   chapterId: true,
   topicId: true,
+  totalPages: true,
 });
 
 export type Document = z.infer<typeof DocumentSchema>;

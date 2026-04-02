@@ -13,7 +13,9 @@ export const handlePages = async (documentId: string, drafts: PageDraft[]) => {
   const [embeddings, pageImages] = await Promise.all([
     embedTexts(texts),
     Promise.all(
-      drafts.map(async (d) => new Uint8Array(await d.blob.arrayBuffer())),
+      drafts.map((draft) =>
+        draft.blob.arrayBuffer().then((buf) => new Uint8Array(buf)),
+      ),
     ),
   ]);
 
@@ -25,6 +27,7 @@ export const handlePages = async (documentId: string, drafts: PageDraft[]) => {
         pageContent: draft.ocrText,
         pageImage: pageImages[index],
         pageEmbedding: embeddings[index],
+        pageNumber: index + 1,
       }),
     ),
   );

@@ -1,7 +1,7 @@
-import { pgTable, text, uuid } from "drizzle-orm/pg-core";
-import { chapters } from "./chapters";
-import { courses } from "./courses";
-import { topics } from "./topics";
+import { integer, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { chapters } from "@/schema/chapters";
+import { courses } from "@/schema/courses";
+import { topics } from "@/schema/topics";
 
 export const documents = pgTable("documents", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -16,4 +16,5 @@ export const documents = pgTable("documents", {
   topicId: uuid("topic_id").references(() => topics.id, {
     onDelete: "set null",
   }),
+  totalPages: integer("total_pages").notNull(),
 });

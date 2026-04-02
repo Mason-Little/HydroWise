@@ -7,6 +7,7 @@ export const PageSchema = z.object({
   pageContent: z.string(),
   pageImage: z.instanceof(Uint8Array),
   pageEmbedding: z.array(z.number()),
+  pageNumber: z.number(),
 });
 
 export const CreatePageInputSchema = PageSchema.pick({
@@ -15,6 +16,7 @@ export const CreatePageInputSchema = PageSchema.pick({
   pageContent: true,
   pageImage: true,
   pageEmbedding: true,
+  pageNumber: true,
 });
 
 export type Page = z.infer<typeof PageSchema>;

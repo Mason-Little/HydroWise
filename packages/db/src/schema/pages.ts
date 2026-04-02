@@ -1,6 +1,14 @@
-import { index, pgTable, text, uuid, vector } from "drizzle-orm/pg-core";
+import {
+  index,
+  integer,
+  pgTable,
+  text,
+  uniqueIndex,
+  uuid,
+  vector,
+} from "drizzle-orm/pg-core";
+import { documents } from "@/schema/documents";
 import { bytea } from "@/types/bytea";
-import { documents } from "./documents";
 
 export const pages = pgTable(
   "pages",
@@ -13,8 +21,13 @@ export const pages = pgTable(
     pageContent: text("page_content").notNull(),
     pageImage: bytea("page_image"),
     pageEmbedding: vector("page_embedding", { dimensions: 384 }).notNull(),
+    pageNumber: integer("page_number").notNull(),
   },
   (table) => [
+    uniqueIndex("pages_document_id_page_number_uidx").on(
+      table.documentId,
+      table.pageNumber,
+    ),
     index("pages_embedding_cosine_idx").using(
       "hnsw",
       table.pageEmbedding.op("vector_cosine_ops"),

@@ -154,13 +154,13 @@ export const handleDocument = async (
     courseId: course.id,
     chapterId,
     topicId,
+    totalPages: pages.length,
   });
 
   console.log("[upload] document created", document);
 
-  const result: RoutedDocumentResult = {
+  return {
     documentId: document.id,
     abstracts: abstracts.pages?.map((p) => p.abstract) ?? [],
   };
-  return result;
 };
