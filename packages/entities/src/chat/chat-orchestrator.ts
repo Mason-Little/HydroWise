@@ -6,18 +6,20 @@ export const ChatHistoryMessageSchema = z.object({
   text: z.string(),
 });
 
+export type ChatHistoryMessage = z.infer<typeof ChatHistoryMessageSchema>;
+
+export const WorkspaceContextItemSchema = z.object({
+  courseId: z.string(),
+  courseName: z.string(),
+  chapters: z.array(
+    ChapterSchema.pick({ chapterName: true, chapterDescription: true }),
+  ),
+});
+
 export const ChatOrchestratorInputSchema = z.object({
   userMessage: z.string(),
-  currentCourse: z.string().nullable(),
   recentMessages: z.array(ChatHistoryMessageSchema),
-  workspaceContext: z
-    .object({
-      courseNmae: z.string(),
-      chapters: z.array(
-        ChapterSchema.pick({ chapterName: true, chapterDescription: true }),
-      ),
-    })
-    .nullable(),
+  workspaceContext: z.array(WorkspaceContextItemSchema).nullable(),
 });
 
 export const GroundedAnswerToolArgsSchema = z.object({
@@ -40,6 +42,7 @@ export const ChatOrchestratorOutputSchema = z.object({
   toolCall: ChatToolCallSchema,
 });
 
+export type WorkspaceContextItem = z.infer<typeof WorkspaceContextItemSchema>;
 export type ChatOrchestratorInput = z.infer<typeof ChatOrchestratorInputSchema>;
 export type ChatOrchestratorOutput = z.infer<
   typeof ChatOrchestratorOutputSchema

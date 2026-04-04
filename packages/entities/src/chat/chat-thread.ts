@@ -12,3 +12,8 @@ export const PatchChatThreadInputSchema = ChatThreadSchema.omit({
 
 export type ChatThread = z.infer<typeof ChatThreadSchema>;
 export type PatchChatThreadInput = z.infer<typeof PatchChatThreadInputSchema>;
+
+export type PatchChatThreadParams = {
+  threadId: string;
+  patch: PatchChatThreadInput;
+};

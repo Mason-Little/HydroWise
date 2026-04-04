@@ -1,5 +1,5 @@
 import { useChatContext } from "@/features/chat/context";
-import { useChatThreads } from "@/features/chat/hooks/use-chat-queries";
+import { useChatThreads } from "@/features/chat/hooks/use-chat-threads";
 
 const threadLabel = (id: string, title: string | null) =>
   title?.trim() || `${id.slice(0, 8)}…`;

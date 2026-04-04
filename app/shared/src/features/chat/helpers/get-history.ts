@@ -1,0 +1,14 @@
+import { getQueries } from "@hydrowise/data";
+import type { ChatHistoryMessage } from "@hydrowise/entities";
+
+export type { ChatHistoryMessage };
+
+export const getChatHistory = async (
+  threadId: string | null,
+): Promise<ChatHistoryMessage[]> => {
+  if (!threadId) return [];
+
+  const queries = await getQueries();
+  const rows = await queries.listChatMessages(threadId);
+  return rows.map((m) => ({ role: m.role, text: m.payload.text }));
+};
