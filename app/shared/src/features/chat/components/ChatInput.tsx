@@ -9,24 +9,26 @@ export const ChatInput = () => {
   const trimmed = text.trim();
   const canSend = trimmed.length > 0 && !isStreaming;
 
-  const handleSend = async () => {
+  const handleSubmit = async () => {
     if (!canSend) return;
     await sendMessage(trimmed);
     setText("");
   };
 
   return (
-    <div>
+    <div className="flex items-center gap-2">
       <Input
+        className="min-w-0 flex-1"
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSend();
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit();
           }
         }}
       />
-      <Button onClick={handleSend} disabled={!canSend}>
+      <Button onClick={handleSubmit} disabled={!canSend}>
         Send
       </Button>
     </div>
