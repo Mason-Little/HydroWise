@@ -1,7 +1,7 @@
 import type { Db } from "@hydrowise/db";
 import { pages } from "@hydrowise/db/schema";
 import type { CreatePageInput } from "@hydrowise/entities";
-import { and, eq } from "drizzle-orm";
+import { and, cosineDistance, eq } from "drizzle-orm";
 
 export const makePageRepo = (db: Db) => {
   return {
@@ -16,6 +16,16 @@ export const makePageRepo = (db: Db) => {
           ),
         );
       return row;
+    },
+    searchPages: async (embedding: number[], limit: number = 10) => {
+      const rows = await db
+        .select({
+          pageContent: pages.pageContent,
+        })
+        .from(pages)
+        .orderBy(cosineDistance(pages.pageEmbedding, embedding))
+        .limit(limit);
+      return rows;
     },
     createPage: async (input: CreatePageInput) => {
       const [row] = await db.insert(pages).values(input).returning();

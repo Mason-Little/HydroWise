@@ -14,7 +14,8 @@ export {
 } from "@/managers/vision";
 export type { VisionModelManager } from "@/managers/vision/manager";
 export * from "./config";
-export { runChatOrchestrator, sendGroundedChat } from "./features/chat";
+export { sendGroundedChat } from "./features/chat/grounded/run";
+export { runChatOrchestrator } from "./features/chat/orchestrator/run";
 export { classify } from "./features/classify-document";
 export * from "./features/document-router";
 export { extractSyllabus } from "./features/extract-syllabus";

@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 
 import { buildChatTurnInput } from "@/features/chat/helpers/build-chat-turn-input";
 import { ensureThreadForSend } from "@/features/chat/helpers/ensure-thread-for-send";
+import { executeTool } from "@/features/chat/helpers/execute-tool";
 import { persistChatMessage } from "@/features/chat/helpers/persist-chat-message";
 import { requestChatOrchestratorPlan } from "@/features/chat/helpers/request-chat-orchestrator-plan";
 
@@ -35,6 +36,8 @@ export const useSendChatMessage = (
         });
 
         const plan = await requestChatOrchestratorPlan(plannerInput);
+
+        await executeTool(plan);
 
         return {
           threadId: activeThreadId,
