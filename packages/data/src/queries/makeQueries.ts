@@ -37,6 +37,7 @@ export const makeQueries = (db: Db) => {
     listChatThreads: chatThreads.listChatThreads,
     createChatThread: chatThreads.createChatThread,
     patchChatThread: chatThreads.patchChatThread,
+    deleteChatThread: chatThreads.deleteChatThread,
     listChatMessages: chatMessages.listChatMessages,
     createChatMessage: chatMessages.createChatMessage,
   };

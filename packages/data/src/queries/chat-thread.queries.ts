@@ -9,16 +9,10 @@ import { desc, eq } from "drizzle-orm";
 export const makeChatThreadRepo = (db: Db) => {
   return {
     listChatThreads: async () => {
-      return db
-        .select()
-        .from(chatThreads)
-        .orderBy(desc(chatThreads.createdAt));
+      return db.select().from(chatThreads).orderBy(desc(chatThreads.createdAt));
     },
     createChatThread: async (title = "newChat") => {
-      const [row] = await db
-        .insert(chatThreads)
-        .values({ title })
-        .returning();
+      const [row] = await db.insert(chatThreads).values({ title }).returning();
       return row;
     },
     patchChatThread: async (threadId: string, patch: PatchChatThreadInput) => {
@@ -27,6 +21,9 @@ export const makeChatThreadRepo = (db: Db) => {
         .update(chatThreads)
         .set(parsed)
         .where(eq(chatThreads.id, threadId));
+    },
+    deleteChatThread: async (threadId: string) => {
+      await db.delete(chatThreads).where(eq(chatThreads.id, threadId));
     },
   };
 };
