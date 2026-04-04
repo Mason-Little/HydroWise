@@ -1,5 +1,5 @@
 import type { ChatMessagePayload } from "@hydrowise/entities";
-import { jsonb, pgEnum, pgTable, uuid } from "drizzle-orm/pg-core";
+import { jsonb, pgEnum, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
 import { chatThreads } from "@/schema/chat-thread";
 
 export const chatMessageRole = pgEnum("chat_message_role", [
@@ -14,4 +14,7 @@ export const chatMessages = pgTable("chat_messages", {
     .references(() => chatThreads.id, { onDelete: "cascade" }),
   role: chatMessageRole("role").notNull(),
   payload: jsonb("payload").$type<ChatMessagePayload>().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });

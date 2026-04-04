@@ -1,4 +1,4 @@
-import { integer, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { chapters } from "@/schema/chapters";
 import { courses } from "@/schema/courses";
 import { topics } from "@/schema/topics";
@@ -17,4 +17,7 @@ export const documents = pgTable("documents", {
     onDelete: "set null",
   }),
   totalPages: integer("total_pages").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });

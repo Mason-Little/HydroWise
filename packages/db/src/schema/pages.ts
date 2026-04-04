@@ -3,6 +3,7 @@ import {
   integer,
   pgTable,
   text,
+  timestamp,
   uniqueIndex,
   uuid,
   vector,
@@ -22,6 +23,9 @@ export const pages = pgTable(
     pageImage: bytea("page_image"),
     pageEmbedding: vector("page_embedding", { dimensions: 384 }).notNull(),
     pageNumber: integer("page_number").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
   },
   (table) => [
     uniqueIndex("pages_document_id_page_number_uidx").on(

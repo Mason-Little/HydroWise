@@ -1,4 +1,4 @@
-import { pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { courses } from "@/schema/courses";
 
 export const chatThreads = pgTable("chat_threads", {
@@ -6,4 +6,7 @@ export const chatThreads = pgTable("chat_threads", {
   courseId: uuid("course_id")
     .references(() => courses.id, { onDelete: "cascade" }),
   title: text("title"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });

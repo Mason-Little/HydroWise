@@ -9,7 +9,7 @@ import {
   type ProfessorInformation,
   type TestDate,
 } from "@hydrowise/entities";
-import { jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const courses = pgTable("courses", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -37,4 +37,7 @@ export const courses = pgTable("courses", {
     .$type<CourseTodoItem[]>()
     .notNull()
     .default([]),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });
