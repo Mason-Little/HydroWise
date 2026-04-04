@@ -3,6 +3,7 @@ import { ensureThreadForSend } from "@/features/chat/helpers/ensure-thread-for-s
 import { persistChatMessage } from "@/features/chat/helpers/persist-chat-message";
 import { requestChatOrchestratorPlan } from "@/features/chat/helpers/request-chat-orchestrator-plan";
 import { runChatTool } from "@/features/chat/helpers/run-chat-tool";
+import { syncThread } from "@/features/chat/helpers/sync-thread";
 
 type SendChatTurnParams = {
   threadId: string | null;
@@ -34,6 +35,9 @@ export const sendChatTurn = async ({
   });
 
   const plan = await requestChatOrchestratorPlan(plannerInput);
+
+  await syncThread(activeThreadId, plan);
+
   const toolResult = await runChatTool(plan);
 
   return {
