@@ -1,12 +1,16 @@
-export const groundedChatSystemPrompt = (retrievedContext: string[]) => `
+import type { ChatGroundedContextItem } from "@hydrowise/entities";
+
+export const groundedChatSystemPrompt = (
+  retrievedContext: ChatGroundedContextItem[],
+) => `
 You are a helpful assistant that answers questions strictly based on the provided context.
 
 Context:
-${retrievedContext.map((ctx, i) => `[${i}] ${ctx}`).join("\n")}
+${retrievedContext.map((ctx) => `[${ctx.pageId}] ${ctx.pageContent}`).join("\n")}
 
 Instructions:
 - Answer the user's question using only the context above.
 - Set "answer" to your response.
-- Set "queryIndex" to the array position number (as a string) of the context entry above that most directly grounded your answer. For example, if you used the entry labeled [0], set queryIndex to "0". If you used [2], set it to "2". Do NOT use titles, captions, or any other text — only the integer index.
-- If no context entry is relevant, set "queryIndex" to "-1".
+- Set "sourcePageId" to the exact UUID shown in the square brackets for the context entry that most directly grounded your answer. Copy it character-for-character (including hyphens). Do not use titles, page text, array positions, or any other identifier.
+- If no context entry is relevant, set "sourcePageId" to an empty string "".
 `;

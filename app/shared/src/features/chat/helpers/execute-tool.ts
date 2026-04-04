@@ -5,17 +5,15 @@ import type { ChatOrchestratorOutput } from "@hydrowise/entities";
 export const executeTool = async (plan: ChatOrchestratorOutput) => {
   switch (plan.toolCall?.toolName) {
     case "grounded-response":
-      return await runGroundedChatTool(plan.toolCall.args.retrievalQuery);
+      return runGroundedChatTool(plan.toolCall.args.retrievalQuery);
+    default:
+      return;
   }
 };
 
 const runGroundedChatTool = async (retrievalQuery: string) => {
   const embedding = await embedText(retrievalQuery);
-  const retrievedContext = await getQueries().then((q) =>
-    q.searchPages(embedding),
-  );
-  return await sendGroundedChat({
-    query: retrievalQuery,
-    retrievedContext: retrievedContext.map((page) => page.pageContent),
-  });
+  const { searchPages } = await getQueries();
+  const retrievedContext = await searchPages(embedding);
+  return sendGroundedChat({ query: retrievalQuery, retrievedContext });
 };
