@@ -4,6 +4,8 @@ import { makeCourseRepo } from "@/queries/course.queries";
 import { makeDocumentRepo } from "@/queries/document.queries";
 import { makePageRepo } from "@/queries/page.queries";
 import { makeTopicRepo } from "@/queries/topic.queries";
+import { makeChatMessageRepo } from "./chat-message.queries";
+import { makeChatThreadRepo } from "./chat-thread.queries";
 
 export const makeQueries = (db: Db) => {
   const courses = makeCourseRepo(db);
@@ -11,6 +13,8 @@ export const makeQueries = (db: Db) => {
   const topics = makeTopicRepo(db);
   const documents = makeDocumentRepo(db);
   const pages = makePageRepo(db);
+  const chatThreads = makeChatThreadRepo(db);
+  const chatMessages = makeChatMessageRepo(db);
   return {
     listCourses: courses.listCourses,
     createCourse: courses.createCourse,
@@ -29,5 +33,10 @@ export const makeQueries = (db: Db) => {
     createDocument: documents.createDocument,
     getPage: pages.getPage,
     createPage: pages.createPage,
+    listChatThreads: chatThreads.listChatThreads,
+    createChatThread: chatThreads.createChatThread,
+    patchChatThread: chatThreads.patchChatThread,
+    listChatMessages: chatMessages.listChatMessages,
+    createChatMessage: chatMessages.createChatMessage,
   };
 };

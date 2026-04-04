@@ -6,7 +6,9 @@ export const ChatThreadSchema = z.object({
   courseId: z.string().nullable(),
 });
 
-export const CreateChatThreadInputSchema = ChatThreadSchema.omit({ id: true });
+export const PatchChatThreadInputSchema = ChatThreadSchema.omit({
+  id: true,
+}).partial();
 
 export type ChatThread = z.infer<typeof ChatThreadSchema>;
-export type CreateChatThreadInput = z.infer<typeof CreateChatThreadInputSchema>;
+export type PatchChatThreadInput = z.infer<typeof PatchChatThreadInputSchema>;
