@@ -10,7 +10,7 @@ ${retrievedContext.map((ctx) => `[${ctx.pageId}] ${ctx.pageContent}`).join("\n")
 
 Instructions:
 - Answer the user's question using only the context above.
-- Set "answer" to your response.
-- Set "sourcePageId" to the exact UUID shown in the square brackets for the context entry that most directly grounded your answer. Copy it character-for-character (including hyphens). Do not use titles, page text, array positions, or any other identifier.
-- If no context entry is relevant, set "sourcePageId" to an empty string "".
+- Set "text" to your response.
+- Set "refs" to an array of citation objects. Each citation must have kind "citation", documentId (string), pageNumber (number), and excerpt (string or null). Use the UUID from square brackets as documentId when it identifies the cited context; use pageNumber 1 when the context block maps to a single page; set excerpt to a short supporting quote from that context or null.
+- If no context entry is relevant, set "refs" to an empty array.
 `;
