@@ -1,3 +1,4 @@
+import type { GroundedAssistantMessagePayload } from "@hydrowise/entities";
 import { buildChatTurnInput } from "@/features/chat/helpers/build-chat-turn-input";
 import { ensureThreadForSend } from "@/features/chat/helpers/ensure-thread-for-send";
 import { persistChatMessage } from "@/features/chat/helpers/persist-chat-message";
@@ -9,13 +10,17 @@ type SendChatTurnParams = {
   threadId: string | null;
   setThreadId: (id: string | null) => void;
   text: string;
+  setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void;
 };
 
 export const sendChatTurn = async ({
   threadId,
   setThreadId,
   text,
+  setAssistantDraft,
 }: SendChatTurnParams) => {
+  setAssistantDraft(null);
+
   const ensured = await ensureThreadForSend(threadId);
   const activeThreadId = ensured.threadId;
 
@@ -38,12 +43,20 @@ export const sendChatTurn = async ({
 
   await syncThread(activeThreadId, plan);
 
-  const toolResult = await runChatTool(plan);
+  const output = await runChatTool(plan, setAssistantDraft);
+
+  if (output) {
+    await persistChatMessage({
+      threadId: activeThreadId,
+      role: "assistant",
+      payload: output,
+    });
+    setAssistantDraft(null);
+  }
 
   return {
     threadId: activeThreadId,
     userMessage,
     plan,
-    toolResult,
   };
 };

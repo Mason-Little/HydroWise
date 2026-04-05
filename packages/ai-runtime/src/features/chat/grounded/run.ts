@@ -1,16 +1,21 @@
 import {
   type ChatGroundedInput,
+  type GroundedAssistantMessagePayload,
   GroundedAssistantMessagePayloadSchema,
-  GroundedAssistantMessageStreamSchema,
 } from "@hydrowise/entities";
 import { Output, streamText } from "ai";
 import { getLanguageModel } from "@/runtime";
 import { groundedChatSystemPrompt } from "./config";
 
-export const sendGroundedChat = async (input: ChatGroundedInput) => {
+export type SendGroundedChatResult = {
+  partialOutputStream: AsyncIterable<unknown>;
+  output: Promise<GroundedAssistantMessagePayload>;
+};
+
+export const sendGroundedChat = (input: ChatGroundedInput): SendGroundedChatResult => {
   const { query, retrievedContext } = input;
   const model = getLanguageModel();
-  const { output } = streamText({
+  const { partialOutputStream, output } = streamText({
     model,
     system: groundedChatSystemPrompt(retrievedContext),
     prompt: query,
@@ -19,14 +24,11 @@ export const sendGroundedChat = async (input: ChatGroundedInput) => {
     output: Output.object({
       name: "chat",
       description: "chat response",
-      schema: GroundedAssistantMessageStreamSchema,
+      schema: GroundedAssistantMessagePayloadSchema,
     }),
   });
-
-  const streamed = GroundedAssistantMessageStreamSchema.parse(await output);
-  return GroundedAssistantMessagePayloadSchema.parse({
-    kind: "grounded-answer",
-    text: streamed.text,
-    refs: streamed.refs,
-  });
+  return {
+    partialOutputStream,
+    output: output as Promise<GroundedAssistantMessagePayload>,
+  };
 };

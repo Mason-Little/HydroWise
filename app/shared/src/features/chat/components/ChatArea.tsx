@@ -6,7 +6,7 @@ const emptyCenter =
   "text-muted-foreground flex flex-1 min-h-0 items-center justify-center text-sm";
 
 export const ChatArea = () => {
-  const { threadId } = useChatContext();
+  const { threadId, assistantDraft } = useChatContext();
   const { messages, isLoading } = useChatMessages(threadId);
 
   if (threadId === null) {
@@ -21,7 +21,10 @@ export const ChatArea = () => {
     return <div className={emptyCenter}>Loading…</div>;
   }
 
-  if (messages.length === 0) {
+  const hasDraft = assistantDraft != null;
+  const hasListContent = messages.length > 0 || hasDraft;
+
+  if (!hasListContent) {
     return <div className={emptyCenter}>No messages yet.</div>;
   }
 
