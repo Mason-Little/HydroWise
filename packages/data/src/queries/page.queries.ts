@@ -16,6 +16,13 @@ export const makePageRepo = (db: Db) => ({
       );
     return row;
   },
+  getPageById: async (pageId: string) => {
+    const [row] = await db
+      .select()
+      .from(pages)
+      .where(eq(pages.id, pageId));
+    return row;
+  },
   searchPages: async (embedding: number[], limit: number = 10) => {
     const rows = await db
       .select({

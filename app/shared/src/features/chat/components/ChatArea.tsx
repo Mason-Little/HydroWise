@@ -1,13 +1,16 @@
-import { ChatMessageBubble } from "@/features/chat/components/ChatMessageBubble";
+import { ChatMessageItem } from "@/features/chat/components/messages";
 import { useChatContext } from "@/features/chat/context";
-import { useChatMessages } from "@/features/chat/hooks/use-chat-messages";
+import { useChatDisplayMessages } from "@/features/chat/hooks/use-chat-display-messages";
 
 const emptyCenter =
   "text-muted-foreground flex flex-1 min-h-0 items-center justify-center text-sm";
 
 export const ChatArea = () => {
   const { threadId, assistantDraft } = useChatContext();
-  const { messages, isLoading } = useChatMessages(threadId);
+  const { messages, isLoading } = useChatDisplayMessages(
+    threadId,
+    assistantDraft,
+  );
 
   if (threadId === null) {
     return (
@@ -21,17 +24,14 @@ export const ChatArea = () => {
     return <div className={emptyCenter}>Loading…</div>;
   }
 
-  const hasDraft = assistantDraft != null;
-  const hasListContent = messages.length > 0 || hasDraft;
-
-  if (!hasListContent) {
+  if (messages.length === 0) {
     return <div className={emptyCenter}>No messages yet.</div>;
   }
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto py-2">
       {messages.map((message) => (
-        <ChatMessageBubble key={message.id} message={message} />
+        <ChatMessageItem key={message.id} message={message} />
       ))}
     </div>
   );
