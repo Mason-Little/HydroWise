@@ -1,16 +1,11 @@
-import type {
-  ChatOrchestratorInput,
-  ChatOrchestratorOutput,
-} from "@hydrowise/entities";
+import type { ChatOrchestratorInput } from "@hydrowise/entities";
 import { ChatOrchestratorOutputSchema } from "@hydrowise/entities";
 import { Output, streamText } from "ai";
 import { getLanguageModel } from "@/runtime";
 import { buildOrchestratorUserPrompt, orchestratorSystemPrompt } from "./confg";
 
-export const runChatOrchestrator = async (
-  input: ChatOrchestratorInput,
-): Promise<ChatOrchestratorOutput> => {
-  const { partialOutputStream, output } = streamText({
+export const runChatOrchestrator = (input: ChatOrchestratorInput) => {
+  return streamText({
     model: getLanguageModel(),
     system: orchestratorSystemPrompt,
     prompt: buildOrchestratorUserPrompt(input),
@@ -22,10 +17,4 @@ export const runChatOrchestrator = async (
       schema: ChatOrchestratorOutputSchema,
     }),
   });
-
-  for await (const chunk of partialOutputStream) {
-    console.log("text", chunk);
-  }
-
-  return await output;
 };

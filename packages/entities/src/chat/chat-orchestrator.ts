@@ -37,8 +37,18 @@ export const ChatToolCallSchema = z.discriminatedUnion("toolName", [
 ]);
 
 export const ChatOrchestratorOutputSchema = z.object({
-  activeCourse: z.string().nullable(),
-  threadTitle: z.string().nullable(),
+  activeCourse: z
+    .string()
+    .optional()
+    .describe(
+      "Workspace course id when assigning or changing thread course; omit if course is already correct in context (do not restate an existing choice).",
+    ),
+  threadTitle: z
+    .string()
+    .optional()
+    .describe(
+      "Short thread title when naming or retitling; omit if a title is already established in context (do not restate).",
+    ),
   toolCall: ChatToolCallSchema,
 });
 

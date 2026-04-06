@@ -10,5 +10,6 @@ export const requestChatOrchestratorPlan = async (
   input: ChatOrchestratorInput,
 ): Promise<ChatOrchestratorOutput> => {
   const parsed = ChatOrchestratorInputSchema.parse(input);
-  return runChatOrchestrator(parsed);
+  const { output } = await runChatOrchestrator(parsed);
+  return output;
 };

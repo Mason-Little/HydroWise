@@ -21,10 +21,10 @@ export const sendChatTurn = async ({
 }: SendChatTurnParams) => {
   setAssistantDraft(null);
 
-  const ensured = await ensureThreadForSend(threadId);
-  const activeThreadId = ensured.threadId;
+  const { threadId: activeThreadId, createdNewThread } =
+    await ensureThreadForSend(threadId);
 
-  if (ensured.createdNewThread) {
+  if (createdNewThread) {
     setThreadId(activeThreadId);
   }
 
@@ -40,16 +40,15 @@ export const sendChatTurn = async ({
   });
 
   const plan = await requestChatOrchestratorPlan(plannerInput);
-
   await syncThread(activeThreadId, plan);
 
-  const output = await runChatTool(plan, setAssistantDraft);
+  const assistantPayload = await runChatTool(plan, setAssistantDraft);
 
-  if (output) {
+  if (assistantPayload) {
     await persistChatMessage({
       threadId: activeThreadId,
       role: "assistant",
-      payload: output,
+      payload: assistantPayload,
     });
     setAssistantDraft(null);
   }

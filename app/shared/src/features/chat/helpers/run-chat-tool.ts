@@ -32,12 +32,9 @@ export const runChatTool = async (
   plan: ChatOrchestratorOutput,
   setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void,
 ) => {
-  const { toolCall } = plan;
-  if (!toolCall || toolCall.toolName !== "grounded-response") {
+  const call = plan.toolCall;
+  if (call?.toolName !== "grounded-response") {
     return;
   }
-  return await runGroundedChatTool(
-    toolCall.args.retrievalQuery,
-    setAssistantDraft,
-  );
+  return runGroundedChatTool(call.args.retrievalQuery, setAssistantDraft);
 };

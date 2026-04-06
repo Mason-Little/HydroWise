@@ -5,13 +5,19 @@ export const syncThread = async (
   threadId: string,
   plan: Pick<ChatOrchestratorOutput, "threadTitle" | "activeCourse">,
 ) => {
-  const patch: { title?: string; courseId?: string } = {};
-
-  if (plan.threadTitle != null) patch.title = plan.threadTitle;
-  if (plan.activeCourse != null) patch.courseId = plan.activeCourse;
-
-  if (Object.keys(patch).length === 0) return;
+  if (plan.threadTitle == null && plan.activeCourse == null) {
+    return;
+  }
 
   const { patchChatThread } = await getQueries();
+  const patch: { title?: string; courseId?: string } = {};
+
+  if (plan.threadTitle != null) {
+    patch.title = plan.threadTitle;
+  }
+  if (plan.activeCourse != null) {
+    patch.courseId = plan.activeCourse;
+  }
+
   await patchChatThread(threadId, patch);
 };

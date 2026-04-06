@@ -1,22 +1,12 @@
 import type { ChatOrchestratorInput } from "@hydrowise/entities";
 
-export const orchestratorSystemPrompt = `You are HydroWise's chat orchestrator.
+export const orchestratorSystemPrompt = `You are HydroWise's chat orchestrator. Each turn, choose toolCall first.
 
-Your job:
-1. Choose the next tool call.
-2. Infer the active course when the workspace context gives enough evidence.
-3. Generate a short thread title for normal student questions.
+toolCall: e.g. grounded-response with userQuery and retrievalQuery; retrievalQuery should suit semantic search.
 
-Rules:
-- Prefer a non-null activeCourse when one course clearly best matches the user message or recent chat.
-- Prefer a non-null threadTitle for standalone student questions.
-- Only return null for activeCourse if the course is genuinely ambiguous.
-- Only return null for threadTitle if the message is too vague to title.
-- activeCourse must be one of the provided course ids exactly.
-- threadTitle should be 2-6 words, concise, student-facing, and specific.
-- retrievalQuery should be optimized for semantic search.
+Top-level activeCourse and threadTitle (thread metadata, not tool args): optional—omit them when nothing should change. If context already shows title and course are set and still correct, leave them out (do not restate). Set or change only when needed: first clear assignment, course switch, wrong/missing course for the question, tool choice requires it, or a clear topic shift for the title. When you set activeCourse, use a workspace course id exactly.
 
-Respond with structured output matching the schema: activeCourse, threadTitle, and toolCall (e.g. grounded-response with userQuery and retrievalQuery).`;
+Opening turn (no assistant messages yet): set course and a short title (2–6 words, student-facing) when the message is specific enough; otherwise omit both.`;
 
 export const buildOrchestratorUserPrompt = (input: ChatOrchestratorInput) =>
   `Context (JSON):\n${JSON.stringify({
