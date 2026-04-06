@@ -22,8 +22,7 @@ export const Material = () => {
     });
   }, [chapters]);
 
-  const activeChapter =
-    chapters.find((c) => c.id === activeChapterId) ?? null;
+  const activeChapter = chapters.find((c) => c.id === activeChapterId) ?? null;
 
   return (
     <MaterialSelectionContext.Provider

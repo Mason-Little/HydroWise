@@ -7,17 +7,13 @@ type DesktopRequest = {
 };
 
 // Ensures server readiness, then fetches a path on the desktop server.
-export async function desktopFetch(
-  request: DesktopRequest,
-): Promise<Response> {
+export async function desktopFetch(request: DesktopRequest): Promise<Response> {
   await ensureDesktopServerReady();
   return desktopFetchRaw(request);
 }
 
 // Fetches JSON from the desktop server and returns parsed T.
-export async function desktopFetchJson<T>(
-  request: DesktopRequest,
-): Promise<T> {
+export async function desktopFetchJson<T>(request: DesktopRequest): Promise<T> {
   const response = await desktopFetch(request);
   return (await response.json()) as T;
 }

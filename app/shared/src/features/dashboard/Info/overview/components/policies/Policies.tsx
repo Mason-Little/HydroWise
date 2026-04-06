@@ -22,7 +22,10 @@ export const Policies = ({ policies, compressed }: PoliciesProps) => {
             : "pb-2",
         )}
       >
-        <h2 id="overview-policies-heading" className="app-overview-policies__title">
+        <h2
+          id="overview-policies-heading"
+          className="app-overview-policies__title"
+        >
           Policies
         </h2>
         {!compressed ? (

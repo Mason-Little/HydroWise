@@ -1,4 +1,7 @@
-import type { JsonValue, PartialJsonSnapshot } from "@/adapters/web/structured/types";
+import type {
+  JsonValue,
+  PartialJsonSnapshot,
+} from "@/adapters/web/structured/types";
 
 // Strips trailing commas and colons that would make a JSON fragment invalid.
 const trimTrailingJsonSeparator = (text: string) => {

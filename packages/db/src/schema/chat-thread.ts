@@ -3,8 +3,9 @@ import { courses } from "@/schema/courses";
 
 export const chatThreads = pgTable("chat_threads", {
   id: uuid("id").defaultRandom().primaryKey(),
-  courseId: uuid("course_id")
-    .references(() => courses.id, { onDelete: "cascade" }),
+  courseId: uuid("course_id").references(() => courses.id, {
+    onDelete: "cascade",
+  }),
   title: text("title"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()

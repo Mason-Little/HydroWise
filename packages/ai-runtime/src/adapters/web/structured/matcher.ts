@@ -1,5 +1,8 @@
 import { collectAcceptedTokenIds } from "@/adapters/web/structured/bitmask";
-import type { PreparedTokenMask, XGrammarMatcherHandle } from "@/adapters/web/structured/types";
+import type {
+  PreparedTokenMask,
+  XGrammarMatcherHandle,
+} from "@/adapters/web/structured/types";
 
 // Manages the XGrammar state machine, pre-fetching the next bitmask after each accepted token.
 export class StructuredOutputMatcher {

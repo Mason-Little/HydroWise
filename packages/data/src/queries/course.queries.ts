@@ -85,7 +85,10 @@ export const makeCourseRepo = (db: Db) => {
       return row;
     },
 
-    updateCourseTodos: async (courseId: string, courseTodos: CourseTodoItem[]) => {
+    updateCourseTodos: async (
+      courseId: string,
+      courseTodos: CourseTodoItem[],
+    ) => {
       await getCourseOrThrow(courseId);
 
       const next = courseTodos.map((row) => CourseTodoItemSchema.parse(row));

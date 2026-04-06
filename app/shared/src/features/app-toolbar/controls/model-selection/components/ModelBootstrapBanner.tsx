@@ -12,8 +12,12 @@ const STAGE_LABELS = {
 
 export const ModelBootstrapBanner = () => {
   const defaultModelTier = useModelStore((s) => s.defaultModelTier);
-  const bootstrapMissingLanguage = useModelStore((s) => s.bootstrapMissingLanguage);
-  const bootstrapMissingEmbedding = useModelStore((s) => s.bootstrapMissingEmbedding);
+  const bootstrapMissingLanguage = useModelStore(
+    (s) => s.bootstrapMissingLanguage,
+  );
+  const bootstrapMissingEmbedding = useModelStore(
+    (s) => s.bootstrapMissingEmbedding,
+  );
   const bootstrapMissingVision = useModelStore((s) => s.bootstrapMissingVision);
 
   const { bootstrapDownload, isBootstrapping, bootstrapAllModels } =

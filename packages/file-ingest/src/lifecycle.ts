@@ -24,7 +24,10 @@ export async function withConverter<T>(
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
   const timeout = new Promise<never>((_, reject) => {
     timeoutId = setTimeout(
-      () => reject(new Error("[file-ingest] Conversion timed out. Please try again.")),
+      () =>
+        reject(
+          new Error("[file-ingest] Conversion timed out. Please try again."),
+        ),
       timeoutMs,
     );
   });

@@ -12,7 +12,9 @@ export type SendGroundedChatResult = {
   output: Promise<GroundedAssistantMessagePayload>;
 };
 
-export const sendGroundedChat = (input: ChatGroundedInput): SendGroundedChatResult => {
+export const sendGroundedChat = (
+  input: ChatGroundedInput,
+): SendGroundedChatResult => {
   const { query, retrievedContext } = input;
   const model = getLanguageModel();
   const { partialOutputStream, output } = streamText({

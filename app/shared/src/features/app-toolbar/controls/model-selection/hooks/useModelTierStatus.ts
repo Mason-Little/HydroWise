@@ -32,7 +32,9 @@ const deriveActionVariant = (
   return "warmup";
 };
 
-export const useModelTierStatus = (tier: LanguageModelTier): ModelTierStatus => {
+export const useModelTierStatus = (
+  tier: LanguageModelTier,
+): ModelTierStatus => {
   const runtime = useModelStore((s) => s.runtime);
   const activeModelTier = useModelStore((s) => s.activeModelTier);
   const selectedModelTier = useModelStore((s) => s.selectedModelTier);

@@ -5,20 +5,30 @@ type Props = {
   desktopOnly: boolean;
 };
 
-const getTag = (
-  props: Props,
-): { text: string; className: string } | null => {
+const getTag = (props: Props): { text: string; className: string } | null => {
   if (props.isActive) {
-    return { text: "loaded", className: "bg-[var(--green-bg)] text-[var(--green)]" };
+    return {
+      text: "loaded",
+      className: "bg-[var(--green-bg)] text-[var(--green)]",
+    };
   }
   if (props.isDownloading) {
-    return { text: "downloading", className: "bg-[var(--surface-alt)] text-[var(--text-tertiary)]" };
+    return {
+      text: "downloading",
+      className: "bg-[var(--surface-alt)] text-[var(--text-tertiary)]",
+    };
   }
   if (props.isCached) {
-    return { text: "on device", className: "bg-[var(--olive-bg)] text-[var(--olive)]" };
+    return {
+      text: "on device",
+      className: "bg-[var(--olive-bg)] text-[var(--olive)]",
+    };
   }
   if (props.desktopOnly) {
-    return { text: "desktop", className: "bg-[var(--surface-alt)] text-[var(--text-muted)]" };
+    return {
+      text: "desktop",
+      className: "bg-[var(--surface-alt)] text-[var(--text-muted)]",
+    };
   }
   return null;
 };

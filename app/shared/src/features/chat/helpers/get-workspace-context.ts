@@ -15,7 +15,10 @@ export const getWorkspaceContext = async (): Promise<ChatWorkspaceContext> => {
     queries.listChapters(),
   ]);
 
-  const chaptersByCourseId = new Map<string, WorkspaceContextItem["chapters"]>();
+  const chaptersByCourseId = new Map<
+    string,
+    WorkspaceContextItem["chapters"]
+  >();
   for (const ch of allChapters) {
     const slice = chaptersByCourseId.get(ch.courseId) ?? [];
     slice.push({

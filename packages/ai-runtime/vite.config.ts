@@ -14,7 +14,12 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: [/^@hydrowise\//, /^@huggingface\//, /^ai$/, /^@ai-sdk\/provider$/],
+      external: [
+        /^@hydrowise\//,
+        /^@huggingface\//,
+        /^ai$/,
+        /^@ai-sdk\/provider$/,
+      ],
       output: {
         preserveModules: true,
         preserveModulesRoot: "src",

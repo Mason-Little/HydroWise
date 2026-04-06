@@ -33,10 +33,14 @@ const styles: Record<ModelActionVariant, string> = {
 };
 
 const renderIcon = (variant: ModelActionVariant) => {
-  if (variant === "download") return <DownloadIcon className="size-[var(--size-icon-sm)]" />;
-  if (variant === "warmup") return <FlameIcon className="size-[var(--size-icon-sm)]" />;
-  if (variant === "warming") return <Loader2Icon className="size-[var(--size-icon-sm)] animate-spin" />;
-  if (variant === "active") return <CheckIcon className="size-[var(--size-icon-sm)]" />;
+  if (variant === "download")
+    return <DownloadIcon className="size-[var(--size-icon-sm)]" />;
+  if (variant === "warmup")
+    return <FlameIcon className="size-[var(--size-icon-sm)]" />;
+  if (variant === "warming")
+    return <Loader2Icon className="size-[var(--size-icon-sm)] animate-spin" />;
+  if (variant === "active")
+    return <CheckIcon className="size-[var(--size-icon-sm)]" />;
   return <MonitorIcon className="size-[var(--size-icon-sm)]" />;
 };
 

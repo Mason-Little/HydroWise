@@ -1112,9 +1112,5 @@
 
 .app-dashboard-view-toggle
   .app-dashboard-view-toggle__item[aria-pressed="false"]:hover {
-  color: color-mix(
-    in srgb,
-    var(--app-text-muted) 52%,
-    var(--app-text-primary)
-  );
+  color: color-mix(in srgb, var(--app-text-muted) 52%, var(--app-text-primary));
 }

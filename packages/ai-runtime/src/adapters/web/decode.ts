@@ -11,5 +11,7 @@ export const decodeGeneratedText = (
     typeof outputs.slice === "function"
       ? outputs.slice(null, [promptLength, end])
       : outputs;
-  return processor.batch_decode(sliced, { skip_special_tokens: true })[0] as string;
+  return processor.batch_decode(sliced, {
+    skip_special_tokens: true,
+  })[0] as string;
 };

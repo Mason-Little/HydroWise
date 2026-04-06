@@ -1,7 +1,4 @@
-import {
-  desktopFetch,
-  desktopFetchJson,
-} from "@/backends/desktop/api/client";
+import { desktopFetch, desktopFetchJson } from "@/backends/desktop/api/client";
 
 export type DesktopServerModelStatus = {
   value: string;

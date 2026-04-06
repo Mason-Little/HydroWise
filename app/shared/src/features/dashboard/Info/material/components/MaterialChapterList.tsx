@@ -2,13 +2,8 @@ import { useMaterialSelection } from "@/features/dashboard/Info/material/context
 import { cn } from "@/lib/utils";
 
 export const MaterialChapterList = () => {
-  const {
-    activeChapter,
-    setActiveChapterId,
-    chapters,
-    isLoading,
-    courseId,
-  } = useMaterialSelection();
+  const { activeChapter, setActiveChapterId, chapters, isLoading, courseId } =
+    useMaterialSelection();
 
   if (!courseId) {
     return null;

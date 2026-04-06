@@ -9,18 +9,12 @@ export const makePageRepo = (db: Db) => ({
       .select()
       .from(pages)
       .where(
-        and(
-          eq(pages.documentId, documentId),
-          eq(pages.pageNumber, pageNumber),
-        ),
+        and(eq(pages.documentId, documentId), eq(pages.pageNumber, pageNumber)),
       );
     return row;
   },
   getPageById: async (pageId: string) => {
-    const [row] = await db
-      .select()
-      .from(pages)
-      .where(eq(pages.id, pageId));
+    const [row] = await db.select().from(pages).where(eq(pages.id, pageId));
     return row;
   },
   searchPages: async (embedding: number[], limit: number = 10) => {
