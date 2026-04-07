@@ -4,7 +4,7 @@ import type {
   WorkspaceContextItem,
 } from "@hydrowise/entities";
 
-export type ChatWorkspaceContext = NonNullable<
+type ChatWorkspaceContext = NonNullable<
   ChatOrchestratorInput["workspaceContext"]
 >;
 

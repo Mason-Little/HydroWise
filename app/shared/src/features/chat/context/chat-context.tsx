@@ -4,9 +4,8 @@ import { useSendChatMessage } from "@/features/chat/hooks/use-send-chat-message"
 
 export type ChatContextValue = {
   isStreaming: boolean;
-  sendMessage: (message: string) => Promise<unknown>;
+  sendMessage: (message: string) => Promise<void>;
   assistantDraft: GroundedAssistantMessagePayload | null;
-  setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void;
 };
 
 export const ChatContext = createContext<ChatContextValue | null>(null);
@@ -27,7 +26,6 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
         isStreaming,
         sendMessage,
         assistantDraft,
-        setAssistantDraft,
       }}
     >
       {children}

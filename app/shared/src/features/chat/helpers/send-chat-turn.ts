@@ -33,7 +33,7 @@ export const sendChatTurn = async ({
     text,
   });
 
-  const userMessage = await persistChatMessage({
+  await persistChatMessage({
     threadId,
     role: "user",
     payload: { kind: "user-text", text },
@@ -54,9 +54,5 @@ export const sendChatTurn = async ({
     setAssistantDraft(null);
   }
 
-  return {
-    threadId,
-    userMessage,
-    plan,
-  };
+  return { threadId };
 };

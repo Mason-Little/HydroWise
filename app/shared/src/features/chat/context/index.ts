@@ -1,5 +1,4 @@
 export {
-  ChatContext,
   type ChatContextValue,
   ChatProvider,
   useChatContext,

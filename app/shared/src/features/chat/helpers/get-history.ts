@@ -1,8 +1,6 @@
 import { getQueries } from "@hydrowise/data";
 import type { ChatHistoryMessage } from "@hydrowise/entities";
 
-export type { ChatHistoryMessage };
-
 export const getChatHistory = async (
   threadId: string | null,
 ): Promise<ChatHistoryMessage[]> => {

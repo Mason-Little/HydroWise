@@ -17,16 +17,15 @@ export const useSendChatMessage = (
 
       setIsStreaming(true);
       try {
-        const result = await sendChatTurn({
+        const { threadId } = await sendChatTurn({
           activeThreadId,
           setActiveThread,
           text,
           setAssistantDraft,
         });
         await queryClient.invalidateQueries({
-          queryKey: ["chatMessages", result.threadId],
+          queryKey: ["chatMessages", threadId],
         });
-        return result;
       } finally {
         setIsStreaming(false);
       }
