@@ -1,80 +1,104 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { ActionResultsPanel } from "./ActionResultsPanel";
+import { Command, CommandInput } from "@/components/ui/command";
+import { ToolbarCommandMenu } from "@/features/app-toolbar/actions/ToolbarCommandMenu";
+import {
+  focusToolbarCommandInput,
+  isModKShortcut,
+  shouldIgnoreGlobalToolbarCommandShortcut,
+} from "@/features/app-toolbar/actions/toolbarCommandBar";
+import { cn } from "@/lib/utils";
+
+const resultsPanelClassName = cn(
+  "absolute top-[calc(100%+8px)] left-0 z-50 w-full overflow-hidden rounded-[14px] border border-[var(--app-hairline)] bg-[var(--app-surface-primary)] text-[12px] text-[var(--app-text-primary)] shadow-[var(--app-shadow-lift)]",
+  "[&_[data-slot=command-item]>svg:last-child]:hidden",
+);
 
 export const AppActionBar = () => {
-  const [query, setQuery] = useState("");
-  const [panelOpen, setPanelOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const commandInputRef = useRef<HTMLInputElement>(null);
 
-  const closePanel = useCallback(() => {
-    setPanelOpen(false);
-    setQuery("");
+  const dismiss = useCallback(() => {
+    setOpen(false);
+    setSearchQuery("");
   }, []);
 
   useEffect(() => {
-    if (!panelOpen) return;
-
+    if (!open) return;
     const onPointerDown = (e: PointerEvent) => {
-      const el = containerRef.current;
-      if (el && e.target instanceof Node && el.contains(e.target)) return;
-      closePanel();
+      const t = e.target;
+      if (t instanceof Node && !rootRef.current?.contains(t)) dismiss();
     };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [open, dismiss]);
 
+  useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closePanel();
-    };
+      if (!isModKShortcut(e)) return;
+      if (shouldIgnoreGlobalToolbarCommandShortcut(rootRef.current)) return;
 
-    document.addEventListener("pointerdown", onPointerDown, true);
-    document.addEventListener("keydown", onKeyDown, true);
-    return () => {
-      document.removeEventListener("pointerdown", onPointerDown, true);
-      document.removeEventListener("keydown", onKeyDown, true);
+      e.preventDefault();
+      if (open) {
+        dismiss();
+        return;
+      }
+      setOpen(true);
+      focusToolbarCommandInput(commandInputRef, rootRef.current);
     };
-  }, [panelOpen, closePanel]);
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open, dismiss]);
 
   return (
     <div
-      ref={containerRef}
+      ref={rootRef}
       className="relative w-full min-w-0 max-w-[760px] justify-self-center"
     >
-      <div
-        className="pointer-events-none absolute top-1/2 left-3.5 z-10 -translate-y-1/2 text-[var(--app-text-tertiary)] [&_svg]:size-[18px]"
-        aria-hidden
+      <Command
+        shouldFilter={false}
+        aria-label="Search and actions"
+        className="overflow-visible rounded-none bg-transparent p-0 shadow-none"
+        onKeyDown={(e) => {
+          if (e.key !== "Escape") return;
+          e.preventDefault();
+          dismiss();
+        }}
       >
-        <SearchIcon strokeWidth={1.75} />
-      </div>
-      <Input
-        placeholder="Search, open, paste, or upload…"
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setPanelOpen(true);
-        }}
-        onFocus={() => {
-          setPanelOpen(true);
-        }}
-        className="h-12 w-full rounded-xl border border-[var(--app-hairline)] bg-[var(--app-surface-primary)] pr-4 pl-[42px] text-[12px] text-[var(--app-text-primary)] shadow-none outline-none placeholder:text-[var(--app-text-tertiary)] focus-visible:border-[color-mix(in_srgb,var(--app-accent)_38%,var(--app-border-solid))] focus-visible:ring-[3px] focus-visible:ring-[color-mix(in_srgb,var(--app-accent)_12%,transparent)]"
-        autoComplete="off"
-        aria-autocomplete="list"
-        aria-expanded={panelOpen}
-        aria-controls={panelOpen ? "app-action-results" : undefined}
-      />
-      {panelOpen ? (
         <div
-          id="app-action-results"
-          role="listbox"
-          className="absolute top-[calc(100%+8px)] z-50 max-h-[min(24rem,70vh)] w-full overflow-y-auto rounded-[var(--app-radius-workspace)] border border-[var(--app-hairline)] bg-[var(--app-surface-primary)] p-2 text-[12px] text-popover-foreground shadow-[var(--app-shadow-lift)]"
-          onMouseDown={(e) => {
-            e.preventDefault();
-          }}
+          className={cn(
+            "rounded-xl border border-[var(--app-hairline)] bg-[var(--app-surface-primary)] px-2 py-1.5 shadow-none transition-[border-color,box-shadow] duration-[180ms] ease-out dark:bg-[var(--app-surface-primary)]",
+            "focus-within:border-[color-mix(in_srgb,var(--app-accent)_38%,var(--app-border-solid))] focus-within:shadow-[0_0_0_3px_color-mix(in_srgb,var(--app-accent)_12%,transparent)]",
+            open &&
+              "border-[color-mix(in_srgb,var(--app-accent)_38%,var(--app-border-solid))] shadow-[0_0_0_3px_color-mix(in_srgb,var(--app-accent)_12%,transparent)]",
+            "[&_[data-slot=command-input-wrapper]]:p-0",
+            "[&_[data-slot=input-group]]:min-h-10 [&_[data-slot=input-group]]:border-0 [&_[data-slot=input-group]]:bg-transparent [&_[data-slot=input-group]]:shadow-none [&_[data-slot=input-group]]:ring-0 dark:[&_[data-slot=input-group]]:bg-transparent",
+          )}
         >
-          <ActionResultsPanel query={query} onClosePanel={closePanel} />
+          <CommandInput
+            ref={commandInputRef}
+            className="text-[12px] text-[var(--app-text-primary)] placeholder:text-[var(--app-text-tertiary)] [&::-webkit-search-cancel-button]:hidden"
+            placeholder="Search, open, paste, or upload…"
+            value={searchQuery}
+            onValueChange={(v) => {
+              setSearchQuery(v);
+              setOpen(true);
+            }}
+            onFocus={() => setOpen(true)}
+            aria-expanded={open}
+            aria-controls={open ? "app-action-results" : undefined}
+          />
         </div>
-      ) : null}
+
+        {open ? (
+          <div className={resultsPanelClassName}>
+            <ToolbarCommandMenu searchQuery={searchQuery} onDismiss={dismiss} />
+          </div>
+        ) : null}
+      </Command>
     </div>
   );
 };
