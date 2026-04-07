@@ -7,47 +7,47 @@ import { runChatTool } from "@/features/chat/helpers/run-chat-tool";
 import { syncThread } from "@/features/chat/helpers/sync-thread";
 
 type SendChatTurnParams = {
-  threadId: string | null;
-  setThreadId: (id: string | null) => void;
+  activeThreadId: string | null;
+  setActiveThread: (threadId: string | null) => void;
   text: string;
   setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void;
 };
 
 export const sendChatTurn = async ({
-  threadId,
-  setThreadId,
+  activeThreadId: currentThreadId,
+  setActiveThread,
   text,
   setAssistantDraft,
 }: SendChatTurnParams) => {
   setAssistantDraft(null);
 
-  const { threadId: activeThreadId, createdNewThread } =
-    await ensureThreadForSend(threadId);
+  const { threadId, createdNewThread } =
+    await ensureThreadForSend(currentThreadId);
 
   if (createdNewThread) {
-    setThreadId(activeThreadId);
+    setActiveThread(threadId);
   }
 
   const plannerInput = await buildChatTurnInput({
-    threadId: activeThreadId,
+    threadId,
     text,
   });
 
   const userMessage = await persistChatMessage({
-    threadId: activeThreadId,
+    threadId,
     role: "user",
     payload: { kind: "user-text", text },
   });
 
   const plan = await requestChatOrchestratorPlan(plannerInput);
 
-  await syncThread(activeThreadId, plan);
+  await syncThread(threadId, plan);
 
   const assistantPayload = await runChatTool(plan, setAssistantDraft);
 
   if (assistantPayload) {
     await persistChatMessage({
-      threadId: activeThreadId,
+      threadId,
       role: "assistant",
       payload: assistantPayload,
     });
@@ -55,7 +55,7 @@ export const sendChatTurn = async ({
   }
 
   return {
-    threadId: activeThreadId,
+    threadId,
     userMessage,
     plan,
   };

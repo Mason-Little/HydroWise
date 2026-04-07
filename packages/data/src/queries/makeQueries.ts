@@ -1,11 +1,11 @@
 import type { Db } from "@hydrowise/db";
 import { makeChapterRepo } from "@/queries/chapter.queries";
+import { makeChatMessageRepo } from "@/queries/chat-message.queries";
+import { makeChatThreadRepo } from "@/queries/chat-thread.queries";
 import { makeCourseRepo } from "@/queries/course.queries";
 import { makeDocumentRepo } from "@/queries/document.queries";
 import { makePageRepo } from "@/queries/page.queries";
 import { makeTopicRepo } from "@/queries/topic.queries";
-import { makeChatMessageRepo } from "./chat-message.queries";
-import { makeChatThreadRepo } from "./chat-thread.queries";
 
 export const makeQueries = (db: Db) => {
   const courses = makeCourseRepo(db);
@@ -17,6 +17,7 @@ export const makeQueries = (db: Db) => {
   const chatMessages = makeChatMessageRepo(db);
   return {
     listCourses: courses.listCourses,
+    getCourse: courses.getCourse,
     createCourse: courses.createCourse,
     updateProfessorInformation: courses.updateProfessorInformation,
     updateCourseDetails: courses.updateCourseDetails,

@@ -1,6 +1,5 @@
 import { ChatArea } from "@/features/chat/components/ChatArea";
 import { ChatInput } from "@/features/chat/components/ChatInput";
-import { ThreadPicker } from "@/features/chat/components/ThreadPicker";
 import { ChatProvider } from "@/features/chat/context";
 
 export const Chat = () => {
@@ -13,7 +12,6 @@ export const Chat = () => {
           </p>
           <h1 className="text-lg font-semibold">Ask HydroWise</h1>
         </header>
-        <ThreadPicker />
         <ChatArea />
         <div className="shrink-0">
           <ChatInput />

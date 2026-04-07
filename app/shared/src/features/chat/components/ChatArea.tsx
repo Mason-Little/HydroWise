@@ -1,20 +1,23 @@
 import { ChatMessageItem } from "@/features/chat/components/messages";
 import { useChatContext } from "@/features/chat/context";
 import { useChatDisplayMessages } from "@/features/chat/hooks/use-chat-display-messages";
+import { cn } from "@/lib/utils";
+import { useThreadStore } from "@/store/threadStore";
 
 const emptyCenter =
   "text-muted-foreground flex flex-1 min-h-0 items-center justify-center text-sm";
 
 export const ChatArea = () => {
-  const { threadId, assistantDraft } = useChatContext();
+  const { assistantDraft } = useChatContext();
+  const { activeThreadId } = useThreadStore();
   const { messages, isLoading } = useChatDisplayMessages(
-    threadId,
+    activeThreadId,
     assistantDraft,
   );
 
-  if (threadId === null) {
+  if (activeThreadId === null) {
     return (
-      <div className={`${emptyCenter} px-2 text-center`}>
+      <div className={cn(emptyCenter, "px-2 text-center")}>
         Select a thread or send a message to start.
       </div>
     );

@@ -15,7 +15,7 @@ import {
 import { eq } from "drizzle-orm";
 
 export const makeCourseRepo = (db: Db) => {
-  const getCourseOrThrow = async (courseId: string) => {
+  const getCourse = async (courseId: string) => {
     const [course] = await db
       .select()
       .from(courses)
@@ -26,6 +26,7 @@ export const makeCourseRepo = (db: Db) => {
   };
 
   return {
+    getCourse,
     listCourses: async () => {
       return db.select().from(courses);
     },
@@ -40,7 +41,7 @@ export const makeCourseRepo = (db: Db) => {
       courseId: string,
       patch: Partial<ProfessorInformation>,
     ) => {
-      const existing = await getCourseOrThrow(courseId);
+      const existing = await getCourse(courseId);
       const updated = ProfessorInformationSchema.parse({
         ...existing.professorInformation,
         ...patch,
@@ -57,7 +58,7 @@ export const makeCourseRepo = (db: Db) => {
       courseId: string,
       patch: Partial<CourseDetails>,
     ) => {
-      const existing = await getCourseOrThrow(courseId);
+      const existing = await getCourse(courseId);
       const updated = CourseDetailsSchema.parse({
         ...existing.courseDetails,
         ...patch,
@@ -74,7 +75,7 @@ export const makeCourseRepo = (db: Db) => {
       courseId: string,
       plannerState: GradePlannerState,
     ) => {
-      await getCourseOrThrow(courseId);
+      await getCourse(courseId);
 
       const nextPlannerState = GradePlannerStateSchema.parse(plannerState);
       const [row] = await db
@@ -89,7 +90,7 @@ export const makeCourseRepo = (db: Db) => {
       courseId: string,
       courseTodos: CourseTodoItem[],
     ) => {
-      await getCourseOrThrow(courseId);
+      await getCourse(courseId);
 
       const next = courseTodos.map((row) => CourseTodoItemSchema.parse(row));
       const [row] = await db

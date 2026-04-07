@@ -3,8 +3,6 @@ import { createContext, type ReactNode, useContext, useState } from "react";
 import { useSendChatMessage } from "@/features/chat/hooks/use-send-chat-message";
 
 export type ChatContextValue = {
-  threadId: string | null;
-  selectThread: (threadId: string | null) => void;
   isStreaming: boolean;
   sendMessage: (message: string) => Promise<unknown>;
   assistantDraft: GroundedAssistantMessagePayload | null;
@@ -13,22 +11,19 @@ export type ChatContextValue = {
 
 export const ChatContext = createContext<ChatContextValue | null>(null);
 
-export const ChatProvider = ({ children }: { children: ReactNode }) => {
-  const [threadId, setThreadId] = useState<string | null>(null);
+type ChatProviderProps = {
+  children: ReactNode;
+};
+
+export const ChatProvider = ({ children }: ChatProviderProps) => {
   const [assistantDraft, setAssistantDraft] =
     useState<GroundedAssistantMessagePayload | null>(null);
 
-  const { sendMessage, isStreaming } = useSendChatMessage(
-    threadId,
-    setThreadId,
-    setAssistantDraft,
-  );
+  const { sendMessage, isStreaming } = useSendChatMessage(setAssistantDraft);
 
   return (
     <ChatContext.Provider
       value={{
-        threadId,
-        selectThread: setThreadId,
         isStreaming,
         sendMessage,
         assistantDraft,

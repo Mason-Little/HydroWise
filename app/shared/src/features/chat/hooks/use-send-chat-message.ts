@@ -2,14 +2,14 @@ import type { GroundedAssistantMessagePayload } from "@hydrowise/entities";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
 import { sendChatTurn } from "@/features/chat/helpers/send-chat-turn";
+import { useThreadStore } from "@/store/threadStore";
 
 export const useSendChatMessage = (
-  threadId: string | null,
-  setThreadId: (id: string | null) => void,
   setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void,
 ) => {
   const [isStreaming, setIsStreaming] = useState(false);
   const queryClient = useQueryClient();
+  const { activeThreadId, setActiveThread } = useThreadStore();
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -18,8 +18,8 @@ export const useSendChatMessage = (
       setIsStreaming(true);
       try {
         const result = await sendChatTurn({
-          threadId,
-          setThreadId,
+          activeThreadId,
+          setActiveThread,
           text,
           setAssistantDraft,
         });
@@ -31,7 +31,13 @@ export const useSendChatMessage = (
         setIsStreaming(false);
       }
     },
-    [isStreaming, queryClient, setThreadId, threadId, setAssistantDraft],
+    [
+      isStreaming,
+      queryClient,
+      activeThreadId,
+      setActiveThread,
+      setAssistantDraft,
+    ],
   );
 
   return { sendMessage, isStreaming };
