@@ -28,18 +28,19 @@ export const sendChatTurn = async ({
     setThreadId(activeThreadId);
   }
 
+  const plannerInput = await buildChatTurnInput({
+    threadId: activeThreadId,
+    text,
+  });
+
   const userMessage = await persistChatMessage({
     threadId: activeThreadId,
     role: "user",
     payload: { kind: "user-text", text },
   });
 
-  const plannerInput = await buildChatTurnInput({
-    threadId: activeThreadId,
-    text,
-  });
-
   const plan = await requestChatOrchestratorPlan(plannerInput);
+
   await syncThread(activeThreadId, plan);
 
   const assistantPayload = await runChatTool(plan, setAssistantDraft);

@@ -11,12 +11,16 @@ const runGroundedChatTool = async (
   setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void,
 ) => {
   const embedding = await embedText(retrievalQuery);
+
   const { searchPages } = await getQueries();
+
   const retrievedContext = await searchPages(embedding);
+
   const { partialOutputStream, output } = sendGroundedChat({
     query: retrievalQuery,
     retrievedContext,
   });
+
   for await (const chunk of partialOutputStream) {
     const parsed = GroundedAssistantMessagePayloadSchema.safeParse(chunk);
     if (!parsed.success) {
@@ -25,6 +29,7 @@ const runGroundedChatTool = async (
 
     setAssistantDraft(parsed.data);
   }
+
   return output;
 };
 

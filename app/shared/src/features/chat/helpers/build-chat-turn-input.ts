@@ -1,5 +1,4 @@
 import type { ChatOrchestratorInput } from "@hydrowise/entities";
-
 import { getChatHistory } from "@/features/chat/helpers/get-history";
 import { getWorkspaceContext } from "@/features/chat/helpers/get-workspace-context";
 
@@ -16,5 +15,6 @@ export const buildChatTurnInput = async (opts: {
     userMessage: opts.text,
     recentMessages,
     workspaceContext,
+    isFirstTurn: recentMessages.length === 0,
   };
 };

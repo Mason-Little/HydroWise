@@ -20,11 +20,22 @@ export const ChatOrchestratorInputSchema = z.object({
   userMessage: z.string(),
   recentMessages: z.array(ChatHistoryMessageSchema),
   workspaceContext: z.array(WorkspaceContextItemSchema).nullable(),
+  isFirstTurn: z.boolean(),
 });
 
 export const GroundedAnswerToolArgsSchema = z.object({
-  userQuery: z.string(),
-  retrievalQuery: z.string(),
+  userQuery: z
+    .string()
+    .min(1)
+    .describe(
+      "The user's request rewritten only if needed for the grounded-response tool.",
+    ),
+  retrievalQuery: z
+    .string()
+    .min(1)
+    .describe(
+      "A short semantic-search query for retrieval. Focus on the topic keywords, not a full sentence.",
+    ),
 });
 
 export const GroundedAnswerToolCallSchema = z.object({
@@ -39,16 +50,16 @@ export const ChatToolCallSchema = z.discriminatedUnion("toolName", [
 export const ChatOrchestratorOutputSchema = z.object({
   activeCourse: z
     .string()
-    .optional()
     .describe(
-      "Workspace course id when assigning or changing thread course; omit if course is already correct in context (do not restate an existing choice).",
+      "Active course id. Must be copied exactly from a workspaceContext.courseId UUID, never from courseName. Only when isFirstTurn is true and there is a clear course match.",
     ),
+
   threadTitle: z
     .string()
-    .optional()
     .describe(
-      "Short thread title when naming or retitling; omit if a title is already established in context (do not restate).",
+      "Thread title. Short, student-facing, about 2 to 5 words. Only when isFirstTurn is true and the user message is specific enough.",
     ),
+
   toolCall: ChatToolCallSchema,
 });
 
