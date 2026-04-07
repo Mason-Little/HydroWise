@@ -16,8 +16,7 @@ fn main() {
         ])
         .setup(|app| {
             if let Err(err) = desktop_models::server::start_desktop_model_server(app.handle()) {
-                eprintln!("[desktop-model] server startup skipped: {err}");
-                eprintln!("[desktop-model] continuing app startup without local runtime");
+                eprintln!("local model server failed to start: {err}");
             }
             Ok(())
         })

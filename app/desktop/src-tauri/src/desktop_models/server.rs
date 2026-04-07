@@ -8,7 +8,7 @@ use super::{paths, state};
 const HOST: &str = "127.0.0.1";
 const PORT: &str = "39281";
 const CONTEXT_SIZE: &str = "8192";
-const MAX_LOADED_MODELS: &str = "1";
+const MAX_LOADED_MODELS: &str = "2";
 const IDLE_SLEEP_SECONDS: &str = "300";
 const PARALLEL: &str = "1";
 
