@@ -1,58 +1,61 @@
-import type { GroundedAssistantMessagePayload } from "@hydrowise/entities";
+import type {
+  ChatMessage,
+  ChatOrchestratorOutput,
+  GroundedAssistantMessagePayload,
+} from "@hydrowise/entities";
 import { buildChatTurnInput } from "@/features/chat/helpers/build-chat-turn-input";
-import { ensureThreadForSend } from "@/features/chat/helpers/ensure-thread-for-send";
 import { persistChatMessage } from "@/features/chat/helpers/persist-chat-message";
 import { requestChatOrchestratorPlan } from "@/features/chat/helpers/request-chat-orchestrator-plan";
 import { runChatTool } from "@/features/chat/helpers/run-chat-tool";
 import { syncThread } from "@/features/chat/helpers/sync-thread";
 
 type SendChatTurnParams = {
-  activeThreadId: string | null;
-  setActiveThread: (threadId: string | null) => void;
+  threadId: string;
   text: string;
-  setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void;
+  onAssistantChunk: (draft: GroundedAssistantMessagePayload) => void;
+  onUserPersisted: (message: ChatMessage) => void;
+  onThreadSynced: (
+    plan: Pick<ChatOrchestratorOutput, "threadTitle" | "activeCourse">,
+  ) => void;
+  onAssistantPersisted: (message: ChatMessage) => void;
 };
 
 export const sendChatTurn = async ({
-  activeThreadId: currentThreadId,
-  setActiveThread,
+  threadId,
   text,
-  setAssistantDraft,
+  onAssistantChunk,
+  onUserPersisted,
+  onThreadSynced,
+  onAssistantPersisted,
 }: SendChatTurnParams) => {
-  setAssistantDraft(null);
-
-  const { threadId, createdNewThread } =
-    await ensureThreadForSend(currentThreadId);
-
-  if (createdNewThread) {
-    setActiveThread(threadId);
-  }
-
   const plannerInput = await buildChatTurnInput({
     threadId,
     text,
   });
 
-  await persistChatMessage({
+  const persistedUser = await persistChatMessage({
     threadId,
     role: "user",
     payload: { kind: "user-text", text },
   });
+  onUserPersisted(persistedUser);
 
   const plan = await requestChatOrchestratorPlan(plannerInput);
 
   await syncThread(threadId, plan);
+  onThreadSynced(plan);
 
-  const assistantPayload = await runChatTool(plan, setAssistantDraft);
+  const assistantPayload = await runChatTool(plan, onAssistantChunk);
 
   if (assistantPayload) {
-    await persistChatMessage({
+    const persistedAssistant = await persistChatMessage({
       threadId,
       role: "assistant",
       payload: assistantPayload,
     });
-    setAssistantDraft(null);
+    onAssistantPersisted(persistedAssistant);
+    return { threadId, hadAssistant: true };
   }
 
-  return { threadId };
+  return { threadId, hadAssistant: false };
 };

@@ -1,6 +1,5 @@
 import { ChatMessageItem } from "@/features/chat/components/messages";
-import { useChatContext } from "@/features/chat/context";
-import { useChatDisplayMessages } from "@/features/chat/hooks/use-chat-display-messages";
+import { useChatMessages } from "@/features/chat/hooks/use-chat-messages";
 import { cn } from "@/lib/utils";
 import { useThreadStore } from "@/store/threadStore";
 
@@ -8,12 +7,8 @@ const emptyCenter =
   "text-muted-foreground flex flex-1 min-h-0 items-center justify-center text-sm";
 
 export const ChatArea = () => {
-  const { assistantDraft } = useChatContext();
   const { activeThreadId } = useThreadStore();
-  const { messages, isLoading } = useChatDisplayMessages(
-    activeThreadId,
-    assistantDraft,
-  );
+  const { messages, isLoading } = useChatMessages(activeThreadId);
 
   if (activeThreadId === null) {
     return (

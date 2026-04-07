@@ -8,7 +8,7 @@ import {
 
 const runGroundedChatTool = async (
   retrievalQuery: string,
-  setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void,
+  onAssistantChunk: (draft: GroundedAssistantMessagePayload) => void,
 ) => {
   const embedding = await embedText(retrievalQuery);
 
@@ -27,7 +27,7 @@ const runGroundedChatTool = async (
       continue;
     }
 
-    setAssistantDraft(parsed.data);
+    onAssistantChunk(parsed.data);
   }
 
   return output;
@@ -35,11 +35,11 @@ const runGroundedChatTool = async (
 
 export const runChatTool = async (
   plan: ChatOrchestratorOutput,
-  setAssistantDraft: (draft: GroundedAssistantMessagePayload | null) => void,
+  onAssistantChunk: (draft: GroundedAssistantMessagePayload) => void,
 ) => {
   const call = plan.toolCall;
   if (call?.toolName !== "grounded-response") {
     return;
   }
-  return runGroundedChatTool(call.args.retrievalQuery, setAssistantDraft);
+  return runGroundedChatTool(call.args.retrievalQuery, onAssistantChunk);
 };

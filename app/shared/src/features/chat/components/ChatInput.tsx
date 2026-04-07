@@ -9,9 +9,11 @@ export const ChatInput = () => {
   const trimmed = text.trim();
   const canSend = trimmed.length > 0 && !isStreaming;
 
-  const handleSubmit = async () => {
-    if (!canSend) return;
-    await sendMessage(trimmed);
+  const handleSubmit = () => {
+    if (!canSend) {
+      return;
+    }
+    sendMessage(trimmed);
     setText("");
   };
 
