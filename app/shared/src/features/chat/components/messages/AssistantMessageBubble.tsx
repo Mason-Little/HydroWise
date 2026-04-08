@@ -9,11 +9,11 @@ export const AssistantMessageBubble = ({
   text,
   children,
 }: AssistantMessageBubbleProps) => (
-  <div className="border-border bg-background mr-auto max-w-[85%] rounded-2xl border px-3 py-2 text-sm">
-    <p className="text-muted-foreground mb-1 text-[10px] font-medium tracking-wide uppercase">
-      HydroWise
-    </p>
-    <p className="whitespace-pre-wrap">{text}</p>
-    {children}
+  <div className="app-ask-msg-cluster app-ask-msg-cluster--assistant">
+    <p className="app-ask-msg-meta">HydroWise</p>
+    <div className="app-ask-bubble app-ask-bubble--assistant">
+      <p className="whitespace-pre-wrap">{text}</p>
+    </div>
+    {children != null ? children : null}
   </div>
 );

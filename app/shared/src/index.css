@@ -1114,3 +1114,559 @@
   .app-dashboard-view-toggle__item[aria-pressed="false"]:hover {
   color: color-mix(in srgb, var(--app-text-muted) 52%, var(--app-text-primary));
 }
+
+/* -------------------------------------------------------------------------- */
+/* Ask HydroWise — chat workspace (design/Chat.html mock, app tokens)         */
+/* -------------------------------------------------------------------------- */
+
+.app-ask-shell {
+  min-width: 0;
+}
+
+.app-ask-workspace {
+  --app-ask-atmosphere-sage: color-mix(
+    in srgb,
+    var(--app-course-sage) 22%,
+    transparent
+  );
+  --app-ask-atmosphere-fog: color-mix(
+    in srgb,
+    var(--app-course-fog) 18%,
+    transparent
+  );
+  --app-ask-thread-max: min(920px, 100%);
+  --app-ask-inset-paper:
+    inset 0 1px 0
+    color-mix(in srgb, var(--app-surface-primary) 82%, transparent),
+    inset 0 -1px 0 rgba(37, 50, 58, 0.04);
+  --app-ask-depth-ambient: 0 8px 28px rgba(37, 50, 58, 0.07);
+
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--app-radius-workspace);
+  border: 1px solid color-mix(in srgb, var(--app-border-solid) 70%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--app-surface-primary) 94%,
+    var(--app-accent-soft)
+  );
+  background-image:
+    radial-gradient(
+      ellipse 100% 70% at 12% 0%,
+      var(--app-ask-atmosphere-sage) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 90% 55% at 88% 8%,
+      var(--app-ask-atmosphere-fog) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse 110% 80% at 50% -15%,
+      color-mix(in srgb, var(--app-accent-soft) 65%, transparent) 0%,
+      transparent 52%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--app-surface-primary) 96%, #e8ebe8) 0%,
+      color-mix(
+          in srgb,
+          var(--app-workspace-bg) 28%,
+          var(--app-surface-primary)
+        )
+        45%,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 95%,
+          var(--app-workspace-bg)
+        )
+        100%
+    );
+  box-shadow:
+    var(--app-ask-inset-paper),
+    0 1px 0 color-mix(in srgb, var(--app-surface-primary) 55%, transparent)
+    inset,
+    var(--app-ask-depth-ambient);
+}
+
+.app-ask-workspace::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.32;
+  background-image: repeating-linear-gradient(
+    -12deg,
+    transparent,
+    transparent 3px,
+    color-mix(in srgb, var(--app-text-primary) 2.5%, transparent) 3px,
+    color-mix(in srgb, var(--app-text-primary) 2.5%, transparent) 4px
+  );
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    transparent 42%,
+    transparent 100%
+  );
+}
+
+.app-ask-header,
+.app-ask-main,
+.app-ask-composer-outer {
+  position: relative;
+  z-index: 1;
+}
+
+.app-ask-header {
+  flex-shrink: 0;
+  padding: 8px 22px 10px;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--app-hairline) 88%, transparent);
+  background:
+    linear-gradient(
+      125deg,
+      color-mix(in srgb, var(--app-surface-primary) 88%, var(--app-accent-soft))
+        0%,
+      color-mix(in srgb, var(--app-surface-primary) 92%, var(--app-course-fog))
+        38%,
+      color-mix(
+          in srgb,
+          var(--app-surface-primary) 96%,
+          var(--app-workspace-bg)
+        )
+        100%
+    ),
+    color-mix(in srgb, var(--app-surface-primary) 96%, var(--app-workspace-bg));
+  box-shadow: 0 1px 0
+    color-mix(in srgb, var(--app-surface-primary) 50%, transparent) inset;
+}
+
+.app-ask-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 55%
+  );
+}
+
+.app-ask-kicker {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 2px;
+  font-size: 8px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--app-text-tertiary) 72%, var(--app-accent));
+  opacity: 0.92;
+}
+
+.app-ask-title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: clamp(1.05rem, 1.65vw, 1.28rem);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: var(--app-accent-strong);
+}
+
+/* Thread: centered column, roomy vertical rhythm */
+.app-ask-main.app-ask-thread {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  padding: 18px 11px 16px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--app-border-solid) 55%, transparent)
+    transparent;
+}
+
+.app-ask-main.app-ask-thread::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app-ask-main.app-ask-thread::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--app-border-solid) 55%, transparent);
+}
+
+.app-ask-thread-inner {
+  width: 100%;
+  max-width: var(--app-ask-thread-max);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-bottom: 1.25rem;
+}
+
+.app-ask-empty {
+  flex: 1;
+  min-height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.app-ask-empty-text {
+  margin: 0;
+  max-width: 28rem;
+  font-size: var(--type-dashboard-body);
+  line-height: 1.5;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--app-text-muted) 88%, var(--app-text-primary));
+}
+
+/* Message rows */
+.app-ask-msg-row {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1.125rem;
+}
+
+.app-ask-msg-row:last-child {
+  margin-bottom: 0;
+}
+
+.app-ask-msg-row--user {
+  justify-content: flex-end;
+}
+
+.app-ask-msg-row--assistant {
+  justify-content: flex-start;
+}
+
+.app-ask-msg-cluster {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.app-ask-msg-cluster--user {
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.app-ask-msg-cluster--assistant {
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.app-ask-msg-meta {
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--app-text-tertiary);
+  padding: 0 4px;
+}
+
+.app-ask-msg-cluster--user .app-ask-msg-meta {
+  text-align: right;
+}
+
+.app-ask-bubble {
+  border-radius: 18px;
+  padding: 11px 16px 12px;
+  line-height: 1.52;
+  font-size: calc(var(--type-dashboard-body) + 1px);
+  color: var(--app-text-primary);
+}
+
+.app-ask-bubble > p {
+  margin: 0;
+}
+
+.app-ask-bubble--user {
+  max-width: min(62ch, 100%);
+  background: linear-gradient(
+    185deg,
+    #fff 0%,
+    color-mix(in srgb, var(--app-surface-primary) 94%, var(--app-workspace-bg))
+      100%
+  );
+  border: 1px solid color-mix(in srgb, var(--app-border-solid) 65%, transparent);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--app-surface-primary) 95%, transparent)
+    inset,
+    0 2px 10px rgba(37, 50, 58, 0.04);
+}
+
+.app-ask-bubble--assistant {
+  max-width: min(84ch, 100%);
+  background: linear-gradient(
+    168deg,
+    color-mix(in srgb, var(--app-accent-soft) 52%, var(--app-surface-primary))
+      0%,
+    color-mix(in srgb, var(--app-surface-primary) 92%, var(--app-course-fog))
+      55%,
+    color-mix(in srgb, var(--app-surface-primary) 96%, var(--app-accent-soft))
+      100%
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--app-accent) 18%, var(--app-border-solid));
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--app-surface-primary) 72%, transparent)
+    inset,
+    0 3px 14px rgba(37, 50, 58, 0.045);
+}
+
+/* Grounded source chips (below assistant bubble) */
+.app-ask-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: stretch;
+  width: 100%;
+  max-width: min(99ch, var(--app-ask-thread-max));
+  margin-top: 2px;
+}
+
+.app-ask-source-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  max-width: min(220px, 100%);
+  padding: 8px 11px 9px;
+  border-radius: var(--hw-radius-lg);
+  border: 1px solid
+    color-mix(in srgb, var(--app-accent) 16%, var(--app-border-solid));
+  background: color-mix(
+    in srgb,
+    var(--app-course-sage) 26%,
+    var(--app-surface-primary)
+  );
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease;
+  box-shadow: 0 1px 0
+    color-mix(in srgb, var(--app-surface-primary) 55%, transparent) inset;
+}
+
+.app-ask-source-chip:hover {
+  background: color-mix(
+    in srgb,
+    var(--app-course-sage) 36%,
+    var(--app-surface-primary)
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--app-accent) 26%,
+    var(--app-border-solid)
+  );
+}
+
+.app-ask-source-chip:active {
+  transform: scale(0.99);
+}
+
+.app-ask-source-chip:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--app-accent) 38%, transparent);
+  outline-offset: 2px;
+}
+
+.app-ask-source-chip-title {
+  font-size: var(--type-dashboard-body);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--app-text-primary);
+  line-height: 1.28;
+}
+
+.app-ask-source-chip-meta {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  width: 100%;
+  font-size: calc(var(--type-dashboard-body) - 2px);
+  font-weight: 500;
+  color: var(--app-text-tertiary);
+  line-height: 1.32;
+}
+
+.app-ask-source-chip-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--app-accent-strong) 90%, #1a3824);
+  margin-top: 3px;
+}
+
+/* Composer rail */
+.app-ask-composer-outer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px 14px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--app-accent-soft) 22%, var(--app-workspace-bg)) 40%,
+    color-mix(in srgb, var(--app-surface-primary) 45%, var(--app-workspace-bg))
+      100%
+  );
+  border-top: 1px solid color-mix(in srgb, var(--app-hairline) 88%, transparent);
+  box-shadow: 0 -10px 28px rgba(37, 50, 58, 0.04);
+}
+
+.app-ask-composer-shell {
+  width: 100%;
+  max-width: var(--app-ask-thread-max);
+  padding: 10px 4px 0;
+  box-sizing: border-box;
+}
+
+.app-ask-composer-scope {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0 0 8px;
+  padding: 0 2px;
+}
+
+.app-ask-composer-scope-label {
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--app-text-tertiary);
+  margin-right: 2px;
+}
+
+.app-ask-composer-scope-hint {
+  font-size: calc(var(--type-dashboard-body) - 2px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: color-mix(
+    in srgb,
+    var(--app-accent-strong) 92%,
+    var(--app-text-primary)
+  );
+  padding: 4px 9px;
+  border-radius: var(--hw-radius-md);
+  border: 1px solid
+    color-mix(in srgb, var(--app-accent) 10%, var(--app-hairline));
+  background: color-mix(
+    in srgb,
+    var(--app-accent-soft) 40%,
+    var(--app-surface-primary)
+  );
+}
+
+.app-ask-composer-surface {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--app-border-solid) 48%, transparent);
+  background: linear-gradient(
+    185deg,
+    color-mix(in srgb, var(--app-surface-primary) 100%, #fff) 0%,
+    color-mix(in srgb, var(--app-surface-primary) 92%, var(--app-accent-soft))
+      100%
+  );
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--app-surface-primary) 96%, transparent)
+    inset,
+    0 8px 28px rgba(37, 50, 58, 0.07),
+    0 1px 4px rgba(37, 50, 58, 0.03);
+  padding: 9px 11px 8px;
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.28s ease;
+}
+
+.app-ask-composer-surface:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--app-border-solid) 72%,
+    var(--app-text-primary)
+  );
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--app-surface-primary) 94%, transparent)
+    inset,
+    0 10px 32px rgba(37, 50, 58, 0.078),
+    0 2px 6px rgba(37, 50, 58, 0.04);
+}
+
+.app-ask-composer-surface:focus-within {
+  border-color: color-mix(
+    in srgb,
+    var(--app-accent) 32%,
+    var(--app-border-solid)
+  );
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--app-surface-primary) 94%, transparent)
+    inset,
+    0 10px 30px rgba(37, 50, 58, 0.07),
+    0 0 0 3px color-mix(in srgb, var(--app-accent) 10%, transparent);
+}
+
+.app-ask-composer-surface .app-ask-composer-input {
+  height: 44px;
+  border: 0;
+  border-radius: var(--hw-radius-lg);
+  background: transparent;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: calc(var(--type-dashboard-body) + 1px);
+  line-height: 1.46;
+  color: var(--app-text-primary);
+  box-shadow: none;
+}
+
+.app-ask-composer-surface .app-ask-composer-input::placeholder {
+  color: var(--app-text-tertiary);
+}
+
+.app-ask-composer-surface .app-ask-composer-input:focus-visible {
+  border: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+.app-ask-composer-surface .app-ask-send {
+  height: 40px;
+  min-width: 4.5rem;
+  padding: 0 18px;
+  border-radius: var(--hw-radius-xl);
+  font-size: var(--type-dashboard-body);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--app-surface-primary) 96%, #e8eeea);
+  background: var(--app-accent-strong);
+  border: 1px solid
+    color-mix(in srgb, var(--app-accent) 32%, var(--app-border-solid));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+}
+
+.app-ask-composer-surface .app-ask-send:hover:not(:disabled) {
+  filter: brightness(1.06);
+  background: var(--app-accent-strong);
+}
+
+.app-ask-composer-surface .app-ask-send:disabled {
+  opacity: 0.45;
+}

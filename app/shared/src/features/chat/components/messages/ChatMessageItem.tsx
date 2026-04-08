@@ -8,7 +8,15 @@ type ChatMessageItemProps = {
 
 export const ChatMessageItem = ({ message }: ChatMessageItemProps) => {
   if (message.role === "user") {
-    return <UserChatMessage message={message} />;
+    return (
+      <div className="app-ask-msg-row app-ask-msg-row--user">
+        <UserChatMessage message={message} />
+      </div>
+    );
   }
-  return <AssistantChatMessage message={message} />;
+  return (
+    <div className="app-ask-msg-row app-ask-msg-row--assistant">
+      <AssistantChatMessage message={message} />
+    </div>
+  );
 };

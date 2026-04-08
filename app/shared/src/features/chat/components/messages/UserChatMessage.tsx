@@ -10,11 +10,11 @@ export const UserChatMessage = ({ message }: UserChatMessageProps) => {
   }
 
   return (
-    <div className="bg-muted ml-auto max-w-[85%] rounded-2xl px-3 py-2 text-sm">
-      <p className="text-muted-foreground mb-1 text-[10px] font-medium tracking-wide uppercase">
-        You
-      </p>
-      <p className="whitespace-pre-wrap">{message.payload.text}</p>
+    <div className="app-ask-msg-cluster app-ask-msg-cluster--user">
+      <p className="app-ask-msg-meta">You</p>
+      <div className="app-ask-bubble app-ask-bubble--user">
+        <p className="whitespace-pre-wrap">{message.payload.text}</p>
+      </div>
     </div>
   );
 };

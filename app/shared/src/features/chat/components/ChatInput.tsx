@@ -18,21 +18,33 @@ export const ChatInput = () => {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <Input
-        className="min-w-0 flex-1"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit();
-          }
-        }}
-      />
-      <Button onClick={handleSubmit} disabled={!canSend}>
-        Send
-      </Button>
+    <div className="app-ask-composer-shell">
+      <p className="app-ask-composer-scope">
+        <span className="app-ask-composer-scope-label">Scope</span>
+        <span className="app-ask-composer-scope-hint">Course workspace</span>
+      </p>
+      <div className="app-ask-composer-surface">
+        <Input
+          className="app-ask-composer-input min-w-0 flex-1"
+          placeholder="Ask anything…"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit();
+            }
+          }}
+        />
+        <Button
+          type="button"
+          className="app-ask-send shrink-0"
+          onClick={handleSubmit}
+          disabled={!canSend}
+        >
+          Send
+        </Button>
+      </div>
     </div>
   );
 };
