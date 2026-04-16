@@ -1,0 +1,3489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HydroWise — Quizzes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        min-height: 100%;
+        min-height: 100dvh;
+      }
+
+      .mock-app {
+        --frame-bg: #f2f1ef;
+        --workspace-bg: #f7f6f4;
+        --surface: #fdfdfc;
+        --surface-2: #f5f4f2;
+        --border: #e8e7e4;
+        --text: #25323a;
+        --text-muted: #62707a;
+        --text-tertiary: #7d8891;
+        --accent: #5f766a;
+        --accent-strong: #33443c;
+        --accent-soft: #edf2ee;
+        --hairline: color-mix(in srgb, var(--border) 52%, transparent);
+        --r-ui: 8px;
+        --r-surface: 14px;
+        --r-pill: 14px;
+        --r-workspace: 11px;
+        --shadow-soft: 0 1px 2px rgba(37, 50, 58, 0.05);
+        --shadow-lift: 0 12px 32px rgba(37, 50, 58, 0.08);
+        --rail-w: 74px;
+        --font: "Inter", system-ui, -apple-system, sans-serif;
+        --font-display: "Inter Tight", "Inter", system-ui, sans-serif;
+        --body-size: 13px;
+        --gap: 14px;
+        --inset-pad: 20px;
+        --course-sage: #c5dcc0;
+        --course-moss: #cadecb;
+        --course-lavender: #ddd0ee;
+        --course-fog: #cddfef;
+        --paper-warm: #faf9f6;
+        --qz-motion: 0.38s;
+        --qz-motion-fast: 0.22s;
+        --qz-ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --qz-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        --qz-ease-hide: cubic-bezier(0.45, 0, 0.55, 1);
+        --qz-course-rail-reveal: 0.2s;
+        --qz-course-rail-hide: 0.26s;
+        --qz-course-rail-collapsed-h: 60px;
+        --qz-course-rail-expanded-h: 168px;
+
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        width: 100%;
+        min-height: 100%;
+        min-height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+        font-family: var(--font);
+        font-size: var(--body-size);
+        color: var(--text);
+        background-color: var(--frame-bg);
+      }
+
+      .mock-app > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .mock-rail {
+        width: var(--rail-w);
+        flex-shrink: 0;
+        background: #eeedeb;
+        border-right: 1px solid var(--hairline);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 14px 0 18px;
+        gap: 7px;
+      }
+      .mock-rail-brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2px;
+        color: var(--accent-strong);
+        filter: drop-shadow(0 1px 2px rgba(37, 50, 58, 0.06));
+      }
+      .mock-rail-brand svg {
+        display: block;
+        width: 30px;
+        height: 30px;
+        stroke-width: 1.75;
+      }
+      .mock-rail-btn {
+        width: 46px;
+        height: 46px;
+        border: none;
+        border-radius: 11px;
+        background: transparent;
+        color: color-mix(in srgb, var(--text-muted) 78%, var(--text));
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+      }
+      .mock-rail-btn svg {
+        width: 22px;
+        height: 22px;
+        stroke-width: 1.8;
+      }
+      .mock-rail-btn:hover:not(.active) {
+        color: color-mix(in srgb, var(--text) 88%, var(--text-muted));
+        background: color-mix(in srgb, var(--surface) 22%, transparent);
+      }
+      .mock-rail-btn.active {
+        background: color-mix(in srgb, var(--surface) 58%, #eeedeb);
+        color: var(--text);
+        box-shadow:
+          inset 0 0 0 1px color-mix(in srgb, var(--border) 44%, transparent),
+          0 2px 6px rgba(37, 50, 58, 0.07);
+      }
+      .mock-rail-btn:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+      }
+
+      .mock-column {
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .mock-inset {
+        flex: 1;
+        padding: 8px 16px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .mock-topbar {
+        flex-shrink: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 16px;
+        background: color-mix(in srgb, var(--surface) 88%, var(--workspace-bg));
+        border: 1px solid color-mix(in srgb, var(--border) 54%, transparent);
+        border-radius: var(--r-workspace);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.78) inset,
+          0 10px 30px rgba(37, 50, 58, 0.042),
+          0 2px 8px rgba(37, 50, 58, 0.028);
+        z-index: 12;
+      }
+      .mock-topbar-crumb {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+      }
+      .mock-topbar-brand {
+        font-size: calc(var(--body-size) - 1px);
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: -0.02em;
+      }
+      .mock-topbar-breadcrumb {
+        font-size: calc(var(--body-size) - 1px);
+        font-weight: 500;
+        color: var(--text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .mock-topbar-breadcrumb strong {
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .mock-launcher {
+        position: relative;
+        justify-self: center;
+        width: 100%;
+        max-width: 760px;
+      }
+      .mock-launcher-input {
+        width: 100%;
+        height: 48px;
+        border-radius: 12px;
+        border: 1px solid var(--hairline);
+        background: var(--surface);
+        padding: 0 16px 0 42px;
+        font: inherit;
+        font-size: calc(var(--body-size) - 1px);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease;
+      }
+      .mock-launcher-input::placeholder {
+        color: var(--text-tertiary);
+      }
+      .mock-launcher-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: var(--text-tertiary);
+        pointer-events: none;
+      }
+      .mock-launcher-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.75;
+      }
+      .mock-launcher:focus-within .mock-launcher-input {
+        border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+      }
+
+      .mock-topbar-right {
+        justify-self: end;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mock-scroll {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--r-workspace);
+        background:
+          radial-gradient(
+            90% 70% at 0% 0%,
+            color-mix(in srgb, var(--course-moss) 12%, transparent),
+            transparent 45%
+          ),
+          radial-gradient(
+            115% 95% at 50% 108%,
+            color-mix(in srgb, var(--frame-bg) 72%, var(--workspace-bg)) 0%,
+            var(--frame-bg) 55%
+          );
+        box-shadow: inset 0 2px 6px rgba(37, 50, 58, 0.045);
+      }
+
+      .mock-course-shell {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        flex: 1;
+        background:
+          radial-gradient(
+            80% 55% at 100% 0%,
+            color-mix(in srgb, var(--course-lavender) 10%, transparent),
+            transparent 50%
+          ),
+          linear-gradient(
+            168deg,
+            color-mix(in srgb, var(--surface) 90%, var(--course-sage)) 0%,
+            color-mix(in srgb, var(--surface) 97%, #f5f4f2) 42%,
+            color-mix(in srgb, var(--surface) 94%, var(--workspace-bg)) 100%
+          );
+        border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+        border-radius: var(--r-workspace);
+        overflow: hidden;
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.85) inset,
+          0 16px 42px rgba(37, 50, 58, 0.06),
+          0 5px 16px rgba(37, 50, 58, 0.036),
+          0 0 0 1px rgba(255, 255, 255, 0.55);
+      }
+
+      .mock-canvas {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--surface) 55%, var(--workspace-bg)) 0%,
+          color-mix(in srgb, var(--surface) 92%, #fafaf8) 18%,
+          transparent 48%
+        );
+      }
+
+      .quiz-mvp {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        max-width: none;
+      }
+
+      .qz-workspace-shell {
+        flex: 1;
+        min-height: 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .qz-workspace-header {
+        flex-shrink: 0;
+        position: relative;
+        z-index: 2;
+        padding: 10px 16px 8px;
+        border-bottom: 1px solid color-mix(in srgb, var(--border) 38%, transparent);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--course-sage) 12%, var(--surface)) 0%,
+          color-mix(in srgb, var(--course-moss) 8%, var(--surface)) 26%,
+          color-mix(in srgb, var(--surface) 92%, var(--workspace-bg)) 100%
+        );
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.62) inset;
+        transition: background 0.55s var(--qz-ease), border-color 0.45s var(--qz-ease);
+      }
+      .qz-workspace-header[data-course="psyc"] {
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, #c8e8b8 22%, var(--surface)) 0%,
+          color-mix(in srgb, var(--course-moss) 14%, var(--surface)) 32%,
+          color-mix(in srgb, var(--surface) 90%, var(--workspace-bg)) 100%
+        );
+        border-bottom-color: color-mix(in srgb, #6aab7a 22%, var(--border));
+      }
+      .qz-workspace-header[data-course="soc"] {
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--course-fog) 26%, var(--surface)) 0%,
+          color-mix(in srgb, var(--course-lavender) 12%, var(--surface)) 30%,
+          color-mix(in srgb, var(--surface) 91%, var(--workspace-bg)) 100%
+        );
+        border-bottom-color: color-mix(in srgb, #8fa8c8 24%, var(--border));
+      }
+
+      .qz-workspace-header-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .qz-workspace-page-block {
+        min-width: 0;
+      }
+
+      .qz-workspace-page-title {
+        margin: 0 0 6px;
+        font-family: var(--font-display);
+        font-size: clamp(1.42rem, 2.1vw, 1.92rem);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        line-height: 1.08;
+        color: var(--text);
+      }
+
+      .qz-workspace-page-lede {
+        margin: 0;
+        max-width: 42em;
+        font-size: 12px;
+        line-height: 1.45;
+        font-weight: 500;
+        color: var(--text-muted);
+      }
+
+      .qz-workspace-body {
+        flex: 1;
+        min-height: 0;
+        padding: 8px 12px 10px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .qz-hub-tabs {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: stretch;
+        align-self: center;
+        height: 36px;
+        padding: 2px;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--workspace-bg) 58%, var(--surface));
+        border: 1px solid var(--hairline);
+        gap: 0;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+      }
+      .qz-hub-tabs button {
+        flex: 0 0 auto;
+        min-width: 0;
+        border: none;
+        background: transparent;
+        padding: 0 14px;
+        border-radius: 9px;
+        font: inherit;
+        font-size: calc(var(--body-size) - 2px);
+        font-weight: 600;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
+        transition:
+          background var(--qz-motion-fast) var(--qz-ease),
+          color var(--qz-motion-fast) var(--qz-ease),
+          box-shadow var(--qz-motion-fast) var(--qz-ease);
+      }
+      .qz-hub-tabs button.is-on {
+        background: var(--surface);
+        color: var(--text);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.45),
+          0 1px 2px rgba(37, 50, 58, 0.07);
+      }
+      .qz-hub-tabs button:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 560px) {
+        .qz-workspace-header-top {
+          grid-template-columns: 1fr;
+          align-items: stretch;
+        }
+        .qz-hub-tabs {
+          align-self: stretch;
+          width: 100%;
+        }
+        .qz-hub-tabs button {
+          flex: 1 1 0;
+          padding-inline: 8px;
+        }
+      }
+
+      .qz-course-zone {
+        flex-shrink: 0;
+        position: relative;
+        z-index: 4;
+        overflow: hidden;
+        max-height: var(--qz-course-rail-collapsed-h);
+        padding: 0;
+        transition:
+          max-height var(--qz-course-rail-hide) var(--qz-ease-hide),
+          padding var(--qz-course-rail-hide) var(--qz-ease-hide);
+      }
+      .qz-course-zone.is-intent-revealed,
+      .qz-course-zone:focus-within {
+        max-height: var(--qz-course-rail-expanded-h);
+        padding-top: 12px;
+        padding-bottom: 12px;
+        transition:
+          max-height var(--qz-course-rail-reveal) var(--qz-ease-out),
+          padding var(--qz-course-rail-reveal) var(--qz-ease-out);
+      }
+
+      .qz-course-rail-wrap {
+        --qz-tab-r: 12px;
+        flex-shrink: 0;
+        padding: 10px 12px 0;
+        margin-bottom: 0;
+        border-bottom: 1px solid var(--hairline);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--surface) 94%, #f1f2f0) 0%,
+          color-mix(in srgb, var(--surface) 93%, #f3f2f4) 52%,
+          color-mix(in srgb, var(--surface) 92%, #f1f3f5) 100%
+        );
+      }
+      .qz-course-zone.is-intent-revealed .qz-course-rail-wrap,
+      .qz-course-zone:focus-within .qz-course-rail-wrap {
+        padding-bottom: 4px;
+      }
+      @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+        .qz-course-zone.is-intent-revealed .qz-course-pick,
+        .qz-course-zone:focus-within .qz-course-pick {
+          padding: 16px 12px 14px;
+          min-height: 86px;
+        }
+        .qz-course-zone.is-intent-revealed .qz-course-pick-name,
+        .qz-course-zone:focus-within .qz-course-pick-name {
+          margin-top: 10px;
+        }
+      }
+      @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+        .qz-course-zone {
+          max-height: none;
+          padding-top: 12px;
+          padding-bottom: 0;
+        }
+        .qz-course-pick {
+          padding: 11px 12px 10px;
+          min-height: 66px;
+        }
+      }
+
+      .qz-create-workspace {
+        position: relative;
+        --qz-wash-top: color-mix(in srgb, var(--paper-warm) 70%, var(--surface));
+        --qz-wash-mid: color-mix(in srgb, var(--surface) 92%, var(--workspace-bg));
+        --qz-wash-bot: color-mix(in srgb, var(--surface) 88%, var(--paper-warm));
+        --qz-wash-glow-tr: color-mix(in srgb, var(--course-lavender) 14%, transparent);
+        --qz-wash-glow-bl: color-mix(in srgb, var(--course-sage) 12%, transparent);
+        --qz-live-g1: color-mix(in srgb, var(--course-lavender) 26%, var(--accent-soft));
+        --qz-live-g2: color-mix(in srgb, var(--accent-soft) 46%, var(--surface));
+        --qz-live-g3: color-mix(in srgb, var(--course-fog) 22%, var(--surface));
+        --qz-live-rad-1: color-mix(in srgb, var(--course-sage) 30%, transparent);
+        --qz-live-rad-2: color-mix(in srgb, var(--course-moss) 22%, transparent);
+        --qz-ladder-edge: color-mix(in srgb, var(--accent) 10%, var(--hairline));
+        width: 100%;
+        min-width: 0;
+        border-radius: var(--r-workspace);
+        border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+        background:
+          linear-gradient(
+            180deg,
+            var(--qz-wash-top) 0%,
+            var(--qz-wash-mid) 38%,
+            var(--qz-wash-bot) 100%
+          ),
+          radial-gradient(120% 75% at 100% 0%, var(--qz-wash-glow-tr), transparent 52%),
+          radial-gradient(95% 55% at 0% 100%, var(--qz-wash-glow-bl), transparent 48%);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.88) inset,
+          0 14px 40px rgba(37, 50, 58, 0.055),
+          0 4px 14px rgba(37, 50, 58, 0.03),
+          0 0 0 1px color-mix(in srgb, var(--surface) 40%, transparent);
+        padding: 0;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition:
+          background 0.5s var(--qz-ease),
+          border-color 0.45s var(--qz-ease),
+          box-shadow 0.45s var(--qz-ease);
+      }
+      .qz-create-workspace[data-course="psyc"] {
+        --qz-wash-top: color-mix(in srgb, #c8e8b8 24%, var(--surface));
+        --qz-wash-mid: color-mix(in srgb, var(--surface) 90%, #dfead8);
+        --qz-wash-bot: color-mix(in srgb, var(--course-moss) 18%, var(--surface));
+        --qz-wash-glow-tr: color-mix(in srgb, #b8dcc8 20%, transparent);
+        --qz-wash-glow-bl: color-mix(in srgb, var(--course-sage) 22%, transparent);
+        --qz-live-g1: color-mix(in srgb, #c5e8c0 32%, var(--accent-soft));
+        --qz-live-g2: color-mix(in srgb, var(--accent-soft) 52%, var(--surface));
+        --qz-live-g3: color-mix(in srgb, #d4ead8 28%, var(--surface));
+        --qz-live-rad-1: color-mix(in srgb, #9fd4a8 28%, transparent);
+        --qz-live-rad-2: color-mix(in srgb, var(--course-moss) 26%, transparent);
+        --qz-ladder-edge: color-mix(in srgb, #5a9a6a 14%, var(--hairline));
+        border-color: color-mix(in srgb, #6aab7a 18%, var(--border));
+      }
+      .qz-create-workspace[data-course="soc"] {
+        --qz-wash-top: color-mix(in srgb, var(--course-fog) 28%, var(--surface));
+        --qz-wash-mid: color-mix(in srgb, var(--surface) 88%, #e4eaf2);
+        --qz-wash-bot: color-mix(in srgb, var(--course-lavender) 16%, var(--surface));
+        --qz-wash-glow-tr: color-mix(in srgb, var(--course-lavender) 22%, transparent);
+        --qz-wash-glow-bl: color-mix(in srgb, var(--course-fog) 24%, transparent);
+        --qz-live-g1: color-mix(in srgb, var(--course-lavender) 34%, var(--accent-soft));
+        --qz-live-g2: color-mix(in srgb, var(--course-fog) 28%, var(--surface));
+        --qz-live-g3: color-mix(in srgb, var(--surface) 92%, #e8eef6);
+        --qz-live-rad-1: color-mix(in srgb, var(--course-fog) 32%, transparent);
+        --qz-live-rad-2: color-mix(in srgb, var(--course-lavender) 24%, transparent);
+        --qz-ladder-edge: color-mix(in srgb, #7a9ec4 16%, var(--hairline));
+        border-color: color-mix(in srgb, #8fa8c8 20%, var(--border));
+      }
+      @media (min-width: 900px) {
+        .qz-create-workspace {
+          border-radius: calc(var(--r-workspace) + 1px);
+        }
+      }
+      .qz-course-rail {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 10px;
+        align-items: flex-end;
+      }
+      .qz-course-pick {
+        position: relative;
+        flex: 1 1 140px;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        border: 1px solid transparent;
+        border-radius: var(--qz-tab-r) var(--qz-tab-r) 0 0;
+        padding: 11px 12px 10px;
+        min-height: 66px;
+        font: inherit;
+        cursor: pointer;
+        background: color-mix(in srgb, var(--course-sage) 42%, var(--surface));
+        color: var(--accent-strong);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        margin-bottom: -1px;
+        z-index: 0;
+        transition:
+          background 0.35s var(--qz-ease),
+          border-color 0.3s var(--qz-ease),
+          box-shadow 0.3s var(--qz-ease),
+          transform 0.25s var(--qz-ease),
+          color 0.3s var(--qz-ease);
+      }
+      .qz-course-pick[data-course-value="psyc"] {
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, #c4e8b4 55%, var(--surface)) 0%,
+          color-mix(in srgb, #b0daa0 38%, var(--surface)) 100%
+        );
+        color: #1a3824;
+        border-color: color-mix(in srgb, hsl(126 44% 48%) 88%, transparent);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.55),
+          0 0 0 1px color-mix(in srgb, hsl(126 44% 48%) 14%, transparent);
+      }
+      .qz-course-pick[data-course-value="soc"] {
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, var(--course-fog) 52%, var(--surface)) 0%,
+          color-mix(in srgb, #b8cce8 35%, var(--surface)) 100%
+        );
+        color: #243a52;
+        border-color: color-mix(in srgb, #6b9bd4 55%, transparent);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.55),
+          0 0 0 1px color-mix(in srgb, #6b9bd4 16%, transparent);
+      }
+      .qz-course-pick:hover:not(.is-on) {
+        transform: translateY(-1px);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.65),
+          0 6px 16px rgba(37, 50, 58, 0.06);
+      }
+      .qz-course-pick.is-on[data-course-value="psyc"] {
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, #9ccd88 78%, var(--surface)) 0%,
+          color-mix(in srgb, #7fbc6a 48%, #e8f5e4) 100%
+        );
+        border-color: color-mix(in srgb, hsl(124 46% 38%) 92%, transparent);
+        border-bottom-color: transparent;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
+        color: #15301e;
+        z-index: 2;
+      }
+      .qz-course-pick.is-on[data-course-value="soc"] {
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, #9ebfe8 62%, var(--surface)) 0%,
+          color-mix(in srgb, #7aa8e0 42%, #eef3fb) 100%
+        );
+        border-color: color-mix(in srgb, #4a7ab8 62%, transparent);
+        border-bottom-color: transparent;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        color: #0f2438;
+        z-index: 2;
+      }
+      .qz-course-pick.is-on .qz-course-pick-name {
+        color: color-mix(in srgb, currentColor 72%, transparent);
+        opacity: 1;
+      }
+      .qz-course-pick:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+        outline-offset: 2px;
+      }
+      .qz-course-pick-code {
+        display: block;
+        font-family: var(--font-display);
+        font-size: calc(var(--body-size) + 2px);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+      }
+      .qz-course-pick-name {
+        display: block;
+        margin-top: 4px;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.3;
+        opacity: 0.88;
+        max-width: 100%;
+      }
+      .qz-course-select-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #panel-create.qz-tab-panel {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #create-step-scope {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1;
+        min-height: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .qz-create-footer {
+        flex-shrink: 0;
+        padding-top: 8px;
+        margin-top: 2px;
+        border-top: 1px solid color-mix(in srgb, var(--hairline) 88%, transparent);
+      }
+
+      .qz-create-footer .qz-cta-bar {
+        margin-top: 0;
+      }
+
+      .qz-create-workspace-inner {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding: 10px 14px 12px;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--paper-warm) 28%, var(--surface)) 0%,
+          transparent 24%
+        );
+        border-top: 1px solid color-mix(in srgb, var(--border) 32%, transparent);
+      }
+      @media (min-width: 900px) {
+        .qz-create-workspace-inner {
+          padding: 12px 18px 14px;
+        }
+      }
+      @keyframes qz-course-wash {
+        0% {
+          opacity: 0;
+        }
+        18% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      .qz-create-workspace::after {
+        content: "";
+        pointer-events: none;
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(
+          65% 50% at 50% 0%,
+          color-mix(in srgb, var(--course-moss) 22%, transparent),
+          transparent 70%
+        );
+        opacity: 0;
+        z-index: 0;
+      }
+      .qz-create-workspace > * {
+        position: relative;
+        z-index: 1;
+      }
+      .qz-create-workspace.qz-create-workspace--course-flash::after {
+        animation: qz-course-wash 0.65s var(--qz-ease-out) both;
+      }
+      .qz-create-workspace[data-course="psyc"]::after {
+        background: radial-gradient(
+          65% 50% at 30% 0%,
+          color-mix(in srgb, #9fd4a8 28%, transparent),
+          transparent 72%
+        );
+      }
+      .qz-create-workspace[data-course="soc"]::after {
+        background: radial-gradient(
+          65% 50% at 70% 0%,
+          color-mix(in srgb, var(--course-fog) 32%, transparent),
+          transparent 72%
+        );
+      }
+
+      .qz-gen-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        display: grid;
+        place-items: center;
+        padding: max(16px, env(safe-area-inset-top)) 18px max(20px, env(safe-area-inset-bottom));
+        transition: opacity var(--qz-motion-fast) var(--qz-ease);
+      }
+      .qz-gen-modal[hidden] {
+        display: none !important;
+      }
+      .qz-gen-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(37, 50, 58, 0.3);
+        backdrop-filter: blur(5px);
+      }
+      .qz-gen-modal-panel {
+        position: relative;
+        width: 100%;
+        max-width: 420px;
+        max-height: min(88dvh, 620px);
+        overflow: auto;
+        border-radius: 16px;
+        border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+        background: var(--surface);
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.88) inset,
+          0 28px 64px rgba(37, 50, 58, 0.16);
+        padding: 18px 18px 16px;
+      }
+      .qz-gen-modal-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .qz-gen-modal-heading {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 1.06rem;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        color: var(--text);
+        line-height: 1.2;
+      }
+      .qz-gen-modal-x {
+        flex-shrink: 0;
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--workspace-bg) 65%, var(--surface));
+        color: var(--text-muted);
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: background 0.15s ease, color 0.15s ease;
+      }
+      .qz-gen-modal-x:hover {
+        background: color-mix(in srgb, var(--border) 35%, var(--surface));
+        color: var(--text);
+      }
+      .qz-gen-modal-x:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+      }
+      .qz-gen-modal-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-top: 16px;
+      }
+      .qz-gen-modal-actions .qz-btn-primary {
+        flex: 1 1 160px;
+      }
+      .qz-gen-modal-cancel {
+        flex: 0 0 auto;
+        border: none;
+        background: transparent;
+        font: inherit;
+        font-size: var(--body-size);
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 10px 8px;
+        border-radius: 8px;
+      }
+      .qz-gen-modal-cancel:hover {
+        color: var(--text);
+      }
+      .qz-gen-modal-cancel:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+      }
+      .qz-modal-setup-recap {
+        margin: 0 0 14px;
+        font-size: 12px;
+        line-height: 1.45;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .qz-cta-dual {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(132px, 34%);
+        gap: 10px;
+        align-items: stretch;
+      }
+      @media (max-width: 540px) {
+        .qz-cta-dual {
+          grid-template-columns: 1fr;
+        }
+      }
+      .qz-btn-secondary {
+        border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+        border-radius: 11px;
+        background: color-mix(in srgb, var(--surface) 70%, var(--course-moss));
+        color: var(--accent-strong);
+        font: inherit;
+        font-size: calc(var(--body-size) - 1px);
+        font-weight: 600;
+        padding: 10px 14px;
+        cursor: pointer;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      .qz-btn-secondary:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--course-moss) 38%, var(--surface));
+        border-color: color-mix(in srgb, var(--accent) 36%, var(--border));
+      }
+      .qz-btn-secondary:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .qz-btn-secondary:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+      }
+      .qz-btn-cta-primary {
+        min-width: 0;
+      }
+      .qz-cta-scope-footer {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+      .qz-cta-bar .qz-btn-secondary {
+        min-height: 46px;
+      }
+      .qz-cta-bar {
+        margin-top: 12px;
+        padding: 12px 12px 12px;
+        border-radius: 14px;
+        border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--hairline));
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--surface) 88%, var(--paper-warm)) 0%,
+          color-mix(in srgb, var(--surface) 94%, var(--workspace-bg)) 100%
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.75),
+          0 6px 20px rgba(37, 50, 58, 0.04);
+      }
+      .qz-cta-scope-footer .qz-btn-primary {
+        transition:
+          filter var(--qz-motion-fast) var(--qz-ease),
+          transform var(--qz-motion-fast) var(--qz-ease),
+          box-shadow var(--qz-motion-fast) var(--qz-ease);
+      }
+      .qz-cta-scope-footer .qz-btn-secondary {
+        transition:
+          background var(--qz-motion-fast) var(--qz-ease),
+          border-color var(--qz-motion-fast) var(--qz-ease),
+          transform var(--qz-motion-fast) var(--qz-ease),
+          opacity var(--qz-motion-fast) var(--qz-ease);
+      }
+      .qz-tab-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        flex: 1;
+        min-height: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+      .qz-tab-panel[hidden] {
+        display: none !important;
+      }
+      @keyframes qz-tab-in {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .qz-tab-panel.qz-tab-anim-in {
+        animation: qz-tab-in var(--qz-motion) var(--qz-ease-out) both;
+      }
+
+      @keyframes qz-refine-in {
+        from {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .qz-refine-wrap {
+        overflow: hidden;
+      }
+      .qz-refine-wrap.qz-refine-wrap--pop {
+        animation: qz-refine-in var(--qz-motion) var(--qz-ease-out) both;
+      }
+
+      .qz-scope-body {
+        transition: opacity var(--qz-motion-fast) var(--qz-ease);
+      }
+      .qz-scope-body.qz-scope-dim {
+        opacity: 0.72;
+      }
+
+      .qz-scope-ladder {
+        border-radius: 12px;
+        border: 1px solid var(--qz-ladder-edge, color-mix(in srgb, var(--accent) 10%, var(--hairline)));
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, var(--surface) 92%, var(--paper-warm)) 0%,
+          color-mix(in srgb, var(--surface) 96%, var(--workspace-bg)) 100%
+        );
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+        padding: 10px 12px 8px;
+        margin-top: 0;
+        transition: border-color 0.45s var(--qz-ease);
+      }
+      .qz-progressive-step {
+        margin-bottom: 8px;
+        transition:
+          opacity var(--qz-motion-fast) var(--qz-ease),
+          transform var(--qz-motion-fast) var(--qz-ease);
+      }
+      .qz-progressive-step--ladder {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+      }
+      .qz-progressive-step--ladder:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+      .qz-progressive-step:last-child {
+        margin-bottom: 0;
+      }
+      .qz-progressive-step[hidden] {
+        display: none !important;
+      }
+      .qz-scope-empty-hint {
+        margin: 0;
+        font-size: 11px;
+        line-height: 1.45;
+        font-weight: 500;
+        color: var(--text-tertiary);
+      }
+
+      .qz-scope-live {
+        position: relative;
+        border-radius: 14px;
+        border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--hairline));
+        background: linear-gradient(
+          128deg,
+          var(--qz-live-g1) 0%,
+          var(--qz-live-g2) 48%,
+          var(--qz-live-g3) 100%
+        );
+        padding: 11px 13px 12px;
+        margin: 0;
+        box-shadow:
+          0 1px 0 rgba(255, 255, 255, 0.72) inset,
+          0 10px 28px rgba(37, 50, 58, 0.06),
+          0 0 0 1px color-mix(in srgb, var(--surface) 35%, transparent);
+        overflow: hidden;
+        transition:
+          background 0.5s var(--qz-ease),
+          border-color 0.45s var(--qz-ease),
+          box-shadow var(--qz-motion-fast) var(--qz-ease),
+          transform var(--qz-motion-fast) var(--qz-ease);
+      }
+      .qz-scope-live-head {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px 12px;
+        margin-bottom: 8px;
+      }
+      .qz-scope-live::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(85% 75% at 100% 0%, var(--qz-live-rad-1), transparent 52%),
+          radial-gradient(70% 50% at 0% 100%, var(--qz-live-rad-2), transparent 50%);
+        pointer-events: none;
+        transition: opacity 0.45s var(--qz-ease);
+      }
+      .qz-scope-live.qz-scope-live--tick {
+        animation: qz-scope-pulse var(--qz-motion-fast) var(--qz-ease) both;
+      }
+      @keyframes qz-scope-pulse {
+        0% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.008);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .qz-scope-live-line {
+        position: relative;
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: calc(var(--body-size) + 5px);
+        font-weight: 600;
+        letter-spacing: -0.032em;
+        color: var(--accent-strong);
+        line-height: 1.2;
+        flex: 1;
+        min-width: 0;
+      }
+      .qz-scope-live-sub {
+        position: relative;
+        margin: 6px 0 0;
+        font-size: 11px;
+        line-height: 1.45;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+      .qz-scope-live-sub[hidden] {
+        display: none !important;
+      }
+
+      .qz-quiz-setup {
+        margin-top: 10px;
+        padding: 10px 12px 11px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--accent) 10%, var(--hairline));
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, var(--surface) 94%, var(--paper-warm)) 0%,
+          color-mix(in srgb, var(--surface) 98%, var(--workspace-bg)) 100%
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.72),
+          0 4px 14px rgba(37, 50, 58, 0.03);
+      }
+      .qz-quiz-setup-head {
+        margin: 0 0 8px;
+        font-family: var(--font-display);
+        font-size: calc(var(--body-size) - 1px);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--text-muted);
+      }
+      .qz-setup-field {
+        margin-bottom: 10px;
+      }
+      .qz-setup-field:last-of-type {
+        margin-bottom: 0;
+      }
+      .qz-setup-label {
+        display: block;
+        margin: 0 0 5px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+      }
+      .qz-setup-seg {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 3px;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--workspace-bg) 40%, var(--surface));
+        border: 1px solid var(--hairline);
+        gap: 2px;
+      }
+      .qz-setup-seg button {
+        border: none;
+        background: transparent;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .qz-setup-seg button.is-on {
+        background: var(--surface);
+        color: var(--accent-strong);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 1px 3px rgba(37, 50, 58, 0.05);
+      }
+      .qz-setup-seg button:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 0;
+      }
+      .qz-length-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 10px;
+      }
+      .qz-len-presets {
+        display: inline-flex;
+        flex-wrap: wrap;
+        padding: 2px;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--workspace-bg) 40%, var(--surface));
+        border: 1px solid var(--hairline);
+        gap: 2px;
+      }
+      .qz-len-presets button {
+        border: none;
+        background: transparent;
+        min-width: 36px;
+        padding: 6px 9px;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .qz-len-presets button.is-on {
+        background: var(--surface);
+        color: var(--accent-strong);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 1px 3px rgba(37, 50, 58, 0.05);
+      }
+      .qz-len-presets button:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 0;
+      }
+      .qz-stepper.qz-stepper--compact {
+        flex: 0 0 auto;
+      }
+      .qz-stepper.qz-stepper--compact button {
+        width: 32px;
+        height: 34px;
+        font-size: 16px;
+      }
+      .qz-stepper.qz-stepper--compact input {
+        width: 2.35rem;
+        padding: 7px 4px;
+        font-size: calc(var(--body-size) - 1px);
+      }
+      .qz-setup-extras {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid color-mix(in srgb, var(--hairline) 85%, transparent);
+      }
+      .qz-setup-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        user-select: none;
+      }
+      .qz-setup-toggle input {
+        width: 15px;
+        height: 15px;
+        margin: 0;
+        accent-color: var(--accent);
+        cursor: pointer;
+      }
+      .qz-cta-setup-summary {
+        margin: 0 0 8px;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--text-muted);
+        line-height: 1.4;
+      }
+
+      .qz-select-like {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 10px;
+        border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+        background: var(--surface);
+        padding: 10px 12px;
+        font: inherit;
+        font-size: var(--body-size);
+        color: var(--text);
+        outline: none;
+        cursor: pointer;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .qz-select-like:focus {
+        border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent);
+      }
+
+      .qz-surface {
+        border-radius: var(--r-surface);
+        border: 1px solid color-mix(in srgb, var(--border) 58%, transparent);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--surface) 94%, var(--course-moss)) 0%,
+          var(--surface) 28%
+        );
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.78) inset, var(--shadow-soft);
+        padding: 18px 20px 20px;
+        width: 100%;
+        min-width: 0;
+      }
+      .qz-panel-title {
+        margin: 0 0 4px;
+        font-family: var(--font-display);
+        font-size: 1.02rem;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        color: var(--text);
+      }
+      .qz-panel-sub {
+        margin: 0 0 14px;
+        font-size: 12px;
+        line-height: 1.4;
+        color: var(--text-tertiary);
+        font-weight: 500;
+      }
+      .qz-history-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .qz-history-head .qz-panel-title {
+        margin: 0;
+      }
+      .qz-filter {
+        display: inline-flex;
+        padding: 2px;
+        border-radius: 9px;
+        background: color-mix(in srgb, var(--workspace-bg) 55%, var(--surface));
+        border: 1px solid var(--hairline);
+      }
+      .qz-filter button {
+        border: none;
+        background: transparent;
+        padding: 5px 12px;
+        border-radius: 7px;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-tertiary);
+        cursor: pointer;
+      }
+      .qz-filter button.is-on {
+        background: var(--surface);
+        color: var(--text);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 2px rgba(37, 50, 58, 0.06);
+      }
+      .qz-filter button:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+      }
+
+      .qz-history-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .qz-history-item {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px 14px;
+        align-items: start;
+        padding: 12px 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--hairline) 85%, transparent);
+      }
+      .qz-history-item:first-child {
+        padding-top: 2px;
+      }
+      .qz-history-item:last-child {
+        border-bottom: none;
+        padding-bottom: 2px;
+      }
+      .qz-history-item[hidden] {
+        display: none;
+      }
+      .qz-history-main {
+        min-width: 0;
+      }
+      .qz-history-name {
+        margin: 0 0 4px;
+        font-size: var(--body-size);
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: -0.02em;
+        line-height: 1.3;
+      }
+      .qz-history-meta {
+        margin: 0;
+        font-size: 11px;
+        color: var(--text-muted);
+        line-height: 1.4;
+        font-weight: 500;
+      }
+      .qz-history-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .qz-tag {
+        display: inline-flex;
+        align-items: center;
+        height: 22px;
+        padding: 0 8px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        background: color-mix(in srgb, var(--accent-soft) 72%, var(--surface));
+        color: var(--accent-strong);
+        border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--hairline));
+      }
+      .qz-tag--muted {
+        text-transform: none;
+        letter-spacing: 0.01em;
+        font-weight: 600;
+        background: color-mix(in srgb, var(--workspace-bg) 45%, var(--surface));
+        color: var(--text-muted);
+        border-color: var(--hairline);
+      }
+      .qz-history-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .qz-link-btn {
+        border: none;
+        background: transparent;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--accent);
+        cursor: pointer;
+        padding: 4px 2px;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+      }
+      .qz-link-btn:hover {
+        color: var(--accent-strong);
+      }
+      .qz-link-btn:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+
+      .qz-pick-group {
+        margin-top: 0;
+      }
+      .qz-pick-group + .qz-pick-group {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid color-mix(in srgb, var(--hairline) 85%, transparent);
+      }
+
+      .qz-create-workspace .qz-pill.qz-pick {
+        position: relative;
+        padding-left: 30px;
+        border-width: 1px;
+        transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .qz-create-workspace .qz-pill.qz-pick::before {
+        content: "";
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+        background: var(--surface);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+        transition: border-color 0.15s ease, background 0.15s ease;
+      }
+      .qz-create-workspace .qz-pill.qz-pick.is-selected {
+        background: color-mix(in srgb, var(--accent-soft) 78%, var(--surface));
+        border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+        color: var(--accent-strong);
+        font-weight: 600;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45) inset;
+      }
+      .qz-create-workspace[data-course="psyc"] .qz-pill.qz-pick.is-selected {
+        background: color-mix(in srgb, var(--course-sage) 38%, var(--accent-soft));
+        border-color: color-mix(in srgb, #5a9a6a 32%, var(--border));
+        color: #1a3824;
+      }
+      .qz-create-workspace[data-course="soc"] .qz-pill.qz-pick.is-selected {
+        background: color-mix(in srgb, var(--course-fog) 36%, var(--accent-soft));
+        border-color: color-mix(in srgb, #6b9bd4 30%, var(--border));
+        color: #243a52;
+      }
+      .qz-create-workspace .qz-pill.qz-pick.is-selected::before {
+        border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+        background: var(--accent-strong);
+        box-shadow: none;
+      }
+      .qz-create-workspace .qz-pill.qz-pick.is-selected::after {
+        content: "";
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        width: 4px;
+        height: 7px;
+        margin-top: -5px;
+        border: solid color-mix(in srgb, var(--surface) 95%, var(--accent-soft));
+        border-width: 0 1.5px 1.5px 0;
+        transform: rotate(45deg);
+      }
+
+      .qz-create-workspace .qz-chip.qz-pick {
+        position: relative;
+        padding-left: 28px;
+        font-weight: 500;
+        transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .qz-create-workspace .qz-chip.qz-pick::before {
+        content: "";
+        position: absolute;
+        left: 9px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+        background: var(--surface);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+      }
+      .qz-create-workspace .qz-chip.qz-pick.is-selected {
+        background: color-mix(in srgb, var(--course-lavender) 35%, var(--accent-soft));
+        border-color: color-mix(in srgb, #9a87bc 28%, var(--accent));
+        color: var(--text);
+        font-weight: 600;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+      }
+      .qz-create-workspace[data-course="psyc"] .qz-chip.qz-pick.is-selected {
+        background: color-mix(in srgb, var(--course-moss) 32%, var(--surface));
+        border-color: color-mix(in srgb, #4d8a5c 26%, var(--accent));
+        color: #15301e;
+      }
+      .qz-create-workspace[data-course="soc"] .qz-chip.qz-pick.is-selected {
+        background: color-mix(in srgb, var(--course-fog) 40%, var(--surface));
+        border-color: color-mix(in srgb, #5a84b8 28%, var(--accent));
+        color: #0f2438;
+      }
+      .qz-create-workspace .qz-chip.qz-pick.is-selected::before {
+        background: color-mix(in srgb, #5c4f72 88%, var(--accent-strong));
+        border-color: color-mix(in srgb, #5c4f72 70%, var(--border));
+      }
+      .qz-create-workspace[data-course="psyc"] .qz-chip.qz-pick.is-selected::before {
+        background: color-mix(in srgb, #2d5a3a 92%, var(--accent-strong));
+        border-color: color-mix(in srgb, #2d5a3a 75%, var(--border));
+      }
+      .qz-create-workspace[data-course="soc"] .qz-chip.qz-pick.is-selected::before {
+        background: color-mix(in srgb, #2a4a6e 90%, var(--accent-strong));
+        border-color: color-mix(in srgb, #2a4a6e 72%, var(--border));
+      }
+      .qz-create-workspace .qz-chip.qz-pick.is-selected::after {
+        content: "";
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        width: 4px;
+        height: 7px;
+        margin-top: -5px;
+        border: solid rgba(255, 255, 255, 0.95);
+        border-width: 0 1.5px 1.5px 0;
+        transform: rotate(45deg);
+      }
+
+      .qz-settings-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 14px 18px;
+        padding: 14px 0 4px;
+        border-top: 1px solid color-mix(in srgb, var(--hairline) 88%, transparent);
+        margin-top: 4px;
+      }
+      .qz-settings-cluster {
+        flex: 1;
+        min-width: 140px;
+      }
+      .qz-settings-cluster .qz-label {
+        margin-bottom: 6px;
+      }
+      .qz-stepper {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 10px;
+        border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+        background: var(--surface);
+        overflow: hidden;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset;
+      }
+      .qz-stepper button {
+        width: 38px;
+        height: 40px;
+        border: none;
+        background: color-mix(in srgb, var(--workspace-bg) 40%, var(--surface));
+        color: var(--text);
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1;
+        cursor: pointer;
+        transition: background 0.12s ease;
+      }
+      .qz-stepper button:hover {
+        background: color-mix(in srgb, var(--accent-soft) 40%, var(--surface));
+      }
+      .qz-stepper button:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: -2px;
+      }
+      .qz-stepper input {
+        width: 3rem;
+        border: none;
+        border-left: 1px solid var(--hairline);
+        border-right: 1px solid var(--hairline);
+        text-align: center;
+        font: inherit;
+        font-size: var(--body-size);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        color: var(--text);
+        padding: 9px 4px;
+        background: var(--surface);
+        outline: none;
+        -moz-appearance: textfield;
+      }
+      .qz-stepper input::-webkit-outer-spin-button,
+      .qz-stepper input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      .qz-format-seg {
+        display: inline-flex;
+        padding: 3px;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--workspace-bg) 45%, var(--surface));
+        border: 1px solid var(--hairline);
+        gap: 2px;
+      }
+      .qz-format-seg button {
+        border: none;
+        background: transparent;
+        padding: 7px 12px;
+        border-radius: 8px;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .qz-format-seg button.is-on {
+        background: var(--surface);
+        color: var(--accent-strong);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 1px 3px rgba(37, 50, 58, 0.05);
+      }
+      .qz-format-seg button:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 0;
+      }
+
+      .qz-name-field .qz-input {
+        font-family: var(--font-display);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        font-size: calc(var(--body-size) + 1px);
+      }
+
+      .qz-cta-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid color-mix(in srgb, var(--hairline) 88%, transparent);
+      }
+      .qz-btn-full {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      .qz-btn-primary.qz-btn-primary--lg {
+        padding: 11px 20px;
+        font-size: var(--body-size);
+        border-radius: 11px;
+      }
+      .qz-active-quiz {
+        border-radius: var(--r-surface);
+        border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--hairline));
+        background: color-mix(in srgb, var(--accent-soft) 48%, var(--surface));
+        padding: 16px 18px 18px;
+        margin-bottom: 18px;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset, var(--shadow-soft);
+      }
+      .qz-active-quiz-title {
+        margin: 0 0 6px;
+        font-family: var(--font-display);
+        font-size: calc(var(--body-size) + 3px);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        color: var(--text);
+        line-height: 1.2;
+      }
+      .qz-active-quiz-meta {
+        margin: 0 0 12px;
+        font-size: 12px;
+        color: var(--text-muted);
+        font-weight: 500;
+        line-height: 1.4;
+      }
+      .qz-progress-track {
+        height: 6px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--surface) 55%, var(--workspace-bg));
+        border: 1px solid color-mix(in srgb, var(--hairline) 80%, transparent);
+        overflow: hidden;
+        margin-bottom: 14px;
+      }
+      .qz-progress-fill {
+        height: 100%;
+        border-radius: inherit;
+        background: color-mix(in srgb, var(--accent) 72%, var(--accent-strong));
+        transition: width 0.25s ease;
+      }
+      .qz-cta-secondary {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 14px;
+      }
+      .qz-text-link {
+        border: none;
+        background: none;
+        padding: 6px 2px;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-color: color-mix(in srgb, var(--text-tertiary) 35%, transparent);
+      }
+      .qz-text-link:hover {
+        color: var(--accent);
+      }
+      .qz-text-link:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+
+      .qz-advanced.qz-advanced--quiet {
+        margin-top: 8px;
+        border-style: dashed;
+        border-color: color-mix(in srgb, var(--hairline) 95%, var(--border));
+        background: color-mix(in srgb, var(--surface) 96%, var(--workspace-bg));
+      }
+      .qz-advanced.qz-advanced--quiet summary {
+        padding: 8px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-tertiary);
+      }
+
+      .qz-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: #5d6f79;
+        margin-bottom: 8px;
+      }
+      .qz-input {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+        background: var(--surface);
+        padding: 10px 12px;
+        font: inherit;
+        font-size: var(--body-size);
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .qz-input:focus {
+        border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent);
+      }
+
+      .qz-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .qz-pill {
+        border: 1px solid var(--hairline);
+        background: color-mix(in srgb, var(--workspace-bg) 40%, var(--surface));
+        border-radius: 999px;
+        padding: 6px 12px;
+        font: inherit;
+        font-size: calc(var(--body-size) - 1px);
+        font-weight: 500;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+      }
+      .qz-pill:hover {
+        border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+        color: var(--text);
+      }
+      .qz-pill.is-on {
+        background: color-mix(in srgb, var(--accent-soft) 88%, var(--surface));
+        border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
+        color: var(--accent-strong);
+        font-weight: 600;
+      }
+      .qz-pill:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+      }
+
+      .qz-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: var(--r-ui);
+        border: 1px solid var(--hairline);
+        background: var(--surface);
+        padding: 5px 10px;
+        font-size: calc(var(--body-size) - 1px);
+        font-weight: 500;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+      }
+      .qz-chip:hover {
+        border-color: color-mix(in srgb, var(--accent) 20%, var(--border));
+      }
+      .qz-chip.is-selected {
+        border-color: color-mix(in srgb, var(--accent) 32%, var(--border));
+        background: color-mix(in srgb, var(--accent-soft) 65%, var(--surface));
+        color: var(--text);
+      }
+      .qz-chip:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: 2px;
+      }
+
+      .qz-num {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .qz-advanced {
+        border-radius: var(--r-surface);
+        border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+        background: color-mix(in srgb, var(--surface) 92%, var(--workspace-bg));
+        overflow: hidden;
+      }
+      .qz-advanced summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 10px 14px;
+        font-size: calc(var(--body-size) - 1px);
+        font-weight: 600;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        user-select: none;
+      }
+      .qz-advanced summary::-webkit-details-marker {
+        display: none;
+      }
+      .qz-advanced summary::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-right: 1.5px solid var(--text-tertiary);
+        border-bottom: 1.5px solid var(--text-tertiary);
+        transform: rotate(45deg);
+        transition: transform 0.2s ease;
+        flex-shrink: 0;
+      }
+      .qz-advanced[open] summary::after {
+        transform: rotate(-135deg);
+      }
+      .qz-advanced summary:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 42%, var(--border));
+        outline-offset: -2px;
+      }
+      .qz-advanced-body {
+        padding: 12px 14px 14px;
+        border-top: 1px solid var(--hairline);
+      }
+
+      .qz-btn-primary {
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(
+          165deg,
+          color-mix(in srgb, var(--accent-strong) 92%, var(--accent)) 0%,
+          var(--accent-strong) 100%
+        );
+        color: color-mix(in srgb, var(--surface) 96%, var(--accent-soft));
+        font: inherit;
+        font-size: calc(var(--body-size) - 1px);
+        font-weight: 600;
+        padding: 10px 18px;
+        cursor: pointer;
+        box-shadow:
+          0 2px 10px rgba(37, 50, 58, 0.14),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        transition:
+          filter var(--qz-motion-fast) var(--qz-ease),
+          transform var(--qz-motion-fast) var(--qz-ease),
+          box-shadow var(--qz-motion-fast) var(--qz-ease);
+      }
+      .qz-btn-primary.qz-btn-primary--hero {
+        min-height: 46px;
+        font-size: var(--body-size);
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        box-shadow:
+          0 4px 18px rgba(37, 50, 58, 0.18),
+          0 1px 3px rgba(37, 50, 58, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      }
+      .qz-btn-primary.qz-btn-primary--hero:hover {
+        filter: brightness(1.06);
+      }
+      .qz-btn-primary:hover {
+        filter: brightness(1.05);
+      }
+      .qz-btn-primary:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--accent) 55%, var(--border));
+        outline-offset: 2px;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (max-width: 900px) {
+        .mock-topbar {
+          grid-template-columns: 1fr;
+        }
+        .mock-launcher {
+          justify-self: stretch;
+          max-width: none;
+        }
+        .mock-topbar-right {
+          justify-self: start;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .qz-hub-tabs button,
+        .qz-scope-live,
+        .qz-create-workspace,
+        .qz-course-pick,
+        .qz-scope-ladder,
+        .qz-gen-modal,
+        .qz-cta-scope-footer .qz-btn-primary,
+        .qz-cta-scope-footer .qz-btn-secondary,
+        .qz-refine-wrap,
+        .qz-progressive-step,
+        .qz-scope-body {
+          transition: none !important;
+        }
+        .qz-refine-wrap.qz-refine-wrap--pop {
+          animation: none !important;
+        }
+        .qz-tab-panel.qz-tab-anim-in {
+          animation: none !important;
+        }
+        .qz-scope-live.qz-scope-live--tick {
+          animation: none !important;
+        }
+        .qz-course-pick:hover:not(.is-on) {
+          transform: none;
+        }
+        .qz-create-workspace.qz-create-workspace--course-flash::after {
+          animation: none !important;
+        }
+        .qz-workspace-header {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mock-app" id="quiz-app">
+      <aside class="mock-rail" aria-label="App navigation">
+        <div class="mock-rail-brand" title="HydroWise">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2c-2 4-6 5-6 10a6 6 0 1 0 12 0c0-5-4-6-6-10z" />
+            <path d="M8 14h8" />
+          </svg>
+        </div>
+        <button type="button" class="mock-rail-btn" aria-label="Dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="3" y="3" width="7" height="9" rx="1" />
+            <rect x="14" y="3" width="7" height="5" rx="1" />
+            <rect x="14" y="12" width="7" height="9" rx="1" />
+            <rect x="3" y="16" width="7" height="5" rx="1" />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn" aria-label="Ask">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+            />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn active" aria-current="page" aria-label="Quizzes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            <path d="M8 7h8M8 11h6" />
+          </svg>
+        </button>
+        <button type="button" class="mock-rail-btn" aria-label="Flash cards">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+            <polyline points="14 2 14 8 20 8" />
+            <path d="M10 12h4M10 16h4" />
+          </svg>
+        </button>
+      </aside>
+
+      <div class="mock-column">
+        <div class="mock-inset">
+          <header class="mock-topbar">
+            <div class="mock-topbar-crumb">
+              <div class="mock-topbar-brand">HydroWise</div>
+              <div class="mock-topbar-breadcrumb"><strong>PSYC 100</strong> · Quizzes</div>
+            </div>
+            <div class="mock-launcher">
+              <span class="mock-launcher-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </span>
+              <label class="sr-only" for="qz-launcher">Search course workspace</label>
+              <input
+                id="qz-launcher"
+                class="mock-launcher-input"
+                type="search"
+                placeholder="Find a chapter, document, or past quiz…"
+              />
+            </div>
+            <div class="mock-topbar-right"></div>
+          </header>
+
+          <div class="mock-scroll">
+            <div class="mock-course-shell mock-course-shell--focused">
+              <div class="mock-canvas">
+                <div class="quiz-mvp" id="quiz-hub">
+                  <div class="qz-workspace-shell" id="qz-workspace-shell" data-course="psyc">
+                    <div
+                      class="qz-course-zone"
+                      id="qz-course-zone"
+                      role="group"
+                      aria-label="Course for this workspace"
+                    >
+                      <div class="qz-course-rail-wrap">
+                        <div
+                          class="qz-course-rail"
+                          role="tablist"
+                          aria-label="Courses"
+                        >
+                          <button
+                            type="button"
+                            class="qz-course-pick is-on"
+                            id="qz-course-pick-psyc"
+                            role="tab"
+                            aria-selected="true"
+                            tabindex="0"
+                            data-course-value="psyc"
+                          >
+                            <span class="qz-course-pick-code">PSYC 100</span>
+                            <span class="qz-course-pick-name">Introduction to Psychology I</span>
+                          </button>
+                          <button
+                            type="button"
+                            class="qz-course-pick"
+                            id="qz-course-pick-soc"
+                            role="tab"
+                            aria-selected="false"
+                            tabindex="-1"
+                            data-course-value="soc"
+                          >
+                            <span class="qz-course-pick-code">SOC 201</span>
+                            <span class="qz-course-pick-name">Introduction to Sociology</span>
+                          </button>
+                        </div>
+                        <label class="sr-only" for="qz-course-select">Course (synced with tabs above)</label>
+                        <select id="qz-course-select" class="qz-course-select-hidden" aria-hidden="true" tabindex="-1">
+                          <option value="psyc" selected>PSYC 100 — Introduction to Psychology I</option>
+                          <option value="soc">SOC 201 — Introduction to Sociology</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <header class="qz-workspace-header" id="qz-workspace-header" data-course="psyc">
+                      <div class="qz-workspace-header-top">
+                        <div class="qz-workspace-page-block">
+                          <h1 class="qz-workspace-page-title" id="qz-page-title">Quizzes</h1>
+                          <p class="qz-workspace-page-lede" id="qz-page-lede">
+                            Course tabs dock above this header. On desktop, move the pointer near the top of the card to
+                            reveal them; on touch, the row stays compact and visible.
+                          </p>
+                        </div>
+                        <div class="qz-hub-tabs" role="tablist" aria-label="Quiz mode">
+                          <button type="button" class="is-on" id="tab-create" role="tab" aria-selected="true" aria-controls="panel-create">Create</button>
+                          <button type="button" id="tab-history" role="tab" aria-selected="false" aria-controls="panel-history">History</button>
+                          <button type="button" id="tab-take" role="tab" aria-selected="false" aria-controls="panel-take">Take quiz</button>
+                        </div>
+                      </div>
+                    </header>
+
+                    <div class="qz-workspace-body">
+                  <div class="qz-tab-panel" id="panel-create" role="tabpanel" aria-labelledby="tab-create">
+                    <div class="qz-create-workspace" id="qz-create-workspace" data-course="psyc">
+                      <div class="qz-create-workspace-inner">
+                      <div id="create-step-scope">
+                        <div id="qz-refine-wrap" class="qz-refine-wrap" hidden>
+                          <div class="qz-scope-body" id="qz-scope-body">
+                            <div class="qz-scope-ladder" id="qz-scope-ladder">
+                              <div class="qz-progressive-step qz-progressive-step--ladder" id="step-chapter" hidden>
+                                <div class="qz-pill-row" id="qz-chapter-row" role="group" aria-label="Chapters"></div>
+                              </div>
+                              <div class="qz-progressive-step qz-progressive-step--ladder" id="step-topic" hidden>
+                                <div class="qz-pill-row" id="qz-topic-row" role="group" aria-label="Topics"></div>
+                                <p class="qz-scope-empty-hint" id="qz-topic-empty" hidden>Add a chapter to see topics.</p>
+                              </div>
+                              <div class="qz-progressive-step qz-progressive-step--ladder" id="step-document" hidden>
+                                <div class="qz-pill-row" id="qz-document-row" role="group" aria-label="Documents"></div>
+                                <p class="qz-scope-empty-hint" id="qz-document-empty" hidden>Pick a topic to load files.</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="qz-scope-live" id="qz-scope-live" aria-live="polite">
+                          <div class="qz-scope-live-head">
+                            <p class="qz-scope-live-line" id="qz-live-line">Course quiz · PSYC 100</p>
+                          </div>
+                          <p class="qz-scope-live-sub" id="qz-live-sub" hidden></p>
+                        </div>
+
+                        <section class="qz-quiz-setup" aria-labelledby="qz-setup-heading">
+                          <h2 class="qz-quiz-setup-head" id="qz-setup-heading">Quiz setup</h2>
+                          <div class="qz-setup-field">
+                            <span class="qz-setup-label" id="qz-setup-type-lbl">Quiz type</span>
+                            <div
+                              class="qz-setup-seg"
+                              role="group"
+                              aria-labelledby="qz-setup-type-lbl"
+                              id="qz-setup-type-group"
+                            >
+                              <button type="button" class="is-on" data-qz-type="mc">Multiple choice</button>
+                              <button type="button" data-qz-type="mixed">Mixed</button>
+                              <button type="button" data-qz-type="short">Short answer</button>
+                              <button type="button" data-qz-type="tf">True / false</button>
+                            </div>
+                          </div>
+                          <div class="qz-setup-field">
+                            <span class="qz-setup-label" id="qz-setup-len-lbl">Length</span>
+                            <div class="qz-length-row">
+                              <div
+                                class="qz-len-presets"
+                                role="group"
+                                aria-labelledby="qz-setup-len-lbl"
+                                id="qz-len-presets"
+                              >
+                                <button type="button" data-qz-len="5">5</button>
+                                <button type="button" class="is-on" data-qz-len="10">10</button>
+                                <button type="button" data-qz-len="20">20</button>
+                                <button type="button" data-qz-len="30">30</button>
+                              </div>
+                              <div class="qz-stepper qz-stepper--compact">
+                                <button type="button" id="qz-count-minus" aria-label="Fewer questions">−</button>
+                                <input
+                                  class="qz-num"
+                                  id="qz-count"
+                                  type="number"
+                                  min="5"
+                                  max="60"
+                                  value="10"
+                                  aria-describedby="qz-setup-len-lbl"
+                                />
+                                <button type="button" id="qz-count-plus" aria-label="More questions">+</button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="qz-setup-field">
+                            <span class="qz-setup-label" id="qz-setup-diff-lbl">Difficulty</span>
+                            <div
+                              class="qz-setup-seg"
+                              role="group"
+                              aria-labelledby="qz-setup-diff-lbl"
+                              id="qz-setup-diff-group"
+                            >
+                              <button type="button" data-qz-diff="easy">Easy</button>
+                              <button type="button" class="is-on" data-qz-diff="medium">Medium</button>
+                              <button type="button" data-qz-diff="hard">Hard</button>
+                              <button type="button" data-qz-diff="adaptive">Adaptive</button>
+                            </div>
+                          </div>
+                          <div class="qz-setup-extras">
+                            <label class="qz-setup-toggle">
+                              <input type="checkbox" id="qz-setup-timed" />
+                              Timed mode
+                            </label>
+                            <label class="qz-setup-toggle">
+                              <input type="checkbox" id="qz-setup-explain" checked />
+                              Show explanations after submit
+                            </label>
+                          </div>
+                        </section>
+                      </div>
+
+                      <div class="qz-create-footer">
+                        <div class="qz-cta-scope-footer qz-cta-bar">
+                          <p class="qz-cta-setup-summary" id="qz-cta-setup-summary" aria-live="polite"></p>
+                          <div class="qz-cta-dual">
+                            <button
+                              type="button"
+                              class="qz-btn-primary qz-btn-primary--lg qz-btn-primary--hero qz-btn-cta-primary"
+                              id="qz-generate-scope"
+                            >
+                              Generate course quiz
+                            </button>
+                            <button type="button" class="qz-btn-secondary" id="qz-create-next">
+                              Focus on chapters
+                            </button>
+                          </div>
+                        </div>
+                        <p class="qz-panel-sub" id="qz-create-status" style="margin: 6px 0 0" aria-live="polite"></p>
+                      </div>
+
+                      <div
+                        id="qz-generate-modal"
+                        class="qz-gen-modal"
+                        hidden
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="qz-gen-modal-title"
+                      >
+                        <button type="button" class="qz-gen-modal-backdrop" data-close-modal tabindex="-1" aria-label="Close dialog"></button>
+                        <div class="qz-gen-modal-panel">
+                          <div class="qz-gen-modal-head">
+                            <h2 class="qz-gen-modal-heading" id="qz-gen-modal-title">Name this quiz</h2>
+                            <button type="button" class="qz-gen-modal-x" data-close-modal aria-label="Close">×</button>
+                          </div>
+
+                          <div class="qz-name-field" style="margin-bottom: 14px">
+                            <label class="qz-label" id="qz-title-lbl" for="qz-title">Quiz title</label>
+                            <input
+                              class="qz-input"
+                              id="qz-title"
+                              type="text"
+                              value="Unit 4 — Memory &amp; cognition (practice)"
+                              autocomplete="off"
+                            />
+                          </div>
+
+                          <p class="qz-modal-setup-recap" id="qz-modal-setup-recap"></p>
+
+                          <div class="qz-gen-modal-actions">
+                            <button type="button" class="qz-gen-modal-cancel" data-close-modal>Cancel</button>
+                            <button
+                              type="button"
+                              class="qz-btn-primary qz-btn-primary--lg qz-btn-full"
+                              id="qz-generate-confirm"
+                            >
+                              Generate course quiz
+                            </button>
+                          </div>
+                          <div class="qz-cta-secondary" style="justify-content: center; width: 100%; margin-top: 10px">
+                            <button type="button" class="qz-text-link" id="qz-from-chat">Start from chat</button>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="qz-tab-panel" id="panel-history" role="tabpanel" aria-labelledby="tab-history" hidden>
+                    <section class="qz-surface" aria-labelledby="qz-history-heading">
+                      <h2 class="sr-only" id="qz-history-heading">Recent quizzes</h2>
+                      <div class="qz-history-head">
+                        <div class="qz-filter" role="group" aria-label="Filter history">
+                          <button type="button" class="is-on" id="hist-filter-all" data-filter="all">All</button>
+                          <button type="button" id="hist-filter-course" data-filter="course">This course</button>
+                        </div>
+                      </div>
+
+                      <ul class="qz-history-list">
+                        <li class="qz-history-item" data-course="psyc">
+                          <div class="qz-history-main">
+                            <h3 class="qz-history-name">Week 4 review quiz</h3>
+                            <p class="qz-history-meta">PSYC 100 · Ch. 5–6 · 12 questions · yesterday</p>
+                            <div class="qz-history-badges">
+                              <span class="qz-tag">Ready</span>
+                              <span class="qz-tag qz-tag--muted">Chapter</span>
+                            </div>
+                          </div>
+                          <div class="qz-history-actions">
+                            <button type="button" class="qz-link-btn">Open</button>
+                            <button type="button" class="qz-link-btn">Duplicate</button>
+                          </div>
+                        </li>
+                        <li class="qz-history-item" data-course="psyc">
+                          <div class="qz-history-main">
+                            <h3 class="qz-history-name">Memory &amp; cognition practice</h3>
+                            <p class="qz-history-meta">PSYC 100 · Ch. 7–8 · 18 questions · 3 days ago</p>
+                            <div class="qz-history-badges">
+                              <span class="qz-tag">In progress</span>
+                              <span class="qz-tag qz-tag--muted">Mixed</span>
+                            </div>
+                          </div>
+                          <div class="qz-history-actions">
+                            <button type="button" class="qz-link-btn">Resume</button>
+                            <button type="button" class="qz-link-btn">Duplicate</button>
+                          </div>
+                        </li>
+                        <li class="qz-history-item" data-course="psyc">
+                          <div class="qz-history-main">
+                            <h3 class="qz-history-name">Chapter 7 check-in</h3>
+                            <p class="qz-history-meta">PSYC 100 · Ch. 7 · Memory topic · 8 questions · last week</p>
+                            <div class="qz-history-badges">
+                              <span class="qz-tag">Ready</span>
+                              <span class="qz-tag qz-tag--muted">Topic</span>
+                            </div>
+                          </div>
+                          <div class="qz-history-actions">
+                            <button type="button" class="qz-link-btn">Open</button>
+                            <button type="button" class="qz-link-btn">Duplicate</button>
+                          </div>
+                        </li>
+                        <li class="qz-history-item" data-course="other" hidden>
+                          <div class="qz-history-main">
+                            <h3 class="qz-history-name">Research methods warm-up</h3>
+                            <p class="qz-history-meta">SOC 201 · Ch. 2 · 10 questions · 2 weeks ago</p>
+                            <div class="qz-history-badges">
+                              <span class="qz-tag">Ready</span>
+                              <span class="qz-tag qz-tag--muted">Course</span>
+                            </div>
+                          </div>
+                          <div class="qz-history-actions">
+                            <button type="button" class="qz-link-btn">Open</button>
+                            <button type="button" class="qz-link-btn">Duplicate</button>
+                          </div>
+                        </li>
+                      </ul>
+                    </section>
+                  </div>
+
+                  <div class="qz-tab-panel" id="panel-take" role="tabpanel" aria-labelledby="tab-take" hidden>
+                    <section class="qz-surface" aria-labelledby="qz-take-heading">
+                      <h2 class="sr-only" id="qz-take-heading">Take a quiz</h2>
+                      <div class="qz-active-quiz" aria-label="Quiz in progress">
+                        <h3 class="qz-active-quiz-title">Memory &amp; cognition practice</h3>
+                        <p class="qz-active-quiz-meta">PSYC 100 · 7 of 18 answered · auto-saved</p>
+                        <div class="qz-progress-track" aria-hidden="true">
+                          <div class="qz-progress-fill" style="width: 38.89%"></div>
+                        </div>
+                        <button type="button" class="qz-btn-primary qz-btn-primary--lg qz-btn-full">Resume quiz</button>
+                      </div>
+                      <div class="qz-history-head">
+                        <div class="qz-filter" role="group" aria-label="Filter quizzes">
+                          <button type="button" class="is-on" id="take-filter-ready" data-take-filter="ready">Ready</button>
+                          <button type="button" id="take-filter-progress" data-take-filter="progress">In progress</button>
+                          <button type="button" id="take-filter-done" data-take-filter="done">Completed</button>
+                        </div>
+                      </div>
+                      <ul class="qz-history-list">
+                        <li class="qz-history-item" data-take-status="ready">
+                          <div class="qz-history-main">
+                            <h3 class="qz-history-name">Week 4 review quiz</h3>
+                            <p class="qz-history-meta">PSYC 100 · 12 questions · not started</p>
+                            <div class="qz-history-badges">
+                              <span class="qz-tag">Ready</span>
+                            </div>
+                          </div>
+                          <div class="qz-history-actions">
+                            <button type="button" class="qz-link-btn">Start</button>
+                          </div>
+                        </li>
+                        <li class="qz-history-item" data-take-status="progress">
+                          <div class="qz-history-main">
+                            <h3 class="qz-history-name">Memory &amp; cognition practice</h3>
+                            <p class="qz-history-meta">PSYC 100 · 18 questions · 7 of 18 answered</p>
+                            <div class="qz-history-badges">
+                              <span class="qz-tag">In progress</span>
+                            </div>
+                          </div>
+                          <div class="qz-history-actions">
+                            <button type="button" class="qz-link-btn">Resume</button>
+                          </div>
+                        </li>
+                        <li class="qz-history-item" data-take-status="done">
+                          <div class="qz-history-main">
+                            <h3 class="qz-history-name">Chapter 7 check-in</h3>
+                            <p class="qz-history-meta">PSYC 100 · 8 questions · completed Tue</p>
+                            <div class="qz-history-badges">
+                              <span class="qz-tag qz-tag--muted">Completed</span>
+                            </div>
+                          </div>
+                          <div class="qz-history-actions">
+                            <button type="button" class="qz-link-btn">Review</button>
+                          </div>
+                        </li>
+                      </ul>
+                    </section>
+                  </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var countEl = document.getElementById("qz-count");
+        var statusEl = document.getElementById("qz-create-status");
+        var filterAll = document.getElementById("hist-filter-all");
+        var filterCourse = document.getElementById("hist-filter-course");
+        var courseSelect = document.getElementById("qz-course-select");
+        var createWorkspace = document.getElementById("qz-create-workspace");
+        var liveLine = document.getElementById("qz-live-line");
+        var liveSub = document.getElementById("qz-live-sub");
+        var refineWrap = document.getElementById("qz-refine-wrap");
+        var scopeLive = document.getElementById("qz-scope-live");
+        var scopeBody = document.getElementById("qz-scope-body");
+
+        var stepChapter = document.getElementById("step-chapter");
+        var stepTopic = document.getElementById("step-topic");
+        var stepDocument = document.getElementById("step-document");
+        var chapterRow = document.getElementById("qz-chapter-row");
+        var topicRow = document.getElementById("qz-topic-row");
+        var documentRow = document.getElementById("qz-document-row");
+        var topicEmpty = document.getElementById("qz-topic-empty");
+        var documentEmpty = document.getElementById("qz-document-empty");
+
+        var workspaceHeaderEl = document.getElementById("qz-workspace-header");
+        var qzWorkspaceShell = document.getElementById("qz-workspace-shell");
+        var qzCourseZone = document.getElementById("qz-course-zone");
+        var lastAppliedCourse = null;
+        var qzCourseRailRevealTimer = null;
+        var qzCourseRailHideTimer = null;
+
+        function applyCourseShell(courseId) {
+          var changed = lastAppliedCourse !== null && lastAppliedCourse !== courseId;
+          lastAppliedCourse = courseId;
+          if (createWorkspace) createWorkspace.setAttribute("data-course", courseId);
+          if (workspaceHeaderEl) workspaceHeaderEl.setAttribute("data-course", courseId);
+          if (qzWorkspaceShell) qzWorkspaceShell.setAttribute("data-course", courseId);
+          document.querySelectorAll(".qz-course-pick").forEach(function (b) {
+            var on = b.getAttribute("data-course-value") === courseId;
+            b.classList.toggle("is-on", on);
+            b.setAttribute("aria-selected", on ? "true" : "false");
+            b.setAttribute("tabindex", on ? "0" : "-1");
+          });
+          if (
+            changed &&
+            createWorkspace &&
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ) {
+            createWorkspace.classList.remove("qz-create-workspace--course-flash");
+            void createWorkspace.offsetWidth;
+            createWorkspace.classList.add("qz-create-workspace--course-flash");
+            window.setTimeout(function () {
+              createWorkspace.classList.remove("qz-create-workspace--course-flash");
+            }, 700);
+          }
+        }
+
+        document.querySelectorAll(".qz-course-pick").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var v = btn.getAttribute("data-course-value");
+            if (!v || courseSelect.value === v) return;
+            courseSelect.value = v;
+            courseSelect.dispatchEvent(new Event("change", { bubbles: true }));
+          });
+        });
+
+        function clearQzCourseRailTimers() {
+          if (qzCourseRailRevealTimer) {
+            window.clearTimeout(qzCourseRailRevealTimer);
+            qzCourseRailRevealTimer = null;
+          }
+          if (qzCourseRailHideTimer) {
+            window.clearTimeout(qzCourseRailHideTimer);
+            qzCourseRailHideTimer = null;
+          }
+        }
+        function setQzCourseRailExpanded(expanded) {
+          if (!qzCourseZone) return;
+          qzCourseZone.classList.toggle("is-intent-revealed", !!expanded);
+        }
+        function scheduleQzCourseRailReveal() {
+          if (!qzCourseZone || qzCourseZone.matches(":focus-within")) return;
+          clearQzCourseRailTimers();
+          qzCourseRailRevealTimer = window.setTimeout(function () {
+            setQzCourseRailExpanded(true);
+            qzCourseRailRevealTimer = null;
+          }, 100);
+        }
+        function scheduleQzCourseRailHide() {
+          clearQzCourseRailTimers();
+          qzCourseRailHideTimer = window.setTimeout(function () {
+            if (!qzCourseZone || !qzCourseZone.matches(":focus-within")) {
+              setQzCourseRailExpanded(false);
+            }
+            qzCourseRailHideTimer = null;
+          }, 100);
+        }
+        if (qzCourseZone) {
+          qzCourseZone.addEventListener("pointerenter", function () {
+            scheduleQzCourseRailReveal();
+          });
+          qzCourseZone.addEventListener("pointerleave", function () {
+            scheduleQzCourseRailHide();
+          });
+          qzCourseZone.addEventListener("focusin", function () {
+            clearQzCourseRailTimers();
+            setQzCourseRailExpanded(true);
+          });
+          qzCourseZone.addEventListener("focusout", function (e) {
+            if (!qzCourseZone.contains(e.relatedTarget)) {
+              scheduleQzCourseRailHide();
+            }
+          });
+        }
+
+        var SCOPE_BY_COURSE = {
+          psyc: {
+            chapters: [
+              {
+                id: "ch7",
+                short: "Ch. 7",
+                label: "Ch. 7 · Memory",
+                topics: [
+                  { id: "t1", label: "Memory overview" },
+                  { id: "t2", label: "Encoding & storage" },
+                  { id: "t3", label: "Retrieval & forgetting" },
+                ],
+                documents: {
+                  t1: ["Lecture slides — Week 7", "Reading guide — Memory (PDF)"],
+                  t2: ["Lab worksheet — encoding", "Flashcard export — memory"],
+                  t3: ["Discussion prompts — forgetting"],
+                },
+              },
+              {
+                id: "ch8",
+                short: "Ch. 8",
+                label: "Ch. 8 · Thought & language",
+                topics: [
+                  { id: "t1", label: "Language & thought" },
+                  { id: "t2", label: "Problem solving" },
+                  { id: "t3", label: "Creativity" },
+                ],
+                documents: {
+                  t1: ["Slides — language basics", "Reading — Sapir-Whorf intro"],
+                  t2: ["Problem sets — heuristics", "Reading guide (PDF)"],
+                  t3: ["Creativity reading (PDF)", "Studio exercise handout"],
+                },
+              },
+              {
+                id: "ch9",
+                short: "Ch. 9",
+                label: "Ch. 9 · Intelligence",
+                topics: [
+                  { id: "t1", label: "Measuring intelligence" },
+                  { id: "t2", label: "Nature vs nurture" },
+                ],
+                documents: {
+                  t1: ["IQ debate readings", "Lecture slides — intelligence"],
+                  t2: ["Twin study handout", "Discussion worksheet"],
+                },
+              },
+            ],
+          },
+          soc: {
+            chapters: [
+              {
+                id: "s1",
+                short: "Ch. 1",
+                label: "Ch. 1 · Introduction",
+                topics: [
+                  { id: "st1", label: "What is sociology?" },
+                  { id: "st2", label: "Research methods preview" },
+                ],
+                documents: {
+                  st1: ["Syllabus excerpt (PDF)", "Lecture 1 slides"],
+                  st2: ["Methods reading pack", "Tutorial prep sheet"],
+                },
+              },
+              {
+                id: "s2",
+                short: "Ch. 2",
+                label: "Ch. 2 · Culture",
+                topics: [
+                  { id: "st1", label: "Norms & values" },
+                  { id: "st2", label: "Cultural change" },
+                ],
+                documents: {
+                  st1: ["Culture chapter PDF", "Discussion board export"],
+                  st2: ["Case study worksheet", "Film clip notes"],
+                },
+              },
+            ],
+          },
+        };
+
+        var scopeState = {
+          chapterIds: ["ch7", "ch8"],
+          topicKeys: ["ch8:t2"],
+          docSelected: ["Problem sets — heuristics", "Reading guide (PDF)"],
+        };
+
+        var tabCreate = document.getElementById("tab-create");
+        var tabHistory = document.getElementById("tab-history");
+        var tabTake = document.getElementById("tab-take");
+        var panelCreate = document.getElementById("panel-create");
+        var panelHistory = document.getElementById("panel-history");
+        var panelTake = document.getElementById("panel-take");
+        var pageLedeEl = document.getElementById("qz-page-lede");
+        var PAGE_LEDES = {
+          create: "Narrow step by step—or run a quiz from wherever you stop.",
+          history: "Open or duplicate past quizzes anytime.",
+          take: "Start fresh or resume where you left off.",
+        };
+        var btnCreateNext = document.getElementById("qz-create-next");
+        var titleInput = document.getElementById("qz-title");
+        var generateModal = document.getElementById("qz-generate-modal");
+        var btnGenerateScope = document.getElementById("qz-generate-scope");
+        var btnGenerateConfirm = document.getElementById("qz-generate-confirm");
+        var ctaSetupSummary = document.getElementById("qz-cta-setup-summary");
+        var modalSetupRecap = document.getElementById("qz-modal-setup-recap");
+        var setupTimedEl = document.getElementById("qz-setup-timed");
+        var setupExplainEl = document.getElementById("qz-setup-explain");
+        var lenPresetsEl = document.getElementById("qz-len-presets");
+        var setupTypeGroup = document.getElementById("qz-setup-type-group");
+        var setupDiffGroup = document.getElementById("qz-setup-diff-group");
+
+        var QZ_TYPE_LABELS = {
+          mc: "Multiple choice",
+          mixed: "Mixed",
+          short: "Short answer",
+          tf: "True / false",
+        };
+        var QZ_DIFF_LABELS = {
+          easy: "Easy",
+          medium: "Medium",
+          hard: "Hard",
+          adaptive: "Adaptive",
+        };
+        var quizSetup = { type: "mc", difficulty: "medium" };
+
+        function courseIdFromSelect() {
+          return courseSelect.value || "psyc";
+        }
+
+        function chaptersForCourse() {
+          var pack = SCOPE_BY_COURSE[courseIdFromSelect()];
+          return pack && pack.chapters ? pack.chapters : [];
+        }
+
+        function chapterById(id) {
+          var list = chaptersForCourse();
+          for (var i = 0; i < list.length; i++) {
+            if (list[i].id === id) return list[i];
+          }
+          return null;
+        }
+
+        function parseTopicKey(key) {
+          var s = String(key);
+          var i = s.indexOf(":");
+          if (i < 0) return { chapterId: "", topicId: "" };
+          return { chapterId: s.slice(0, i), topicId: s.slice(i + 1) };
+        }
+
+        function makeTopicKey(chapterId, topicId) {
+          return chapterId + ":" + topicId;
+        }
+
+        function selectedChapterObjects() {
+          return scopeState.chapterIds
+            .map(function (id) {
+              return chapterById(id);
+            })
+            .filter(Boolean);
+        }
+
+        function topicUnionList() {
+          var rows = [];
+          selectedChapterObjects().forEach(function (ch) {
+            ch.topics.forEach(function (t) {
+              rows.push({
+                key: makeTopicKey(ch.id, t.id),
+                label: t.label,
+                chapterShort: ch.short,
+                chapterLabel: ch.label,
+              });
+            });
+          });
+          return rows;
+        }
+
+        function topicRowByKey(key) {
+          var rows = topicUnionList();
+          for (var i = 0; i < rows.length; i++) {
+            if (rows[i].key === key) return rows[i];
+          }
+          return null;
+        }
+
+        function getSelectedTopicRows() {
+          var order = topicUnionList().map(function (r) {
+            return r.key;
+          });
+          var sorted = scopeState.topicKeys.slice().sort(function (a, b) {
+            return order.indexOf(a) - order.indexOf(b);
+          });
+          return sorted
+            .map(function (k) {
+              return topicRowByKey(k);
+            })
+            .filter(Boolean);
+        }
+
+        function currentDocumentList() {
+          var seen = {};
+          var out = [];
+          scopeState.topicKeys.forEach(function (tk) {
+            var parsed = parseTopicKey(tk);
+            var ch = chapterById(parsed.chapterId);
+            if (!ch || !ch.documents || !ch.documents[parsed.topicId]) return;
+            ch.documents[parsed.topicId].forEach(function (name) {
+              if (!seen[name]) {
+                seen[name] = true;
+                out.push(name);
+              }
+            });
+          });
+          return out;
+        }
+
+        function reconcileChapterSelection() {
+          var valid = chaptersForCourse().map(function (c) {
+            return c.id;
+          });
+          scopeState.chapterIds = scopeState.chapterIds.filter(function (id) {
+            return valid.indexOf(id) >= 0;
+          });
+        }
+
+        function reconcileTopicKeys() {
+          var valid = topicUnionList().map(function (r) {
+            return r.key;
+          });
+          scopeState.topicKeys = scopeState.topicKeys.filter(function (k) {
+            return valid.indexOf(k) >= 0;
+          });
+        }
+
+        function reconcileDocSelection() {
+          var avail = currentDocumentList();
+          scopeState.docSelected = scopeState.docSelected.filter(function (d) {
+            return avail.indexOf(d) >= 0;
+          });
+          if (!scopeState.docSelected.length && avail.length) {
+            scopeState.docSelected = avail.slice(0, Math.min(2, avail.length));
+          }
+        }
+
+        function defaultStateForCourse() {
+          var chs = chaptersForCourse();
+          if (!chs.length) {
+            scopeState.chapterIds = [];
+            scopeState.topicKeys = [];
+            scopeState.docSelected = [];
+            return;
+          }
+          scopeState.chapterIds = chs.slice(0, Math.min(2, chs.length)).map(function (c) {
+            return c.id;
+          });
+          scopeState.topicKeys = [];
+          var firstCh = chapterById(scopeState.chapterIds[0]);
+          if (firstCh && firstCh.topics[0]) {
+            scopeState.topicKeys.push(makeTopicKey(firstCh.id, firstCh.topics[0].id));
+          }
+          scopeState.docSelected = [];
+          reconcileDocSelection();
+        }
+
+        function renderChapterRow() {
+          if (!chapterRow) return;
+          chapterRow.textContent = "";
+          chaptersForCourse().forEach(function (ch) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "qz-pill qz-pick";
+            btn.setAttribute("data-chapter-id", ch.id);
+            btn.textContent = ch.label;
+            if (scopeState.chapterIds.indexOf(ch.id) >= 0) btn.classList.add("is-selected");
+            chapterRow.appendChild(btn);
+          });
+        }
+
+        function renderTopicRow() {
+          if (!topicRow) return;
+          topicRow.textContent = "";
+          var rows = topicUnionList();
+          if (topicEmpty) topicEmpty.hidden = rows.length > 0;
+          rows.forEach(function (r) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "qz-pill qz-pick";
+            btn.setAttribute("data-topic-key", r.key);
+            btn.textContent =
+              scopeState.chapterIds.length > 1 ? r.label + " · " + r.chapterShort : r.label;
+            if (scopeState.topicKeys.indexOf(r.key) >= 0) btn.classList.add("is-selected");
+            topicRow.appendChild(btn);
+          });
+        }
+
+        function renderDocumentRow() {
+          if (!documentRow) return;
+          documentRow.textContent = "";
+          var docs = currentDocumentList();
+          if (documentEmpty) {
+            documentEmpty.hidden = docs.length > 0;
+          }
+          docs.forEach(function (name) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "qz-chip qz-pick";
+            btn.setAttribute("data-doc-name", name);
+            btn.textContent = name;
+            if (scopeState.docSelected.indexOf(name) >= 0) btn.classList.add("is-selected");
+            documentRow.appendChild(btn);
+          });
+        }
+
+        function renderScopeRows() {
+          reconcileChapterSelection();
+          reconcileTopicKeys();
+          reconcileDocSelection();
+          renderChapterRow();
+          renderTopicRow();
+          renderDocumentRow();
+        }
+
+        function chapterPathShort() {
+          return selectedChapterObjects()
+            .map(function (ch) {
+              return ch.short;
+            })
+            .join(" · ");
+        }
+
+        function chapterPathLabels() {
+          return selectedChapterObjects().map(function (ch) {
+            return ch.label;
+          });
+        }
+
+        var revealTier = "course";
+        var revealAnimReady = false;
+
+        function nextRevealTier(t) {
+          if (t === "course") return "chapter";
+          if (t === "chapter") return "topic";
+          if (t === "topic") return "document";
+          return null;
+        }
+
+        function setRevealTier(tier, silent) {
+          var prev = revealTier;
+          revealTier = tier;
+          var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (refineWrap) {
+            refineWrap.hidden = tier === "course";
+            if (tier !== "course" && prev !== tier && !silent && !reducedMotion) {
+              refineWrap.classList.remove("qz-refine-wrap--pop");
+              void refineWrap.offsetWidth;
+              refineWrap.classList.add("qz-refine-wrap--pop");
+              window.setTimeout(function () {
+                refineWrap.classList.remove("qz-refine-wrap--pop");
+              }, 450);
+            }
+          }
+          stepChapter.hidden = tier === "course";
+          stepTopic.hidden = tier === "course" || tier === "chapter";
+          stepDocument.hidden = tier !== "document";
+          renderScopeRows();
+          if (revealAnimReady && prev !== tier && !silent && scopeBody) {
+            flashScopeBody();
+          }
+          revealAnimReady = true;
+          refreshLive();
+        }
+
+        function setGenerateLabel(text) {
+          if (btnGenerateScope) {
+            btnGenerateScope.textContent = text;
+            btnGenerateScope.setAttribute("aria-label", text);
+          }
+          if (btnGenerateConfirm) {
+            btnGenerateConfirm.textContent = text;
+            btnGenerateConfirm.setAttribute("aria-label", text);
+          }
+        }
+
+        function openGenerateModal() {
+          if (!generateModal) return;
+          generateModal.hidden = false;
+          updateSetupSummaries();
+          if (titleInput) {
+            window.requestAnimationFrame(function () {
+              titleInput.focus();
+              titleInput.select();
+            });
+          }
+        }
+
+        function closeGenerateModal() {
+          if (generateModal) generateModal.hidden = true;
+        }
+
+        function updateNextCta() {
+          if (!btnCreateNext) return;
+          var t = revealTier;
+          if (t === "course") btnCreateNext.textContent = "Focus on chapters";
+          else if (t === "chapter") btnCreateNext.textContent = "Focus on topics";
+          else if (t === "topic") btnCreateNext.textContent = "Focus on documents";
+          else btnCreateNext.textContent = "Name & generate";
+          btnCreateNext.disabled = false;
+        }
+
+        function pulseScopeLive() {
+          if (!scopeLive || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          scopeLive.classList.remove("qz-scope-live--tick");
+          void scopeLive.offsetWidth;
+          scopeLive.classList.add("qz-scope-live--tick");
+          window.setTimeout(function () {
+            scopeLive.classList.remove("qz-scope-live--tick");
+          }, 320);
+        }
+
+        function flashScopeBody() {
+          if (!scopeBody || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          scopeBody.classList.add("qz-scope-dim");
+          window.setTimeout(function () {
+            scopeBody.classList.remove("qz-scope-dim");
+          }, 160);
+        }
+
+        btnCreateNext.addEventListener("click", function () {
+          var n = nextRevealTier(revealTier);
+          if (n) setRevealTier(n);
+          else openGenerateModal();
+        });
+
+        if (btnGenerateScope) {
+          btnGenerateScope.addEventListener("click", function () {
+            openGenerateModal();
+          });
+        }
+
+        if (generateModal) {
+          generateModal.addEventListener("click", function (e) {
+            var closer = e.target.closest("[data-close-modal]");
+            if (closer && generateModal.contains(closer)) closeGenerateModal();
+          });
+        }
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key !== "Escape") return;
+          if (!generateModal || generateModal.hidden) return;
+          closeGenerateModal();
+        });
+
+        if (btnGenerateConfirm) {
+          btnGenerateConfirm.addEventListener("click", function () {
+            runGenerate();
+            closeGenerateModal();
+          });
+        }
+
+        function courseShort() {
+          var opt = courseSelect.options[courseSelect.selectedIndex];
+          var t = opt ? opt.textContent : "PSYC 100";
+          var m = t.match(/^([A-Z]{2,4}\s*\d{3})/);
+          return m ? m[1].replace(/\s+/g, " ") : t.split("—")[0].trim();
+        }
+
+        function questionCountValue() {
+          var n = parseInt(countEl && countEl.value, 10);
+          if (isNaN(n) || n < 5) n = 5;
+          if (n > 60) n = 60;
+          return n;
+        }
+
+        function syncLenPresetHighlight() {
+          if (!lenPresetsEl) return;
+          var n = questionCountValue();
+          lenPresetsEl.querySelectorAll("[data-qz-len]").forEach(function (b) {
+            var v = parseInt(b.getAttribute("data-qz-len"), 10);
+            b.classList.toggle("is-on", v === n);
+          });
+        }
+
+        function buildSetupSummaryShort() {
+          var n = questionCountValue();
+          var typeLab = QZ_TYPE_LABELS[quizSetup.type] || QZ_TYPE_LABELS.mixed;
+          var diffLab = QZ_DIFF_LABELS[quizSetup.difficulty] || QZ_DIFF_LABELS.medium;
+          var s = typeLab + " · " + n + " question" + (n === 1 ? "" : "s") + " · " + diffLab;
+          if (setupTimedEl && setupTimedEl.checked) s += " · Timed";
+          if (setupExplainEl && !setupExplainEl.checked) s += " · No explanations";
+          return s;
+        }
+
+        function updateSetupSummaries() {
+          var s = buildSetupSummaryShort();
+          if (ctaSetupSummary) ctaSetupSummary.textContent = s;
+          if (modalSetupRecap) modalSetupRecap.textContent = s;
+        }
+
+        function selectSetupType(btn) {
+          if (!btn || !setupTypeGroup || !setupTypeGroup.contains(btn)) return;
+          var v = btn.getAttribute("data-qz-type");
+          if (!v) return;
+          quizSetup.type = v;
+          setupTypeGroup.querySelectorAll("[data-qz-type]").forEach(function (b) {
+            b.classList.toggle("is-on", b === btn);
+          });
+          updateSetupSummaries();
+        }
+
+        function selectSetupDiff(btn) {
+          if (!btn || !setupDiffGroup || !setupDiffGroup.contains(btn)) return;
+          var v = btn.getAttribute("data-qz-diff");
+          if (!v) return;
+          quizSetup.difficulty = v;
+          setupDiffGroup.querySelectorAll("[data-qz-diff]").forEach(function (b) {
+            b.classList.toggle("is-on", b === btn);
+          });
+          updateSetupSummaries();
+        }
+
+        function refreshLive() {
+          var d = revealTier;
+          var c = courseShort();
+          var genLabel = "Generate quiz";
+          var chLabels = chapterPathLabels();
+          var chShortJoined = chapterPathShort();
+          var tRows = getSelectedTopicRows();
+          var docs = scopeState.docSelected.slice();
+
+          if (d === "course") {
+            liveLine.textContent = "Course quiz · " + c;
+            if (liveSub) {
+              liveSub.textContent = "";
+              liveSub.hidden = true;
+            }
+            genLabel = "Generate course quiz";
+          } else if (d === "chapter") {
+            if (!chLabels.length) {
+              liveLine.textContent = "Chapter quiz · " + c;
+              if (liveSub) {
+                liveSub.hidden = false;
+                liveSub.textContent = "Pick at least one chapter.";
+              }
+            } else {
+              liveLine.textContent = "Chapter quiz · " + c + " · " + chLabels.join(" · ");
+              if (liveSub) {
+                liveSub.textContent = "";
+                liveSub.hidden = true;
+              }
+            }
+            genLabel = "Generate chapter quiz";
+          } else if (d === "topic") {
+            if (!chLabels.length) {
+              liveLine.textContent = "Topic quiz · " + c;
+              if (liveSub) {
+                liveSub.hidden = false;
+                liveSub.textContent = "Choose chapters first.";
+              }
+            } else if (!tRows.length) {
+              liveLine.textContent = "Topic quiz · " + c + " · " + chShortJoined;
+              if (liveSub) {
+                liveSub.hidden = false;
+                liveSub.textContent = "Select topics (per chapter).";
+              }
+            } else if (tRows.length === 1) {
+              liveLine.textContent =
+                "Topic quiz · " + c + " · " + tRows[0].chapterLabel + " · " + tRows[0].label;
+              if (liveSub) {
+                liveSub.textContent = "";
+                liveSub.hidden = true;
+              }
+            } else {
+              var tBits = tRows.map(function (r) {
+                return r.chapterShort + " · " + r.label;
+              });
+              liveLine.textContent = "Topic quiz · " + c + " · " + tBits.join(" · ");
+              if (liveSub) {
+                liveSub.textContent = "";
+                liveSub.hidden = true;
+              }
+            }
+            genLabel = "Generate topic quiz";
+          } else {
+            if (!chLabels.length) {
+              liveLine.textContent = "Document quiz · " + c;
+              if (liveSub) {
+                liveSub.hidden = false;
+                liveSub.textContent = "Narrow to chapters and topics first.";
+              }
+            } else if (!tRows.length) {
+              liveLine.textContent = "Document quiz · " + c + " · " + chShortJoined;
+              if (liveSub) {
+                liveSub.hidden = false;
+                liveSub.textContent = "Add topics to list files.";
+              }
+            } else if (!docs.length) {
+              var pathTopics =
+                tRows.length === 1
+                  ? tRows[0].chapterLabel + " · " + tRows[0].label
+                  : tRows.map(function (r) {
+                      return r.chapterShort + " · " + r.label;
+                    }).join(" · ");
+              liveLine.textContent = "Document quiz · " + c + " · " + pathTopics;
+              if (liveSub) {
+                liveSub.hidden = false;
+                liveSub.textContent = "Choose files below.";
+              }
+            } else {
+              var rest = docs.length - 1;
+              var tail = docs[0] + (rest > 0 ? " · +" + rest + " more" : "");
+              var docPathTopics =
+                tRows.length === 1
+                  ? tRows[0].chapterLabel + " · " + tRows[0].label
+                  : tRows.map(function (r) {
+                      return r.chapterShort + " · " + r.label;
+                    }).join(" · ");
+              liveLine.textContent = "Document quiz · " + c + " · " + docPathTopics + " · " + tail;
+              if (liveSub) {
+                liveSub.textContent = "";
+                liveSub.hidden = true;
+              }
+            }
+            genLabel = "Generate document quiz";
+          }
+          setGenerateLabel(genLabel);
+          updateNextCta();
+          updateSetupSummaries();
+          pulseScopeLive();
+        }
+
+        if (scopeBody) {
+          scopeBody.addEventListener("click", function (e) {
+            var chBtn = e.target.closest("[data-chapter-id]");
+            if (chBtn && scopeBody.contains(chBtn)) {
+              var id = chBtn.getAttribute("data-chapter-id");
+              var ix = scopeState.chapterIds.indexOf(id);
+              if (ix >= 0) scopeState.chapterIds.splice(ix, 1);
+              else scopeState.chapterIds.push(id);
+              var order = chaptersForCourse().map(function (x) {
+                return x.id;
+              });
+              scopeState.chapterIds.sort(function (a, b) {
+                return order.indexOf(a) - order.indexOf(b);
+              });
+              reconcileTopicKeys();
+              reconcileDocSelection();
+              renderScopeRows();
+              refreshLive();
+              return;
+            }
+            var topBtn = e.target.closest("[data-topic-key]");
+            if (topBtn && scopeBody.contains(topBtn)) {
+              var tk = topBtn.getAttribute("data-topic-key");
+              var tix = scopeState.topicKeys.indexOf(tk);
+              if (tix >= 0) scopeState.topicKeys.splice(tix, 1);
+              else scopeState.topicKeys.push(tk);
+              var tOrder = topicUnionList().map(function (r) {
+                return r.key;
+              });
+              scopeState.topicKeys.sort(function (a, b) {
+                return tOrder.indexOf(a) - tOrder.indexOf(b);
+              });
+              reconcileDocSelection();
+              renderScopeRows();
+              refreshLive();
+              return;
+            }
+            var docBtn = e.target.closest("[data-doc-name]");
+            if (docBtn && scopeBody.contains(docBtn)) {
+              var name = docBtn.getAttribute("data-doc-name");
+              var di = scopeState.docSelected.indexOf(name);
+              if (di >= 0) scopeState.docSelected.splice(di, 1);
+              else scopeState.docSelected.push(name);
+              renderScopeRows();
+              refreshLive();
+            }
+          });
+        }
+
+        courseSelect.addEventListener("change", function () {
+          applyCourseShell(courseSelect.value);
+          defaultStateForCourse();
+          setRevealTier("course", true);
+        });
+
+        function clampCount() {
+          if (!countEl) return;
+          var n = parseInt(countEl.value, 10);
+          if (isNaN(n) || n < 5) n = 5;
+          if (n > 60) n = 60;
+          countEl.value = String(n);
+          syncLenPresetHighlight();
+          updateSetupSummaries();
+        }
+
+        var qzCountMinus = document.getElementById("qz-count-minus");
+        var qzCountPlus = document.getElementById("qz-count-plus");
+        if (qzCountMinus && countEl) {
+          qzCountMinus.addEventListener("click", function () {
+            countEl.value = String(Math.max(5, parseInt(countEl.value, 10) - 1 || 5));
+            clampCount();
+          });
+        }
+        if (qzCountPlus && countEl) {
+          qzCountPlus.addEventListener("click", function () {
+            countEl.value = String(Math.min(60, (parseInt(countEl.value, 10) || 5) + 1));
+            clampCount();
+          });
+        }
+        if (countEl) {
+          countEl.addEventListener("change", clampCount);
+          countEl.addEventListener("blur", clampCount);
+          countEl.addEventListener("input", function () {
+            syncLenPresetHighlight();
+            updateSetupSummaries();
+          });
+        }
+
+        if (lenPresetsEl) {
+          lenPresetsEl.addEventListener("click", function (e) {
+            var b = e.target.closest("[data-qz-len]");
+            if (!b || !lenPresetsEl.contains(b)) return;
+            var v = parseInt(b.getAttribute("data-qz-len"), 10);
+            if (!isNaN(v) && countEl) {
+              countEl.value = String(v);
+              clampCount();
+            }
+          });
+        }
+
+        if (setupTypeGroup) {
+          setupTypeGroup.addEventListener("click", function (e) {
+            var b = e.target.closest("[data-qz-type]");
+            if (b && setupTypeGroup.contains(b)) selectSetupType(b);
+          });
+        }
+
+        if (setupDiffGroup) {
+          setupDiffGroup.addEventListener("click", function (e) {
+            var b = e.target.closest("[data-qz-diff]");
+            if (b && setupDiffGroup.contains(b)) selectSetupDiff(b);
+          });
+        }
+
+        if (setupTimedEl) setupTimedEl.addEventListener("change", updateSetupSummaries);
+        if (setupExplainEl) setupExplainEl.addEventListener("change", updateSetupSummaries);
+
+        document.getElementById("qz-from-chat").addEventListener("click", function () {
+          statusEl.textContent = "Open Ask from the rail — say “quiz me on…” to start there.";
+          setTimeout(function () {
+            if (statusEl.textContent.indexOf("Open Ask") === 0) statusEl.textContent = "";
+          }, 3800);
+        });
+
+        function activateTab(which) {
+          var tabs = [tabCreate, tabHistory, tabTake];
+          var panels = [panelCreate, panelHistory, panelTake];
+          var names = ["create", "history", "take"];
+          var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if (pageLedeEl && PAGE_LEDES[which]) pageLedeEl.textContent = PAGE_LEDES[which];
+          names.forEach(function (name, i) {
+            var on = name === which;
+            var wasHidden = panels[i].hidden;
+            tabs[i].classList.toggle("is-on", on);
+            tabs[i].setAttribute("aria-selected", on ? "true" : "false");
+            panels[i].hidden = !on;
+            if (on && wasHidden && !reduceMotion) {
+              panels[i].classList.remove("qz-tab-anim-in");
+              void panels[i].offsetWidth;
+              panels[i].classList.add("qz-tab-anim-in");
+              window.setTimeout(function () {
+                panels[i].classList.remove("qz-tab-anim-in");
+              }, 420);
+            }
+          });
+        }
+
+        tabCreate.addEventListener("click", function () {
+          activateTab("create");
+        });
+        tabHistory.addEventListener("click", function () {
+          activateTab("history");
+        });
+        tabTake.addEventListener("click", function () {
+          activateTab("take");
+        });
+
+        function setHistoryFilter(mode) {
+          var items = document.querySelectorAll("#panel-history .qz-history-item");
+          filterAll.classList.toggle("is-on", mode === "all");
+          filterCourse.classList.toggle("is-on", mode === "course");
+          items.forEach(function (row) {
+            var c = row.getAttribute("data-course");
+            if (mode === "all") {
+              row.hidden = false;
+            } else {
+              row.hidden = c !== "psyc";
+            }
+          });
+        }
+
+        filterAll.addEventListener("click", function () {
+          setHistoryFilter("all");
+        });
+        filterCourse.addEventListener("click", function () {
+          setHistoryFilter("course");
+        });
+
+        var takeFilterReady = document.getElementById("take-filter-ready");
+        var takeFilterProgress = document.getElementById("take-filter-progress");
+        var takeFilterDone = document.getElementById("take-filter-done");
+
+        function setTakeFilter(mode) {
+          var items = document.querySelectorAll("#panel-take .qz-history-item");
+          takeFilterReady.classList.toggle("is-on", mode === "ready");
+          takeFilterProgress.classList.toggle("is-on", mode === "progress");
+          takeFilterDone.classList.toggle("is-on", mode === "done");
+          items.forEach(function (row) {
+            var s = row.getAttribute("data-take-status");
+            row.hidden = s !== mode;
+          });
+        }
+
+        takeFilterReady.addEventListener("click", function () {
+          setTakeFilter("ready");
+        });
+        takeFilterProgress.addEventListener("click", function () {
+          setTakeFilter("progress");
+        });
+        takeFilterDone.addEventListener("click", function () {
+          setTakeFilter("done");
+        });
+
+        function runGenerate() {
+          clampCount();
+          statusEl.textContent = "Creating…";
+          setTimeout(function () {
+            statusEl.textContent = "Queued — find it under History when it’s ready.";
+          }, 650);
+          setTimeout(function () {
+            statusEl.textContent = "";
+          }, 4200);
+        }
+
+        syncLenPresetHighlight();
+        updateSetupSummaries();
+
+        applyCourseShell(courseIdFromSelect());
+        setRevealTier("course", true);
+      })();
+    </script>
+  </body>
+</html>
