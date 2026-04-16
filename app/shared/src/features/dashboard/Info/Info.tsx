@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { PillToggle } from "@/components/ui/pill-toggle";
 import { CourseHeader } from "@/features/dashboard/CourseHeader";
-import { DashboardWorkspaceShell } from "@/features/dashboard/DashboardWorkspaceShell";
+import { useDashboardContext } from "@/features/dashboard/dashboard-context";
 import { Material } from "@/features/dashboard/Info/material/Material";
 import { Overview } from "@/features/dashboard/Info/overview/Overview";
-import { CourseSelector } from "@/features/dashboard/selection/CourseSelector";
+import { WorkspaceCourseTabs } from "@/features/dashboard/selection/WorkspaceCourseTabs";
+import { courseWorkspaceCssVariables } from "@/features/workspace/course-tabs/courseTheme";
+import { WorkspaceShell } from "@/features/workspace/WorkspaceShell";
 
 export const Info = () => {
   const [view, setView] = useState<"overview" | "material">("overview");
+  const { activeCourse } = useDashboardContext();
 
   return (
-    <DashboardWorkspaceShell
-      courseTabs={<CourseSelector />}
+    <WorkspaceShell
+      tabs={<WorkspaceCourseTabs />}
       header={
         <CourseHeader
           headerRight={
@@ -28,8 +31,13 @@ export const Info = () => {
           }
         />
       }
+      style={
+        activeCourse
+          ? courseWorkspaceCssVariables(activeCourse.courseCode)
+          : undefined
+      }
     >
       {view === "overview" ? <Overview /> : <Material />}
-    </DashboardWorkspaceShell>
+    </WorkspaceShell>
   );
 };

@@ -30,7 +30,7 @@ export const hashCourseCode = (code: string): number => {
   return Math.abs(h);
 };
 
-export type CourseProceduralPaint = {
+export type CourseTabPaint = {
   bg: string;
   fg: string;
   border: string;
@@ -43,7 +43,7 @@ export type CourseProceduralPaint = {
 };
 
 /** Deterministic HSL tab + rail paint from course code (HTML mock parity). */
-export const coursePaintFromCode = (rawCode: string): CourseProceduralPaint => {
+export const coursePaintFromCode = (rawCode: string): CourseTabPaint => {
   const code = rawCode.trim().toUpperCase() || "COURSE";
   const hash = hashCourseCode(code);
   const f = PASTEL_FAMILIES[hash % PASTEL_FAMILIES.length];
@@ -79,12 +79,12 @@ export const coursePaintFromCode = (rawCode: string): CourseProceduralPaint => {
 export const courseTabCssVariables = (courseCode: string): CSSProperties => {
   const v = coursePaintFromCode(courseCode);
   return {
-    "--course-pill-bg": v.bg,
-    "--course-pill-fg": v.fg,
-    "--course-pill-border": v.border,
-    "--course-pill-active-bg": v.activeBg,
-    "--course-pill-active-fg": v.activeFg,
-    "--course-pill-active-border": v.activeBorder,
+    "--course-tab-bg": v.bg,
+    "--course-tab-fg": v.fg,
+    "--course-tab-border": v.border,
+    "--course-tab-active-bg": v.activeBg,
+    "--course-tab-active-fg": v.activeFg,
+    "--course-tab-active-border": v.activeBorder,
   } as CSSProperties;
 };
 
