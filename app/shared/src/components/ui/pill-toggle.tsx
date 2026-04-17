@@ -37,12 +37,12 @@ export const PillToggle = <T extends string = string>({
       onValueChange={handleValueChange}
       spacing={0}
       aria-label={ariaLabel}
-      indicatorClassName="app-dashboard-view-toggle__indicator"
+      indicatorClassName="pointer-events-none bg-background shadow-[0_1px_0_rgba(255,255,255,0.7)_inset,0_4px_12px_rgba(37,50,58,0.08)]"
       style={{
         gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))`,
       }}
       className={cn(
-        "app-dashboard-view-toggle relative grid items-stretch",
+        "relative grid items-stretch gap-0 rounded-[var(--radius-md)] border border-border/60 bg-muted/50 p-[3px] shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_1px_0_rgba(37,50,58,0.03)]",
         className,
       )}
     >
@@ -54,11 +54,11 @@ export const PillToggle = <T extends string = string>({
             key={option.value}
             value={option.value}
             aria-label={textLabel ?? option.value}
-            className="app-dashboard-view-toggle__item h-full min-h-0 min-w-0 w-full overflow-hidden rounded-md border border-transparent bg-transparent shadow-none focus-visible:ring-1 focus-visible:ring-ring aria-pressed:bg-transparent"
+            className="group relative h-full min-h-0 min-w-0 w-full overflow-hidden rounded-none border border-transparent bg-transparent px-1 py-1 text-[length:var(--type-dashboard-topbar)] font-medium text-muted-foreground shadow-none transition-colors focus-visible:ring-1 focus-visible:ring-ring aria-pressed:bg-transparent aria-pressed:text-foreground"
           >
-            <span className="app-dashboard-view-toggle__item-inner relative z-10 inline-flex h-full w-full items-center justify-center gap-1 rounded-md px-0.5">
+            <span className="relative z-10 inline-flex h-full w-full items-center justify-center gap-1 px-0.5">
               {textLabel !== null ? (
-                <span className="app-dashboard-view-toggle__label">
+                <span className="text-[length:var(--type-dashboard-topbar)]">
                   {textLabel}
                 </span>
               ) : (

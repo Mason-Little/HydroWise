@@ -9,13 +9,13 @@ type ChatMessageItemProps = {
 export const ChatMessageItem = ({ message }: ChatMessageItemProps) => {
   if (message.role === "user") {
     return (
-      <div className="app-ask-msg-row app-ask-msg-row--user">
+      <div className="flex justify-end">
         <UserChatMessage message={message} />
       </div>
     );
   }
   return (
-    <div className="app-ask-msg-row app-ask-msg-row--assistant">
+    <div className="flex justify-start">
       <AssistantChatMessage message={message} />
     </div>
   );

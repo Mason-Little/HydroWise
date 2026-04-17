@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
 import {
   type CSSProperties,
+  cloneElement,
+  isValidElement,
   type ReactNode,
   useEffect,
   useRef,
@@ -20,7 +22,7 @@ type WorkspaceShellProps = {
 };
 
 const workspaceShellRootClassName =
-  "app-workspace-shell mt-2 flex min-h-0 flex-1 flex-col";
+  "relative mt-2 flex min-h-0 flex-1 flex-col overflow-hidden rounded-[var(--radius-xl)] border border-[var(--app-hairline)] bg-[linear-gradient(168deg,color-mix(in_srgb,var(--app-surface-primary)_92%,#f0efed)_0%,color-mix(in_srgb,var(--app-surface-primary)_97%,#f5f4f2)_40%,color-mix(in_srgb,var(--app-surface-primary)_94%,var(--app-workspace-bg))_100%)] font-sans text-[length:var(--type-dashboard-body)] text-[var(--app-text-primary)] shadow-[0_1px_0_color-mix(in_srgb,var(--app-surface-primary)_85%,transparent)_inset,0_16px_42px_rgba(37,50,58,0.06),0_5px_16px_rgba(37,50,58,0.036)]";
 
 const HOVER_INTENT_DELAY_MS = 80;
 const COLLAPSED_TABS_HEIGHT_PX = 44;
@@ -100,8 +102,16 @@ export const WorkspaceShell = ({
     }, HOVER_INTENT_DELAY_MS);
   };
 
+  const renderedTabs =
+    tabs != null && isValidElement(tabs)
+      ? cloneElement(tabs, {
+          tabsMode,
+          isExpanded: isTabsExpanded,
+        })
+      : tabs;
+
   const tabsContainerClassName =
-    "app-workspace-shell__tabs shrink-0 overflow-hidden";
+    "group/workspace-tabs shrink-0 overflow-hidden";
   const tabsWrapper = (
     <motion.div
       className={tabsContainerClassName}
@@ -132,7 +142,7 @@ export const WorkspaceShell = ({
       }
       style={tabsMode === "hover-reveal" ? { overflow: "hidden" } : undefined}
     >
-      {tabs}
+      {renderedTabs}
     </motion.div>
   );
 
@@ -140,18 +150,14 @@ export const WorkspaceShell = ({
     <div className={cn(workspaceShellRootClassName, className)} style={style}>
       {tabsMode === "always" ? (
         <div className={tabsContainerClassName} data-tabs-mode={tabsMode}>
-          {tabs}
+          {renderedTabs}
         </div>
       ) : (
         tabsWrapper
       )}
-      <div className="app-workspace-shell__canvas flex min-h-0 flex-1 flex-col">
-        <header className="app-workspace-shell__header shrink-0">
-          {header}
-        </header>
-        <div className="app-workspace-shell__body min-h-0 flex-1">
-          {children}
-        </div>
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+        <header className="shrink-0 px-5 pt-3 pb-2.5">{header}</header>
+        <div className="min-h-0 flex-1 p-3.5">{children}</div>
       </div>
     </div>
   );

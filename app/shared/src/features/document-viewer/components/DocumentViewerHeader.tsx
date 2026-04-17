@@ -10,7 +10,7 @@ export const DocumentViewerHeader = ({
 }: DocumentViewerHeaderProps) => (
   <DialogHeader
     className={cn(
-      "app-workspace-shell__header shrink-0 gap-0 pr-10 text-left sm:text-left",
+      "shrink-0 gap-0 pr-10 pt-[12px] pb-[10px] pl-0 text-left sm:text-left",
     )}
   >
     <DialogTitle className="truncate text-sm font-semibold text-[var(--app-text-primary)]">

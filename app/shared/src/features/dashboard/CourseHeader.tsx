@@ -129,7 +129,7 @@ export const CourseHeader = ({ headerRight }: CourseHeaderProps) => {
         {headerRight}
       </div>
       {activeCourse ? (
-        <div className="app-course-header__meta mt-2">
+        <div className="mt-2 box-border min-h-[3rem] min-w-0 border-t border-[color-mix(in_srgb,var(--app-border-solid)_40%,transparent)] pt-2">
           <ProfessorContactBlock course={activeCourse} />
         </div>
       ) : null}
