@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useCourses } from "@/domains/courses/hooks/useCourses";
 import { DashboardContext } from "@/features/dashboard/dashboard-context";
+import { QuizHeader } from "@/features/quiz/components/QuizHeader";
+import { QuizModeOutlet } from "@/features/quiz/components/QuizModeOutlet";
+import { QuizProvider } from "@/features/quiz/context/quiz-context";
 import { courseWorkspaceCssVariables } from "@/features/workspace/course-tabs/courseTheme";
+import { WorkspaceCourseTabs } from "@/features/workspace/course-tabs/WorkspaceCourseTabs";
 import { WorkspaceShell } from "@/features/workspace/WorkspaceShell";
-import { WorkspaceCourseTabs } from "../workspace/course-tabs/WorkspaceCourseTabs";
 
 export const Quiz = () => {
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
@@ -11,6 +14,9 @@ export const Quiz = () => {
 
   const activeCourse =
     courses.find((course) => course.id === activeCourseId) ?? null;
+  const workspaceStyle = activeCourse
+    ? courseWorkspaceCssVariables(activeCourse.courseCode)
+    : {};
 
   return (
     <DashboardContext.Provider
@@ -19,23 +25,17 @@ export const Quiz = () => {
         setActiveCourseId,
       }}
     >
-      <WorkspaceShell
-        tabs={<WorkspaceCourseTabs />}
-        header={<h1 className="m-0">Quiz</h1>}
-        tabsMode="hover-reveal"
-        className="mt-0"
-        style={
-          activeCourse
-            ? courseWorkspaceCssVariables(activeCourse.courseCode)
-            : undefined
-        }
-      >
-        <div className="flex min-h-0 flex-1 items-center justify-center px-6 py-10">
-          <p className="text-sm text-[var(--app-text-muted)]">
-            Pick a course above to start the quiz workspace.
-          </p>
-        </div>
-      </WorkspaceShell>
+      <QuizProvider>
+        <WorkspaceShell
+          tabs={<WorkspaceCourseTabs />}
+          header={<QuizHeader />}
+          tabsMode="hover-reveal"
+          className="mt-0"
+          style={workspaceStyle}
+        >
+          <QuizModeOutlet />
+        </WorkspaceShell>
+      </QuizProvider>
     </DashboardContext.Provider>
   );
 };
