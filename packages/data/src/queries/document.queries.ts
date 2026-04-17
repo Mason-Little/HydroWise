@@ -8,6 +8,9 @@ export const makeDocumentRepo = (db: Db) => {
     listDocuments: async () => {
       return db.select().from(documents);
     },
+    listDocumentsByCourse: async (courseId: string) => {
+      return db.select().from(documents).where(eq(documents.courseId, courseId));
+    },
     listDocumentsByTopic: async (topicId: string) => {
       return db.select().from(documents).where(eq(documents.topicId, topicId));
     },

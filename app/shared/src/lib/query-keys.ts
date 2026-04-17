@@ -15,6 +15,7 @@ export const topicKeys = {
 
 export const documentKeys = {
   all: () => ["documents"] as const,
+  byCourse: (courseId: string) => ["documents", "byCourse", courseId] as const,
   byTopic: (topicId: string) => ["documents", "byTopic", topicId] as const,
 };
 

@@ -1,4 +1,4 @@
-import { useQuizContext } from "@/features/quiz/context/quiz-context";
+import { useCreateQuizContext } from "@/features/quiz/modules/create/context/create-quiz-context";
 import { ScopeCard } from "@/features/quiz/modules/create/ScopeCard";
 
 const scopes = [
@@ -20,8 +20,8 @@ const scopes = [
   },
 ] as const;
 
-export const ScopeRail = () => {
-  const { activeScope, setActiveScope } = useQuizContext();
+export const CreateQuizScopeSelector = () => {
+  const { activeScope, setActiveScope } = useCreateQuizContext();
 
   return (
     <div className="border-t border-[color-mix(in_srgb,var(--app-border-solid)_35%,transparent)] pt-4">

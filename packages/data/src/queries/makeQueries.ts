@@ -31,6 +31,7 @@ export const makeQueries = (db: Db) => {
     listTopicsByCourse: topics.listTopicsByCourse,
     createTopic: topics.createTopic,
     listDocuments: documents.listDocuments,
+    listDocumentsByCourse: documents.listDocumentsByCourse,
     listDocumentsByTopic: documents.listDocumentsByTopic,
     createDocument: documents.createDocument,
     getPage: pages.getPage,

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { topicKeys } from "@/lib/query-keys";
 
 export const useTopics = () => {
-  const { data: topics, isLoading } = useQuery({
+  const { data: topics = [], isLoading } = useQuery({
     queryKey: topicKeys.all(),
     queryFn: () => getQueries().then((q) => q.listTopics()),
   });
@@ -12,7 +12,7 @@ export const useTopics = () => {
 };
 
 export const useTopicsByChapter = (chapterId: string) => {
-  const { data: topics, isLoading } = useQuery({
+  const { data: topics = [], isLoading } = useQuery({
     queryKey: topicKeys.byChapter(chapterId),
     queryFn: () => getQueries().then((q) => q.listTopicsByChapter(chapterId)),
   });
@@ -21,7 +21,7 @@ export const useTopicsByChapter = (chapterId: string) => {
 };
 
 export const useTopicsByCourse = (courseId: string) => {
-  const { data: topics, isLoading } = useQuery({
+  const { data: topics = [], isLoading } = useQuery({
     queryKey: topicKeys.byCourse(courseId),
     queryFn: () => getQueries().then((q) => q.listTopicsByCourse(courseId)),
   });
