@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 type PoliciesProps = {
   policies: Policy[];
-  compressed?: boolean;
+  compressed: boolean;
 };
 
 export const Policies = ({ policies, compressed }: PoliciesProps) => {

@@ -5,19 +5,19 @@ import { cn } from "@/lib/utils";
 type ScoreInputProps = {
   accent: string;
   ariaLabel: string;
-  autoFocus?: boolean;
+  autoFocus: boolean;
   onCommit: (score: number) => void;
   onDismiss: () => void;
-  placeholder?: string;
+  placeholder: string;
 };
 
 export const ScoreInput = ({
   accent,
   ariaLabel,
-  autoFocus = false,
+  autoFocus,
   onCommit,
   onDismiss,
-  placeholder = "",
+  placeholder,
 }: ScoreInputProps) => {
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);

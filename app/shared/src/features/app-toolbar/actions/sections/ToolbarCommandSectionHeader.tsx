@@ -2,8 +2,8 @@ import type { ReactElement, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 type ToolbarCommandSectionHeaderProps = {
-  id?: string;
-  className?: string;
+  id: string;
+  className: string;
   children: ReactNode;
 };
 

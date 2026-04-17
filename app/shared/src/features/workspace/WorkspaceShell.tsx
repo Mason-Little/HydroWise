@@ -1,19 +1,18 @@
 import { motion } from "motion/react";
 import {
   type CSSProperties,
-  cloneElement,
-  isValidElement,
   type ReactNode,
   useEffect,
   useRef,
   useState,
 } from "react";
+import { WorkspaceTabsProvider } from "@/features/workspace/WorkspaceTabsContext";
 import { cn } from "@/lib/utils";
 
 export type WorkspaceTabsMode = "always" | "hover-reveal";
 
 type WorkspaceShellProps = {
-  tabs?: ReactNode;
+  tabs: ReactNode;
   header: ReactNode;
   children: ReactNode;
   className?: string;
@@ -27,6 +26,7 @@ const workspaceShellRootClassName =
 const HOVER_INTENT_DELAY_MS = 80;
 const COLLAPSED_TABS_HEIGHT_PX = 44;
 const EXPANDED_TABS_HEIGHT_PX = 80;
+const tabsContainerClassName = "group/workspace-tabs shrink-0 overflow-hidden";
 
 const useHoverRevealAlwaysOpen = () => {
   const [alwaysOpen, setAlwaysOpen] = useState(false);
@@ -102,59 +102,43 @@ export const WorkspaceShell = ({
     }, HOVER_INTENT_DELAY_MS);
   };
 
-  const renderedTabs =
-    tabs != null && isValidElement(tabs)
-      ? cloneElement(tabs, {
-          tabsMode,
-          isExpanded: isTabsExpanded,
-        })
-      : tabs;
-
-  const tabsContainerClassName =
-    "group/workspace-tabs shrink-0 overflow-hidden";
-  const tabsWrapper = (
-    <motion.div
-      className={tabsContainerClassName}
-      data-tabs-mode={tabsMode}
-      data-expanded={isTabsExpanded ? "true" : "false"}
-      onPointerEnter={scheduleOpenTabs}
-      onPointerLeave={closeTabs}
-      onFocusCapture={openTabsImmediately}
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          closeTabs();
-        }
-      }}
-      animate={
-        tabsMode === "hover-reveal"
-          ? {
+  return (
+    <div className={cn(workspaceShellRootClassName, className)} style={style}>
+      <WorkspaceTabsProvider value={{ tabsMode, isExpanded: isTabsExpanded }}>
+        {tabsMode === "always" ? (
+          <div className={tabsContainerClassName} data-tabs-mode={tabsMode}>
+            {tabs}
+          </div>
+        ) : (
+          <motion.div
+            className={tabsContainerClassName}
+            data-tabs-mode={tabsMode}
+            data-expanded={isTabsExpanded ? "true" : "false"}
+            onPointerEnter={scheduleOpenTabs}
+            onPointerLeave={closeTabs}
+            onFocusCapture={openTabsImmediately}
+            onBlurCapture={(event) => {
+              if (
+                !event.currentTarget.contains(
+                  event.relatedTarget as Node | null,
+                )
+              ) {
+                closeTabs();
+              }
+            }}
+            animate={{
               height: isTabsExpanded
                 ? EXPANDED_TABS_HEIGHT_PX
                 : COLLAPSED_TABS_HEIGHT_PX,
-            }
-          : { height: "auto" }
-      }
-      initial={false}
-      transition={
-        tabsMode === "hover-reveal"
-          ? { duration: 0.18, ease: "easeOut" }
-          : undefined
-      }
-      style={tabsMode === "hover-reveal" ? { overflow: "hidden" } : undefined}
-    >
-      {renderedTabs}
-    </motion.div>
-  );
-
-  return (
-    <div className={cn(workspaceShellRootClassName, className)} style={style}>
-      {tabsMode === "always" ? (
-        <div className={tabsContainerClassName} data-tabs-mode={tabsMode}>
-          {renderedTabs}
-        </div>
-      ) : (
-        tabsWrapper
-      )}
+            }}
+            initial={false}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            style={{ overflow: "hidden" }}
+          >
+            {tabs}
+          </motion.div>
+        )}
+      </WorkspaceTabsProvider>
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
         <header className="shrink-0 px-5 pt-3 pb-2.5">{header}</header>
         <div className="min-h-0 flex-1 p-3.5">{children}</div>

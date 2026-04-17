@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { useWorkspaceTabs } from "@/features/workspace/WorkspaceTabsContext";
 
 export type CourseTabItem = {
   id: string;
@@ -9,20 +10,12 @@ export type CourseTabItem = {
 
 type CourseTabProps = {
   tab: CourseTabItem;
-  isActive?: boolean;
-  onSelect?: () => void;
-  tabsMode?: "always" | "hover-reveal";
-  isExpanded?: boolean;
+  isActive: boolean;
+  onSelect: () => void;
 };
 
-export const CourseTab = ({
-  tab,
-  isActive,
-  onSelect,
-  tabsMode = "always",
-  isExpanded = true,
-}: CourseTabProps) => {
-  const active = Boolean(isActive);
+export const CourseTab = ({ tab, isActive, onSelect }: CourseTabProps) => {
+  const { tabsMode, isExpanded } = useWorkspaceTabs();
   const baseClassName =
     "touch-manipulation text-left [-webkit-tap-highlight-color:transparent] relative block w-full min-w-0 m-0 cursor-pointer rounded-t-[var(--radius-xl)] rounded-b-none border px-4 text-[length:var(--type-dashboard-body)] font-medium leading-tight transition-[color,background-color,box-shadow,border-color,transform,padding,min-height] duration-150 ease-out";
   const isHoverRevealCollapsed = tabsMode === "hover-reveal" && !isExpanded;
@@ -40,12 +33,12 @@ export const CourseTab = ({
     <button
       type="button"
       role="tab"
-      aria-selected={active}
-      data-active={active ? "true" : "false"}
+      aria-selected={isActive}
+      data-active={isActive ? "true" : "false"}
       onClick={onSelect}
       style={tab.style}
       className={
-        active
+        isActive
           ? `${baseClassName} ${sizingClassName} ${activeClassName}`
           : `${baseClassName} ${sizingClassName} ${inactiveClassName}`
       }

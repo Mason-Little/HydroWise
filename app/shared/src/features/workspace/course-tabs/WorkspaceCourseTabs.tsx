@@ -8,15 +8,7 @@ import {
   courseTabCssVariables,
 } from "@/features/workspace/course-tabs/courseTheme";
 
-type WorkspaceCourseTabsProps = {
-  tabsMode?: "always" | "hover-reveal";
-  isExpanded?: boolean;
-};
-
-export const WorkspaceCourseTabs = ({
-  tabsMode = "always",
-  isExpanded = true,
-}: WorkspaceCourseTabsProps) => {
+export const WorkspaceCourseTabs = () => {
   const { activeCourse, setActiveCourseId } = useDashboardContext();
   const { courses, isLoading, isError } = useCourses();
 
@@ -48,8 +40,6 @@ export const WorkspaceCourseTabs = ({
       tabs={tabs}
       activeTabId={activeCourse?.id ?? null}
       onSelectTab={setActiveCourseId}
-      tabsMode={tabsMode}
-      isExpanded={isExpanded}
     />
   );
 };

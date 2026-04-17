@@ -5,7 +5,7 @@ import { TodoRow } from "@/features/dashboard/Info/overview/components/todo/Todo
 import { useUpdateCourseTodos } from "@/features/dashboard/Info/overview/components/todo/useUpdateCourseTodos";
 
 type CourseTodosProps = {
-  onComposingChange?: (composing: boolean) => void;
+  onComposingChange: (composing: boolean) => void;
 };
 
 export const CourseTodos = ({ onComposingChange }: CourseTodosProps) => {
@@ -17,7 +17,7 @@ export const CourseTodos = ({ onComposingChange }: CourseTodosProps) => {
 
   const setComposingOpen = (open: boolean) => {
     setComposing(open);
-    onComposingChange?.(open);
+    onComposingChange(open);
   };
 
   if (!activeCourse) return null;

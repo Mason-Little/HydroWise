@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 type EditableFieldProps = {
   value: string | null;
   placeholder: string;
-  className?: string;
+  className: string;
   onSave: (next: string | null) => void;
 };
 
@@ -52,7 +52,7 @@ export const EditableField = ({
           if (e.key === "Escape") cancel();
         }}
         placeholder={placeholder}
-        className={`-mx-1 rounded bg-muted/50 px-1 text-xs outline-none ring-1 ring-ring ${className ?? ""}`}
+        className={`-mx-1 rounded bg-muted/50 px-1 text-xs outline-none ring-1 ring-ring ${className}`}
       />
     );
   }
@@ -61,7 +61,7 @@ export const EditableField = ({
     <button
       type="button"
       onClick={startEditing}
-      className={`-mx-1 cursor-text rounded px-1 text-left text-xs hover:bg-muted/40 ${className ?? ""}`}
+      className={`-mx-1 cursor-text rounded px-1 text-left text-xs hover:bg-muted/40 ${className}`}
     >
       {value}
     </button>
@@ -69,7 +69,7 @@ export const EditableField = ({
     <button
       type="button"
       onClick={startEditing}
-      className={`-mx-1 cursor-text rounded border-b border-dotted border-muted-foreground/40 px-1 pb-0.5 text-left text-xs italic text-muted-foreground/50 hover:bg-muted/40 ${className ?? ""}`}
+      className={`-mx-1 cursor-text rounded border-b border-dotted border-muted-foreground/40 px-1 pb-0.5 text-left text-xs italic text-muted-foreground/50 hover:bg-muted/40 ${className}`}
     >
       {placeholder}
     </button>
