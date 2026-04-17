@@ -9,7 +9,8 @@ export const Quiz = () => {
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
   const { courses } = useCourses();
 
-  const activeCourse = courses.find((course) => course.id === activeCourseId) ?? null;
+  const activeCourse =
+    courses.find((course) => course.id === activeCourseId) ?? null;
 
   return (
     <DashboardContext.Provider
@@ -20,8 +21,14 @@ export const Quiz = () => {
     >
       <WorkspaceShell
         tabs={<WorkspaceCourseTabs />}
-        header={null}
-        style={activeCourse ? courseWorkspaceCssVariables(activeCourse.courseCode) : undefined}
+        header={<h1 className="m-0">Quiz</h1>}
+        tabsMode="hover-reveal"
+        className="mt-0"
+        style={
+          activeCourse
+            ? courseWorkspaceCssVariables(activeCourse.courseCode)
+            : undefined
+        }
       >
         <div className="flex min-h-0 flex-1 items-center justify-center px-6 py-10">
           <p className="text-sm text-[var(--app-text-muted)]">

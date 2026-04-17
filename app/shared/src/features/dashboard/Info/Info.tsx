@@ -15,6 +15,7 @@ export const Info = () => {
   return (
     <WorkspaceShell
       tabs={<WorkspaceCourseTabs />}
+      tabsMode="always"
       header={
         <CourseHeader
           headerRight={

@@ -413,6 +413,10 @@
     overscroll-behavior-x: contain;
   }
 
+  .app-workspace-shell__tabs[data-tabs-mode="hover-reveal"] .app-course-rail {
+    padding-block: 0;
+  }
+
   .app-course-rail::-webkit-scrollbar {
     height: 6px;
   }
@@ -457,6 +461,22 @@
     min-width: 0;
     max-width: none;
     width: auto;
+  }
+
+  .app-workspace-shell__tabs[data-tabs-mode="hover-reveal"] .app-course-tab {
+    min-height: 40px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: -1px;
+  }
+
+  .app-workspace-shell__tabs[data-tabs-mode="hover-reveal"][data-expanded="true"]
+    .app-course-tab {
+    min-height: 74px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   .app-course-rail .app-course-tab[aria-selected="false"] {
@@ -520,6 +540,34 @@
     white-space: nowrap;
     color: color-mix(in srgb, var(--course-tab-fg) 86%, var(--course-tab-bg));
     opacity: 0.98;
+  }
+
+  .app-workspace-shell__tabs[data-tabs-mode="hover-reveal"]
+    .app-course-tab__name {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    transition:
+      max-height 180ms ease,
+      margin-top 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .app-workspace-shell__tabs[data-tabs-mode="hover-reveal"][data-expanded="true"]
+    .app-course-tab__name {
+    max-height: 1.25rem;
+    margin-top: 3px;
+    opacity: 0.98;
+  }
+
+  @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .app-workspace-shell__tabs[data-tabs-mode="hover-reveal"]
+      .app-course-tab__name {
+      max-height: 1.25rem;
+      margin-top: 3px;
+      opacity: 0.98;
+      transition: none;
+    }
   }
 
   .app-course-rail .app-course-tab[aria-selected="true"] .app-course-tab__name {
@@ -615,10 +663,20 @@
   }
 
   /* Direct shell children only — sit above the ::before wash */
-  .app-workspace-shell > .app-course-rail,
+  .app-workspace-shell > .app-workspace-shell__tabs,
   .app-workspace-shell > .app-workspace-shell__canvas {
     position: relative;
     z-index: 1;
+  }
+
+  .app-workspace-shell__tabs[data-tabs-mode="hover-reveal"] {
+    overflow: hidden;
+  }
+
+  @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .app-workspace-shell__tabs[data-tabs-mode="hover-reveal"] {
+      height: auto;
+    }
   }
 
   .app-workspace-shell__header {

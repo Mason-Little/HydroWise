@@ -21,6 +21,7 @@ export const CourseTab = ({ tab, isActive, onSelect }: CourseTabProps) => {
       type="button"
       role="tab"
       aria-selected={active}
+      data-active={active ? "true" : "false"}
       onClick={onSelect}
       style={tab.style}
       className="app-course-tab touch-manipulation text-left [-webkit-tap-highlight-color:transparent]"
