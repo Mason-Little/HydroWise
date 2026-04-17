@@ -4,8 +4,8 @@ import { CourseHeader } from "@/features/dashboard/CourseHeader";
 import { useDashboardContext } from "@/features/dashboard/dashboard-context";
 import { Material } from "@/features/dashboard/Info/material/Material";
 import { Overview } from "@/features/dashboard/Info/overview/Overview";
-import { WorkspaceCourseTabs } from "@/features/dashboard/selection/WorkspaceCourseTabs";
 import { courseWorkspaceCssVariables } from "@/features/workspace/course-tabs/courseTheme";
+import { WorkspaceCourseTabs } from "@/features/workspace/course-tabs/WorkspaceCourseTabs";
 import { WorkspaceShell } from "@/features/workspace/WorkspaceShell";
 
 export const Info = () => {
