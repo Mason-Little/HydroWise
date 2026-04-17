@@ -1,31 +1,25 @@
-import { getQueries } from "@hydrowise/data";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import {
   createOptimisticChatSendCache,
   invalidateChatSendQueries,
   patchThreadInCache,
-  prependThreadInCache,
-} from "@/features/chat/helpers/chat-send-message-cache";
+} from "@/domains/chat/chat-send-message-cache";
+import { useCreateChatThread } from "@/domains/chat/hooks/useCreateChatThread";
 import { sendChatTurn } from "@/features/chat/helpers/send-chat-turn";
+import { chatKeys } from "@/lib/query-keys";
 import { useThreadStore } from "@/store/threadStore";
 
 export const useSendChatMessage = () => {
   const queryClient = useQueryClient();
+  const createThread = useCreateChatThread();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (text: string) => {
       const { activeThreadId, setActiveThread } = useThreadStore.getState();
 
-      const threadId =
-        activeThreadId ??
-        (await (async (): Promise<string> => {
-          const queries = await getQueries();
-          const thread = await queries.createChatThread();
-          prependThreadInCache(queryClient, thread);
-          setActiveThread(thread.id);
-          return thread.id;
-        })());
+      const threadId = activeThreadId ?? (await createThread.mutateAsync()).id;
+      setActiveThread(threadId);
 
       const tempUserId = `local-user-${crypto.randomUUID()}`;
       const tempAsstId = `local-assistant-${crypto.randomUUID()}`;
@@ -36,7 +30,9 @@ export const useSendChatMessage = () => {
         tempAsstId,
       );
 
-      await queryClient.cancelQueries({ queryKey: cache.messagesKey });
+      await queryClient.cancelQueries({
+        queryKey: chatKeys.messages(threadId),
+      });
       cache.appendPair(text);
 
       try {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useDashboardContext } from "@/features/dashboard/dashboard-context";
-import { useCourses } from "@/features/dashboard/selection/hooks/useCourses";
+import { useCourses } from "@/domains/courses/hooks/useCourses";
 import type { CourseTabItem } from "@/features/workspace/course-tabs/CourseTab";
 import { CourseTabs } from "@/features/workspace/course-tabs/CourseTabs";
 import {

@@ -3,7 +3,7 @@ import { useDashboardContext } from "@/features/dashboard/dashboard-context";
 import { MaterialChapterList } from "@/features/dashboard/Info/material/components/MaterialChapterList";
 import { MaterialContentPanel } from "@/features/dashboard/Info/material/components/MaterialContentPanel";
 import { MaterialSelectionContext } from "@/features/dashboard/Info/material/context/MaterialSelectionContext";
-import { useChapters } from "@/features/dashboard/Info/material/hooks/useChapters";
+import { useChapters } from "@/domains/material/hooks/useChapters";
 
 export const Material = () => {
   const { activeCourse } = useDashboardContext();

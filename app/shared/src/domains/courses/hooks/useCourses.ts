@@ -1,5 +1,6 @@
 import { getQueries } from "@hydrowise/data";
 import { useQuery } from "@tanstack/react-query";
+import { courseKeys } from "@/lib/query-keys";
 
 export const useCourses = () => {
   const {
@@ -7,7 +8,7 @@ export const useCourses = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["courses"],
+    queryKey: courseKeys.all(),
     queryFn: () => getQueries().then((q) => q.listCourses()),
   });
 

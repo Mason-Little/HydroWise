@@ -1,5 +1,5 @@
 import type { Topic } from "@hydrowise/entities";
-import { useTopicDocuments } from "@/features/dashboard/Info/material/hooks/useTopicDocuments";
+import { useTopicDocuments } from "@/domains/material/hooks/useTopicDocuments";
 import { cn } from "@/lib/utils";
 import { MaterialDocumentTile } from "./MaterialDocumentTile";
 

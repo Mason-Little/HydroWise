@@ -2,6 +2,7 @@ import { getQueries } from "@hydrowise/data";
 import type { CourseTodoItem } from "@hydrowise/entities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CourseRow } from "@/features/dashboard/dashboard-context";
+import { courseKeys } from "@/lib/query-keys";
 
 type MutationContext = {
   previousCourses: CourseRow[];
@@ -25,21 +26,21 @@ export const useUpdateCourseTodos = (courseId: string) => {
         queries.updateCourseTodos(courseId, courseTodos),
       ),
     onMutate: async (courseTodos) => {
-      await queryClient.cancelQueries({ queryKey: ["courses"] });
+      await queryClient.cancelQueries({ queryKey: courseKeys.all() });
 
       const previousCourses =
-        queryClient.getQueryData<CourseRow[]>(["courses"]) ?? [];
-      queryClient.setQueryData<CourseRow[]>(["courses"], (courses = []) =>
+        queryClient.getQueryData<CourseRow[]>(courseKeys.all()) ?? [];
+      queryClient.setQueryData<CourseRow[]>(courseKeys.all(), (courses = []) =>
         replaceCourseTodos(courses, courseId, courseTodos),
       );
 
       return { previousCourses };
     },
     onError: (_error, _todos, context) => {
-      queryClient.setQueryData(["courses"], context?.previousCourses ?? []);
+      queryClient.setQueryData(courseKeys.all(), context?.previousCourses ?? []);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["courses"] });
+      queryClient.invalidateQueries({ queryKey: courseKeys.all() });
     },
   });
 };

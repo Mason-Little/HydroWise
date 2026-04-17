@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
+import { useCourses } from "@/domains/courses/hooks/useCourses";
 import { DashboardContext } from "@/features/dashboard/dashboard-context";
 import { Info } from "@/features/dashboard/Info/Info";
-import { useCourses } from "@/features/dashboard/selection/hooks/useCourses";
 
 export const Dashboard = (): ReactElement => {
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);

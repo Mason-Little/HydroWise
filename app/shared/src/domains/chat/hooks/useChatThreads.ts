@@ -1,9 +1,10 @@
 import { getQueries } from "@hydrowise/data";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { chatKeys } from "@/lib/query-keys";
 
 export const useChatThreads = () => {
   const { data: threads = [], isLoading } = useQuery({
-    queryKey: ["chatThreads"],
+    queryKey: chatKeys.threads(),
     queryFn: () => getQueries().then((q) => q.listChatThreads()),
   });
   const { mutate: deleteChatThread } = useDeleteChatThread();
@@ -19,7 +20,7 @@ export const useDeleteChatThread = () => {
       await deleteChatThread(threadId);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chatThreads"] });
+      queryClient.invalidateQueries({ queryKey: chatKeys.threads() });
     },
   });
 };

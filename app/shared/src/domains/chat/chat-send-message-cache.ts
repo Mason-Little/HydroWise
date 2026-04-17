@@ -4,8 +4,9 @@ import type {
   GroundedAssistantMessagePayload,
 } from "@hydrowise/entities";
 import type { QueryClient } from "@tanstack/react-query";
+import { chatKeys } from "@/lib/query-keys";
 
-/** One chat thread as stored in the `["chatThreads"]` query (same shape as `listChatThreads`). */
+/** One chat thread as stored in the chat threads query (same shape as `listChatThreads`). */
 type ListedChatThread = {
   id: string;
   title: string | null;
@@ -17,14 +18,12 @@ type CacheMessage = ChatMessage & {
   clientStatus?: "sending" | "streaming" | "error";
 };
 
-const chatThreadsKey = ["chatThreads"] as const;
-
 export function prependThreadInCache(
   queryClient: QueryClient,
   thread: ListedChatThread,
 ): void {
   queryClient.setQueryData(
-    chatThreadsKey,
+    chatKeys.threads(),
     (old: ListedChatThread[] | undefined) => {
       const prev = old ?? [];
       if (prev.some((t) => t.id === thread.id)) {
@@ -41,7 +40,7 @@ export function patchThreadInCache(
   plan: Pick<ChatOrchestratorOutput, "threadTitle" | "activeCourse">,
 ): void {
   queryClient.setQueryData(
-    chatThreadsKey,
+    chatKeys.threads(),
     (old: ListedChatThread[] | undefined) =>
       old?.map((t) => {
         if (t.id !== threadId) {
@@ -65,7 +64,7 @@ export function createOptimisticChatSendCache(
   tempUserId: string,
   tempAsstId: string,
 ) {
-  const messagesKey = ["chatMessages", threadId] as const;
+  const messagesKey = chatKeys.messages(threadId);
 
   const setMessages = (
     updater: (prev: CacheMessage[] | undefined) => CacheMessage[] | undefined,
@@ -130,7 +129,6 @@ export function createOptimisticChatSendCache(
   };
 
   return {
-    messagesKey,
     appendPair,
     onChunk,
     swapUser: (message: ChatMessage) => replacePlaceholder(tempUserId, message),
@@ -145,6 +143,6 @@ export async function invalidateChatSendQueries(
   queryClient: QueryClient,
   threadId: string,
 ): Promise<void> {
-  await queryClient.invalidateQueries({ queryKey: ["chatMessages", threadId] });
-  await queryClient.invalidateQueries({ queryKey: chatThreadsKey });
+  await queryClient.invalidateQueries({ queryKey: chatKeys.messages(threadId) });
+  await queryClient.invalidateQueries({ queryKey: chatKeys.threads() });
 }

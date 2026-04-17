@@ -1,6 +1,6 @@
 import { MaterialTopicSection } from "@/features/dashboard/Info/material/components/MaterialTopicSection";
 import { useMaterialSelection } from "@/features/dashboard/Info/material/context/MaterialSelectionContext";
-import { useChapterTopics } from "@/features/dashboard/Info/material/hooks/useChapterTopics";
+import { useChapterTopics } from "@/domains/material/hooks/useChapterTopics";
 import { cn } from "@/lib/utils";
 
 const MATERIAL_QUICK_ACTION_LABELS = [

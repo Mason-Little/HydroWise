@@ -6,8 +6,8 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
-import { useChatThreads } from "@/features/app-toolbar/actions/hooks/use-chat-threads";
-import { useCourses } from "@/features/dashboard/selection/hooks/useCourses";
+import { useChatThreads } from "@/domains/chat/hooks/useChatThreads";
+import { useCourses } from "@/domains/courses/hooks/useCourses";
 import { cn } from "@/lib/utils";
 import { useFeatureStore } from "@/store/featureStore";
 import { useThreadStore } from "@/store/threadStore";

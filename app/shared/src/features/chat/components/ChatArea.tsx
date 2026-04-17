@@ -1,13 +1,11 @@
 import { ChatMessageItem } from "@/features/chat/components/messages";
-import { useChatMessages } from "@/features/chat/hooks/use-chat-messages";
+import { useChatContext } from "@/features/chat/context";
 import { cn } from "@/lib/utils";
-import { useThreadStore } from "@/store/threadStore";
 
 export const ChatArea = () => {
-  const { activeThreadId } = useThreadStore();
-  const { messages, isLoading } = useChatMessages(activeThreadId);
+  const { threadId, messages, isLoading } = useChatContext();
 
-  if (activeThreadId === null) {
+  if (threadId === null) {
     return (
       <div className="app-ask-main app-ask-thread">
         <div className={cn("app-ask-thread-inner", "app-ask-empty")}>
