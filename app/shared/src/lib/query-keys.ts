@@ -10,6 +10,7 @@ export const chapterKeys = {
 export const topicKeys = {
   all: () => ["topics"] as const,
   byChapter: (chapterId: string) => ["topics", chapterId] as const,
+  byCourse: (courseId: string) => ["topics", "byCourse", courseId] as const,
 };
 
 export const documentKeys = {

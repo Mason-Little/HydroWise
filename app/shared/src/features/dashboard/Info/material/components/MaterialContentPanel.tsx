@@ -1,6 +1,6 @@
+import { useTopicsByChapter } from "@/domains/material/hooks/useTopics";
 import { MaterialTopicSection } from "@/features/dashboard/Info/material/components/MaterialTopicSection";
 import { useMaterialSelection } from "@/features/dashboard/Info/material/context/MaterialSelectionContext";
-import { useChapterTopics } from "@/domains/material/hooks/useChapterTopics";
 import { cn } from "@/lib/utils";
 
 const MATERIAL_QUICK_ACTION_LABELS = [
@@ -12,7 +12,7 @@ const MATERIAL_QUICK_ACTION_LABELS = [
 export const MaterialContentPanel = () => {
   const { activeChapter, chapters } = useMaterialSelection();
   const chapterId = activeChapter?.id ?? "";
-  const { topics, isLoading } = useChapterTopics(chapterId);
+  const { topics, isLoading } = useTopicsByChapter(chapterId);
 
   if (!activeChapter) {
     return (
