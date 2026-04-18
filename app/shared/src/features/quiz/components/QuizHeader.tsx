@@ -18,9 +18,7 @@ export const QuizHeader = () => {
   const { activeCourse } = useDashboardContext();
   const { view, setView } = useQuizContext();
 
-  const eyebrow = activeCourse
-    ? `${activeCourse.courseCode} · ${activeCourse.courseName}`
-    : "Select a course above";
+  const eyebrow = `${activeCourse.courseCode} · ${activeCourse.courseName}`;
 
   return (
     <div className="border-b border-[color-mix(in_srgb,var(--course-accent-strong)_18%,transparent)] pb-2.5">

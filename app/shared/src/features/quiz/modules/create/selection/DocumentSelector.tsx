@@ -1,37 +1,32 @@
+import type { Dispatch, SetStateAction } from "react";
 import { useDocumentsByCourse } from "@/domains/material/hooks/useDocuments";
 import { useDashboardContext } from "@/features/dashboard/dashboard-context";
-import { useCreateQuizContext } from "@/features/quiz/modules/create/context/create-quiz-context";
+import type { CreateQuizSelection } from "@/features/quiz/modules/create/context/create-quiz-context";
 import { SelectableTile } from "@/features/quiz/modules/create/selection/SelectableTile";
 
-export const DocumentSelector = () => {
+type DocumentSelectorProps = {
+  documentIds: string[];
+  setSelection: Dispatch<SetStateAction<CreateQuizSelection>>;
+};
+
+export const DocumentSelector = ({
+  documentIds,
+  setSelection,
+}: DocumentSelectorProps) => {
   const { activeCourse } = useDashboardContext();
-
-  if (!activeCourse) {
-    return null;
-  }
-
-  return <DocumentSelectorContent courseId={activeCourse.id} />;
-};
-
-const DocumentSelectorContent = ({ courseId }: { courseId: string }) => {
-  return <DocumentSelectorList courseId={courseId} />;
-};
-
-const DocumentSelectorList = ({ courseId }: { courseId: string }) => {
-  const { documents } = useDocumentsByCourse(courseId);
-  const { selectedDocumentIds, setSelectedDocumentIds } =
-    useCreateQuizContext();
+  const { documents } = useDocumentsByCourse(activeCourse.id);
 
   return (
     <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
       {documents.map((document) => {
-        const selected = selectedDocumentIds.includes(document.id);
+        const selected = documentIds.includes(document.id);
         const onSelect = () => {
-          setSelectedDocumentIds(
-            selected
-              ? selectedDocumentIds.filter((id) => id !== document.id)
-              : [...selectedDocumentIds, document.id],
-          );
+          setSelection({
+            scope: "document",
+            documentIds: selected
+              ? documentIds.filter((id) => id !== document.id)
+              : [...documentIds, document.id],
+          });
         };
 
         return (

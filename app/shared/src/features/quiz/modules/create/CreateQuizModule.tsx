@@ -21,8 +21,8 @@ export const CreateQuizModule = () => {
 };
 
 const CreateQuizModuleContent = () => {
-  const { activeScope } = useCreateQuizContext();
-  const scopeLabel = scopeLabelByScope[activeScope];
+  const { selection } = useCreateQuizContext();
+  const scopeLabel = scopeLabelByScope[selection.scope];
 
   return (
     <div className="min-h-0 flex-1 px-6 pb-3 pt-1 md:px-7">

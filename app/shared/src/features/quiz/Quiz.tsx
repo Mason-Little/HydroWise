@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useCourses } from "@/domains/courses/hooks/useCourses";
-import { DashboardContext } from "@/features/dashboard/dashboard-context";
+import {
+  CourseWorkspaceBoundary,
+  DashboardContext,
+} from "@/features/dashboard/dashboard-context";
 import { QuizHeader } from "@/features/quiz/components/QuizHeader";
 import { QuizModeOutlet } from "@/features/quiz/components/QuizModeOutlet";
 import { QuizProvider } from "@/features/quiz/context/quiz-context";
@@ -10,32 +13,32 @@ import { WorkspaceShell } from "@/features/workspace/WorkspaceShell";
 
 export const Quiz = () => {
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
-  const { courses } = useCourses();
-
-  const activeCourse =
-    courses.find((course) => course.id === activeCourseId) ?? null;
-  const workspaceStyle = activeCourse
-    ? courseWorkspaceCssVariables(activeCourse.courseCode)
-    : {};
-
+  const { courses, isLoading, isError } = useCourses();
   return (
-    <DashboardContext.Provider
-      value={{
-        activeCourse,
-        setActiveCourseId,
-      }}
+    <CourseWorkspaceBoundary
+      courses={courses}
+      isLoading={isLoading}
+      isError={isError}
+      activeCourseId={activeCourseId}
+      setActiveCourseId={setActiveCourseId}
     >
-      <QuizProvider>
-        <WorkspaceShell
-          tabs={<WorkspaceCourseTabs />}
-          header={<QuizHeader />}
-          tabsMode="hover-reveal"
-          className="mt-0"
-          style={workspaceStyle}
-        >
-          <QuizModeOutlet />
-        </WorkspaceShell>
-      </QuizProvider>
-    </DashboardContext.Provider>
+      {(workspace) => (
+        <DashboardContext.Provider value={workspace}>
+          <QuizProvider>
+            <WorkspaceShell
+              tabs={<WorkspaceCourseTabs />}
+              header={<QuizHeader />}
+              tabsMode="hover-reveal"
+              className="mt-0"
+              style={courseWorkspaceCssVariables(
+                workspace.activeCourse.courseCode,
+              )}
+            >
+              <QuizModeOutlet />
+            </WorkspaceShell>
+          </QuizProvider>
+        </DashboardContext.Provider>
+      )}
+    </CourseWorkspaceBoundary>
   );
 };

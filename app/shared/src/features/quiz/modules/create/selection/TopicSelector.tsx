@@ -1,32 +1,32 @@
+import type { Dispatch, SetStateAction } from "react";
 import { useTopicsByCourse } from "@/domains/material/hooks/useTopics";
 import { useDashboardContext } from "@/features/dashboard/dashboard-context";
-import { useCreateQuizContext } from "@/features/quiz/modules/create/context/create-quiz-context";
+import type { CreateQuizSelection } from "@/features/quiz/modules/create/context/create-quiz-context";
 import { SelectableTile } from "@/features/quiz/modules/create/selection/SelectableTile";
 
-export const TopicSelector = () => {
-  const { activeCourse } = useDashboardContext();
-
-  if (!activeCourse) {
-    return null;
-  }
-
-  return <TopicSelectorContent courseId={activeCourse.id} />;
+type TopicSelectorProps = {
+  topicIds: string[];
+  setSelection: Dispatch<SetStateAction<CreateQuizSelection>>;
 };
 
-const TopicSelectorContent = ({ courseId }: { courseId: string }) => {
-  const { topics } = useTopicsByCourse(courseId);
-  const { selectedTopicIds, setSelectedTopicIds } = useCreateQuizContext();
+export const TopicSelector = ({
+  topicIds,
+  setSelection,
+}: TopicSelectorProps) => {
+  const { activeCourse } = useDashboardContext();
+  const { topics } = useTopicsByCourse(activeCourse.id);
 
   return (
     <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
       {topics.map((topic) => {
-        const selected = selectedTopicIds.includes(topic.id);
+        const selected = topicIds.includes(topic.id);
         const onSelect = () => {
-          setSelectedTopicIds(
-            selected
-              ? selectedTopicIds.filter((id) => id !== topic.id)
-              : [...selectedTopicIds, topic.id],
-          );
+          setSelection({
+            scope: "topic",
+            topicIds: selected
+              ? topicIds.filter((id) => id !== topic.id)
+              : [...topicIds, topic.id],
+          });
         };
 
         return (

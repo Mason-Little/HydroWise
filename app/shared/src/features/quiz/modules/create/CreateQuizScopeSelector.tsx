@@ -1,4 +1,8 @@
-import { useCreateQuizContext } from "@/features/quiz/modules/create/context/create-quiz-context";
+import {
+  type CreateQuizScope,
+  type CreateQuizSelection,
+  useCreateQuizContext,
+} from "@/features/quiz/modules/create/context/create-quiz-context";
 import { ScopeCard } from "@/features/quiz/modules/create/ScopeCard";
 
 const scopes = [
@@ -20,8 +24,24 @@ const scopes = [
   },
 ] as const;
 
+// Builds the initial selection for a given quiz scope.
+const createSelectionForScope = (
+  scope: CreateQuizScope,
+): CreateQuizSelection => {
+  switch (scope) {
+    case "course":
+      return { scope: "course" };
+    case "chapter":
+      return { scope: "chapter", chapterIds: [] };
+    case "topic":
+      return { scope: "topic", topicIds: [] };
+    case "document":
+      return { scope: "document", documentIds: [] };
+  }
+};
+
 export const CreateQuizScopeSelector = () => {
-  const { activeScope, setActiveScope } = useCreateQuizContext();
+  const { selection, setSelection } = useCreateQuizContext();
 
   return (
     <div className="-mt-0.5">
@@ -30,8 +50,8 @@ export const CreateQuizScopeSelector = () => {
           <ScopeCard
             key={scope.name}
             scope={scope}
-            selected={scope.name === activeScope}
-            onSelect={() => setActiveScope(scope.name)}
+            selected={scope.name === selection.scope}
+            onSelect={() => setSelection(createSelectionForScope(scope.name))}
           />
         ))}
       </div>

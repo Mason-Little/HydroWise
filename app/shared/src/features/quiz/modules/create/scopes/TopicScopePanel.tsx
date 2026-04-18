@@ -1,6 +1,16 @@
+import type { Dispatch, SetStateAction } from "react";
+import type { CreateQuizSelection } from "@/features/quiz/modules/create/context/create-quiz-context";
 import { TopicSelector } from "@/features/quiz/modules/create/selection/TopicSelector";
 
-export const TopicScopePanel = () => {
+type TopicScopePanelProps = {
+  topicIds: string[];
+  setSelection: Dispatch<SetStateAction<CreateQuizSelection>>;
+};
+
+export const TopicScopePanel = ({
+  topicIds,
+  setSelection,
+}: TopicScopePanelProps) => {
   return (
     <div className="space-y-3.5">
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b border-[var(--app-border-solid)] pb-2.5">
@@ -18,7 +28,7 @@ export const TopicScopePanel = () => {
         />
       </div>
       <div className="rounded-[18px] border border-border/60 bg-[var(--app-surface-primary)] px-3.5 py-3.5 shadow-[0_1px_0_rgba(15,23,42,0.02),0_1px_3px_rgba(15,23,42,0.03)]">
-        <TopicSelector />
+        <TopicSelector topicIds={topicIds} setSelection={setSelection} />
       </div>
     </div>
   );

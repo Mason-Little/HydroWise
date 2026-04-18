@@ -3,10 +3,7 @@ import { useDashboardContext } from "@/features/dashboard/dashboard-context";
 
 export const CourseScopePanel = () => {
   const { activeCourse } = useDashboardContext();
-
-  const summary = activeCourse
-    ? `Quiz will use all chapters, topics, and documents from ${activeCourse.courseName}.`
-    : "Loading course…";
+  const summary = `Quiz will use all chapters, topics, and documents from ${activeCourse.courseName}.`;
 
   return (
     <div className="space-y-3.5">

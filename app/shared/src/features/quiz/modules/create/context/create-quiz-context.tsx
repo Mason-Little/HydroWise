@@ -1,16 +1,34 @@
-import { createContext, type ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
 export type CreateQuizScope = "course" | "chapter" | "topic" | "document";
 
+export type CreateQuizSelection =
+  | {
+      scope: "course";
+    }
+  | {
+      scope: "chapter";
+      chapterIds: string[];
+    }
+  | {
+      scope: "topic";
+      topicIds: string[];
+    }
+  | {
+      scope: "document";
+      documentIds: string[];
+    };
+
 type CreateQuizContextValue = {
-  activeScope: CreateQuizScope;
-  setActiveScope: (scope: CreateQuizScope) => void;
-  selectedChapterIds: string[];
-  setSelectedChapterIds: (chapterIds: string[]) => void;
-  selectedTopicIds: string[];
-  setSelectedTopicIds: (topicIds: string[]) => void;
-  selectedDocumentIds: string[];
-  setSelectedDocumentIds: (documentIds: string[]) => void;
+  selection: CreateQuizSelection;
+  setSelection: Dispatch<SetStateAction<CreateQuizSelection>>;
 };
 
 const CreateQuizContext = createContext<CreateQuizContextValue | null>(null);
@@ -20,22 +38,15 @@ type CreateQuizProviderProps = {
 };
 
 export const CreateQuizProvider = ({ children }: CreateQuizProviderProps) => {
-  const [activeScope, setActiveScope] = useState<CreateQuizScope>("course");
-  const [selectedChapterIds, setSelectedChapterIds] = useState<string[]>([]);
-  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
-  const [selectedDocumentIds, setSelectedDocumentIds] = useState<string[]>([]);
+  const [selection, setSelection] = useState<CreateQuizSelection>({
+    scope: "course",
+  });
 
   return (
     <CreateQuizContext.Provider
       value={{
-        activeScope,
-        setActiveScope,
-        selectedChapterIds,
-        setSelectedChapterIds,
-        selectedTopicIds,
-        setSelectedTopicIds,
-        selectedDocumentIds,
-        setSelectedDocumentIds,
+        selection,
+        setSelection,
       }}
     >
       {children}
