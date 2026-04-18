@@ -30,7 +30,7 @@ export const DocumentViewerStage = ({
     pageNumber,
     totalPages,
   );
-  const imageUrl = usePageImageUrl(page);
+  const imageUrl = usePageImageUrl(page ?? null);
 
   const pageBody =
     isLoading && !page ? (

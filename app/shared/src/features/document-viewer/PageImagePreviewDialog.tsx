@@ -15,24 +15,6 @@ export const PageImagePreviewDialog = ({
   open,
   onOpenChange,
 }: PageImagePreviewDialogProps) => {
-  const { data: page, isLoading } = usePageById(pageId, open);
-  const imageUrl = usePageImageUrl(page);
-
-  const pageBody =
-    isLoading && !page ? (
-      <div className="text-sm text-[var(--app-text-muted)]">Loading...</div>
-    ) : !page ? (
-      <div className="text-sm text-[var(--app-text-muted)]">No page found</div>
-    ) : !imageUrl ? (
-      <div className="text-sm text-[var(--app-text-muted)]">No image found</div>
-    ) : (
-      <img
-        src={imageUrl}
-        alt={`Page ${page.pageNumber}`}
-        className="max-h-full max-w-full object-contain"
-      />
-    );
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex h-[94vh] w-[96vw] max-w-[1100px] flex-col gap-0 overflow-hidden rounded-[var(--app-radius-workspace)] border border-[color-mix(in_srgb,var(--app-border-solid)_28%,transparent)] bg-[var(--app-surface-primary)] p-0 text-[var(--app-text-primary)] shadow-[var(--app-shadow-lift)] ring-[color-mix(in_srgb,var(--app-border-solid)_22%,transparent)] sm:max-w-[1100px]">
@@ -45,32 +27,62 @@ export const PageImagePreviewDialog = ({
               <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center overflow-hidden p-2">
                 <div
                   className={cn(
-                    "flex max-h-full max-w-full items-center justify-center rounded-[var(--app-radius-workspace)] border p-2 sm:p-3",
+                    "relative flex max-h-full max-w-full items-center justify-center rounded-[var(--app-radius-workspace)] border p-2 sm:p-3",
                     "border-[color-mix(in_srgb,var(--app-border-solid)_35%,transparent)] bg-[var(--app-surface-primary)]",
                     "shadow-[var(--app-shadow-lift)]",
                   )}
                 >
-                  {pageBody}
+                  {open ? (
+                    <PageImagePreviewDialogContent pageId={pageId} />
+                  ) : null}
                 </div>
               </div>
               <div className="w-11 shrink-0 sm:w-12" aria-hidden />
             </div>
-            {page ? (
-              <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
-                <div
-                  className={cn(
-                    "pointer-events-auto rounded-full border px-3 py-1 text-xs text-[var(--app-text-muted)]",
-                    "border-[color-mix(in_srgb,var(--app-border-solid)_30%,transparent)]",
-                    "bg-[color-mix(in_srgb,var(--app-surface-primary)_92%,transparent)] shadow-[var(--app-shadow-soft)] backdrop-blur-sm",
-                  )}
-                >
-                  Page {page.pageNumber}
-                </div>
-              </div>
-            ) : null}
           </div>
         </div>
       </DialogContent>
     </Dialog>
+  );
+};
+
+// Loads the page image while the preview dialog is open.
+const PageImagePreviewDialogContent = ({ pageId }: { pageId: string }) => {
+  const { data: page, isLoading } = usePageById(pageId);
+  const imageUrl = usePageImageUrl(page ?? null);
+
+  return (
+    <>
+      {isLoading && !page ? (
+        <div className="text-sm text-[var(--app-text-muted)]">Loading...</div>
+      ) : !page ? (
+        <div className="text-sm text-[var(--app-text-muted)]">
+          No page found
+        </div>
+      ) : !imageUrl ? (
+        <div className="text-sm text-[var(--app-text-muted)]">
+          No image found
+        </div>
+      ) : (
+        <img
+          src={imageUrl}
+          alt={`Page ${page.pageNumber}`}
+          className="max-h-full max-w-full object-contain"
+        />
+      )}
+      {page ? (
+        <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center">
+          <div
+            className={cn(
+              "pointer-events-auto rounded-full border px-3 py-1 text-xs text-[var(--app-text-muted)]",
+              "border-[color-mix(in_srgb,var(--app-border-solid)_30%,transparent)]",
+              "bg-[color-mix(in_srgb,var(--app-surface-primary)_92%,transparent)] shadow-[var(--app-shadow-soft)] backdrop-blur-sm",
+            )}
+          >
+            Page {page.pageNumber}
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 };

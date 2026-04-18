@@ -1,15 +1,14 @@
 import { useEffect, useMemo } from "react";
 
-type PageWithOptionalImage =
-  | {
-      pageImage: Uint8Array | null | undefined;
-    }
-  | null
-  | undefined;
-
-export const usePageImageUrl = (page: PageWithOptionalImage) => {
+export const usePageImageUrl = (
+  page: {
+    pageImage: Uint8Array | null;
+  } | null,
+) => {
   const imageUrl = useMemo(() => {
-    if (!page?.pageImage) return null;
+    if (!page?.pageImage) {
+      return null;
+    }
 
     return URL.createObjectURL(
       new Blob([new Uint8Array(page.pageImage)], { type: "image/png" }),
@@ -18,7 +17,9 @@ export const usePageImageUrl = (page: PageWithOptionalImage) => {
 
   useEffect(() => {
     return () => {
-      if (imageUrl) URL.revokeObjectURL(imageUrl);
+      if (imageUrl) {
+        URL.revokeObjectURL(imageUrl);
+      }
     };
   }, [imageUrl]);
 
