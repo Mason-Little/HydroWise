@@ -23,7 +23,7 @@ export const QuizHeader = () => {
     : "Select a course above";
 
   return (
-    <div className="border-b border-[color-mix(in_srgb,var(--course-accent-strong)_18%,transparent)] pb-4">
+    <div className="border-b border-[color-mix(in_srgb,var(--course-accent-strong)_18%,transparent)] pb-2.5">
       <p className="mb-1 text-[length:var(--type-dashboard-micro)] font-semibold uppercase tracking-[0.18em] text-[color-mix(in_srgb,var(--course-accent-strong)_80%,transparent)]">
         {eyebrow}
       </p>

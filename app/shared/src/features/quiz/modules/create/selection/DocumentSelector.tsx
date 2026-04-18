@@ -23,7 +23,7 @@ const DocumentSelectorList = ({ courseId }: { courseId: string }) => {
     useCreateQuizContext();
 
   return (
-    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
       {documents.map((document) => {
         const selected = selectedDocumentIds.includes(document.id);
         const onSelect = () => {

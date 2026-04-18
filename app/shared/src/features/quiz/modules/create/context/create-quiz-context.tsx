@@ -20,7 +20,7 @@ type CreateQuizProviderProps = {
 };
 
 export const CreateQuizProvider = ({ children }: CreateQuizProviderProps) => {
-  const [activeScope, setActiveScope] = useState<CreateQuizScope>("topic");
+  const [activeScope, setActiveScope] = useState<CreateQuizScope>("course");
   const [selectedChapterIds, setSelectedChapterIds] = useState<string[]>([]);
   const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
   const [selectedDocumentIds, setSelectedDocumentIds] = useState<string[]>([]);

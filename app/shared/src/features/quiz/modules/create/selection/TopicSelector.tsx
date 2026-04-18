@@ -18,7 +18,7 @@ const TopicSelectorContent = ({ courseId }: { courseId: string }) => {
   const { selectedTopicIds, setSelectedTopicIds } = useCreateQuizContext();
 
   return (
-    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
       {topics.map((topic) => {
         const selected = selectedTopicIds.includes(topic.id);
         const onSelect = () => {

@@ -24,8 +24,8 @@ export const CreateQuizScopeSelector = () => {
   const { activeScope, setActiveScope } = useCreateQuizContext();
 
   return (
-    <div className="border-t border-[color-mix(in_srgb,var(--app-border-solid)_35%,transparent)] pt-4">
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <div className="-mt-0.5">
+      <div className="grid gap-1.5 md:grid-cols-2 xl:grid-cols-4">
         {scopes.map((scope) => (
           <ScopeCard
             key={scope.name}
