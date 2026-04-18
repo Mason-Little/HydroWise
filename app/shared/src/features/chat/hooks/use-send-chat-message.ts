@@ -16,10 +16,13 @@ export const useSendChatMessage = () => {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (text: string) => {
-      const { activeThreadId, setActiveThread } = useThreadStore.getState();
+      const { session, activateThread } = useThreadStore.getState();
 
-      const threadId = activeThreadId ?? (await createThread.mutateAsync()).id;
-      setActiveThread(threadId);
+      const threadId =
+        session.status === "active"
+          ? session.threadId
+          : (await createThread.mutateAsync()).id;
+      activateThread(threadId);
 
       const tempUserId = `local-user-${crypto.randomUUID()}`;
       const tempAsstId = `local-assistant-${crypto.randomUUID()}`;

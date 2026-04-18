@@ -2,9 +2,9 @@ import { ChatMessageItem } from "@/features/chat/components/messages";
 import { useChatContext } from "@/features/chat/context";
 
 export const ChatArea = () => {
-  const { threadId, messages, isLoading } = useChatContext();
+  const { session, messages, isLoading } = useChatContext();
 
-  if (threadId === null) {
+  if (session.status === "draft") {
     return (
       <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
         <div className="mx-auto flex min-h-full max-w-[920px] items-center justify-center">

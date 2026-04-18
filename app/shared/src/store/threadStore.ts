@@ -1,11 +1,23 @@
 import { create } from "zustand";
 
+export type ThreadSession =
+  | {
+      status: "draft";
+    }
+  | {
+      status: "active";
+      threadId: string;
+    };
+
 interface ThreadStore {
-  activeThreadId: string | null;
-  setActiveThread: (threadId: string | null) => void;
+  session: ThreadSession;
+  activateThread: (threadId: string) => void;
+  clearThread: () => void;
 }
 
 export const useThreadStore = create<ThreadStore>((set) => ({
-  activeThreadId: null,
-  setActiveThread: (threadId) => set({ activeThreadId: threadId }),
+  session: { status: "draft" },
+  activateThread: (threadId) =>
+    set({ session: { status: "active", threadId } }),
+  clearThread: () => set({ session: { status: "draft" } }),
 }));

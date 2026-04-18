@@ -44,8 +44,8 @@ export function ThreadCommandSection({
     [courses],
   );
   const { setActiveFeature } = useFeatureStore();
-  const activeThreadId = useThreadStore((s) => s.activeThreadId);
-  const setActiveThread = useThreadStore((s) => s.setActiveThread);
+  const session = useThreadStore((s) => s.session);
+  const activateThread = useThreadStore((s) => s.activateThread);
 
   const needle = searchQuery.trim().toLowerCase();
   const matchingThreads = threads.filter((t) => threadMatchesQuery(t, needle));
@@ -68,7 +68,8 @@ export function ThreadCommandSection({
           </CommandEmpty>
         ) : (
           matchingThreads.map((thread) => {
-            const isActive = activeThreadId === thread.id;
+            const isActive =
+              session.status === "active" && session.threadId === thread.id;
             const course = thread.courseId
               ? courseById.get(thread.courseId)
               : undefined;
@@ -78,7 +79,7 @@ export function ThreadCommandSection({
                 value={`${thread.id}-${thread.title ?? ""}-${course?.courseCode ?? ""}`}
                 onSelect={() => {
                   setActiveFeature("chat");
-                  setActiveThread(thread.id);
+                  activateThread(thread.id);
                   onDismiss();
                 }}
                 className={cn(

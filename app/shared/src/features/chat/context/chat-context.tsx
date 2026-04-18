@@ -2,15 +2,16 @@ import type { ChatMessage } from "@hydrowise/entities";
 import { createContext, type ReactNode, useContext } from "react";
 import { useChatMessages } from "@/domains/chat/hooks/useChatMessages";
 import { useSendChatMessage } from "@/features/chat/hooks/use-send-chat-message";
-import { useThreadStore } from "@/store/threadStore";
+import { type ThreadSession, useThreadStore } from "@/store/threadStore";
 
 export type ChatContextValue = {
-  threadId: string | null;
+  session: ThreadSession;
   messages: ChatMessage[];
   isLoading: boolean;
   isStreaming: boolean;
   sendMessage: (message: string) => void;
-  selectThread: (threadId: string | null) => void;
+  activateThread: (threadId: string) => void;
+  clearThread: () => void;
 };
 
 export const ChatContext = createContext<ChatContextValue | null>(null);
@@ -20,19 +21,20 @@ type ChatProviderProps = {
 };
 
 export const ChatProvider = ({ children }: ChatProviderProps) => {
-  const { activeThreadId, setActiveThread } = useThreadStore();
-  const { messages, isLoading } = useChatMessages(activeThreadId);
+  const { session, activateThread, clearThread } = useThreadStore();
+  const { messages, isLoading } = useChatMessages(session);
   const { sendMessage, isStreaming } = useSendChatMessage();
 
   return (
     <ChatContext.Provider
       value={{
-        threadId: activeThreadId,
+        session,
         messages,
         isLoading,
         isStreaming,
         sendMessage,
-        selectThread: setActiveThread,
+        activateThread,
+        clearThread,
       }}
     >
       {children}
