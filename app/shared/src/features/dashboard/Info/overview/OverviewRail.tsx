@@ -17,8 +17,6 @@ export const OverviewRail = () => {
   const { activeCourse } = useDashboardContext();
   const [tasksComposing, setTasksComposing] = useState(false);
 
-  if (!activeCourse) return null;
-
   const policies = activeCourse.policies ?? [];
   const hasPolicies = policies.length > 0;
   const lgGridRows = overviewRailLgGridRows(hasPolicies, tasksComposing);

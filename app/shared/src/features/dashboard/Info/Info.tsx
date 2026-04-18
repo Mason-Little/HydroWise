@@ -32,11 +32,7 @@ export const Info = () => {
           }
         />
       }
-      style={
-        activeCourse
-          ? courseWorkspaceCssVariables(activeCourse.courseCode)
-          : undefined
-      }
+      style={courseWorkspaceCssVariables(activeCourse.courseCode)}
     >
       {view === "overview" ? <Overview /> : <Material />}
     </WorkspaceShell>

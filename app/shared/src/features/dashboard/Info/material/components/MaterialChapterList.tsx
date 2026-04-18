@@ -2,12 +2,7 @@ import { useMaterialSelection } from "@/features/dashboard/Info/material/context
 import { cn } from "@/lib/utils";
 
 export const MaterialChapterList = () => {
-  const { activeChapter, setActiveChapterId, chapters, isLoading, courseId } =
-    useMaterialSelection();
-
-  if (!courseId) {
-    return null;
-  }
+  const material = useMaterialSelection();
 
   return (
     <nav
@@ -16,17 +11,17 @@ export const MaterialChapterList = () => {
         "flex max-h-[min(280px,42dvh)] min-h-0 shrink-0 flex-col gap-1.5 overflow-y-auto overscroll-contain border-b border-solid border-[color-mix(in_srgb,var(--app-hairline)_70%,transparent)] bg-[color-mix(in_srgb,var(--app-workspace-bg)_35%,var(--app-surface-primary))] px-2.5 py-3 md:max-h-[min(560px,62dvh)] md:border-b-0 md:border-r md:border-solid md:pr-2.5",
       )}
     >
-      {isLoading ? (
+      {material.status === "loading" ? (
         <p className="px-3 py-2 text-[12px] font-medium text-[var(--app-text-muted)]">
           Loading chapters…
         </p>
-      ) : chapters.length === 0 ? (
+      ) : material.status === "empty" ? (
         <p className="px-3 py-2 text-[12px] font-medium text-[var(--app-text-muted)]">
           No chapters yet.
         </p>
       ) : (
-        chapters.map((chapter, index) => {
-          const isActive = activeChapter?.id === chapter.id;
+        material.chapters.map((chapter, index) => {
+          const isActive = material.activeChapter.id === chapter.id;
           const orderLabel = String(index + 1).padStart(2, "0");
           const meta = chapter.chapterDescription.trim();
 
@@ -36,7 +31,7 @@ export const MaterialChapterList = () => {
               type="button"
               aria-current={isActive ? "page" : undefined}
               onClick={() => {
-                setActiveChapterId(chapter.id);
+                material.setActiveChapterId(chapter.id);
               }}
               className={cn(
                 "group relative box-border grid h-20 min-h-20 max-h-20 w-full shrink-0 cursor-pointer grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 overflow-hidden rounded-xl border border-transparent px-3.5 py-2.5 pl-3.5 text-left font-[inherit] text-inherit transition-[background,border-color,box-shadow] duration-[140ms] ease-out",

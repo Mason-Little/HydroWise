@@ -1,6 +1,9 @@
 import { useTopicsByChapter } from "@/domains/material/hooks/useTopics";
 import { MaterialTopicSection } from "@/features/dashboard/Info/material/components/MaterialTopicSection";
-import { useMaterialSelection } from "@/features/dashboard/Info/material/context/MaterialSelectionContext";
+import {
+  type MaterialSelectionContextValue,
+  useMaterialSelection,
+} from "@/features/dashboard/Info/material/context/MaterialSelectionContext";
 import { cn } from "@/lib/utils";
 
 const MATERIAL_QUICK_ACTION_LABELS = [
@@ -10,11 +13,17 @@ const MATERIAL_QUICK_ACTION_LABELS = [
 ] as const;
 
 export const MaterialContentPanel = () => {
-  const { activeChapter, chapters } = useMaterialSelection();
-  const chapterId = activeChapter?.id ?? "";
-  const { topics, isLoading } = useTopicsByChapter(chapterId);
+  const material = useMaterialSelection();
 
-  if (!activeChapter) {
+  if (material.status === "loading") {
+    return (
+      <div className="flex min-h-0 flex-1 items-center justify-center px-6 py-10">
+        <p className="text-sm text-[var(--app-text-muted)]">Loading topics…</p>
+      </div>
+    );
+  }
+
+  if (material.status === "empty") {
     return (
       <div className="flex min-h-0 flex-1 items-center justify-center px-6 py-10">
         <p className="text-sm text-[var(--app-text-muted)]">
@@ -24,8 +33,19 @@ export const MaterialContentPanel = () => {
     );
   }
 
-  const description = activeChapter.chapterDescription.trim();
-  const chapterIndex = chapters.findIndex((c) => c.id === activeChapter.id);
+  return <MaterialContentPanelReady material={material} />;
+};
+
+const MaterialContentPanelReady = ({
+  material,
+}: {
+  material: Extract<MaterialSelectionContextValue, { status: "ready" }>;
+}) => {
+  const { topics, isLoading } = useTopicsByChapter(material.activeChapter.id);
+  const description = material.activeChapter.chapterDescription.trim();
+  const chapterIndex = material.chapters.findIndex(
+    (chapter) => chapter.id === material.activeChapter.id,
+  );
   const chapterOrdinal =
     chapterIndex >= 0 ? String(chapterIndex + 1).padStart(2, "0") : "—";
   const topicCount = topics?.length ?? 0;
@@ -53,7 +73,7 @@ export const MaterialContentPanel = () => {
             "text-[var(--app-text-primary)]",
           )}
         >
-          {activeChapter.chapterName}
+          {material.activeChapter.chapterName}
         </h2>
         {description ? (
           <p

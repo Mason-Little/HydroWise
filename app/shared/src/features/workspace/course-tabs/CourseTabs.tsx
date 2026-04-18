@@ -7,7 +7,7 @@ import { useWorkspaceTabs } from "@/features/workspace/WorkspaceTabsContext";
 
 type CourseTabsProps = {
   tabs: readonly CourseTabItem[];
-  activeTabId: string | null;
+  activeTabId: string;
   onSelectTab: (tabId: string) => void;
 };
 

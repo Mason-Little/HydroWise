@@ -110,8 +110,7 @@ const ProfessorContactBlock = ({ course }: ProfessorContactBlockProps) => {
 
 export const CourseHeader = ({ headerRight }: CourseHeaderProps) => {
   const { activeCourse } = useDashboardContext();
-  const metaLine = activeCourse ? buildCourseMetaLine(activeCourse) : null;
-  const title = activeCourse?.courseName ?? "—";
+  const metaLine = buildCourseMetaLine(activeCourse);
 
   return (
     <div className="space-y-1">
@@ -123,16 +122,14 @@ export const CourseHeader = ({ headerRight }: CourseHeaderProps) => {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="font-display truncate text-[clamp(1.5rem,2.1vw,2.05rem)] font-bold leading-[1.08] tracking-[-0.04em] text-foreground">
-            {title}
+            {activeCourse.courseName}
           </p>
         </div>
         {headerRight}
       </div>
-      {activeCourse ? (
-        <div className="mt-2 box-border min-h-[3rem] min-w-0 border-t border-[color-mix(in_srgb,var(--app-border-solid)_40%,transparent)] pt-2">
-          <ProfessorContactBlock course={activeCourse} />
-        </div>
-      ) : null}
+      <div className="mt-2 box-border min-h-[3rem] min-w-0 border-t border-[color-mix(in_srgb,var(--app-border-solid)_40%,transparent)] pt-2">
+        <ProfessorContactBlock course={activeCourse} />
+      </div>
     </div>
   );
 };

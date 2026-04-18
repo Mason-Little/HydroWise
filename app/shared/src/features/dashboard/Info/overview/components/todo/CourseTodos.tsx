@@ -12,15 +12,12 @@ export const CourseTodos = ({ onComposingChange }: CourseTodosProps) => {
   const { activeCourse } = useDashboardContext();
   const [composing, setComposing] = useState(false);
 
-  const courseId = activeCourse?.id ?? "";
-  const { mutate, isPending } = useUpdateCourseTodos(courseId);
+  const { mutate, isPending } = useUpdateCourseTodos(activeCourse.id);
 
   const setComposingOpen = (open: boolean) => {
     setComposing(open);
     onComposingChange(open);
   };
-
-  if (!activeCourse) return null;
 
   const todos = activeCourse.courseTodos ?? [];
   const open = todos.filter((t) => !t.done);
