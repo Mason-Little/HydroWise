@@ -5,7 +5,8 @@ import { DocumentScopePanel } from "@/features/quiz/modules/create/scopes/Docume
 import { TopicScopePanel } from "@/features/quiz/modules/create/scopes/TopicScopePanel";
 
 export const CreateQuizScopeOutlet = () => {
-  const { selection, setSelection } = useCreateQuizContext();
+  const { selection, toggleChapter, toggleDocument, toggleTopic } =
+    useCreateQuizContext();
 
   switch (selection.scope) {
     case "course":
@@ -14,21 +15,21 @@ export const CreateQuizScopeOutlet = () => {
       return (
         <ChapterScopePanel
           chapterIds={selection.chapterIds}
-          setSelection={setSelection}
+          toggleChapter={toggleChapter}
         />
       );
     case "document":
       return (
         <DocumentScopePanel
           documentIds={selection.documentIds}
-          setSelection={setSelection}
+          toggleDocument={toggleDocument}
         />
       );
     case "topic":
       return (
         <TopicScopePanel
           topicIds={selection.topicIds}
-          setSelection={setSelection}
+          toggleTopic={toggleTopic}
         />
       );
   }
