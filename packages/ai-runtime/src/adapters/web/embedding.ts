@@ -9,7 +9,7 @@ export const createWebEmbeddingAdapter = (
   specificationVersion: "v3",
   provider: "hydrowise",
   modelId: "web-embedding",
-  maxEmbeddingsPerCall: undefined,
+  maxEmbeddingsPerCall: 1024,
   supportsParallelCalls: false,
   doEmbed: async ({ values }) => {
     const output = await pipe(values, { pooling: "mean", normalize: true });

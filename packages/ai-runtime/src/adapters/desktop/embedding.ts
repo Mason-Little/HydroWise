@@ -14,6 +14,5 @@ export const createDesktopEmbeddingAdapter = (
     baseURL: DESKTOP_PROVIDER_BASE_URL,
     name: DESKTOP_PROVIDER_NAME,
   });
-
   return provider.embeddingModel(modelId);
 };
