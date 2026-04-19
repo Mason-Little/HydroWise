@@ -24,8 +24,8 @@ export const ChapterSelector = ({
             key={chapter.id}
             selected={selected}
             onSelect={() => toggleChapter(chapter.id)}
-            title={chapter.chapterName}
-            description={chapter.chapterDescription}
+            title={chapter.name}
+            description={chapter.description}
           />
         );
       })}

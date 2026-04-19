@@ -23,7 +23,7 @@ export const MaterialChapterList = () => {
         material.chapters.map((chapter, index) => {
           const isActive = material.activeChapter.id === chapter.id;
           const orderLabel = String(index + 1).padStart(2, "0");
-          const meta = chapter.chapterDescription.trim();
+          const meta = chapter.description.trim();
 
           return (
             <button
@@ -63,7 +63,7 @@ export const MaterialChapterList = () => {
                       "group-hover:text-[color-mix(in_srgb,var(--app-text-primary)_97%,var(--app-text-muted))]",
                   )}
                 >
-                  {chapter.chapterName}
+                  {chapter.name}
                 </span>
                 {meta ? (
                   <span

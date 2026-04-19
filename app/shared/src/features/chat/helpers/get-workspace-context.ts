@@ -22,8 +22,8 @@ export const getWorkspaceContext = async (): Promise<ChatWorkspaceContext> => {
   for (const ch of allChapters) {
     const slice = chaptersByCourseId.get(ch.courseId) ?? [];
     slice.push({
-      chapterName: ch.chapterName,
-      chapterDescription: ch.chapterDescription,
+      name: ch.name,
+      description: ch.description,
     });
     chaptersByCourseId.set(ch.courseId, slice);
   }

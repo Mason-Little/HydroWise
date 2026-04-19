@@ -12,7 +12,7 @@ export const WorkspaceContextItemSchema = z.object({
   courseId: z.string(),
   courseName: z.string(),
   chapters: z.array(
-    ChapterSchema.pick({ chapterName: true, chapterDescription: true }),
+    ChapterSchema.pick({ name: true, description: true }),
   ),
 });
 

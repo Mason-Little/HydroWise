@@ -50,6 +50,13 @@
       "when": 1775265203862,
       "tag": "0006_broken_hardball",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1776741059897,
+      "tag": "0007_chapters_cleanup",
+      "breakpoints": true
     }
   ]
 }

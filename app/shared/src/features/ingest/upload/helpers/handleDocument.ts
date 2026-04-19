@@ -31,8 +31,8 @@ const buildCourseTree = (
     chapters: chapters
       .filter((ch) => ch.courseId === course.id)
       .map((ch) => ({
-        chapterName: ch.chapterName,
-        chapterDescription: ch.chapterDescription,
+        name: ch.name,
+        description: ch.description,
         topics: topics
           .filter((t) => t.chapterId === ch.id)
           .map((t) => ({
@@ -49,11 +49,11 @@ const resolveChapterTarget = async (
   queries: Pick<Queries, "createChapter">,
 ) => {
   if (route.chapter.pick === "match") {
-    const chapterName = route.chapter.chapterName;
+    const chapterName = route.chapter.name;
     const chapter = chapters.find(
       (ch) =>
         ch.courseId === courseId &&
-        normalize(ch.chapterName) === normalize(chapterName),
+        normalize(ch.name) === normalize(chapterName),
     );
     if (!chapter) {
       throw new Error(

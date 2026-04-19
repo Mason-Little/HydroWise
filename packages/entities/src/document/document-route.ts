@@ -5,7 +5,7 @@ import { CreateTopicInputSchema } from "../topic/topic";
 export const DocumentRouteChapterPickSchema = z.discriminatedUnion("pick", [
   z.object({
     pick: z.literal("match"),
-    chapterName: z.string().min(1),
+    name: z.string().min(1),
   }),
   z.object({
     pick: z.literal("create"),

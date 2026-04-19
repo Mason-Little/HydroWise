@@ -42,7 +42,7 @@ const MaterialContentPanelReady = ({
   material: Extract<MaterialSelectionContextValue, { status: "ready" }>;
 }) => {
   const { topics, isLoading } = useTopicsByChapter(material.activeChapter.id);
-  const description = material.activeChapter.chapterDescription.trim();
+  const description = material.activeChapter.description.trim();
   const chapterIndex = material.chapters.findIndex(
     (chapter) => chapter.id === material.activeChapter.id,
   );
@@ -73,7 +73,7 @@ const MaterialContentPanelReady = ({
             "text-[var(--app-text-primary)]",
           )}
         >
-          {material.activeChapter.chapterName}
+          {material.activeChapter.name}
         </h2>
         {description ? (
           <p

@@ -6,8 +6,8 @@ export const chapters = pgTable("chapters", {
   courseId: uuid("course_id")
     .notNull()
     .references(() => courses.id, { onDelete: "cascade" }),
-  chapterName: text("chapter_name").notNull(),
-  chapterDescription: text("chapter_description").notNull(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
