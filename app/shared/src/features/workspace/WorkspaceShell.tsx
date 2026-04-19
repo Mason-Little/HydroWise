@@ -139,9 +139,11 @@ export const WorkspaceShell = ({
           </motion.div>
         )}
       </WorkspaceTabsProvider>
-      <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden">
         <header className="shrink-0 px-5 pt-3 pb-2.5">{header}</header>
-        <div className="min-h-0 flex-1 p-3.5">{children}</div>
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden p-3.5">
+          {children}
+        </div>
       </div>
     </div>
   );
