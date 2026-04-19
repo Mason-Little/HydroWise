@@ -1,16 +1,7 @@
 import { CreateQuizScopeOutlet } from "@/features/quiz/modules/create/CreateQuizScopeOutlet";
 import { CreateQuizScopeSelector } from "@/features/quiz/modules/create/CreateQuizScopeSelector";
-import {
-  CreateQuizProvider,
-  useCreateQuizContext,
-} from "@/features/quiz/modules/create/context/create-quiz-context";
-
-const scopeLabelByScope = {
-  course: "course",
-  chapter: "chapters",
-  topic: "topics",
-  document: "documents",
-} as const;
+import { CreateQuizSidebar } from "@/features/quiz/modules/create/CreateQuizSidebar";
+import { CreateQuizProvider } from "@/features/quiz/modules/create/context/create-quiz-context";
 
 export const CreateQuizModule = () => {
   return (
@@ -21,22 +12,18 @@ export const CreateQuizModule = () => {
 };
 
 const CreateQuizModuleContent = () => {
-  const { selection } = useCreateQuizContext();
-  const scopeLabel = scopeLabelByScope[selection.scope];
-
   return (
-    <div className="min-h-0 flex-1 px-6 pb-3 pt-1 md:px-7">
-      <div className="flex flex-col gap-3">
-        <div className="border-b border-[var(--app-border-solid)] pb-2.5">
-          <p className="text-[0.78rem] font-bold uppercase tracking-[0.16em] text-foreground">
-            Select scope • {scopeLabel}
-          </p>
-          <p className="mt-1 max-w-2xl text-[0.95rem] font-medium leading-6 text-[var(--app-text-muted)]">
-            Choose the scope first, then pick the items to include below.
-          </p>
+    <div className="min-h-0 flex-1 overflow-hidden px-3 pb-2 pt-0 md:px-4">
+      <div className="grid h-full min-h-0 gap-2.5 xl:grid-cols-[minmax(0,1fr)_293px]">
+        <div className="flex min-h-0 min-w-0 flex-col gap-2.5">
+          <CreateQuizScopeSelector />
+          <div className="min-h-0 flex-1 overflow-hidden rounded-[22px] border border-[color-mix(in_srgb,var(--app-border-solid)_66%,transparent)] bg-[var(--app-surface-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,0.65),0_1px_3px_rgba(15,23,42,0.03)]">
+            <div className="no-scrollbar h-full overflow-y-auto [scrollbar-gutter:stable]">
+              <CreateQuizScopeOutlet />
+            </div>
+          </div>
         </div>
-        <CreateQuizScopeSelector />
-        <CreateQuizScopeOutlet />
+        <CreateQuizSidebar />
       </div>
     </div>
   );
