@@ -1,11 +1,8 @@
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useReducer,
-} from "react";
+import { createContext, type ReactNode, useContext, useReducer } from "react";
+import { useDashboardContext } from "@/features/dashboard/dashboard-context";
 import { useQuizContext } from "@/features/quiz/context/quiz-context";
 import {
+  buildQuizPlannerTree,
   getSelectionCount,
   getSelectionSummary,
 } from "@/features/quiz/modules/create/context/create-quiz-helpers";
@@ -64,8 +61,12 @@ type CreateQuizProviderProps = {
 };
 
 export const CreateQuizProvider = ({ children }: CreateQuizProviderProps) => {
+  const { activeCourse } = useDashboardContext();
   const { setView } = useQuizContext();
-  const [state, dispatch] = useReducer(createQuizReducer, initialCreateQuizState);
+  const [state, dispatch] = useReducer(
+    createQuizReducer,
+    initialCreateQuizState,
+  );
 
   const { selection, quizSettings } = state;
 
@@ -117,7 +118,16 @@ export const CreateQuizProvider = ({ children }: CreateQuizProviderProps) => {
       return;
     }
 
-    setView("write");
+    void (async () => {
+      try {
+        const tree = await buildQuizPlannerTree(selection, activeCourse.id);
+        console.log("quiz planner tree", tree);
+      } catch (error) {
+        console.error("Failed to build quiz planner tree.", error);
+      } finally {
+        setView("write");
+      }
+    })();
   };
 
   return (
