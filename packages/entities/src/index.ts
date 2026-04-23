@@ -3,4 +3,5 @@ export * from "./chat";
 export * from "./course";
 export * from "./document";
 export * from "./page";
+export * from "./quiz";
 export * from "./topic";
